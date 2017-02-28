@@ -10,6 +10,7 @@ Pagrindinis sistemos planuojamas funkcionalumas:
 
 #Getting Started
 - Pagrindinė IDE: **IntelliJ IDEA Ultimate Edition** - galite atsisiųsti iš https://www.jetbrains.com/idea/download/
+- Versijavimo valdymo sistema: **Git** - https://git-scm.com/download/win
 - Dar reiktų pasirinkti kokį Buildinimo įrankį naudosime - galime **Gradle** arba **Maven**.
 
 Projekto parsisiuntimas:
