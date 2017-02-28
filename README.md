@@ -12,6 +12,12 @@ Pagrindinis sistemos planuojamas funkcionalumas:
 - Pagrindinė IDE: **IntelliJ IDEA Ultimate Edition** - galite atsisiųsti iš https://www.jetbrains.com/idea/download/
 - Dar reiktų pasirinkti kokį Buildinimo įrankį naudosime - galime **Gradle** arba **Maven**.
 
+Projekto parsisiuntimas:
+- Atidaryti IntelliJ
+- Paspausti *Check out from version control* > *Git*
+- Į *Git repository URL* įvesti https://javainis.visualstudio.com/_git/SurveyApplication
+- Prisijunkite su savo Microsoft paskyra
+
 #Build and Test
 TODO: Describe and show how to build your code and run the tests. 
 
