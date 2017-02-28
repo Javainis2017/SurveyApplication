@@ -1,15 +1,16 @@
 #Introduction 
-Projektas: Survey Application - internetinių apklausų rinkimo sistema. 
+Projektas: **Survey Application** *(Placeholder)* - internetinių apklausų rinkimo sistema. 
+
 Pagrindinis sistemos planuojamas funkcionalumas:
-     Naudojotų valdymas
-     Apklausų kūrimas
-     Apklausų atsakymo surinkimas
-     Ataskaitų sudarymas
-     Apklausos ir atsakymų importavimas iš Excel failo
+- Naudojotų valdymas
+- Apklausų kūrimas
+- Apklausų atsakymo surinkimas
+- Ataskaitų sudarymas
+- Apklausos ir atsakymų importavimas iš Excel failo
 
 #Getting Started
-Pagrindinė IDE: IntelliJ IDEA Ultimate Edition - galite atsisiųsti iš https://www.jetbrains.com/idea/download/
-Dar reiktų pasirinkti kokį Buildinimo įrankį naudosime - galime Gradle arba Maven.
+- Pagrindinė IDE: **IntelliJ IDEA Ultimate Edition** - galite atsisiųsti iš https://www.jetbrains.com/idea/download/
+- Dar reiktų pasirinkti kokį Buildinimo įrankį naudosime - galime **Gradle** arba **Maven**.
 
 #Build and Test
 TODO: Describe and show how to build your code and run the tests. 
