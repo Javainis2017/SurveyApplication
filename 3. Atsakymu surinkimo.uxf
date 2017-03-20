@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>720</x>
+      <y>850</y>
+      <w>960</w>
+      <h>330</h>
+    </coordinates>
+    <panel_attributes>Response Manager
+--
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>2070</x>
+      <y>710</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Reports
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1900</x>
+      <y>710</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Import Manager
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>780</x>
+      <y>670</y>
+      <w>240</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>ResponseManager
+--
+saveSurveyResults(surveyResults)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>1590</x>
+      <y>660</y>
+      <w>140</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>QuestionResponse
+--
+-int : id
+-Question : question
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>1030</x>
+      <y>670</y>
+      <w>100</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>SurveyResults
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>720</x>
+      <y>250</y>
+      <w>1140</w>
+      <h>560</h>
+    </coordinates>
+    <panel_attributes>SurveyAPI
+--
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>850</x>
+      <y>680</y>
+      <w>70</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;200.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1070</x>
+      <y>680</y>
+      <w>190</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;&gt;</panel_attributes>
+    <additional_attributes>164.0;240.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>940</x>
+      <y>120</y>
+      <w>170</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>User Manager
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1170</x>
+      <y>160</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Survey Creator
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>850</x>
+      <y>410</y>
+      <w>260</w>
+      <h>250</h>
+    </coordinates>
+    <panel_attributes>UserManager
+--
+create(user)
+addToWhitelist(email)
+removeFromWhitelist(email)
+changeUserType(user, newType)
+allowUserAccess(user, allowed : bool)
+recoverPassword(user)
+login(email, password)
+logout(user)
+saveUser(user)
+getCurrentUser() : User
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>1210</x>
+      <y>390</y>
+      <w>100</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>SurveyCreator
+--
+create(survey)
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>1380</x>
+      <y>310</y>
+      <w>160</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Survey
+--
+addQuestion(question)
+getURL()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>1550</x>
+      <y>300</y>
+      <w>140</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Question
+--
+isRequired() : bool</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>1510</x>
+      <y>410</y>
+      <w>140</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>MultiChoiceQuestion
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1570</x>
+      <y>310</y>
+      <w>70</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>1720</x>
+      <y>360</y>
+      <w>120</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>IntervalQuestion
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1610</x>
+      <y>310</y>
+      <w>190</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;170.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>1730</x>
+      <y>270</y>
+      <w>100</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>TextQuestion
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1610</x>
+      <y>280</y>
+      <w>190</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;170.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>1580</x>
+      <y>460</y>
+      <w>160</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>SingleChoiceQuestion
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1610</x>
+      <y>310</y>
+      <w>70</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>970</x>
+      <y>210</y>
+      <w>30</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1210</x>
+      <y>220</y>
+      <w>70</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1240</x>
+      <y>220</y>
+      <w>240</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;220.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1300</x>
+      <y>210</y>
+      <w>340</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;320.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1140</x>
+      <y>0</y>
+      <w>240</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>DBMS
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>0</x>
+      <y>360</y>
+      <w>420</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>3. Apklausų atsakymų surinkimo modulis
+a. Apklausai priskiriamas unikalus adresas
+b. Neprisiregistravę naudotojai gali atsakyti į apklausos klausimus
+c. Visi atsakymai surenkami į duomenų bazę
+bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1060</x>
+      <y>920</y>
+      <w>310</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>SurveyResult
+--
+-int : id
+-string : adress //unique
+-survey : survey
+-List&lt;QuestionResponse&gt; : responses
+--
+GenerateUniqueAddress() // contructor</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1390</x>
+      <y>890</y>
+      <w>210</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>QuestionResponseText
+--
+-string : answer
+-
+-
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>790</x>
+      <y>1060</y>
+      <w>210</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>RespondentIdGenerator//nereikalinga
+--
+-string : name // 
+--
+GenerateUserId()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>0</x>
+      <y>630</y>
+      <w>400</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>pridėti:
+Survey: bool CanUnregisteredUsersAnswer Nereikia
+Survey : string name
+Question: string : question field
+Interval question : min &amp; max
+
+
+UnregisteredUserIdGenerator // priklauso nuo uzsakovo ats
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1520</x>
+      <y>570</y>
+      <w>330</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Note..
+Multichoice enum, text field, interval - string?
+O gal kiekvienam tipo atsakimo - atskira klasė?
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1630</x>
+      <y>630</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;30.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1390</x>
+      <y>1030</y>
+      <w>210</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>QuestionResponseEnum
+--
+-enum : choice
+-
+-
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1540</x>
+      <y>770</y>
+      <w>90</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>70.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1590</x>
+      <y>770</y>
+      <w>120</w>
+      <h>340</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;320.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>0</x>
+      <y>910</y>
+      <w>480</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>DB
+--
+bg=white</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>470</x>
+      <y>1080</y>
+      <w>340</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;use&gt;&gt;
+lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;320.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>730</x>
+      <y>880</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>ResponseManager
+--
+-int : id
+--
+saveSurveyResults(surveyResults)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>540</x>
+      <y>740</y>
+      <w>210</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Observer UI&gt;&gt;
+lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;190.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>470</x>
+      <y>920</y>
+      <w>280</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;use&gt;&gt;
+Issaugo i db
+lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;70.0;260.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1340</x>
+      <y>730</y>
+      <w>280</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;190.0;260.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1280</x>
+      <y>390</y>
+      <w>180</w>
+      <h>550</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;530.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>930</x>
+      <y>1220</y>
+      <w>190</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;170.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>990</x>
+      <y>730</y>
+      <w>100</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>
+lt=&lt;.</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+</diagram>
