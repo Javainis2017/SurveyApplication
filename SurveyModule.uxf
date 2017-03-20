@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>100</x>
+      <y>460</y>
+      <w>260</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>MultipleAnswerQuestion
+--
+- id : Int
+- questionText : String
+- answers : List&lt;String&gt;
+- obligatory : Boolean
+--
++ addAnswer(answer : String)
++ removeAnswer(answer : String)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>370</x>
+      <y>460</y>
+      <w>260</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>SingleAnswerQuestion
+--
+- id : Int
+- questionText : String
+- answers : List&lt;String&gt;
+- obligatory : Boolean
+--
++ addAnswer(answer : String)
++ removeAnswer(answer : String)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>640</x>
+      <y>460</y>
+      <w>260</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>FreeTextQuestion
+--
+- id : Int
+- questionText : String
+- obligatory : Boolean
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>910</x>
+      <y>460</y>
+      <w>260</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>NumberRangeQuestion
+--
+- id : Int
+- n : Int
+- m : Int
+- questionText : String
+- obligatory : Boolean
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>470</x>
+      <y>210</y>
+      <w>340</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>Survey
+--
+- title : String
+- id : Int
+- questions : Map&lt;Int, Object&gt;
+--
++ addQuestion( question : Question)
++ removeQuestion( number : Int)
++ setQuestionPosition( from : Int, to : Int)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>470</x>
+      <y>70</y>
+      <w>340</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>SurveyContainer
+--
+- id : Int
+- surveys : List&lt;Survey&gt;
+--
++addSurvey(survey:Survey)
++removeSurvey(survey:Survey)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>920</x>
+      <y>120</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>User surveys</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>110</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>120.0;30.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>330</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>160</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>70</x>
+      <y>30</y>
+      <w>1130</w>
+      <h>590</h>
+    </coordinates>
+    <panel_attributes>SurveyModule</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>600</x>
+      <y>370</y>
+      <w>80</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Question
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>380</y>
+      <w>410</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;390.0;10.0;390.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>220</x>
+      <y>380</y>
+      <w>430</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>410.0;10.0;10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>500</x>
+      <y>400</y>
+      <w>130</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>660</x>
+      <y>400</y>
+      <w>140</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0;120.0;60.0</additional_attributes>
+  </element>
+</diagram>
