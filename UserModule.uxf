@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>72</x>
+      <y>243</y>
+      <w>225</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Entity&gt;&gt;
+User
+--
+-userID: String
+-email:String
+-passwordHash: String
+-firstName: String
+-lastName: String
+-userTypeID: String
+-blocked: Bool
+-Created: Bool</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>684</x>
+      <y>378</y>
+      <w>306</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>UserDAO
+--
+-manager: EntityManager
+--
++create(user: User)
++login(email: String, pwHash: String): User
++getAllUsers(): List&lt;User&gt;
++recoverPassword(user: User, pwHash: String)
++changeUserType(user: User, type: String)
++allowUserAccess(user: User, allowed: Bool)
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>900</x>
+      <y>72</y>
+      <w>126</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Database
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>432</x>
+      <y>378</y>
+      <w>216</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>WhitelistDAO
+--
+-manager: EntityManager
+--
++create(whitelist: Whitelist)
++removeFromWhitelist(email:String)
++findEmail(email: String): Whitelist
++getAll(): List&lt;Whitelist&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>180</x>
+      <y>414</y>
+      <w>171</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Entity&gt;&gt;
+Whitelist
+--
+-emailID: String
+-email: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>54</x>
+      <y>180</y>
+      <w>954</w>
+      <h>630</h>
+    </coordinates>
+    <panel_attributes>User Management
+--
+bg=yellow
+layer=-100</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>99</x>
+      <y>684</y>
+      <w>171</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Static&gt;&gt;
+Hasher
+--
+--
+_+hash(input: String): String_
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>387</x>
+      <y>594</y>
+      <w>306</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>UserController
+--
+-manager: EntityManager
+-userDAO: UserDAO
+-whitelistDAO: WhitelistDAO
+-user: User
+-whitelist: Whitelist
+--
++createUser()
++whitelistEmail()
++deleteEmail()
++login()
++logout()
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>549</x>
+      <y>81</y>
+      <w>144</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>EntityManager
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>684</x>
+      <y>99</y>
+      <w>234</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>240.0;10.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>225</x>
+      <y>126</y>
+      <w>342</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+use</panel_attributes>
+    <additional_attributes>10.0;130.0;360.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>315</x>
+      <y>117</y>
+      <w>252</w>
+      <h>315</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+use</panel_attributes>
+    <additional_attributes>10.0;330.0;260.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>666</x>
+      <y>135</y>
+      <w>117</w>
+      <h>261</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;270.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>576</x>
+      <y>135</y>
+      <w>27</w>
+      <h>261</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;270.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>531</x>
+      <y>513</y>
+      <w>27</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>675</x>
+      <y>513</y>
+      <w>108</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;90.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>261</x>
+      <y>711</y>
+      <w>144</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+use</panel_attributes>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>288</x>
+      <y>315</y>
+      <w>414</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;390.0;10.0;440.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>441</y>
+      <w>108</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>333</x>
+      <y>486</y>
+      <w>90</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>80.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>522</x>
+      <y>765</y>
+      <w>27</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;160.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>99</x>
+      <y>396</y>
+      <w>306</w>
+      <h>324</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>320.0;340.0;10.0;210.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>9</x>
+      <y>0</y>
+      <w>342</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>Resources
+--
+-factory: EntityManagerFactory
+--
+-createJTAEntityManager(): EntityManager
+-closeUnsynchronizedEntityManager(em: EntityManager)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>27</y>
+      <w>225</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+create</panel_attributes>
+    <additional_attributes>230.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>648</x>
+      <y>135</y>
+      <w>27</w>
+      <h>477</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;510.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
