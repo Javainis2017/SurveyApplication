@@ -7,7 +7,7 @@
       <x>72</x>
       <y>243</y>
       <w>225</w>
-      <h>162</h>
+      <h>144</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Entity&gt;&gt;
 User
@@ -18,8 +18,7 @@ User
 -firstName: String
 -lastName: String
 -userTypeID: String
--blocked: Bool
--Created: Bool</panel_attributes>
+-blocked: Bool</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -28,7 +27,7 @@ User
       <x>684</x>
       <y>378</y>
       <w>306</w>
-      <h>144</h>
+      <h>153</h>
     </coordinates>
     <panel_attributes>UserDAO
 --
@@ -37,8 +36,8 @@ User
 +create(user: User)
 +login(email: String, pwHash: String): User
 +getAllUsers(): List&lt;User&gt;
-+recoverPassword(user: User, pwHash: String)
-+changeUserType(user: User, type: String)
++changePassword(user: User, pwHash: String)
++changeUserType(user: User, type: int)
 +allowUserAccess(user: User, allowed: Bool)
 
 </panel_attributes>
@@ -60,9 +59,9 @@ bg=orange</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>432</x>
+      <x>423</x>
       <y>378</y>
-      <w>216</w>
+      <w>225</w>
       <h>144</h>
     </coordinates>
     <panel_attributes>WhitelistDAO
@@ -71,7 +70,7 @@ bg=orange</panel_attributes>
 --
 +create(whitelist: Whitelist)
 +removeFromWhitelist(email:String)
-+findEmail(email: String): Whitelist
++findEmail(email: String): Bool
 +getAll(): List&lt;Whitelist&gt;</panel_attributes>
     <additional_attributes/>
   </element>
@@ -96,7 +95,7 @@ Whitelist
       <x>54</x>
       <y>180</y>
       <w>954</w>
-      <h>630</h>
+      <h>666</h>
     </coordinates>
     <panel_attributes>User Management
 --
@@ -107,26 +106,10 @@ layer=-100</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>99</x>
-      <y>684</y>
-      <w>171</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;Static&gt;&gt;
-Hasher
---
---
-_+hash(input: String): String_
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
       <x>387</x>
       <y>594</y>
       <w>306</w>
-      <h>180</h>
+      <h>243</h>
     </coordinates>
     <panel_attributes>UserController
 --
@@ -136,11 +119,15 @@ _+hash(input: String): String_
 -user: User
 -whitelist: Whitelist
 --
++login()
++logout()
 +createUser()
 +whitelistEmail()
 +deleteEmail()
-+login()
-+logout()
++recoverPassword()
++changePassword()
++changeUserType()
++allowUserAccess()
 
 </panel_attributes>
     <additional_attributes/>
@@ -230,24 +217,12 @@ use</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>675</x>
-      <y>513</y>
+      <y>522</y>
       <w>108</w>
-      <h>99</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;90.0;100.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>261</x>
-      <y>711</y>
-      <w>144</w>
-      <h>36</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-use</panel_attributes>
-    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+    <additional_attributes>10.0;80.0;100.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -265,11 +240,11 @@ use</panel_attributes>
     <coordinates>
       <x>342</x>
       <y>441</y>
-      <w>108</w>
+      <w>99</w>
       <h>27</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -285,24 +260,13 @@ use</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>522</x>
-      <y>765</y>
-      <w>27</w>
-      <h>162</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;160.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
       <x>99</x>
-      <y>396</y>
+      <y>378</y>
       <w>306</w>
-      <h>324</h>
+      <h>342</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>320.0;340.0;10.0;210.0;10.0;10.0</additional_attributes>
+    <additional_attributes>320.0;360.0;10.0;230.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
