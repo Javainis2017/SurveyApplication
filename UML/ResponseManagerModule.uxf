@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.2">
-  <zoom_level>8</zoom_level>
+  <zoom_level>9</zoom_level>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>200</x>
-      <y>240</y>
-      <w>1256</w>
-      <h>608</h>
+      <x>153</x>
+      <y>189</y>
+      <w>1323</w>
+      <h>702</h>
     </coordinates>
     <panel_attributes>Response Manager
 --
@@ -17,10 +17,10 @@ bg=white</panel_attributes>
   <element>
     <id>UMLInterface</id>
     <coordinates>
-      <x>248</x>
-      <y>96</y>
-      <w>192</w>
-      <h>72</h>
+      <x>540</x>
+      <y>90</y>
+      <w>216</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>ResponseManager
 --
@@ -30,25 +30,24 @@ saveSurveyResults(surveyResults)</panel_attributes>
   <element>
     <id>UMLInterface</id>
     <coordinates>
-      <x>888</x>
-      <y>96</y>
-      <w>112</w>
-      <h>88</h>
+      <x>855</x>
+      <y>108</y>
+      <w>54</w>
+      <h>90</h>
     </coordinates>
-    <panel_attributes>QuestionResponse
+    <panel_attributes>Answer
 --
 
---
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLInterface</id>
     <coordinates>
-      <x>448</x>
-      <y>96</y>
-      <w>80</w>
-      <h>72</h>
+      <x>432</x>
+      <y>90</y>
+      <w>90</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>SurveyResults
 --
@@ -56,36 +55,23 @@ saveSurveyResults(surveyResults)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLPackage</id>
-    <coordinates>
-      <x>200</x>
-      <y>32</y>
-      <w>912</w>
-      <h>176</h>
-    </coordinates>
-    <panel_attributes>SurveyAPI
---
-bg=white</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>Relation</id>
     <coordinates>
-      <x>336</x>
-      <y>104</y>
-      <w>288</w>
-      <h>440</h>
+      <x>630</x>
+      <y>153</y>
+      <w>27</w>
+      <h>378</h>
     </coordinates>
     <panel_attributes>lt=.&gt;&gt;</panel_attributes>
-    <additional_attributes>340.0;530.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;400.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1120</x>
-      <y>48</y>
-      <w>336</w>
-      <h>80</h>
+      <x>1098</x>
+      <y>108</y>
+      <w>378</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>3. Apklausų atsakymų surinkimo modulis
 a. Apklausai priskiriamas unikalus adresas
@@ -97,12 +83,12 @@ bg=gray</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1088</x>
-      <y>376</y>
-      <w>168</w>
-      <h>104</h>
+      <x>1062</x>
+      <y>333</y>
+      <w>189</w>
+      <h>72</h>
     </coordinates>
-    <panel_attributes>QuestionResponseText
+    <panel_attributes>FreeTextAnswer
 --
 -text: string
 -
@@ -113,12 +99,12 @@ bg=gray</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>728</x>
-      <y>376</y>
-      <w>168</w>
-      <h>104</h>
+      <x>666</x>
+      <y>333</y>
+      <w>189</w>
+      <h>72</h>
     </coordinates>
-    <panel_attributes>QuestionResponseSingleChoice
+    <panel_attributes>SingleAnswer
 --
 -choiceId : string
 -
@@ -128,32 +114,32 @@ bg=gray</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1080</x>
-      <y>312</y>
-      <w>152</w>
-      <h>80</h>
+      <x>999</x>
+      <y>261</y>
+      <w>162</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;170.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;160.0;80.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>808</x>
-      <y>312</y>
-      <w>72</w>
-      <h>80</h>
+      <x>756</x>
+      <y>261</y>
+      <w>54</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>70.0;10.0;10.0;80.0</additional_attributes>
+    <additional_attributes>40.0;10.0;10.0;80.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>408</x>
-      <y>680</y>
-      <w>256</w>
-      <h>144</h>
+      <x>297</x>
+      <y>684</y>
+      <w>288</w>
+      <h>162</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Entity&gt;&gt;
 Result
@@ -167,10 +153,10 @@ Result
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>536</x>
-      <y>888</y>
-      <w>256</w>
-      <h>56</h>
+      <x>441</x>
+      <y>918</y>
+      <w>288</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>EntityManager</panel_attributes>
     <additional_attributes/>
@@ -178,10 +164,10 @@ Result
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>720</x>
-      <y>680</y>
-      <w>256</w>
-      <h>144</h>
+      <x>648</x>
+      <y>684</y>
+      <w>288</w>
+      <h>162</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Entity&gt;&gt;
 Answer
@@ -195,10 +181,10 @@ Answer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>736</x>
-      <y>816</y>
-      <w>48</w>
-      <h>88</h>
+      <x>666</x>
+      <y>837</y>
+      <w>54</w>
+      <h>99</h>
     </coordinates>
     <panel_attributes>&lt;&lt;use&gt;&gt;
 lt=&lt;.</panel_attributes>
@@ -207,10 +193,10 @@ lt=&lt;.</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>552</x>
-      <y>816</y>
-      <w>48</w>
-      <h>88</h>
+      <x>459</x>
+      <y>837</y>
+      <w>54</w>
+      <h>99</h>
     </coordinates>
     <panel_attributes>&lt;&lt;use&gt;&gt;
 lt=&lt;.</panel_attributes>
@@ -219,16 +205,16 @@ lt=&lt;.</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>552</x>
-      <y>528</y>
-      <w>224</w>
-      <h>104</h>
+      <x>513</x>
+      <y>513</y>
+      <w>252</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>ResponseController
 --
 -manager: EntityManager
 -resultDAO: ResultDAO
--responseDAO: ResponseDAO
+-responseDAO: AnswerDAO
 --
 +saveSurveyResults(surveyResults) : Bool
 </panel_attributes>
@@ -237,32 +223,32 @@ lt=&lt;.</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>728</x>
-      <y>624</y>
-      <w>40</w>
-      <h>72</h>
+      <x>675</x>
+      <y>621</y>
+      <w>63</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;30.0;70.0</additional_attributes>
+    <additional_attributes>50.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>552</x>
-      <y>624</y>
-      <w>80</w>
-      <h>72</h>
+      <x>522</x>
+      <y>621</y>
+      <w>81</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>80.0;10.0;10.0;70.0</additional_attributes>
+    <additional_attributes>70.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>232</x>
-      <y>528</y>
-      <w>256</w>
-      <h>104</h>
+      <x>180</x>
+      <y>513</y>
+      <w>288</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>ResultDAO
 --
@@ -276,54 +262,53 @@ lt=&lt;.</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>840</x>
-      <y>528</y>
-      <w>400</w>
-      <h>104</h>
+      <x>801</x>
+      <y>513</y>
+      <w>450</w>
+      <h>126</h>
     </coordinates>
-    <panel_attributes>AnswerDAO
+    <panel_attributes>&lt;&lt;abstract&gt;&gt;
+AnswerDAO
 --
 -manager: EntityManager
 --
 +create(response: Response) : Bool
 +findAllAnswersByQuestion(question: Question) : List&lt;Answer&gt;
 +findAllAnswersByRespondent(respondent : Respondent) : List&lt;Answer&gt;?
-+findAllAnswersByRespondent(survey : Survey) : List&lt;Answer&gt;</panel_attributes>
++findAllAnswersBySurvey(survey : Survey) : List&lt;Answer&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>480</x>
-      <y>592</y>
-      <w>88</w>
-      <h>24</h>
+      <x>459</x>
+      <y>585</y>
+      <w>72</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>90.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>60.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>768</x>
-      <y>584</y>
-      <w>88</w>
-      <h>32</h>
+      <x>756</x>
+      <y>576</y>
+      <w>63</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;20.0</additional_attributes>
+    <additional_attributes>10.0;10.0;50.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLInterface</id>
     <coordinates>
-      <x>968</x>
-      <y>256</y>
-      <w>160</w>
-      <h>88</h>
+      <x>945</x>
+      <y>216</y>
+      <w>108</w>
+      <h>81</h>
     </coordinates>
-    <panel_attributes>FreeFormQuestionResponse
---
-
+    <panel_attributes>FreeFormAnswer
 --
 </panel_attributes>
     <additional_attributes/>
@@ -331,75 +316,73 @@ lt=&lt;.</panel_attributes>
   <element>
     <id>UMLInterface</id>
     <coordinates>
-      <x>800</x>
-      <y>256</y>
-      <w>144</w>
-      <h>88</h>
+      <x>774</x>
+      <y>216</y>
+      <w>90</w>
+      <h>90</h>
     </coordinates>
-    <panel_attributes>ChoiceQuestionResponse
+    <panel_attributes>ChoiceAnswer
 --
 
---
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLInterface</id>
     <coordinates>
-      <x>1144</x>
-      <y>264</y>
-      <w>192</w>
-      <h>88</h>
+      <x>1125</x>
+      <y>216</y>
+      <w>162</w>
+      <h>90</h>
     </coordinates>
-    <panel_attributes>RestricktedValueQuestionResponse
+    <panel_attributes>RestricktedValueAnswer
 --
 
---
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>992</x>
-      <y>128</y>
-      <w>264</w>
-      <h>160</h>
+      <x>918</x>
+      <y>135</y>
+      <w>297</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;310.0;180.0</additional_attributes>
+    <additional_attributes>10.0;10.0;310.0;110.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>976</x>
-      <y>152</y>
-      <w>88</w>
-      <h>128</h>
+      <x>909</x>
+      <y>162</y>
+      <w>99</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;140.0</additional_attributes>
+    <additional_attributes>10.0;10.0;90.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>872</x>
-      <y>152</y>
-      <w>56</w>
-      <h>136</h>
+      <x>810</x>
+      <y>153</y>
+      <w>54</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>50.0;10.0;10.0;150.0</additional_attributes>
+    <additional_attributes>40.0;10.0;10.0;80.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1272</x>
-      <y>376</y>
-      <w>168</w>
-      <h>104</h>
+      <x>1260</x>
+      <y>333</y>
+      <w>189</w>
+      <h>72</h>
     </coordinates>
-    <panel_attributes>QuestionResponseInterval
+    <panel_attributes>IntervalAnswer
 --
 -number: int
 -
@@ -410,23 +393,23 @@ lt=&lt;.</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1304</x>
-      <y>320</y>
-      <w>88</w>
-      <h>72</h>
+      <x>1242</x>
+      <y>261</y>
+      <w>99</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;70.0</additional_attributes>
+    <additional_attributes>10.0;10.0;90.0;80.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>912</x>
-      <y>376</y>
-      <w>168</w>
-      <h>104</h>
+      <x>864</x>
+      <y>333</y>
+      <w>189</w>
+      <h>72</h>
     </coordinates>
-    <panel_attributes>QuestionResponseMulti
+    <panel_attributes>MultipleAnswer
 --
 -choiceId : string
 -
@@ -436,23 +419,196 @@ lt=&lt;.</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>904</x>
-      <y>312</y>
-      <w>56</w>
-      <h>80</h>
+      <x>828</x>
+      <y>270</y>
+      <w>90</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;50.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;80.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>488</x>
-      <y>136</y>
-      <w>64</w>
-      <h>560</h>
+      <x>468</x>
+      <y>153</y>
+      <w>27</w>
+      <h>549</h>
     </coordinates>
     <panel_attributes>lt=.&gt;&gt;</panel_attributes>
-    <additional_attributes>60.0;680.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;590.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1260</x>
+      <y>441</y>
+      <w>189</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>IntervalAnswerDAO
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1062</x>
+      <y>441</y>
+      <w>189</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>IntervalAnswerDAO
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>864</x>
+      <y>441</y>
+      <w>189</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>IntervalAnswerDAO
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>666</x>
+      <y>441</y>
+      <w>189</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>IntervalAnswerDAO
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1233</x>
+      <y>459</y>
+      <w>126</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;60.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1332</x>
+      <y>396</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>972</x>
+      <y>459</y>
+      <w>54</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>40.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>765</x>
+      <y>459</y>
+      <w>90</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>80.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1107</x>
+      <y>459</y>
+      <w>63</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;60.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>756</x>
+      <y>396</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1143</x>
+      <y>396</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>945</x>
+      <y>396</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>846</x>
+      <y>162</y>
+      <w>36</w>
+      <h>369</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>20.0;10.0;10.0;390.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>315</x>
+      <y>621</y>
+      <w>54</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;70.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>738</x>
+      <y>630</y>
+      <w>117</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;60.0;110.0;10.0</additional_attributes>
   </element>
 </diagram>
