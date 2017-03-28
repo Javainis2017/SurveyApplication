@@ -18,6 +18,8 @@ Projekto parsisiuntimas:
 - Paspausti *Check out from version control* > *Git*
 - Į *Git repository URL* įvesti https://javainis.visualstudio.com/_git/SurveyApplication
 - Prisijunkite su savo Microsoft paskyra
+- IntelliJ IDEA: Databases: URL to connect to H2 database (user: sa, password: sa)
+- jdbc:h2:~/h2database/SurveyDB;AUTO_SERVER=TRUE
 
 #Build and Test
 TODO: Describe and show how to build your code and run the tests. 
