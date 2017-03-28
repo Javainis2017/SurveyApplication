@@ -1,3 +1,8 @@
+# IntelliJ IDEA setting files
+.idea/
+*.iml
+target/
+
 *.class
 
 # Mobile Tools for Java (J2ME)
