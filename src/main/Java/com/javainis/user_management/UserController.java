@@ -8,9 +8,6 @@ import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
-/**
- * Created by Laurynas on 2017-03-30.
- */
 @Model
 public class UserController
 {

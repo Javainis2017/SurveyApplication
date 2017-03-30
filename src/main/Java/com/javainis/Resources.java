@@ -9,9 +9,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.SynchronizationType;
 
-/**
- * Created by Laurynas on 2017-03-30.
- */
 @ApplicationScoped
 public class Resources
 {

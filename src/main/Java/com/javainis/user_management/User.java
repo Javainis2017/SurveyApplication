@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Created by Laurynas on 2017-03-30.
+ * User entity
  */
 @Entity
 @Table(name = "app_user")

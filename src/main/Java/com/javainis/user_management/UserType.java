@@ -6,9 +6,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
-/**
- * Created by Laurynas on 2017-03-30.
- */
 @Entity
 @Table(name = "user_type")
 @Getter
