@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xml:lang="en" lang="en">
+<head>
+    <title>User Login</title>
+</head>
+<body>
+    <h1>User Login</h1>
+    <h2>Login existing user</h2>
+    <h:form>
+        <table>
+            <tr>
+                <td>
+                    <h:panelGrid columns="3">
+                        <p:outputLabel for="email" value="User E-mail"/>
+                        <p:inputText id="email" value="#{userController.user.email}"/>
+                        <p:message for="email"/>
+
+                        <p:outputLabel for="password" value="Password"/>
+                        <p:inputText id="password" value="#{userController.user.passwordHash}"/>
+                        <p:message for="password"/>
+                    </h:panelGrid>
+                </td>
+            </tr>
+        </table>
+        <p:commandButton value="Log in"
+                         actionListener="#{userController.login()}"
+                         ajax="false"/>
+        <p:messages globalOnly="true"/>
+    </h:form>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xml:lang="en" lang="en">
+<head>
+    <title>User Registration</title>
+</head>
+<body>
+    <h1>User Registration</h1>
+    <h2>Create New User</h2>
+    <h:form>
+        <table>
+            <tr>
+                <td>
+                    <h:panelGrid columns="3">
+                        <p:outputLabel for="email" value="User E-mail"/>
+                        <p:inputText id="email" value="#{userController.user.email}"/>
+                        <p:message for="email"/>
+
+                        <p:outputLabel for="firstName" value="First name"/>
+                        <p:inputText id="firstName" value="#{userController.user.firstName}"/>
+                        <p:message for="firstName"/>
+
+                        <p:outputLabel for="lastName" value="Last name"/>
+                        <p:inputText id="lastName" value="#{userController.user.lastName}"/>
+                        <p:message for="lastName"/>
+
+                        <p:outputLabel for="password" value="Password"/>
+                        <p:inputText id="password" value="#{userController.user.passwordHash}"/>
+                        <p:message for="password"/>
+                    </h:panelGrid>
+                </td>
+            </tr>
+        </table>
+        <p:commandButton value="Create new user"
+                         actionListener="#{userController.register()}"
+                         ajax="false"/>
+        <p:messages globalOnly="true"/>
+    </h:form>
+</body>
+</html>
