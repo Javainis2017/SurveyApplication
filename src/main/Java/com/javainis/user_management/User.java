@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 @Table(name = "app_user")
 @NamedQueries({
         @NamedQuery(name = "User.findUser", query = "SELECT u FROM User u WHERE u.email = :email AND u.passwordHash = :passwordHash"),
+        @NamedQuery(name = "User.findEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
 })
 @Getter
 @Setter

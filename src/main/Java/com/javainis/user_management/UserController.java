@@ -7,6 +7,7 @@ import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Model
 public class UserController
@@ -14,8 +15,14 @@ public class UserController
     @Getter
     private User user = new User();
 
+    @Getter
+    private Whitelist whitelist = new Whitelist();
+
     @Inject
     private UserDAO userDAO;
+
+    @Inject
+    private WhitelistDAO whitelistDAO;
 
     @Inject
     private UserTypeDAO typeDAO;
@@ -40,10 +47,47 @@ public class UserController
     public void register()
     {
         //Reikes pakeisti
+        //Kolkas nera skirtingu vartotoju tipu
         UserType type = new UserType();
         type.setName("User");
         user.setUserTypeID(type);
-        typeDAO.create(type);
-        userDAO.create(user);
+        //Ar toks email jau uzregistruotas
+        if (userDAO.emailIsRegistered(user.getEmail()))
+        {
+            Messages.addGlobalWarn("This email is already registered");
+
+        }
+        //Ar email yra whitelist sarase
+        else if (!whitelistDAO.findEmail(user.getEmail()))
+        {
+            Messages.addGlobalWarn("This email is not included in whitelist");
+        }
+        else
+        {
+            typeDAO.create(type);
+            userDAO.create(user);
+            Messages.addGlobalWarn("Success");
+        }
     }
+
+    @Transactional
+    public void whitelistEmail()
+    {
+        if (!whitelistDAO.findEmail(whitelist.getEmail()))
+        {
+            whitelistDAO.create(whitelist);
+            Messages.addGlobalWarn("Success");
+        }
+        else
+        {
+            Messages.addGlobalWarn("Email is already in whitelist");
+        }
+    }
+
+    public List<Whitelist> getAllWhitelist()
+    {
+        return whitelistDAO.getAll();
+    }
+
+
 }
