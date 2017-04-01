@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 @Table(name = "app_user")
 @NamedQueries({
         @NamedQuery(name = "User.findUser", query = "SELECT u FROM User u WHERE u.email = :email AND u.passwordHash = :passwordHash"),
+        @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
         @NamedQuery(name = "User.findEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
 })
 @Getter
@@ -56,6 +57,7 @@ public class User
         System.out.println("HASHING PASSWORD");
         passwordHash = password;
         System.out.println("COMPLETED");
-
     }
+
+
 }
