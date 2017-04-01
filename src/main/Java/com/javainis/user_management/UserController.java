@@ -31,15 +31,26 @@ public class UserController
     public void login()
     {
         try{
-
             User loggedIn = userDAO.login(user.getEmail(), user.getPasswordHash());
             Messages.addGlobalWarn("Success");
             //Daryti kazka su prisijungusiu vartotoju
+            //SessionScope
         }
         catch (NoResultException ex)
         {
             //Nerado tokio vartotojo
             Messages.addGlobalWarn("Incorrect email or password");
+        }
+    }
+
+    @Transactional
+    public void logout(){ //Ar Boolean returninti?
+        try{
+            // uzbaigti session scope
+
+        }
+        catch (Exception ex){
+            //kas blogai logout gali nutikti?
         }
     }
 

@@ -1,9 +1,12 @@
 package com.javainis.user_management;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import java.util.List;
 
 @ApplicationScoped
 public class UserDAO
@@ -21,6 +24,26 @@ public class UserDAO
                     .setParameter("email", email)
                     .setParameter("passwordHash", pwHash)
                     .getSingleResult();
+    }
+
+    public List<User> getAllUsers()
+    {
+        return manager.createNamedQuery("User.findAll", User.class).getResultList();
+    }
+
+    public Boolean changeUserType(User user, int type)
+    {
+        try{
+            //reikia userType
+            //Update sakini irgi named query laikyti?
+
+
+            return true;
+        }
+        catch (Exception ex){ //kokie exception?
+
+            return false;
+        }
     }
 
     public Boolean emailIsRegistered(String email)
