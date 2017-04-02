@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,7 +28,7 @@ public class Survey {
 
     @Column(name = "name")
     @Size(max = 80)
-    private String name;
+    private String title;
 
     @Column(name = "description")
     @Size(max = 500)
@@ -47,5 +48,6 @@ public class Survey {
 
     /*TODO questions
     @OneToMany(mappedBy = "survey")
-    private List<Question> questions;*/
+    private List<Question> questions = new ArrayList<>();
+    */
 }
