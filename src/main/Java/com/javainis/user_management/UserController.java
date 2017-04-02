@@ -33,6 +33,7 @@ public class UserController
         try{
             User loggedIn = userDAO.login(user.getEmail(), user.getPasswordHash());
             Messages.addGlobalWarn("Success");
+
             //Daryti kazka su prisijungusiu vartotoju
             //SessionScope
         }
@@ -47,6 +48,7 @@ public class UserController
     public void logout(){ //Ar Boolean returninti?
         try{
             // uzbaigti session scope
+            //
 
         }
         catch (Exception ex){
@@ -59,8 +61,10 @@ public class UserController
     {
         //Reikes pakeisti
         //Kolkas nera skirtingu vartotoju tipu
-        UserType type = new UserType();
-        type.setName("User");
+
+        /*UserType type = new UserType();
+        type.setName("User");*/
+        UserType type = typeDAO.getUserTypeById(2); // 1-Admin, 2-User
         user.setUserTypeID(type);
         //Ar toks email jau uzregistruotas
         if (userDAO.emailIsRegistered(user.getEmail()))
@@ -75,7 +79,7 @@ public class UserController
         }
         else
         {
-            typeDAO.create(type);
+            // typeDAO.create(type);
             userDAO.create(user);
             Messages.addGlobalWarn("Success");
         }
