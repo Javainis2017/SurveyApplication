@@ -20,6 +20,8 @@ Projekto parsisiuntimas:
 - Prisijunkite su savo Microsoft paskyra
 - IntelliJ IDEA: Databases: URL to connect to H2 database (user: sa, password: sa)
 - jdbc:h2:~/h2database/SurveyDB;AUTO_SERVER=TRUE
+- add tomee server and add SurveyApplication:war exploded artifact.
+- try building, if you fail open maven projects refresh and edit your added artifact by adding maven lib's.
 
 #Build and Test
 TODO: Describe and show how to build your code and run the tests. 
