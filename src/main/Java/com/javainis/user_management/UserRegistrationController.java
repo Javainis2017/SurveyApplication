@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 /**
  * Created by Ignas on 2017-04-03.
  */
-@Model
 @Named
 @RequestScoped //Request užtenka?
 public class UserRegistrationController {

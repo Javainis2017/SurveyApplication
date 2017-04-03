@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
-@Model
 @Named
 @SessionScoped
 public class UserController implements Serializable
