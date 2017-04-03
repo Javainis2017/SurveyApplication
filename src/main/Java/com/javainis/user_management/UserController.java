@@ -3,14 +3,19 @@ package com.javainis.user_management;
 import lombok.Getter;
 import org.omnifaces.util.Messages;
 
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
+import java.io.Serializable;
 import java.util.List;
 
 @Model
-public class UserController
+@Named
+@SessionScoped
+public class UserController implements Serializable
 {
     @Getter
     private User user = new User();
@@ -22,20 +27,20 @@ public class UserController
     private UserDAO userDAO;
 
     @Inject
-    private WhitelistDAO whitelistDAO;
-
-    @Inject
     private UserTypeDAO typeDAO;
 
+    @Inject
+    private WhitelistDAO whitelistDAO; //admin operacijoms gali prireikti
+
     @Transactional
-    public void login()
+    public void login() //Boolean grazinti??
     {
         try{
             User loggedIn = userDAO.login(user.getEmail(), user.getPasswordHash());
+
             Messages.addGlobalWarn("Success");
 
             //Daryti kazka su prisijungusiu vartotoju
-            //SessionScope
         }
         catch (NoResultException ex)
         {
@@ -45,43 +50,14 @@ public class UserController
     }
 
     @Transactional
-    public void logout(){ //Ar Boolean returninti?
+    public void logout(){ //Boolean returninti?
         try{
-            // uzbaigti session scope
-            //
+            // uzbaigti session scope: session.invalidate(); ???
+
 
         }
         catch (Exception ex){
             //kas blogai logout gali nutikti?
-        }
-    }
-
-    @Transactional
-    public void register()
-    {
-        //Reikes pakeisti
-        //Kolkas nera skirtingu vartotoju tipu
-
-        /*UserType type = new UserType();
-        type.setName("User");*/
-        UserType type = typeDAO.getUserTypeById(2); // 1-Admin, 2-User
-        user.setUserTypeID(type);
-        //Ar toks email jau uzregistruotas
-        if (userDAO.emailIsRegistered(user.getEmail()))
-        {
-            Messages.addGlobalWarn("This email is already registered");
-
-        }
-        //Ar email yra whitelist sarase
-        else if (!whitelistDAO.findEmail(user.getEmail()))
-        {
-            Messages.addGlobalWarn("This email is not included in whitelist");
-        }
-        else
-        {
-            // typeDAO.create(type);
-            userDAO.create(user);
-            Messages.addGlobalWarn("Success");
         }
     }
 
@@ -104,5 +80,20 @@ public class UserController
         return whitelistDAO.getAll();
     }
 
+    public Boolean addToWhiteList(String email){
+        if (!checkAdminRights()) return false;
+        Whitelist record = new Whitelist();
+        record.setEmail(email);
+        whitelistDAO.create(record); // galetu ne void grazinti
+        return true;
+    }
+
+    public Boolean removeFromWhitelist(String email){
+         return checkAdminRights() && whitelistDAO.removeFromWhitelist(email) != 0;
+    }
+
+    private Boolean checkAdminRights(){
+        return user.getUserTypeID().getId() == 1; // 1 - Admin, 2 - User
+    }
 
 }

@@ -21,8 +21,6 @@ import javax.validation.constraints.Size;
 })
 @Getter
 @Setter
-@Named
-@SessionScoped
 public class User
 {
     @Id
