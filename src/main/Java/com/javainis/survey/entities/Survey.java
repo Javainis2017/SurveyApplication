@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "survey")
@@ -44,8 +46,7 @@ public class Survey {
     @Column(name = "opt_lock_version")
     private Integer optLockVersion;
 
-    /*TODO questions
     @OneToMany(mappedBy = "survey")
     private List<Question> questions = new ArrayList<>();
-    */
+
 }
