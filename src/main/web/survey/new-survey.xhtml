@@ -30,7 +30,7 @@
         <ui:remove>
         <h:panelGroup rendered="#{not empty newSurveyController.survey.questions}">
             <ui:repeat value="#{newSurveyController.survey.questions}" var="question">
-                <ui:include src="/WEB-INF/questions/#{question.type}-show.xhtml">
+                <ui:include src="/WEB-INF/questions/#{question.text}-show.xhtml">
                     <ui:param name="question" value="question"/>
                 </ui:include>
             </ui:repeat>

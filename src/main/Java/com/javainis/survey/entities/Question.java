@@ -26,6 +26,10 @@ public abstract class Question {
     @ManyToOne
     private QuestionType type;*/
 
+    @Version
+    @Column(name = "opt_lock_version")
+    private Integer optLockVersion;
+
     @JoinColumn(name = "survey_id", referencedColumnName = "id")
     @ManyToOne
     private Survey survey;
