@@ -1,6 +1,7 @@
 package com.javainis.survey.controllers;
 
 import com.javainis.survey.dao.SurveyDAO;
+import com.javainis.survey.entities.Question;
 import com.javainis.survey.entities.Survey;
 import lombok.Getter;
 
@@ -29,6 +30,9 @@ public class NewSurveyController implements Serializable{
     @Getter
     private Survey survey = new Survey();
 
+    @Getter
+    private String newQuestionType = "text";
+
     /* Naujai kuriamo klausimo tipas
     @Getter
     @Setter
@@ -42,15 +46,16 @@ public class NewSurveyController implements Serializable{
         return questionTypeDAO.getAll();
     }*/
 
-    /*public void addQuestion(Question question){
+    public void addQuestion(Question question){
         question.setSurvey(survey);
         survey.getQuestions().add(question);
+        newQuestionType = "text2";
     }
 
     public void removeQuestion(Question question){
         question.setSurvey(null);
         survey.getQuestions().remove(question);
-    }*/
+    }
 
     public void createSurvey(){
         /* Generate unique URL*/
@@ -61,5 +66,6 @@ public class NewSurveyController implements Serializable{
         * currentUser.getSurveys().add(survey); */
 
         /* surveyDAO.create(survey);*/
+        System.out.println(survey.getQuestions().size());
     }
 }

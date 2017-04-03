@@ -1,0 +1,21 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <h3>New free text question</h3>
+    <p:panelGrid id="newTextQuestionGrid" columns="3">
+        <p:outputLabel for="text" value="Question text"/>
+        <p:inputTextarea id="text" required="true" value="#{textQuestionController.question.text}"
+                         maxlength="300" rows="4" cols="80"
+                         placeholder="Question text"/>
+        <p:message for="text"/>
+
+        <p:outputLabel for="required" value="Required"/>
+        <p:selectBooleanCheckbox id="required" value="#{textQuestionController.question.required}"/>
+
+        <p:commandButton value="Add question"
+                         action="#{newSurveyController.addQuestion(textQuestionController.question)}"/>
+    </p:panelGrid>
+</ui:composition>

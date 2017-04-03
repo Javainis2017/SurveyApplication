@@ -38,8 +38,8 @@
         </ui:remove>
 
         <!-- Create new question and add choices -->
-        <ui:remove><ui:include src="/WEB-INF/questions/#{newSurveyController.newQuestionType}-new.xhtml"/></ui:remove>
-        <ui:include src="/WEB-INF/questions/text-show.xhtml"/>
+        <ui:include src="/WEB-INF/questions/#{newSurveyController.newQuestionType}-new.xhtml"/>
+
 
         <!-- Save survey and show url in new page-->
         <p:commandButton value="Create survey"
