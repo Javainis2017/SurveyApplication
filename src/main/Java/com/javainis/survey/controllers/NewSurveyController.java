@@ -1,5 +1,7 @@
-package com.javainis.survey;
+package com.javainis.survey.controllers;
 
+import com.javainis.survey.dao.SurveyDAO;
+import com.javainis.survey.entities.Survey;
 import lombok.Getter;
 
 import javax.faces.view.ViewScoped;

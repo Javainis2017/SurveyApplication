@@ -1,4 +1,6 @@
-package com.javainis.survey;
+package com.javainis.survey.dao;
+
+import com.javainis.survey.entities.Survey;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

@@ -1,6 +1,6 @@
-package com.javainis.user_management;
+package com.javainis.user_management.dao;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.javainis.user_management.entities.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

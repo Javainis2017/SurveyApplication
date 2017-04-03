@@ -1,4 +1,4 @@
-package com.javainis.user_management;
+package com.javainis.user_management.entities;
 
 import lombok.Getter;
 import lombok.Setter;

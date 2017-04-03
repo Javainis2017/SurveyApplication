@@ -1,4 +1,6 @@
-package com.javainis.user_management;
+package com.javainis.user_management.dao;
+
+import com.javainis.user_management.entities.Whitelist;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

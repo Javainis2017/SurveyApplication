@@ -1,10 +1,11 @@
-package com.javainis.survey;
+package com.javainis.survey.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public abstract class Question {
+class Choice {
     @Id
     private int id;
+    private String text;
 }

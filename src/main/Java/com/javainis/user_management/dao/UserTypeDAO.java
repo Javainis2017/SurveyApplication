@@ -1,9 +1,10 @@
-package com.javainis.user_management;
+package com.javainis.user_management.dao;
+
+import com.javainis.user_management.entities.UserType;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 
 @ApplicationScoped
 public class UserTypeDAO

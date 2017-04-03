@@ -1,10 +1,8 @@
-package com.javainis.user_management;
+package com.javainis.user_management.entities;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.faces.bean.SessionScoped;
-import javax.inject.Named;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

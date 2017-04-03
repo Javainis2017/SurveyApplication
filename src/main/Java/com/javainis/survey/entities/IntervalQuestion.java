@@ -1,4 +1,4 @@
-package com.javainis.survey;
+package com.javainis.survey.entities;
 
 import javax.persistence.Entity;
 

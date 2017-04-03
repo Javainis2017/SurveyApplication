@@ -1,10 +1,15 @@
-package com.javainis.user_management;
+package com.javainis.user_management.controllers;
 
+import com.javainis.user_management.dao.UserDAO;
+import com.javainis.user_management.dao.UserTypeDAO;
+import com.javainis.user_management.entities.Whitelist;
+import com.javainis.user_management.dao.WhitelistDAO;
+import com.javainis.user_management.entities.User;
+import com.javainis.user_management.entities.UserType;
 import lombok.Getter;
 import org.omnifaces.util.Messages;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
