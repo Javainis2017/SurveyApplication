@@ -18,8 +18,11 @@ Projekto parsisiuntimas:
 - Paspausti *Check out from version control* > *Git*
 - Į *Git repository URL* įvesti https://javainis.visualstudio.com/_git/SurveyApplication
 - Prisijunkite su savo Microsoft paskyra
-- IntelliJ IDEA: Databases: URL to connect to H2 database (user: sa, password: sa)
-- jdbc:h2:~/h2database/SurveyDB;AUTO_SERVER=TRUE
+- PgAdmin: Create database, pavadinimas: SurveyDB
+- Įvykdyti SQL iš projekto: resources/postgresql/createdb.sql
+- IntelliJ IDEA: Databases: Datasource -> PostgreSQL
+- Database: SurveyDB
+- User: postgres, password: admin
 - add tomee server and add SurveyApplication:war exploded artifact.
 - try building, if you fail open maven projects refresh and edit your added artifact by adding maven lib's.
 
