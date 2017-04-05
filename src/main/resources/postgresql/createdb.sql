@@ -94,3 +94,5 @@ CREATE TABLE IF NOT EXISTS answer
 	FOREIGN KEY (question_id) REFERENCES question(id),
 	FOREIGN KEY (choice_id) REFERENCES choice(id)
 );
+
+INSERT INTO user_type (NAME) VALUES ('Admin'), ('User');
