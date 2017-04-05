@@ -4,6 +4,7 @@
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-    <h3>Question added</h3>
-
+    <h3>New question</h3>
+    <p:commandButton action="#{newSurveyController.createQuestion('text')}"
+                     value="Create question"/><br/>
 </ui:composition>

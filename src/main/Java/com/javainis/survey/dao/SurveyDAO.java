@@ -24,10 +24,10 @@ public class SurveyDAO {
     public Survey findById(Long id){
         return manager.createNamedQuery("Survey.findById", Survey.class).getSingleResult();
     }
-    public List<Survey> findByAuthorId(Long id){
-        return manager.createNamedQuery("Survey.findByAuthorId", Survey.class).setParameter("authorId", id).getResultList();
+    public List<Survey> findByAuthorId(Long authorId){
+        return manager.createNamedQuery("Survey.findByAuthorId", Survey.class).setParameter("authorId", authorId).getResultList();
     }
-    public List<Survey> findByUrl(String url){
-        return manager.createNamedQuery("Survey.findByUrl", Survey.class).setParameter("url", url).getResultList();
+    public Survey findByUrl(String url){
+        return manager.createNamedQuery("Survey.findByUrl", Survey.class).setParameter("url", url).getSingleResult();
     }
 }

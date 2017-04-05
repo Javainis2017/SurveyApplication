@@ -7,6 +7,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xml:lang="en" lang="en">
 <head>
     <title>New survey</title>
@@ -27,25 +28,38 @@
         </p:panelGrid>
 
         <!-- Show already created survey - questions and choices -->
-        <ui:remove>
-        <h:panelGroup rendered="#{not empty newSurveyController.survey.questions}">
+        <c:if test="#{not empty newSurveyController.survey.questions}">
+            <h3>Questions</h3>
             <ui:repeat value="#{newSurveyController.survey.questions}" var="question">
-                <ui:include src="/WEB-INF/questions/#{question.text}-show.xhtml">
-                    <ui:param name="question" value="question"/>
+                <ui:remove>
+                    <ui:include src="/WEB-INF/questions/#{question.type}-show.xhtml">
+                        <ui:param name="question" value="#{question}"/>
+                    </ui:include>
+                </ui:remove>
+                <!-- Laikinai, bandymui-->
+                <ui:include src="/WEB-INF/questions/text-show.xhtml">
+                    <ui:param name="question" value="#{question}"/>
                 </ui:include>
             </ui:repeat>
-        </h:panelGroup>
-        </ui:remove>
-
-        <!-- Create new question and add choices -->
-        <ui:include src="/WEB-INF/questions/#{newSurveyController.newQuestionType}-new.xhtml"/>
-
+        </c:if>
 
         <!-- Save survey and show url in new page-->
         <p:commandButton value="Create survey"
                          actionListener="#{newSurveyController.createSurvey}"
                          ajax="true"/>
         <p:messages globalOnly="true"/>
+
+    </h:form>
+    <h:form>
+        <!-- New question -->
+        <c:if test="#{newSurveyController.newQuestion}">
+            <!-- Choose new question type -->
+            <ui:include src="/WEB-INF/questions/new-question.xhtml"/>
+        </c:if>
+        <c:if test="#{not newSurveyController.newQuestion}">
+            <!-- Create new question and add choices -->
+            <ui:include src="/WEB-INF/questions/#{newSurveyController.newQuestionType}-new.xhtml"/>
+        </c:if>
     </h:form>
 </body>
 </html>

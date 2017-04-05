@@ -31,8 +31,10 @@ public class NewSurveyController implements Serializable{
     private Survey survey = new Survey();
 
     @Getter
-    private String newQuestionType = "text";
+    private String newQuestionType;
 
+    @Getter
+    private Boolean newQuestion = true;
     /* Naujai kuriamo klausimo tipas
     @Getter
     @Setter
@@ -46,10 +48,15 @@ public class NewSurveyController implements Serializable{
         return questionTypeDAO.getAll();
     }*/
 
+    public void createQuestion(String type){
+        newQuestion = false;
+        newQuestionType = type;
+    }
+
     public void addQuestion(Question question){
         question.setSurvey(survey);
         survey.getQuestions().add(question);
-        newQuestionType = "text2";
+        newQuestion = true;
     }
 
     public void removeQuestion(Question question){
@@ -65,6 +72,7 @@ public class NewSurveyController implements Serializable{
         * survey.setAuthor(currentUser);
         * currentUser.getSurveys().add(survey); */
 
+        /* Persist questions/cascade */
         /* surveyDAO.create(survey);*/
         System.out.println(survey.getQuestions().size());
     }
