@@ -7,18 +7,18 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xml:lang="en" lang="en">
-<head>
+<h:head>
     <title/>
-</head>
-<body>
+</h:head>
+<h:body>
 <h3>Whitelist</h3>
 <h:form>
-    <p:fieldset legend="All whitelisted emails" toggleable="true" style="width: 50%">
+    <p:fieldset legend="All whitelisted emails" toggleable="true" collapsed="true"  style="width: 50%">
         <p:dataTable id="whitelistTable" var="whitelist" value="#{adminWhitelistController.getAllWhitelist()}">
             <p:column headerText="Email">
                 <h:outputText value="#{whitelist.email}" />
             </p:column>
-            <p:column style="width:32px;text-align: center">
+            <p:column style="width:85px;text-align: center">
                 <p:commandButton title="Remove"
                                  actionListener="#{adminWhitelistController.removeFromWhitelist(whitelist.email)}"
                                  ajax="false" >
@@ -43,5 +43,5 @@
                      ajax="false"/>
     <p:messages globalOnly="true"/>
 </h:form>
-</body>
+</h:body>
 </html>

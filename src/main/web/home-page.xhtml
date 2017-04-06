@@ -6,10 +6,10 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core" xml:lang="en" lang="en">
-<head>
+<h:head>
     <title>Home</title>
-</head>
-<body>
+</h:head>
+<h:body>
 <!-- Atvaizduoti kokią vartotojo informaciją bei operacijas-->
 <h1>Welcome, #{userController.getUser().getFirstName()} #{userController.getUser().getLastName()}</h1>
 <h:form>
@@ -20,38 +20,38 @@
     <!-- Atvaizduoti administravimo funkcijas-->
     <h:panelGroup rendered="#{userController.getUser().getUserTypeID().getId() == 1}">
         <h2>User administration</h2>
-        <h3>Whitelist</h3>
-        <p:fieldset legend="All whitelisted emails" toggleable="true" style="width: 50%">
+        <p:fieldset legend="Whitelist" toggleable="true" collapsed="true" style="width: 50%">
             <p:dataTable id="whitelistTable" var="whitelist" value="#{adminWhitelistController.getAllWhitelist()}">
                 <p:column headerText="Email">
                     <h:outputText value="#{whitelist.email}" />
                 </p:column>
-                <p:column style="width:32px;text-align: center">
+                <p:column style="width:85px;text-align: center">
                     <p:commandButton title="Remove"
                                      actionListener="#{adminWhitelistController.removeFromWhitelist(whitelist.email)}"
                                      ajax="false" >
                     </p:commandButton>
                 </p:column>
             </p:dataTable>
+            <p>Whitelist new email</p>
+            <table>
+                <tr>
+                    <td>
+                        <h:panelGrid columns="3">
+                            <p:outputLabel for="email" value="E-mail"/>
+                            <p:inputText id="email" value="#{adminWhitelistController.whitelist.email}"/>
+                            <p:message for="email"/>
+                        </h:panelGrid>
+                    </td>
+                </tr>
+            </table>
+            <p:commandButton value="Add to whitelist"
+                             actionListener="#{adminWhitelistController.whitelistEmail()}"
+                             ajax="false"/>
+            <p:messages globalOnly="true"/>
         </p:fieldset>
         <p>Whitelist new email</p>
-        <table>
-            <tr>
-                <td>
-                    <h:panelGrid columns="3">
-                        <p:outputLabel for="email" value="E-mail"/>
-                        <p:inputText id="email" value="#{adminWhitelistController.whitelist.email}"/>
-                        <p:message for="email"/>
-                    </h:panelGrid>
-                </td>
-            </tr>
-        </table>
-        <p:commandButton value="Add to whitelist"
-                         actionListener="#{adminWhitelistController.whitelistEmail()}"
-                         ajax="false"/>
-        <p:messages globalOnly="true"/>
         <h3>User List</h3>
-        <p:fieldset legend="All Users" toggleable="true" style="width: 50%">
+        <p:fieldset legend="All Users" toggleable="true" collapsed="true" style="width: 50%">
             <p:dataTable value="#{adminBlockController.allUser}" var="user">
                 <p:column headerText="Email">
                     <h:outputText value="#{user.email}" />
@@ -84,5 +84,5 @@
         </p:fieldset>
     </h:panelGroup>
 </h:form>
-</body>
+</h:body>
 </html>
