@@ -36,19 +36,20 @@ public class UserController implements Serializable
     private WhitelistDAO whitelistDAO; //admin operacijoms gali prireikti
 
     @Transactional
-    public void login() //Boolean grazinti??
+    public String login() //Boolean grazinti??
     {
         try{
-            User loggedIn = userDAO.login(user.getEmail(), user.getPasswordHash());
-
+            user = userDAO.login(user.getEmail(), user.getPasswordHash());
             Messages.addGlobalWarn("Success");
+            // ikelti vartotoja i home page
 
-            //Daryti kazka su prisijungusiu vartotoju
+            return "home-page?faces-redirect=true";
         }
         catch (NoResultException ex)
         {
             //Nerado tokio vartotojo
             Messages.addGlobalWarn("Incorrect email or password");
+            return "login-page?faces-redirect=true";
         }
     }
 
@@ -56,7 +57,7 @@ public class UserController implements Serializable
     public void logout(){ //Boolean returninti?
         try{
             // uzbaigti session scope: session.invalidate(); ???
-
+            user = null; //?
 
         }
         catch (Exception ex){

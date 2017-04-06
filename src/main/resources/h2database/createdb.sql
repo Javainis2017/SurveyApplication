@@ -116,3 +116,5 @@ ALTER TABLE survey ADD IF NOT EXISTS opt_lock_version INTEGER;
 ALTER TABLE survey_result ADD IF NOT EXISTS opt_lock_version INTEGER;
 ALTER TABLE user_type ADD IF NOT EXISTS opt_lock_version INTEGER;
 ALTER TABLE whitelist ADD IF NOT EXISTS opt_lock_version INTEGER;
+
+INSERT INTO USER_TYPE (NAME) VALUES ('Admin'), ('User');
