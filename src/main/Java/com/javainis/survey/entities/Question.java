@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 public abstract class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @Size(max = 300)
@@ -21,10 +22,9 @@ public abstract class Question {
     @Column(name = "required")
     private Boolean required;
 
-    /*TODO questionType
-    @JoinColumn(name = "question_type", referencedColumnName = "id")
+    @JoinColumn(name = "question_type_id", referencedColumnName = "id")
     @ManyToOne
-    private QuestionType type;*/
+    private QuestionType type;
 
     @Version
     @Column(name = "opt_lock_version")

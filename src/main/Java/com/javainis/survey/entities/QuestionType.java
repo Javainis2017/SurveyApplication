@@ -4,23 +4,24 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
+@Entity(name = "question_type")
 
 @Getter
 @Setter
-class Choice {
+class QuestionType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "text")
-    private String text;
+    @OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
+    private List<Question> questions = new ArrayList<>();
 
-    @JoinColumn(name = "question_id", referencedColumnName = "id")
-    @ManyToOne
-    private Question question;
+    @Column(name = "name")
+    private String name;
 
     @Version
     @Column(name = "opt_lock_version")
