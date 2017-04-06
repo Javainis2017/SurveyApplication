@@ -37,7 +37,7 @@ public class UserRegistrationController {
     private UserTypeDAO typeDAO;
 
     @Transactional
-    public void register()
+    public String register()
     {
 
         /*UserType type = new UserType();
@@ -45,21 +45,24 @@ public class UserRegistrationController {
         UserType type = typeDAO.getUserTypeById(2); // 1-Admin, 2-User
         user.setUserTypeID(type);
         //Ar toks email jau uzregistruotas
+        Messages.addGlobalInfo(user.getEmail());
         if (userDAO.emailIsRegistered(user.getEmail()))
         {
             Messages.addGlobalWarn("This email is already registered");
-
+            return null;
         }
         //Ar email yra whitelist sarase
         else if (!whitelistDAO.findEmail(user.getEmail()))
         {
             Messages.addGlobalWarn("This email is not included in whitelist");
+            return null;
         }
         else
         {
             // typeDAO.create(type); //tipas paimtas is db, nereikia dar prideti
             userDAO.create(user);
             Messages.addGlobalWarn("Success");
+            return "login-page?faces-redirect=true";
         }
     }
 

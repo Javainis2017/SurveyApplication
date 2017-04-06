@@ -18,26 +18,26 @@
                 <td>
                     <h:panelGrid columns="3">
                         <p:outputLabel for="email" value="User E-mail"/>
-                        <p:inputText type="email" id="email" value="#{userController.user.email}"/>
+                        <p:inputText type="email" id="email" value="#{userRegistrationController.user.email}"/>
                         <p:message for="email"/>
 
                         <p:outputLabel for="firstName" value="First name"/>
-                        <p:inputText id="firstName" value="#{userController.user.firstName}"/>
+                        <p:inputText id="firstName" value="#{userRegistrationController.user.firstName}"/>
                         <p:message for="firstName"/>
 
                         <p:outputLabel for="lastName" value="Last name"/>
-                        <p:inputText id="lastName" value="#{userController.user.lastName}"/>
+                        <p:inputText id="lastName" value="#{userRegistrationController.user.lastName}"/>
                         <p:message for="lastName"/>
 
                         <p:outputLabel for="password" value="Password"/>
-                        <p:inputText type="password" id="password" value="#{userController.user.passwordHash}"/>
+                        <p:inputText type="password" id="password" value="#{userRegistrationController.user.passwordHash}"/>
                         <p:message for="password"/>
                     </h:panelGrid>
                 </td>
             </tr>
         </table>
         <p:commandButton value="Create new user"
-                         actionListener="#{userRegistrationController.register()}"
+                         action="#{userRegistrationController.register()}"
                          ajax="false"/>
         <p:messages globalOnly="true"/>
     </h:form>

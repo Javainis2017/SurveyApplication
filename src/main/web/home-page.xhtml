@@ -13,19 +13,9 @@
 <!-- Atvaizduoti kokią vartotojo informaciją bei operacijas-->
 <h2>My Operations</h2>
 <h:form>
-    <p:panel id="panel" header="Add email to whitelist" style="margin-bottom:10px;">
-        <p:messages id="messages" />
-        <h:panelGrid columns="2" cellpadding="5">
-            <h:outputLabel for="email" value="Email:" />
-            <p:inputText id="email" required="true" />
-        </h:panelGrid>
-    </p:panel>
-
-    <p:commandButton value="Add"
-                     update="panel"
-                     actionListener="#{userController.addToWhiteList('javainis@javainis')}"
-                     ajax="false"><!-- Perduoti parametra su fparam?-->
-    </p:commandButton>
+    <h:panelGroup rendered="#{userController.user.userTypeID.getId() == 1}">
+        <p>I am admin</p>
+    </h:panelGroup>
 </h:form>
 </body>
 </html>
