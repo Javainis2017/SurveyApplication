@@ -49,9 +49,7 @@
                              ajax="false"/>
             <p:messages globalOnly="true"/>
         </p:fieldset>
-        <p>Whitelist new email</p>
-        <h3>User List</h3>
-        <p:fieldset legend="All Users" toggleable="true" collapsed="true" style="width: 50%">
+        <p:fieldset legend="User List" toggleable="true" collapsed="true" style="width: 50%">
             <p:dataTable value="#{adminBlockController.allUser}" var="user">
                 <p:column headerText="Email">
                     <h:outputText value="#{user.email}" />
