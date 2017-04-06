@@ -22,11 +22,13 @@ public class AdminBlockController {
     @Inject
     private UserController userController;
 
+    @Transactional
     public Boolean changeUserBlockStatus(String email, Boolean blocked){
         if (!checkAdminRights()) return false;
         return userController.getUserDAO().changeBlockStatus(email, blocked);
     }
 
+    @Transactional
     public List<User> getAllUser(){
         return userController.getUserDAO().getAllUsers();
     }

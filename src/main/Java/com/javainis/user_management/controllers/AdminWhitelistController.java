@@ -60,6 +60,7 @@ public class AdminWhitelistController{
         return true;
     }
 
+    @Transactional
     public Boolean removeFromWhitelist(String email){
         return checkAdminRights() && whitelistDAO.removeFromWhitelist(email) != 0;
     }

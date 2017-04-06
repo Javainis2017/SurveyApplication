@@ -60,12 +60,19 @@
                 <p:column headerText="Type">
                     <h:outputText value="#{user.userTypeID.name}" />
                 </p:column>
-                <p:column>
+                <p:column headerText="Change block status">
                     <!-- REIKES KEISTI (false)-->
                     <p:commandButton
                                      title="Change Block Type"
                                      actionListener="#{adminBlockController.changeUserBlockStatus(user.email, false)}"
                                      ajax="false" />
+                </p:column>
+                <p:column headerText="Change User type">
+                    <!-- REIKES KEISTI leisti pasirinkti usertype-->
+                    <p:commandButton
+                            title="Change User Type"
+                            actionListener="#{adminTypeController.changeUserType(user.email, 2)}"
+                            ajax="false" />
                 </p:column>
             </p:dataTable>
         </p:fieldset>

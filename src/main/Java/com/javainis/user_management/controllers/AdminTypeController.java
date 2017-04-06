@@ -28,8 +28,10 @@ public class AdminTypeController {
     @Inject
     private UserTypeDAO userTypeDAO;
 
-    public Boolean changeUserType(String email, int type){
+    @Transactional
+    public Boolean changeUserType(String email, long type){
         if (!checkAdminRights()) return false;
+
         return userController.getUserDAO().changeUserType(email, type);
     }
 

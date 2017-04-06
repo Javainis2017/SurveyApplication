@@ -32,7 +32,7 @@ public class UserDAO
         return manager.createNamedQuery("User.findAll", User.class).getResultList();
     }
 
-    public Boolean changeUserType(String email, int typeID)
+    public Boolean changeUserType(String email, long typeID)
     {
         try{
             User user = manager.createNamedQuery("User.findEmail", User.class)
