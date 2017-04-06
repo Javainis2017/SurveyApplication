@@ -95,4 +95,13 @@ CREATE TABLE IF NOT EXISTS answer
 	FOREIGN KEY (choice_id) REFERENCES choice(id)
 );
 
+CREATE TABLE IF NOT EXISTS expiration
+(
+	id											BIGSERIAL PRIMARY KEY,
+	token										BIGSERIAL,
+	expiration_date					DATE,
+	opt_lock_version 				INTEGER,
+	FOREIGN KEY (id) REFERENCES app_user (id)
+);
+
 INSERT INTO user_type (NAME) VALUES ('Admin'), ('User');
