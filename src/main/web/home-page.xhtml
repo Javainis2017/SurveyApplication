@@ -11,10 +11,16 @@
 </head>
 <body>
 <!-- Atvaizduoti kokią vartotojo informaciją bei operacijas-->
-<h2>My Operations</h2>
+<h1>Welcome, #{userController.getUser().getFirstName()} #{userController.getUser().getLastName()}</h1>
 <h:form>
-    <h:panelGroup rendered="#{userController.user.userTypeID.getId() == 1}">
-        <h3>Whitelist page</h3>
+    <h:commandLink actionListener="#{userController.logout()}" action="index">Log out</h:commandLink>
+    <!-- Atvaizduoti standartines funckijas-->
+    <h2>Survey creation</h2>
+    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Create survey</a><br/>
+    <!-- Atvaizduoti administravimo funkcijas-->
+    <h:panelGroup rendered="#{userController.getUser().getUserTypeID().getId() == 1}">
+        <h2>User administration</h2>
+        <h3>Whitelist</h3>
         <p:fieldset legend="All whitelisted emails" toggleable="true" style="width: 50%">
             <p:dataTable value="#{adminWhitelistController.getAllWhitelist()}" var="whitelist">
                 <p:column headerText="Email">
@@ -27,7 +33,7 @@
             <tr>
                 <td>
                     <h:panelGrid columns="3">
-                        <p:outputLabel for="email" value="User E-mail"/>
+                        <p:outputLabel for="email" value="E-mail"/>
                         <p:inputText id="email" value="#{adminWhitelistController.whitelist.email}"/>
                         <p:message for="email"/>
                     </h:panelGrid>
@@ -45,7 +51,7 @@
                     <h:outputText value="#{user.email}" />
                 </p:column>
                 <p:column headerText="Name">
-                    <h:outputText value="#{user.firstName}" />
+                    <h:outputText value="#{user.firstName} " />
                     <h:outputText value="#{user.lastName}" />
                 </p:column>
                 <p:column headerText="Blocked">

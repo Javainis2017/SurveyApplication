@@ -1,20 +1,17 @@
 package com.javainis.user_management.controllers;
 
 import com.javainis.user_management.dao.UserDAO;
-import com.javainis.user_management.dao.UserTypeDAO;
-import com.javainis.user_management.entities.Whitelist;
-import com.javainis.user_management.dao.WhitelistDAO;
 import com.javainis.user_management.entities.User;
 import lombok.Getter;
 import org.omnifaces.util.Messages;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.io.Serializable;
-import java.util.List;
 
 @Named
 @SessionScoped
@@ -46,14 +43,18 @@ public class UserController implements Serializable
     }
 
     @Transactional
-    public void logout(){ //Boolean returninti?
+    public String logout(){ //Boolean returninti?
+        Messages.addGlobalWarn("Log out method");
         try{
+            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
             // uzbaigti session scope: session.invalidate(); ???
-            user = null; //?
+            //user = null; //?
+            return "index?faces-redirect=true";
         }
         catch (Exception ex){
-            //kas blogai logout gali nutikti?
+            Messages.addGlobalWarn("FATAL ERROR: Could not log you out. Now you're stuck forever :(");
         }
+        return null;
     }
 
 }

@@ -8,10 +8,10 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xml:lang="en" lang="en">
 <head>
-    <title>Whitelist page</title>
+    <title/>
 </head>
 <body>
-<h1>Whitelist page</h1>
+<h3>Whitelist page</h3>
 <h:form>
     <p:fieldset legend="All whitelisted emails" toggleable="true" style="width: 50%">
         <p:dataTable value="#{adminWhitelistController.getAllWhitelist()}" var="whitelist">
@@ -20,7 +20,7 @@
             </p:column>
         </p:dataTable>
     </p:fieldset>
-    <p>Whitelsit new email</p>
+    <p>Whitelist new email</p>
     <table>
         <tr>
             <td>
@@ -32,7 +32,7 @@
             </td>
         </tr>
     </table>
-    <p:commandButton value="Add to whitelist"
+    <p:commandButton value="Add"
                      actionListener="#{adminWhitelistController.whitelistEmail()}"
                      ajax="false"/>
     <p:messages globalOnly="true"/>
