@@ -22,7 +22,7 @@
                 </p:column>
             </p:dataTable>
         </p:fieldset>
-        <p>Whitelsit new email</p>
+        <p>Whitelist new email</p>
         <table>
             <tr>
                 <td>
@@ -52,7 +52,14 @@
                     <h:outputText value="#{user.blocked}" />
                 </p:column>
                 <p:column headerText="Type">
-                    <h:outputText value="#{adminTypeController.getUserTypeName(user.userID)}" />
+                    <h:outputText value="#{user.userTypeID.name}" />
+                </p:column>
+                <p:column>
+                    <!-- REIKES KEISTI (false)-->
+                    <p:commandButton
+                                     title="Change Block Type"
+                                     actionListener="#{adminBlockController.changeUserBlockStatus(user.email, false)}"
+                                     ajax="false" />
                 </p:column>
             </p:dataTable>
         </p:fieldset>
