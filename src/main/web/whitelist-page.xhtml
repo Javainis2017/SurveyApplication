@@ -11,12 +11,18 @@
     <title/>
 </head>
 <body>
-<h3>Whitelist page</h3>
+<h3>Whitelist</h3>
 <h:form>
     <p:fieldset legend="All whitelisted emails" toggleable="true" style="width: 50%">
-        <p:dataTable value="#{adminWhitelistController.getAllWhitelist()}" var="whitelist">
+        <p:dataTable id="whitelistTable" var="whitelist" value="#{adminWhitelistController.getAllWhitelist()}">
             <p:column headerText="Email">
                 <h:outputText value="#{whitelist.email}" />
+            </p:column>
+            <p:column style="width:32px;text-align: center">
+                <p:commandButton title="Remove"
+                                 actionListener="#{adminWhitelistController.removeFromWhitelist(whitelist.email)}"
+                                 ajax="false" >
+                </p:commandButton>
             </p:column>
         </p:dataTable>
     </p:fieldset>

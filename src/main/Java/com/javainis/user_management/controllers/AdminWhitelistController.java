@@ -1,20 +1,16 @@
 package com.javainis.user_management.controllers;
 
-import com.javainis.user_management.dao.UserDAO;
 import com.javainis.user_management.dao.UserTypeDAO;
-import com.javainis.user_management.entities.Whitelist;
 import com.javainis.user_management.dao.WhitelistDAO;
-import com.javainis.user_management.entities.User;
+import com.javainis.user_management.entities.Whitelist;
 import lombok.Getter;
+import lombok.Setter;
 import org.omnifaces.util.Messages;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
-import java.io.Serializable;
 import java.util.List;
 
 @Named
@@ -26,6 +22,10 @@ public class AdminWhitelistController{
 
     @Getter
     private Whitelist whitelist = new Whitelist();
+
+    @Getter
+    @Setter
+    private Whitelist selectedEmail;
 
     @Inject
     private UserTypeDAO typeDAO;
@@ -61,8 +61,11 @@ public class AdminWhitelistController{
     }
 
     @Transactional
-    public Boolean removeFromWhitelist(String email){
+    public Boolean removeFromWhitelist(String email)
+    {
         return checkAdminRights() && whitelistDAO.removeFromWhitelist(email) != 0;
+//        Messages.addGlobalWarn("selectedEmail is null");
+//        return false;
     }
 
     private Boolean checkAdminRights(){

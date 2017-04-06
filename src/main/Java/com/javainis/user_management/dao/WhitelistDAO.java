@@ -20,7 +20,9 @@ public class WhitelistDAO
 
     public int removeFromWhitelist(String email)
     {
-        return manager.createNamedQuery("Whitelist.remove").executeUpdate();
+        return manager.createNamedQuery("Whitelist.remove")
+                .setParameter("email", email)
+                .executeUpdate();
     }
 
     public Boolean findEmail(String email)
