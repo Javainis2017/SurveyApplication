@@ -8,6 +8,7 @@ import com.javainis.user_management.entities.User;
 import lombok.Getter;
 import org.omnifaces.util.Messages;
 
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,8 +18,8 @@ import java.io.Serializable;
 import java.util.List;
 
 @Named
-@SessionScoped
-public class UserAdminController implements Serializable{
+@RequestScoped
+public class AdminWhitelistController{
 
     @Inject
     private UserController userController;
@@ -30,7 +31,7 @@ public class UserAdminController implements Serializable{
     private UserTypeDAO typeDAO;
 
     @Inject
-    private WhitelistDAO whitelistDAO; //admin operacijoms gali prireikti
+    private WhitelistDAO whitelistDAO;
 
     @Transactional
     public void whitelistEmail()

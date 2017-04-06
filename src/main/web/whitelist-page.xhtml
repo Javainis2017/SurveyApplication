@@ -14,7 +14,7 @@
 <h1>Whitelist page</h1>
 <h:form>
     <p:fieldset legend="All whitelisted emails" toggleable="true" style="width: 50%">
-        <p:dataTable value="#{userController.getAllWhitelist()}" var="whitelist">
+        <p:dataTable value="#{adminWhitelistController.getAllWhitelist()}" var="whitelist">
             <p:column headerText="Email">
                 <h:outputText value="#{whitelist.email}" />
             </p:column>
@@ -26,14 +26,14 @@
             <td>
                 <h:panelGrid columns="3">
                     <p:outputLabel for="email" value="User E-mail"/>
-                    <p:inputText id="email" value="#{userController.whitelist.email}"/>
+                    <p:inputText id="email" value="#{adminWhitelistController.whitelist.email}"/>
                     <p:message for="email"/>
                 </h:panelGrid>
             </td>
         </tr>
     </table>
     <p:commandButton value="Add to whitelist"
-                     actionListener="#{userController.whitelistEmail()}"
+                     actionListener="#{adminWhitelistController.whitelistEmail()}"
                      ajax="false"/>
     <p:messages globalOnly="true"/>
 </h:form>

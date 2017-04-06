@@ -14,7 +14,48 @@
 <h2>My Operations</h2>
 <h:form>
     <h:panelGroup rendered="#{userController.user.userTypeID.getId() == 1}">
-        <p>I am admin</p>
+        <h3>Whitelist page</h3>
+        <p:fieldset legend="All whitelisted emails" toggleable="true" style="width: 50%">
+            <p:dataTable value="#{adminWhitelistController.getAllWhitelist()}" var="whitelist">
+                <p:column headerText="Email">
+                    <h:outputText value="#{whitelist.email}" />
+                </p:column>
+            </p:dataTable>
+        </p:fieldset>
+        <p>Whitelsit new email</p>
+        <table>
+            <tr>
+                <td>
+                    <h:panelGrid columns="3">
+                        <p:outputLabel for="email" value="User E-mail"/>
+                        <p:inputText id="email" value="#{adminWhitelistController.whitelist.email}"/>
+                        <p:message for="email"/>
+                    </h:panelGrid>
+                </td>
+            </tr>
+        </table>
+        <p:commandButton value="Add to whitelist"
+                         actionListener="#{adminWhitelistController.whitelistEmail()}"
+                         ajax="false"/>
+        <p:messages globalOnly="true"/>
+        <h3>User List</h3>
+        <p:fieldset legend="All Users" toggleable="true" style="width: 50%">
+            <p:dataTable value="#{adminBlockController.allUser}" var="user">
+                <p:column headerText="Email">
+                    <h:outputText value="#{user.email}" />
+                </p:column>
+                <p:column headerText="Name">
+                    <h:outputText value="#{user.firstName}" />
+                    <h:outputText value="#{user.lastName}" />
+                </p:column>
+                <p:column headerText="Blocked">
+                    <h:outputText value="#{user.blocked}" />
+                </p:column>
+                <p:column headerText="Type">
+                    <h:outputText value="#{adminTypeController.getUserTypeName(user.userID)}" />
+                </p:column>
+            </p:dataTable>
+        </p:fieldset>
     </h:panelGroup>
 </h:form>
 </body>

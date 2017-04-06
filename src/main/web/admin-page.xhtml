@@ -10,7 +10,7 @@
     <title>Admin page</title>
 </head>
 <body>
-<!-- Atvaizduoti kokią vartotojo informaciją bei operacijas-->
+<!-- NEREIKALINGAS-->
 <h2>My Admin Operations</h2>
 <h:form>
     <p:panel id="panel" header="Add email to whitelist" style="margin-bottom:10px;">
@@ -23,8 +23,8 @@
 
     <p:commandButton value="Add"
                      update="panel"
-                     actionListener="#{userAdminController.addToWhiteList('')}"
-                     ajax="false"><!-- Perduoti parametra su fparam?-->
+                     actionListener="#{adminWhitelistController.addToWhiteList('')}"
+                     ajax="false">
     </p:commandButton>
 </h:form>
 </body>

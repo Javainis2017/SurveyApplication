@@ -24,6 +24,7 @@ public class UserController implements Serializable
     private User user = new User();
 
     @Inject
+    @Getter // nieko blogo? AdminBlockController nuodojasi situo
     private UserDAO userDAO;
 
     @Transactional

@@ -1,6 +1,7 @@
 package com.javainis.user_management.dao;
 
 import com.javainis.user_management.entities.User;
+import com.javainis.user_management.entities.UserType;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -31,17 +32,36 @@ public class UserDAO
         return manager.createNamedQuery("User.findAll", User.class).getResultList();
     }
 
-    public Boolean changeUserType(User user, int type)
+    public Boolean changeUserType(String email, int typeID)
     {
         try{
-            //reikia userType
-            //Update sakini irgi named query laikyti?
-
-
+            User user = manager.createNamedQuery("User.findEmail", User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+            UserType userType = manager.createNamedQuery("UserType.findType", UserType.class)
+                    .setParameter("id", typeID)
+                    .getSingleResult();
+            if (user.getUserTypeID().getId() == typeID) return false; // nesikeicia type
+            user.setUserTypeID(userType);
+            manager.persist(user); //nereikia?
             return true;
         }
-        catch (Exception ex){ //kokie exception?
+        catch (NoResultException ex){ //kokie exception?
+            return false;
+        }
+    }
 
+    public Boolean changeBlockStatus(String email, Boolean blocked){
+        try{
+            User user = manager.createNamedQuery("User.findEmail", User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+            if (user.getBlocked() == blocked) return false; //nebuvo atliktas pakeitimas
+            user.setBlocked(blocked);
+            manager.persist(user); //nereikia?
+            return true;
+        }
+        catch (NoResultException ex){
             return false;
         }
     }
