@@ -1,21 +1,12 @@
 package com.javainis.user_management.controllers;
 
-import com.javainis.user_management.dao.UserDAO;
 import com.javainis.user_management.dao.UserTypeDAO;
-import com.javainis.user_management.entities.Whitelist;
-import com.javainis.user_management.dao.WhitelistDAO;
 import com.javainis.user_management.entities.User;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import lombok.Getter;
-import org.omnifaces.util.Messages;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
-import java.io.Serializable;
 import java.util.List;
 
 @Named
@@ -30,7 +21,7 @@ public class AdminTypeController {
 
     @Transactional
     public Boolean changeUserType(String email, long type){
-        if (!checkAdminRights()) return false;
+        if (!isAdmin()) return false;
 
         return userController.getUserDAO().changeUserType(email, type);
     }
@@ -43,8 +34,9 @@ public class AdminTypeController {
         return userTypeDAO.getUserTypeById(type).getName();
     }
 
-    private Boolean checkAdminRights(){
-        return userController.getUser().getUserTypeID().getId() == 1; // 1 - Admin, 2 - User
+    private Boolean isAdmin(){
+        // 1 - Admin, 2 - User
+        return userController.getUser().getUserTypeID().getId() == 1;
     }
 
 }

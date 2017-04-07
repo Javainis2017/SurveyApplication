@@ -1,0 +1,21 @@
+.blockColumn, .typeColumn{
+    width: 12%;
+}
+
+.emailColumn{
+    width: 28%;
+}
+
+.fieldPanel{
+    margin: 10px 10px 10px 10px;
+    width: 65%;
+}
+
+.buttonColumn{
+    margin:auto;
+    display:block !important;
+}
+
+.dynamicButton{
+    width: 80%;
+}

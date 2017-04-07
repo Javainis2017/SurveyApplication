@@ -29,9 +29,13 @@ public class UserController implements Serializable
     {
         try{
             user = userDAO.login(user.getEmail(), user.getPasswordHash());
-            Messages.addGlobalWarn("Success");
-            // ikelti vartotoja i home page
+            if (user.getBlocked()) {
+                Messages.addGlobalWarn("ERROR: You are blocked from system");
+                return null;
+            }
+            //Messages.addGlobalWarn("Success");
 
+            // ikelti vartotoja i home page
             return "home-page?faces-redirect=true";
         }
         catch (NoResultException ex)
@@ -44,7 +48,6 @@ public class UserController implements Serializable
 
     @Transactional
     public String logout(){ //Boolean returninti?
-        Messages.addGlobalWarn("Log out method");
         try{
             FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
             // uzbaigti session scope: session.invalidate(); ???

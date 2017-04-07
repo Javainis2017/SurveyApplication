@@ -50,7 +50,7 @@ public class User
     @NotNull
     private UserType userTypeID;
 
-    private Boolean blocked;
+    private Boolean blocked = false;
 
     public void setPasswordHash(String password)
     {
@@ -58,6 +58,5 @@ public class User
         passwordHash = password;
         System.out.println("COMPLETED");
     }
-
 
 }

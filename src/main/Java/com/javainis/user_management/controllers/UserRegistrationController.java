@@ -14,9 +14,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
-/**
- * Created by Ignas on 2017-04-03.
- */
 @Named
 @RequestScoped //Request užtenka?
 public class UserRegistrationController {
@@ -45,7 +42,6 @@ public class UserRegistrationController {
         UserType type = typeDAO.getUserTypeById(2); // 1-Admin, 2-User
         user.setUserTypeID(type);
         //Ar toks email jau uzregistruotas
-        Messages.addGlobalInfo(user.getEmail());
         if (userDAO.emailIsRegistered(user.getEmail()))
         {
             Messages.addGlobalWarn("This email is already registered");
@@ -61,7 +57,7 @@ public class UserRegistrationController {
         {
             // typeDAO.create(type); //tipas paimtas is db, nereikia dar prideti
             userDAO.create(user);
-            Messages.addGlobalWarn("Success");
+            Messages.addGlobalInfo("Success");
             return "login-page?faces-redirect=true";
         }
     }
@@ -72,7 +68,7 @@ public class UserRegistrationController {
         if (!whitelistDAO.findEmail(whitelist.getEmail()))
         {
             whitelistDAO.create(whitelist);
-            Messages.addGlobalWarn("Success");
+            Messages.addGlobalInfo("Success");
         }
         else
         {

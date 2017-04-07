@@ -5,8 +5,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core" xml:lang="en" lang="en">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core" xml:lang="en" lang="en">
 <h:head>
+    <h:outputStylesheet name="css/style.css" />
     <title>Home</title>
 </h:head>
 <h:body>
@@ -20,12 +22,12 @@
     <!-- Atvaizduoti administravimo funkcijas-->
     <h:panelGroup rendered="#{userController.getUser().getUserTypeID().getId() == 1}">
         <h2>User administration</h2>
-        <p:fieldset legend="Whitelist" toggleable="true" collapsed="true" style="width: 50%">
+        <p:fieldset legend="Whitelist" toggleable="true" collapsed="true" styleClass="fieldPanel">
             <p:dataTable id="whitelistTable" var="whitelist" value="#{adminWhitelistController.getAllWhitelist()}">
                 <p:column headerText="Email">
                     <h:outputText value="#{whitelist.email}" />
                 </p:column>
-                <p:column style="width:85px;text-align: center">
+                <p:column style="width:110px;text-align: center">
                     <p:commandButton title="Remove"
                                      actionListener="#{adminWhitelistController.removeFromWhitelist(whitelist.email)}"
                                      ajax="false" >
@@ -49,36 +51,36 @@
                              ajax="false"/>
             <p:messages globalOnly="true"/>
         </p:fieldset>
-        <p:fieldset legend="User List" toggleable="true" collapsed="true" style="width: 50%">
+        <p:fieldset legend="User List" toggleable="true" collapsed="true" styleClass="fieldPanel">
             <p:dataTable value="#{adminBlockController.allUser}" var="user">
-                <p:column headerText="Email">
+                <p:column headerText="Email" styleClass="emailColumn">
                     <h:outputText value="#{user.email}" />
                 </p:column>
                 <p:column headerText="Name">
                     <h:outputText value="#{user.firstName} " />
                     <h:outputText value="#{user.lastName}" />
                 </p:column>
-                <p:column headerText="Blocked">
-                    <h:outputText value="#{user.blocked}" />
+                <p:column headerText="Blocked" styleClass="blockColumn">
+                    <h:outputText value="Yes" rendered="#{user.getBlocked() == true}"/>
                 </p:column>
-                <p:column headerText="Type">
+                <p:column headerText="Type" styleClass="typeColumn">
                     <h:outputText value="#{user.userTypeID.name}" />
                 </p:column>
                 <p:column headerText="Change block status">
-                    <!-- REIKES KEISTI (false)-->
-                    <p:commandButton
-                                     title="Change Block Type"
-                                     actionListener="#{adminBlockController.changeUserBlockStatus(user.email, false)}"
-                                     ajax="false" />
+                    <p:commandButton value = "#{adminBlockController.getBlockedButtonLabel(user.getBlocked())}"
+                                     rendered="#{user.getEmail() != userController.getUser().getEmail()}"
+                        actionListener="#{adminBlockController.changeUserBlockStatus(user.email)}"
+                        ajax="false" styleClass="buttonColumn dynamicButton"/>
                 </p:column>
                 <p:column headerText="Change User type">
                     <!-- REIKES KEISTI leisti pasirinkti usertype-->
                     <p:commandButton
-                            title="Change User Type"
-                            actionListener="#{adminTypeController.changeUserType(user.email, 2)}"
-                            ajax="false" />
+                        value="Change"
+                        actionListener="#{adminTypeController.changeUserType(user.email, 2)}"
+                        ajax="false" styleClass="buttonColumn"/>
                 </p:column>
             </p:dataTable>
+            <p:messages globalOnly="true"/>
         </p:fieldset>
     </h:panelGroup>
 </h:form>

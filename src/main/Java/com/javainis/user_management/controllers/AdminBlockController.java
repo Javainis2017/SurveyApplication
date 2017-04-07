@@ -2,17 +2,12 @@ package com.javainis.user_management.controllers;
 
 
 import com.javainis.user_management.entities.User;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import lombok.Getter;
 import org.omnifaces.util.Messages;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
-import java.io.Serializable;
 import java.util.List;
 
 @Named
@@ -23,9 +18,16 @@ public class AdminBlockController {
     private UserController userController;
 
     @Transactional
-    public Boolean changeUserBlockStatus(String email, Boolean blocked){
-        if (!checkAdminRights()) return false;
-        return userController.getUserDAO().changeBlockStatus(email, blocked);
+    //Jeigu neuzblokuotas - uzblokuoti, jegu uzblokuotas - atblokuoti
+    public Boolean changeUserBlockStatus(String email){
+        if (!isAdmin()) return false;
+        else if (userController.getUser().getEmail().equals(email))
+        {
+            //Neleidziama saves blokuoti
+            Messages.addGlobalWarn("ERROR: You cannot block yourself");
+            return false;
+        }
+        return userController.getUserDAO().changeBlockStatus(email);
     }
 
     @Transactional
@@ -33,8 +35,17 @@ public class AdminBlockController {
         return userController.getUserDAO().getAllUsers();
     }
 
-    private Boolean checkAdminRights(){
-        return userController.getUser().getUserTypeID().getId() == 1; // 1 - Admin, 2 - User
+    private Boolean isAdmin(){
+        // 1 - Admin, 2 - User
+        return userController.getUser().getUserTypeID().getId() == 1;
+    }
+
+    public String getBlockedButtonLabel(Boolean blocked)
+    {
+        if(blocked){
+            return "Unblock";
+        }
+        return "Block";
     }
 
 }

@@ -52,24 +52,17 @@ public class AdminWhitelistController{
         return whitelistDAO.getAll();
     }
 
-    public Boolean addToWhiteList(String email){
-        if (!checkAdminRights()) return false;
-        Whitelist record = new Whitelist();
-        record.setEmail(email);
-        whitelistDAO.create(record); // galetu ne void grazinti
-        return true;
-    }
-
     @Transactional
     public Boolean removeFromWhitelist(String email)
     {
-        return checkAdminRights() && whitelistDAO.removeFromWhitelist(email) != 0;
+        return isAdmin() && whitelistDAO.removeFromWhitelist(email) != 0;
 //        Messages.addGlobalWarn("selectedEmail is null");
 //        return false;
     }
 
-    private Boolean checkAdminRights(){
-        return userController.getUser().getUserTypeID().getId() == 1; // 1 - Admin, 2 - User
+    private Boolean isAdmin(){
+        // 1 - Admin, 2 - User
+        return userController.getUser().getUserTypeID().getId() == 1;
     }
 
 }

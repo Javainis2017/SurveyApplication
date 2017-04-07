@@ -66,6 +66,26 @@ public class UserDAO
         }
     }
 
+    public Boolean changeBlockStatus(String email){
+        try{
+            User user = manager.createNamedQuery("User.findEmail", User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+            //Jeigu neuzblokuotas - uzblokuoti, jegu uzblokuotas - atblokuoti
+            if (user.getBlocked() == null)
+            {
+                user.setBlocked(true);
+            }
+            else {
+                user.setBlocked(!user.getBlocked());
+            }
+            return true;
+        }
+        catch (NoResultException ex){
+            return false;
+        }
+    }
+
     public Boolean emailIsRegistered(String email)
     {
         try {
