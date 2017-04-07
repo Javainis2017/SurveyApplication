@@ -16,8 +16,7 @@
         <p:selectBooleanCheckbox id="required" value="#{textQuestionController.question.required}"/>
         <p:message for="required"/>
 
-        <p:commandButton value="Add question"
-                         action="#{newSurveyController.addQuestion(textQuestionController.question)}"
-                         process="text required @this"/>
+        <p:commandButton value="Save question"
+                         action="#{newSurveyController.saveQuestion(textQuestionController.question)}"/>
     </p:panelGrid>
 </ui:composition>

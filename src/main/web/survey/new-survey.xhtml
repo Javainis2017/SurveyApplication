@@ -32,18 +32,27 @@
             <h3>Questions</h3>
             <ui:repeat value="#{newSurveyController.survey.questions}" var="question">
                 <ui:remove>
-                    <ui:include src="/WEB-INF/questions/#{question.type}-show.xhtml">
+                    <ui:include src="/WEB-INF/questions/show/#{question.type}-show.xhtml">
                         <ui:param name="question" value="#{question}"/>
                     </ui:include>
+                    <p:commandButton actionListener="#{newSurveyController.editQuestion(question)}"/>
+                    <p:commandButton actionListener="#{newSurveyController.removeQuestion(question)}"/>
                 </ui:remove>
+
                 <!-- Laikinai, bandymui-->
-                <ui:include src="/WEB-INF/questions/text-show.xhtml">
-                    <ui:param name="question" value="#{question}"/>
-                </ui:include>
+
+                    <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
+                        <ui:param name="question" value="#{question}"/>
+                    </ui:include>
+                    <p:commandButton value="Edit question" immediate="true" actionListener="#{newSurveyController.editQuestion(question)}"/>
+                    <p:commandButton value="Remove question" immediate="true" actionListener="#{newSurveyController.removeQuestion(question)}"/>
+                    <br/>
+
             </ui:repeat>
         </c:if>
 
         <!-- Save survey and show url in new page-->
+        <br/>
         <p:commandButton value="Create survey"
                          actionListener="#{newSurveyController.createSurvey}"
                          ajax="true"/>
@@ -57,8 +66,8 @@
             <ui:include src="/WEB-INF/questions/new-question.xhtml"/>
         </c:if>
         <c:if test="#{not newSurveyController.newQuestion}">
-            <!-- Create new question and add choices -->
-            <ui:include src="/WEB-INF/questions/#{newSurveyController.newQuestionType}-new.xhtml"/>
+            <!-- Create new question and add choices OR edit question-->
+            <ui:include src="/WEB-INF/questions/edit/#{newSurveyController.newQuestionType}-edit.xhtml"/>
         </c:if>
     </h:form>
 </body>
