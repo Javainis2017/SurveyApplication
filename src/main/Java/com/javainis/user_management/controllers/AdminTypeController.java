@@ -22,7 +22,7 @@ public class AdminTypeController {
     @Transactional
     public Boolean changeUserType(String email, long type){
         if (!isAdmin()) return false;
-
+        if(userController.getUser().getEmail().equals(email)) return false;
         return userController.getUserDAO().changeUserType(email, type);
     }
 
