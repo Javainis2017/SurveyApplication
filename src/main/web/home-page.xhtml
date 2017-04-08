@@ -76,6 +76,7 @@
                     <!-- REIKES KEISTI leisti pasirinkti usertype-->
                     <p:commandButton
                         value="Change"
+                        rendered="#{user.getEmail() != userController.getUser().getEmail()}"
                         actionListener="#{adminTypeController.changeUserType(user.email, 2)}"
                         ajax="false" styleClass="buttonColumn"/>
                 </p:column>

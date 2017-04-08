@@ -36,9 +36,6 @@ public class UserRegistrationController {
     @Transactional
     public String register()
     {
-
-        /*UserType type = new UserType();
-        type.setName("User");*/
         UserType type = typeDAO.getUserTypeById(2); // 1-Admin, 2-User
         user.setUserTypeID(type);
         //Ar toks email jau uzregistruotas
@@ -55,7 +52,6 @@ public class UserRegistrationController {
         }
         else
         {
-            // typeDAO.create(type); //tipas paimtas is db, nereikia dar prideti
             userDAO.create(user);
             Messages.addGlobalInfo("Success");
             return "login-page?faces-redirect=true";
