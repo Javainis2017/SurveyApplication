@@ -10,6 +10,14 @@ import javax.validation.constraints.Size;
 @Entity
 @Getter
 @Setter
+@Table(name = "question")
+@Inheritance(strategy=InheritanceType.JOINED)
+@NamedQueries({
+        @NamedQuery(name = "Question.findAll", query = "SELECT q FROM Question q"),
+        @NamedQuery(name = "Question.findById", query = "SELECT q FROM Question q WHERE q.id = :id"),
+        @NamedQuery(name = "Question.findBySurveyId", query = "SELECT q FROM Question q WHERE q.survey.id = :surveyId")
+})
+@DiscriminatorColumn(name="question_type_id")
 @EqualsAndHashCode(of = "text")
 public abstract class Question {
     @Id

@@ -1,4 +1,4 @@
 package com.javainis.survey.dao;
 
-public class IntervalQuestionDAO {
+public class IntervalQuestionDAO extends QuestionDAO{
 }

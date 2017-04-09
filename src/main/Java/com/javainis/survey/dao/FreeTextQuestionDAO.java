@@ -1,4 +1,4 @@
 package com.javainis.survey.dao;
 
-public class FreeTextQuestionDAO {
+public class FreeTextQuestionDAO extends QuestionDAO{
 }
