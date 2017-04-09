@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @DiscriminatorValue("4")
 @NamedQueries({
-        @NamedQuery(name = "Choice.findAll", query = "SELECT c FROM IntervalQuestion c")
+        @NamedQuery(name = "Interval.findAll", query = "SELECT c FROM IntervalQuestion c")
 })
 @Table(name = "interval_choice")
 public class IntervalQuestion extends Question{
