@@ -16,10 +16,27 @@
 <h1>Welcome, #{userController.getUser().getFirstName()} #{userController.getUser().getLastName()}</h1>
 <h:form>
     <h:commandLink actionListener="#{userController.logout()}" action="index">Log out</h:commandLink>
-    <!-- Atvaizduoti standartines funckijas-->
     <h2>Survey creation</h2>
-    <h:link outcome="survey/new-survey">Create survey</h:link><br/>
-    <!-- Atvaizduoti administravimo funkcijas-->
+    <h:link outcome="survey/new-survey">Create new survey</h:link><br/>
+
+    <h2>My surveys</h2>
+    <p:fieldset legend="Surveys" toggleable="true" collapsed="true" styleClass="fieldPanel">
+        <p:dataTable id="surveyTable" var="survey" value="#{userSurveyController.allUserSurvey}">
+            <p:column headerText="Title" style="width:110px;text-align: center">
+                <h:outputText value="#{survey.title}" />
+            </p:column>
+            <p:column headerText="Description" style="width:110px;text-align: center">
+                <h:outputText value="#{survey.description}" />
+            </p:column>
+            <p:column headerText="URL" style="width:110px;text-align: center">
+                <h:outputText value="#{survey.url}" />
+            </p:column>
+            <p:column headerText="Number of responses" style="width:110px;text-align: center">
+                <h:outputText value="soon..." />
+            </p:column>
+        </p:dataTable>
+    </p:fieldset>
+
     <h:panelGroup rendered="#{userController.getUser().getUserTypeID().getId() == 1}">
         <h2>User administration</h2>
         <p:fieldset legend="Whitelist" toggleable="true" collapsed="true" styleClass="fieldPanel">
