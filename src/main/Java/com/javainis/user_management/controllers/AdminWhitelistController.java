@@ -31,6 +31,7 @@ public class AdminWhitelistController{
     private UserTypeDAO typeDAO;
 
     @Inject
+    @Getter
     private WhitelistDAO whitelistDAO;
 
     @Transactional

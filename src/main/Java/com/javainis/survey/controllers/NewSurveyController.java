@@ -121,7 +121,7 @@ public class NewSurveyController implements Serializable{
         /* Persist questions/cascade */
         try {
             surveyDAO.create(survey);
-            questionDAO.create(survey.getQuestions().get(0));
+
         }catch (Exception e){
             e.printStackTrace();
 
