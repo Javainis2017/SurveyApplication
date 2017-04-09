@@ -15,7 +15,7 @@ import javax.persistence.*;
         @NamedQuery(name = "Choice.findByQuestionId", query = "SELECT c FROM Choice c WHERE c.question.id = :questionId")
 })
 @Table(name="choice")
-class Choice {
+public class Choice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
