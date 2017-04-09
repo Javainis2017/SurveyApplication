@@ -18,4 +18,5 @@ public class RandomStringGenerator {
         }
         return builder.toString();
     }
+
 }
