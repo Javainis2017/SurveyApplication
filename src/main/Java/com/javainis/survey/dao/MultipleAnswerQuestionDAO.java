@@ -1,4 +1,4 @@
 package com.javainis.survey.dao;
 
-public class MultipleAnswerQuestionDAO {
+public class MultipleAnswerQuestionDAO extends QuestionDAO{
 }

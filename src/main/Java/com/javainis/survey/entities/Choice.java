@@ -9,6 +9,12 @@ import javax.persistence.*;
 
 @Getter
 @Setter
+@NamedQueries({
+        @NamedQuery(name = "Choice.findAll", query = "SELECT c FROM Choice c"),
+        @NamedQuery(name = "Choice.findById", query = "SELECT c FROM Choice c WHERE c.id = :id"),
+        @NamedQuery(name = "Choice.findByQuestionId", query = "SELECT c FROM Choice c WHERE c.question.id = :questionId")
+})
+@Table(name="choice")
 class Choice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
