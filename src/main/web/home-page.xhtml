@@ -29,6 +29,7 @@
                 </p:column>
                 <p:column style="width:110px;text-align: center">
                     <p:commandButton title="Remove"
+                                     rendered="#{adminWhitelistController.whitelistDAO.findEmail(whitelist.email) != userController.userDAO.emailIsRegistered(whitelist.email)}"
                                      actionListener="#{adminWhitelistController.removeFromWhitelist(whitelist.email)}"
                                      ajax="false" >
                     </p:commandButton>

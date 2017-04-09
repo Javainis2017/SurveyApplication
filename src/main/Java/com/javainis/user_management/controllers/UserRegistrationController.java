@@ -53,6 +53,7 @@ public class UserRegistrationController {
         else
         {
             userDAO.create(user);
+            //whitelistDAO.removeFromWhitelist(user.getEmail()); // Registered user email is removed from whitelist
             Messages.addGlobalInfo("Success");
             return "login-page?faces-redirect=true";
         }
