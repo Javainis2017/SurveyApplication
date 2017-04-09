@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public abstract class QuestionDAO {
+public class QuestionDAO {
     @Inject
     protected EntityManager manager;
 
@@ -19,7 +19,7 @@ public abstract class QuestionDAO {
     }
 
     public Question findById(Long id){
-        return manager.createNamedQuery("Question.findById", Question.class).getSingleResult();
+        return manager.createNamedQuery("Question.findById", Question.class).setParameter("id", id).getSingleResult();
     }
     public List<Question> findBySurveyId(Long surveyId){
         return manager.createNamedQuery("Question.findBySurveyId", Question.class).setParameter("surveyId", surveyId).getResultList();
