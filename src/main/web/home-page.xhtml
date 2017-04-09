@@ -11,7 +11,7 @@
     <h:outputStylesheet name="css/style.css" />
     <title>Home</title>
 </h:head>
-<h:body>
+<h:body rendered="#{userController.getUser().getEmail() != null}">
 <!-- Atvaizduoti kokią vartotojo informaciją bei operacijas-->
 <h1>Welcome, #{userController.getUser().getFirstName()} #{userController.getUser().getLastName()}</h1>
 <h:form>
@@ -86,4 +86,9 @@
     </h:panelGroup>
 </h:form>
 </h:body>
+<c:if test="#{userController.getUser().getEmail() == null}">
+    <body>
+        <h1>ERROR 401: Unauthorized</h1>
+    </body>
+</c:if>
 </html>
