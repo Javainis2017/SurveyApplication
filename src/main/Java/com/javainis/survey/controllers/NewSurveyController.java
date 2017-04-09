@@ -1,8 +1,11 @@
 package com.javainis.survey.controllers;
 
+import com.javainis.survey.dao.QuestionDAO;
 import com.javainis.survey.dao.SurveyDAO;
 import com.javainis.survey.entities.Question;
 import com.javainis.survey.entities.Survey;
+import com.javainis.user_management.controllers.UserController;
+import com.javainis.user_management.entities.User;
 import com.javainis.utility.RandomStringGenerator;
 import lombok.Getter;
 import org.omnifaces.util.Messages;
@@ -10,6 +13,7 @@ import org.omnifaces.util.Messages;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 
 @Named
@@ -22,15 +26,15 @@ public class NewSurveyController implements Serializable{
     @Inject
     private SurveyDAO surveyDAO;
 
-    /*@Inject
+    @Inject
     private QuestionDAO questionDAO;
 
-    @Inject
+    /*@Inject
     private QuestionTypeDAO questionTypeDAO;
-
+    */
     @Inject
     private UserController userController;
-    */
+
 
     @Inject
     private RandomStringGenerator randomStringGenerator;
@@ -92,6 +96,7 @@ public class NewSurveyController implements Serializable{
         survey.getQuestions().remove(question);
     }
 
+    @Transactional
     public void createSurvey(){
         /* Check if survey has questions */
         if(survey.getQuestions().isEmpty()){
@@ -106,13 +111,20 @@ public class NewSurveyController implements Serializable{
             url = randomStringGenerator.generateString(32);
         }
         survey.setUrl(url);
-        System.out.println(survey.getUrl());
+
+        survey.setAuthor(userController.getUser());
 
         /* User currentUser = userController.getCurrentUser();
         * survey.setAuthor(currentUser);
         * currentUser.getSurveys().add(survey); */
 
         /* Persist questions/cascade */
-        /* surveyDAO.create(survey);*/
+        try {
+            surveyDAO.create(survey);
+            questionDAO.create(survey.getQuestions().get(0));
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
     }
 }

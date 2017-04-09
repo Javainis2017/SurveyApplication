@@ -37,7 +37,7 @@
             <h3>Questions</h3>
             <ui:repeat value="#{newSurveyController.survey.questions}" var="question">
                 <ui:remove>
-                    <ui:include src="/WEB-INF/questions/show/#{question.type}-show.xhtml">
+                    <ui:include src="/WEB-INF/questions/show/#{question.class.simpleName}-show.xhtml">
                         <ui:param name="question" value="#{question}"/>
                     </ui:include>
                     <p:commandButton actionListener="#{newSurveyController.editQuestion(question)}"/>

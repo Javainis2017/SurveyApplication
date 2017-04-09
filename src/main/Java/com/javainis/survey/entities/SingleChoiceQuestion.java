@@ -3,10 +3,7 @@ package com.javainis.survey.entities;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @DiscriminatorValue("2")
+@Table(name = "single_choice_question")
 public class SingleChoiceQuestion extends Question{
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)

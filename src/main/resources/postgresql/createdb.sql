@@ -36,12 +36,6 @@ CREATE TABLE IF NOT EXISTS survey
 	FOREIGN KEY (user_id) REFERENCES app_user(id)
 );
 
-CREATE TABLE IF NOT EXISTS question_type
-(
-	id 		BIGSERIAL PRIMARY KEY,
-	name 	VARCHAR(20) NOT NULL,
-	opt_lock_version INTEGER
-);
 
 CREATE TABLE IF NOT EXISTS question
 (
@@ -51,8 +45,7 @@ CREATE TABLE IF NOT EXISTS question
 	survey_id 	BIGINT NOT NULL,
 	question_type_id BIGINT NOT NULL,
 	opt_lock_version INTEGER,
-	FOREIGN KEY (survey_id) REFERENCES survey(id),
-	FOREIGN KEY (question_type_id) REFERENCES question_type(id)
+	FOREIGN KEY (survey_id) REFERENCES survey(id)
 );
 
 
@@ -105,3 +98,24 @@ CREATE TABLE IF NOT EXISTS expiration
 );
 
 INSERT INTO user_type (NAME) VALUES ('Admin'), ('User');
+
+CREATE TABLE IF NOT EXISTS free_text_question
+(
+	id 					BIGSERIAL PRIMARY KEY,
+	FOREIGN KEY (id) REFERENCES question(id)
+);
+
+CREATE TABLE IF NOT EXISTS multiple_choice_question
+(
+	id 					BIGSERIAL PRIMARY KEY,
+	FOREIGN KEY (id) REFERENCES question(id)
+);
+
+CREATE TABLE IF NOT EXISTS single_choice_question
+(
+	id 					BIGSERIAL PRIMARY KEY,
+	FOREIGN KEY (id) REFERENCES question(id)
+);
+
+ALTER TABLE question DROP CONSTRAINT IF EXISTS question_type_id_fkey;
+DROP TABLE IF EXISTS question_type;
