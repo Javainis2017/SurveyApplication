@@ -5,7 +5,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://java.sun.com/jsp/jstl/core" xml:lang="en" lang="en">
 <h:head>
     <h:outputStylesheet name="css/style.css" />
@@ -15,7 +14,8 @@
 <!-- Atvaizduoti kokią vartotojo informaciją bei operacijas-->
 <h1>Welcome, #{userController.getUser().getFirstName()} #{userController.getUser().getLastName()}</h1>
 <h:form>
-    <h:commandLink actionListener="#{userController.logout()}" action="index">Log out</h:commandLink>
+    <h:commandLink actionListener="#{userController.logout()}" action="index">Log out</h:commandLink><br/>
+    <h:link outcome="passwordChange-page">Change password</h:link><br/>
     <h2>Survey creation</h2>
     <h:link outcome="survey/new-survey">Create new survey</h:link><br/>
 

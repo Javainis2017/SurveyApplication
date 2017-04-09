@@ -1,8 +1,10 @@
 package com.javainis.user_management.entities;
 
+import com.javainis.utility.HashGenerator;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.inject.Inject;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -55,17 +57,6 @@ public class User
 
     public void setPasswordHash(String password)
     {
-        //passwordHash = RandomStringGenerator.hash(password);
-        try {
-            System.out.println("HASHING PASSWORD");
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            digest.update(password.getBytes("UTF-8"));
-            passwordHash = String.format("%064x", new java.math.BigInteger(1, digest.digest()));
-            System.out.println("HASH COMPLETED: " + passwordHash);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
+        passwordHash = HashGenerator.generatePasswordHash(password);
     }
 }
