@@ -18,7 +18,7 @@
     <h:commandLink actionListener="#{userController.logout()}" action="index">Log out</h:commandLink>
     <!-- Atvaizduoti standartines funckijas-->
     <h2>Survey creation</h2>
-    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Create survey</a><br/>
+    <h:link outcome="survey/new-survey">Create survey</h:link><br/>
     <!-- Atvaizduoti administravimo funkcijas-->
     <h:panelGroup rendered="#{userController.getUser().getUserTypeID().getId() == 1}">
         <h2>User administration</h2>
