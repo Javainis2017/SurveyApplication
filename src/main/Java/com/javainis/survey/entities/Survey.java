@@ -1,6 +1,7 @@
 package com.javainis.survey.entities;
 
 import com.javainis.user_management.entities.User;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +20,7 @@ import java.util.List;
 })
 @Getter
 @Setter
-
+@EqualsAndHashCode(of = {"title", "description", "questions", "author"})
 public class Survey {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

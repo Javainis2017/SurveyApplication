@@ -3,6 +3,7 @@ package com.javainis.survey.controllers;
 import com.javainis.survey.dao.SurveyDAO;
 import com.javainis.survey.entities.Question;
 import com.javainis.survey.entities.Survey;
+import com.javainis.utility.RandomStringGenerator;
 import lombok.Getter;
 import org.omnifaces.util.Messages;
 
@@ -30,6 +31,9 @@ public class NewSurveyController implements Serializable{
     @Inject
     private UserController userController;
     */
+
+    @Inject
+    private RandomStringGenerator randomStringGenerator;
 
     @Getter
     private Survey survey = new Survey();
@@ -91,7 +95,7 @@ public class NewSurveyController implements Serializable{
     public void createSurvey(){
         /* Generate unique URL*/
         /* survey.setUrl(url); */
-
+        System.out.println(randomStringGenerator.generateString(32));
         /* User currentUser = userController.getCurrentUser();
         * survey.setAuthor(currentUser);
         * currentUser.getSurveys().add(survey); */
