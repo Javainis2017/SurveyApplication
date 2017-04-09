@@ -93,9 +93,9 @@
                 <p:column headerText="Change User type">
                     <!-- REIKES KEISTI leisti pasirinkti usertype-->
                     <p:commandButton
-                        value="Change"
+                        value="#{adminTypeController.getTypeButtonLabel(user.userTypeID.id)}"
                         rendered="#{user.getEmail() != userController.getUser().getEmail()}"
-                        actionListener="#{adminTypeController.changeUserType(user.email, 2)}"
+                        actionListener="#{adminTypeController.toggleUserType(user.email)}"
                         ajax="false" styleClass="buttonColumn"/>
                 </p:column>
             </p:dataTable>

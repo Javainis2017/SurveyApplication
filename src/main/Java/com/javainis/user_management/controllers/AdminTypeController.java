@@ -26,8 +26,16 @@ public class AdminTypeController {
         return userController.getUserDAO().changeUserType(email, type);
     }
 
-    public List<User> getAllUser(){
-        return userController.getUserDAO().getAllUsers();
+    @Transactional
+    public Boolean toggleUserType(String email){
+        if (!isAdmin()) return false;
+        if(userController.getUser().getEmail().equals(email)) return false;
+        if(userController.getUserDAO().getUserByEmail(email).getUserTypeID().getId() == 1){
+            return userController.getUserDAO().changeUserType(email, 2); //1-admin 2-user
+        }
+        else { //from user to admin
+            return userController.getUserDAO().changeUserType(email, 1);
+        }
     }
 
     public String getUserTypeName(int type){
@@ -39,4 +47,12 @@ public class AdminTypeController {
         return userController.getUser().getUserTypeID().getId() == 1;
     }
 
+
+    public String getTypeButtonLabel(long typeID)
+    {
+        if(typeID == 1){
+            return "to User";
+        }
+        return "to Admin";
+    }
 }

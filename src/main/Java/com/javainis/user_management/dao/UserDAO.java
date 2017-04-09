@@ -32,6 +32,10 @@ public class UserDAO
         return manager.createNamedQuery("User.findAll", User.class).getResultList();
     }
 
+    public User getUserByEmail(String email){
+        return manager.createNamedQuery("User.findEmail", User.class).setParameter("email", email).getSingleResult();
+    }
+
     public Boolean changeUserType(String email, long typeID)
     {
         try{
