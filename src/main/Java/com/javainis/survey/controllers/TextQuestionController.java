@@ -23,9 +23,9 @@ public class TextQuestionController {
 
     @PostConstruct
     private void postConstruct(){
-        if(surveyController.getQuestionToEdit() != null){
+        // Check if edit question
+        if(surveyController.getSurveyCreationStep() == NewSurveyController.SURVEY_CREATION_STEP.EDIT_QUESTION){
             question = (FreeTextQuestion) surveyController.getQuestionToEdit();
-            System.out.println("Edited question: " + question.getText());
         }
     }
 }

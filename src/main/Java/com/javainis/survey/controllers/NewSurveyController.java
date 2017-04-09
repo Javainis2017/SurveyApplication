@@ -4,6 +4,7 @@ import com.javainis.survey.dao.SurveyDAO;
 import com.javainis.survey.entities.Question;
 import com.javainis.survey.entities.Survey;
 import lombok.Getter;
+import org.omnifaces.util.Messages;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -14,6 +15,9 @@ import java.io.Serializable;
 @ViewScoped
 public class NewSurveyController implements Serializable{
 
+    public enum SURVEY_CREATION_STEP {
+        QUESTION_TYPE_CHOICE, NEW_QUESTION, EDIT_QUESTION
+    }
     @Inject
     private SurveyDAO surveyDAO;
 
@@ -31,10 +35,10 @@ public class NewSurveyController implements Serializable{
     private Survey survey = new Survey();
 
     @Getter
-    private String newQuestionType;
+    private SURVEY_CREATION_STEP surveyCreationStep = SURVEY_CREATION_STEP.QUESTION_TYPE_CHOICE;
 
     @Getter
-    private Boolean newQuestion = true;
+    private String newQuestionType;
 
     @Getter
     private Question questionToEdit;
@@ -53,25 +57,29 @@ public class NewSurveyController implements Serializable{
     }*/
 
     public void createQuestion(String type){
-        newQuestion = false;
+        surveyCreationStep = SURVEY_CREATION_STEP.NEW_QUESTION;
         newQuestionType = type;
     }
 
     public void saveQuestion(Question question){
         //Check if question is new
-        if(!survey.getQuestions().contains(question)){
-            //Question is new
-            question.setSurvey(survey);
-            survey.getQuestions().add(question);
-        }else{
-            //Question is new or same
+        if(surveyCreationStep == SURVEY_CREATION_STEP.NEW_QUESTION){
+            // Check for duplicate question
+            if(!survey.getQuestions().contains(question)){
+                //Question is not duplicate
+                question.setSurvey(survey);
+                survey.getQuestions().add(question);
+            }else{
+                // Question is duplicate
+                Messages.addGlobalInfo("Duplicate question is already in survey.");
+            }
         }
-        newQuestion = true;
+        surveyCreationStep = SURVEY_CREATION_STEP.QUESTION_TYPE_CHOICE;
         questionToEdit = null;
     }
 
     public void editQuestion(Question question){
-        newQuestion = false;
+        surveyCreationStep = SURVEY_CREATION_STEP.EDIT_QUESTION;
         questionToEdit = question;
     }
 

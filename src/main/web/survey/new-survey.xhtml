@@ -61,11 +61,11 @@
     </h:form>
     <h:form>
         <!-- New question -->
-        <c:if test="#{newSurveyController.newQuestion}">
+        <c:if test="#{newSurveyController.surveyCreationStep == 'QUESTION_TYPE_CHOICE'}">
             <!-- Choose new question type -->
             <ui:include src="/WEB-INF/questions/new-question.xhtml"/>
         </c:if>
-        <c:if test="#{not newSurveyController.newQuestion}">
+        <c:if test="#{newSurveyController.surveyCreationStep != 'QUESTION_TYPE_CHOICE'}">
             <!-- Create new question and add choices OR edit question-->
             <ui:include src="/WEB-INF/questions/edit/#{newSurveyController.newQuestionType}-edit.xhtml"/>
         </c:if>
