@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.security.MessageDigest;
 
 /**
  * User entity
@@ -54,9 +55,17 @@ public class User
 
     public void setPasswordHash(String password)
     {
-        System.out.println("HASHING PASSWORD");
-        passwordHash = password;
-        System.out.println("COMPLETED");
+        //passwordHash = RandomStringGenerator.hash(password);
+        try {
+            System.out.println("HASHING PASSWORD");
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            digest.update(password.getBytes("UTF-8"));
+            passwordHash = String.format("%064x", new java.math.BigInteger(1, digest.digest()));
+            System.out.println("HASH COMPLETED: " + passwordHash);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
-
 }
