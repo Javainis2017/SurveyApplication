@@ -93,9 +93,21 @@ public class NewSurveyController implements Serializable{
     }
 
     public void createSurvey(){
+        /* Check if survey has questions */
+        if(survey.getQuestions().isEmpty()){
+            Messages.addGlobalInfo("Survey must have at least 1 question.");
+            return;
+        }
+
         /* Generate unique URL*/
-        /* survey.setUrl(url); */
-        System.out.println(randomStringGenerator.generateString(32));
+        String url = randomStringGenerator.generateString(32);
+        // Check if url is duplicate
+        while(surveyDAO.existsByUrl(url)){
+            url = randomStringGenerator.generateString(32);
+        }
+        survey.setUrl(url);
+        System.out.println(survey.getUrl());
+
         /* User currentUser = userController.getCurrentUser();
         * survey.setAuthor(currentUser);
         * currentUser.getSurveys().add(survey); */

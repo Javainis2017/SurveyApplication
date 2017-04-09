@@ -16,10 +16,15 @@
     <h1>New survey</h1>
     <h2>Create new survey</h2>
     <!-- Change survey title and description -->
-    <h:form>
+    <h:form id="survey">
         <p:panelGrid id="infoGrid" columns="3">
             <p:outputLabel for="title" value="Survey title"/>
-            <p:inputText id="title" required="true" value="#{newSurveyController.survey.title}" maxlength="80" size="80" placeholder="Survey title"/>
+            <p:inputText id="title"
+                         required="#{param['survey:create'] != null}"
+                         value="#{newSurveyController.survey.title}"
+                         maxlength="80"
+                         size="80"
+                         placeholder="Survey title"/>
             <p:message for="title"/>
 
             <p:outputLabel for="description" value="Survey description"/>
@@ -53,13 +58,11 @@
 
         <!-- Save survey and show url in new page-->
         <br/>
-        <p:commandButton value="Create survey"
-                         actionListener="#{newSurveyController.createSurvey}"
-                         ajax="true"/>
+        <p:commandButton id="create"
+                value="Create survey"
+                actionListener="#{newSurveyController.createSurvey}"/>
         <p:messages globalOnly="true"/>
 
-    </h:form>
-    <h:form>
         <!-- New question -->
         <c:if test="#{newSurveyController.surveyCreationStep == 'QUESTION_TYPE_CHOICE'}">
             <!-- Choose new question type -->
