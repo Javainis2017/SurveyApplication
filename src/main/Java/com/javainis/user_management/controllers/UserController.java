@@ -89,6 +89,7 @@ public class UserController implements Serializable
                 Messages.addGlobalWarn("New and repeated password are not equal");
                 return null;
             }
+            userDAO.changeUserPassword(user.getEmail(), newPassword);
             user.setPasswordHash(newPassword);
             Messages.addGlobalInfo("Password was successfully changed");
             return "home-page?faces-redirect=true";
