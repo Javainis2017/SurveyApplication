@@ -6,6 +6,7 @@ import com.javainis.utility.HashGenerator;
 import lombok.Getter;
 import lombok.Setter;
 import org.omnifaces.util.Messages;
+import sun.invoke.empty.Empty;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -94,9 +95,13 @@ public class UserController implements Serializable
                 Messages.addGlobalWarn("New and repeated password are not equal");
                 return null;
             }
-            currentPassword = newPassword;
-            userDAO.changeUserPassword(user.getEmail(), hashGenerator.generatePasswordHash(newPassword));
+            newPassword = hashGenerator.generatePasswordHash(newPassword);
+            userDAO.changeUserPassword(user.getEmail(), newPassword);
+            user.setPasswordHash(newPassword);
             Messages.addGlobalInfo("Password was successfully changed");
+            currentPassword = "";
+            newPassword = "";
+            repeatedPassword = "";
             return "home-page?faces-redirect=true";
         }
         catch(Exception ex){
