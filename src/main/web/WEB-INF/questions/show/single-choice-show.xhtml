@@ -7,7 +7,7 @@
     <h:outputText>#{question.text}</h:outputText>
     <br/>
     <p:selectOneRadio id="choices" value="" layout="pageDirection">
-        <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}"/>
+        <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}" itemDisabled="true"/>
     </p:selectOneRadio>
     <br/>
 </ui:composition>
