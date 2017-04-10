@@ -25,16 +25,16 @@ public class SingleChoiceQuestionController {
     private ChoiceDAO choiceDAO;
 
     public void addChoice(Choice choice){
-        question.getAnswers().add(choice);
+        question.getChoices().add(choice);
     }
 
     public void removeChoice(Choice choice){
-        question.getAnswers().remove(choice);
+        question.getChoices().remove(choice);
     }
 
     public void saveChoice(Choice choice)
     {
-        if(!question.getAnswers().contains(choice)){
+        if(!question.getChoices().contains(choice)){
             choice.setQuestion(question);
             addChoice(choice);
         }else{

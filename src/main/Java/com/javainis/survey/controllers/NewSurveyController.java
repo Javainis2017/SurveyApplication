@@ -29,12 +29,8 @@ public class NewSurveyController implements Serializable{
     @Inject
     private QuestionDAO questionDAO;
 
-    /*@Inject
-    private QuestionTypeDAO questionTypeDAO;
-    */
     @Inject
     private UserController userController;
-
 
     @Inject
     private RandomStringGenerator randomStringGenerator;
@@ -45,24 +41,12 @@ public class NewSurveyController implements Serializable{
     @Getter
     private SURVEY_CREATION_STEP surveyCreationStep = SURVEY_CREATION_STEP.QUESTION_TYPE_CHOICE;
 
+    /* Naujai kuriamo klausimo tipas*/
     @Getter
     private String newQuestionType;
 
     @Getter
     private Question questionToEdit;
-
-    /* Naujai kuriamo klausimo tipas
-    @Getter
-    @Setter
-    private QuestionType newQuestionType;*/
-
-    /*public void createQuestion(QuestionType questionType){
-        newQuestionType = questionType;
-    }
-
-    public List<QuestionType> getAllQuestionTypes(){
-        return questionTypeDAO.getAll();
-    }*/
 
     public void createQuestion(String type){
         surveyCreationStep = SURVEY_CREATION_STEP.NEW_QUESTION;
