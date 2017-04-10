@@ -6,7 +6,9 @@ import com.javainis.user_management.entities.Whitelist;
 import com.javainis.user_management.dao.WhitelistDAO;
 import com.javainis.user_management.entities.User;
 import com.javainis.user_management.entities.UserType;
+import com.javainis.utility.HashGenerator;
 import lombok.Getter;
+import lombok.Setter;
 import org.omnifaces.util.Messages;
 
 import javax.enterprise.context.RequestScoped;
@@ -24,6 +26,10 @@ public class UserRegistrationController {
     @Getter
     private Whitelist whitelist = new Whitelist();
 
+    @Getter
+    @Setter
+    private String passwordHash;
+
     @Inject
     private WhitelistDAO whitelistDAO;
 
@@ -32,6 +38,9 @@ public class UserRegistrationController {
 
     @Inject
     private UserTypeDAO typeDAO;
+
+    @Inject
+    private HashGenerator hashGenerator;
 
     @Transactional
     public String register()
@@ -52,6 +61,7 @@ public class UserRegistrationController {
         }
         else
         {
+            user.setPasswordHash(hashGenerator.generatePasswordHash(passwordHash));
             userDAO.create(user);
             //whitelistDAO.removeFromWhitelist(user.getEmail()); // Registered user email is removed from whitelist
             Messages.addGlobalInfo("Success");

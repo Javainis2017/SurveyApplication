@@ -54,9 +54,4 @@ public class User
     private UserType userTypeID;
 
     private Boolean blocked = false;
-
-    public void setPasswordHash(String password)
-    {
-        passwordHash = HashGenerator.generatePasswordHash(password);
-    }
 }

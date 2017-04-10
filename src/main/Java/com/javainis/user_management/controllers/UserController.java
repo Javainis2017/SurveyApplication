@@ -31,6 +31,10 @@ public class UserController implements Serializable
 
     @Getter
     @Setter
+    private String passwordHash;
+
+    @Getter
+    @Setter
     private String currentPassword;
 
     @Getter
@@ -89,8 +93,8 @@ public class UserController implements Serializable
                 Messages.addGlobalWarn("New and repeated password are not equal");
                 return null;
             }
+            currentPassword = newPassword;
             userDAO.changeUserPassword(user.getEmail(), newPassword);
-            user.setPasswordHash(newPassword);
             Messages.addGlobalInfo("Password was successfully changed");
             return "home-page?faces-redirect=true";
         }

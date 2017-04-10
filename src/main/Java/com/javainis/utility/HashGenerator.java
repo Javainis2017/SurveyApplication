@@ -8,9 +8,9 @@ import java.security.MessageDigest;
 @ApplicationScoped
 public class HashGenerator {
 
-    public static String generatePasswordHash(String password)
+    public String generatePasswordHash(String password)
     {
-        String hash = "";
+        String hash = password;
         try {
             System.out.println("HASHING PASSWORD");
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

@@ -104,12 +104,12 @@ public class UserDAO
         }
     }
 
-    public void changeUserPassword(String email, String newPassword)
+    public void changeUserPassword(String email, String newPasswordHash)
     {
         User user = manager.createNamedQuery("User.findEmail", User.class)
                     .setParameter("email", email)
                     .getSingleResult();
 
-        user.setPasswordHash(newPassword);
+        user.setPasswordHash(newPasswordHash);
     }
 }
