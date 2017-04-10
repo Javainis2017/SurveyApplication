@@ -49,6 +49,7 @@ public class UserController implements Serializable
     public String login() //Boolean grazinti??
     {
         try{
+            user.setPasswordHash(hashGenerator.generatePasswordHash(passwordHash));
             user = userDAO.login(user.getEmail(), user.getPasswordHash());
             if (user.getBlocked()) {
                 Messages.addGlobalWarn("ERROR: You are blocked from system");
@@ -94,7 +95,7 @@ public class UserController implements Serializable
                 return null;
             }
             currentPassword = newPassword;
-            userDAO.changeUserPassword(user.getEmail(), newPassword);
+            userDAO.changeUserPassword(user.getEmail(), hashGenerator.generatePasswordHash(newPassword));
             Messages.addGlobalInfo("Password was successfully changed");
             return "home-page?faces-redirect=true";
         }
