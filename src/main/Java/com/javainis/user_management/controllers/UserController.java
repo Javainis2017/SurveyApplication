@@ -23,7 +23,7 @@ public class UserController implements Serializable
     private User user = new User();
 
     @Inject
-    @Getter // nieko blogo? AdminBlockController nuodojasi situo
+    @Getter
     private UserDAO userDAO;
 
     @Inject
@@ -89,10 +89,11 @@ public class UserController implements Serializable
                 Messages.addGlobalWarn("New and repeated password are not equal");
                 return null;
             }
-
+            currentPassword = newPassword;
             userDAO.changeUserPassword(user.getEmail(), newPassword);
             Messages.addGlobalInfo("Password was successfully changed");
-            return null;
+            logout();
+            return "login-page?faces-redirect=true";
         }
         catch(Exception ex){
             Messages.addGlobalWarn("FATAL ERROR: User password change failed");
