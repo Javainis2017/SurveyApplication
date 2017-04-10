@@ -53,6 +53,11 @@
                                 <ui:param name="question" value="#{question}"/>
                             </ui:include>
                         </h:panelGroup>
+                        <h:panelGroup rendered="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
+                            <ui:include src="/WEB-INF/questions/show/multi-choice-show.xhtml">
+                                <ui:param name="question" value="#{question}"/>
+                            </ui:include>
+                        </h:panelGroup>
                         <p:commandButton value="Edit question" immediate="true" actionListener="#{newSurveyController.editQuestion(question)}"/>
                         <p:commandButton value="Remove question" immediate="true" actionListener="#{newSurveyController.removeQuestion(question)}"/>
                         <br/>

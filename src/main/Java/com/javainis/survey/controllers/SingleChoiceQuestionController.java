@@ -43,23 +43,29 @@ public class SingleChoiceQuestionController implements Serializable{
             if(!question.getChoices().contains(choice)){
                 choice.setQuestion(question);
                 question.getChoices().add(choice);
+                choice = new Choice();
+                edit = false;
             }else{
                 Messages.addGlobalInfo("Duplicate choice is already in question.");
             }
+        }else
+        {
+            choice = new Choice();
+            edit = false;
         }
-        choice = new Choice();
-        edit = false;
+
     }
 
     public void saveQuestion(){
         // Validate
         if(question.getChoices().isEmpty()){
             Messages.addGlobalInfo("Question must have at least 1 choice");
+        }else {
+            // Save
+            surveyController.saveQuestion(question);
+            // Destroy this bean
+            FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove("singleChoiceQuestionController");
         }
-        // Save
-        surveyController.saveQuestion(question);
-        // Destroy this bean
-        FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove("singleChoiceQuestionController");
     }
 
     @PostConstruct

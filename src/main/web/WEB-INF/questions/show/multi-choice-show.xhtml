@@ -6,8 +6,8 @@
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:outputText>#{question.text}</h:outputText>
     <br/>
-    <p:selectOneRadio id="single-choices" value="" layout="pageDirection">
-        <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}" itemDisabled="true"/>
-    </p:selectOneRadio>
+    <p:selectManyCheckbox id="multi-choices" value="#{multipleChoiceQuestionController.answers}" layout="pageDirection">
+        <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}"/>
+    </p:selectManyCheckbox>
     <br/>
 </ui:composition>
