@@ -35,25 +35,25 @@
         <!-- Show already created survey - questions and choices -->
         <c:if test="#{not empty newSurveyController.survey.questions}">
             <h3>Questions</h3>
-            <ui:repeat value="#{newSurveyController.survey.questions}" var="question">
-                <ui:remove>
-                    <ui:include src="/WEB-INF/questions/show/#{question.class.simpleName}-show.xhtml">
-                        <ui:param name="question" value="#{question}"/>
-                    </ui:include>
-                    <p:commandButton actionListener="#{newSurveyController.editQuestion(question)}"/>
-                    <p:commandButton actionListener="#{newSurveyController.removeQuestion(question)}"/>
-                </ui:remove>
-
-                <!-- Laikinai, bandymui-->
-
-                    <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
-                        <ui:param name="question" value="#{question}"/>
-                    </ui:include>
-                    <p:commandButton value="Edit question" immediate="true" actionListener="#{newSurveyController.editQuestion(question)}"/>
-                    <p:commandButton value="Remove question" immediate="true" actionListener="#{newSurveyController.removeQuestion(question)}"/>
-                    <br/>
-
-            </ui:repeat>
+            <h:panelGroup id="questions">
+                <ui:repeat value="#{newSurveyController.survey.questions}" var="question">
+                    <h:panelGroup>
+                        <h:panelGroup rendered="#{question['class'].simpleName == 'FreeTextQuestion'}">
+                            <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
+                                <ui:param name="question" value="#{question}"/>
+                            </ui:include>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{question['class'].simpleName == 'IntervalQuestion'}">
+                            <ui:include src="/WEB-INF/questions/show/interval-show.xhtml">
+                                <ui:param name="question" value="#{question}"/>
+                            </ui:include>
+                        </h:panelGroup>
+                        <p:commandButton value="Edit question" immediate="true" actionListener="#{newSurveyController.editQuestion(question)}"/>
+                        <p:commandButton value="Remove question" immediate="true" actionListener="#{newSurveyController.removeQuestion(question)}"/>
+                        <br/>
+                    </h:panelGroup>
+                </ui:repeat>
+            </h:panelGroup>
         </c:if>
 
         <!-- Save survey and show url in new page-->

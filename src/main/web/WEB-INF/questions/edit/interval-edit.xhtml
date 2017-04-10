@@ -7,7 +7,7 @@
     <h3>New interval question</h3>
     <p:panelGrid id="newIntervalQuestionGrid" columns="3">
         <p:outputLabel for="text" value="Question text"/>
-        <p:inputTextarea id="text" required="true" value="#{intervalQuestionController.question.text}"
+        <p:inputTextarea id="text" required="#{param['survey:createIntervalQuestion'] != null}" value="#{intervalQuestionController.question.text}"
                          maxlength="300" rows="4" cols="80"
                          placeholder="Question text"/>
         <p:message for="text"/>
@@ -35,6 +35,7 @@
         <p:message for="required"/>
 
         <p:commandButton value="Save question"
+                         id="createIntervalQuestion"
                          action="#{intervalQuestionController.validate}"/>
     </p:panelGrid>
 </ui:composition>

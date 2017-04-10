@@ -96,11 +96,10 @@ public class NewSurveyController implements Serializable{
         }
         survey.setUrl(url);
 
-        survey.setAuthor(userController.getUser());
+        User currentUser = userController.getUser();
+        survey.setAuthor(currentUser);
 
-        /* User currentUser = userController.getCurrentUser();
-        * survey.setAuthor(currentUser);
-        * currentUser.getSurveys().add(survey); */
+        /* currentUser.getSurveys().add(survey); */
 
         /* Persist questions/cascade */
         try {

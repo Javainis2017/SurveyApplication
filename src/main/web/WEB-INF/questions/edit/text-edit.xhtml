@@ -7,7 +7,7 @@
     <h3>New free text question</h3>
     <p:panelGrid id="newTextQuestionGrid" columns="3">
         <p:outputLabel for="text" value="Question text"/>
-        <p:inputTextarea id="text" required="true" value="#{textQuestionController.question.text}"
+        <p:inputTextarea id="text" required="#{param['survey:createTextQuestion'] != null}" value="#{textQuestionController.question.text}"
                          maxlength="300" rows="4" cols="80"
                          placeholder="Question text"/>
         <p:message for="text"/>
@@ -17,6 +17,7 @@
         <p:message for="required"/>
 
         <p:commandButton value="Save question"
+                         id="createTextQuestion"
                          action="#{newSurveyController.saveQuestion(textQuestionController.question)}"/>
     </p:panelGrid>
 </ui:composition>
