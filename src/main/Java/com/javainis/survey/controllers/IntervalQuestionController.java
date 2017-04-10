@@ -2,7 +2,7 @@ package com.javainis.survey.controllers;
 
 import com.javainis.survey.entities.FreeTextQuestion;
 import com.javainis.survey.entities.IntervalQuestion;
-import jdk.nashorn.internal.objects.annotations.Setter;
+import lombok.Setter;
 import lombok.Getter;
 import org.omnifaces.util.Messages;
 
@@ -20,10 +20,15 @@ public class IntervalQuestionController {
     @Inject
     private NewSurveyController surveyController;
 
+    @Getter
+    @Setter
     private int minimum_value;
 
+    @Getter
+    @Setter
     private int maximum_value;
 
+/*
     private void setMinimum(int value){
         if(value<=maximum_value){
             question.setMin_value(value);
@@ -39,16 +44,23 @@ public class IntervalQuestionController {
             Messages.addGlobalInfo("Maximum value must not be lower than minimum");
         }
     }
+*/
     public void validate(){
-        setMinimum(minimum_value);
-        setMaximum(maximum_value);
-        surveyController.saveQuestion(question);
+        if(minimum_value>=maximum_value){
+            question.setMin_value(minimum_value);
+            question.setMax_value(maximum_value);
+            surveyController.saveQuestion(question);
+        }else{
+            Messages.addGlobalInfo("Minimum value must not be higher than maximum");
+        }
     }
     @PostConstruct
     private void postConstruct(){
         // Check if edit question
         if(surveyController.getSurveyCreationStep() == NewSurveyController.SURVEY_CREATION_STEP.EDIT_QUESTION){
             question = (IntervalQuestion) surveyController.getQuestionToEdit();
+            minimum_value = question.getMin_value();
+            maximum_value = question.getMax_value();
         }
     }
 }

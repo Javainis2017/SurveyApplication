@@ -7,14 +7,14 @@
     <h3>New interval question</h3>
     <p:panelGrid id="newIntervalQuestionGrid" columns="3">
         <p:outputLabel for="text" value="Question text"/>
-        <p:inputTextarea id="text" required="true" value="#{IntervalQuestionController.question.text}"
+        <p:inputTextarea id="text" required="true" value="#{intervalQuestionController.question.text}"
                          maxlength="300" rows="4" cols="80"
                          placeholder="Question text"/>
         <p:message for="text"/>
 
         <p:outputLabel for="minimum" value="Min"/>
         <p:inputText id="minimum"
-                     value="#{IntervalQuestionController.minimum_value}"
+                     value="#{intervalQuestionController.minimum_value}"
                      max="2147483647"
                      min="-2147483648"
                      size="11"
@@ -23,7 +23,7 @@
 
         <p:outputLabel for="maximum" value="Max"/>
         <p:inputText id="maximum"
-                     value="#{IntervalQuestionController.maximum_value}"
+                     value="#{intervalQuestionController.maximum_value}"
                      max="2147483647"
                      min="-2147483648"
                      size="11"
@@ -31,10 +31,10 @@
         <p:message for="maximum"/>
 
         <p:outputLabel for="required" value="Required"/>
-        <p:selectBooleanCheckbox id="required" value="#{IntervalQuestionController.question.required}"/>
+        <p:selectBooleanCheckbox id="required" value="#{intervalQuestionController.question.required}"/>
         <p:message for="required"/>
 
         <p:commandButton value="Save question"
-                         action="#{IntervalQuestionController.validate}"/>
+                         action="#{intervalQuestionController.validate}"/>
     </p:panelGrid>
 </ui:composition>
