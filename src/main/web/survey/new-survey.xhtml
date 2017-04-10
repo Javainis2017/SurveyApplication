@@ -12,7 +12,7 @@
 <head>
     <title>New survey</title>
 </head>
-<body>
+<h:body rendered="#{userController.getUser().getEmail() != null}">
     <h1>New survey</h1>
     <h2>Create new survey</h2>
     <!-- Change survey title and description -->
@@ -78,5 +78,10 @@
             <ui:include src="/WEB-INF/questions/edit/#{newSurveyController.newQuestionType}-edit.xhtml"/>
         </c:if>
     </h:form>
-</body>
+</h:body>
+<c:if test="#{userController.getUser().getEmail() == null}">
+    <body>
+        <h1>ERROR 401: Unauthorized</h1>
+    </body>
+</c:if>
 </html>

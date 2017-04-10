@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
 >
 <h:head>
     <title>Survey Website</title>
@@ -16,5 +17,19 @@
         <h:link outcome="register-page">Register</h:link><br/>
         <h:link outcome="whitelist-page">Whitelist</h:link><br/>
     </p>
+    <h2>Surveys</h2>
+    <p:fieldset legend="Surveys" toggleable="true" collapsed="true" styleClass="fieldPanel">
+        <p:dataTable id="surveyTable" var="survey" value="#{userSurveyController.allSurveys}">
+            <p:column headerText="Title" style="width:110px;text-align: center">
+                <h:outputText value="#{survey.title}" />
+            </p:column>
+            <p:column headerText="Description" style="width:110px;text-align: center">
+                <h:outputText value="#{survey.description}" />
+            </p:column>
+            <p:column headerText="URL" style="width:110px;text-align: center">
+                <h:outputText value="#{survey.url}" />
+            </p:column>
+        </p:dataTable>
+    </p:fieldset>
 </h:body>
 </html>

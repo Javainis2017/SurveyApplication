@@ -17,7 +17,7 @@ public class SurveyDAO {
         manager.persist(survey);
     }
 
-    public List<Survey> getAll(String url){
+    public List<Survey> getAll(){
         return manager.createNamedQuery("Survey.findAll", Survey.class).getResultList();
     }
 
