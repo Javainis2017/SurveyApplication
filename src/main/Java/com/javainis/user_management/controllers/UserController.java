@@ -31,11 +31,9 @@ public class UserController implements Serializable
     private HashGenerator hashGenerator;
 
     @Getter
-    @Setter
     private String passwordHash;
 
     @Getter
-    @Setter
     private String currentPassword;
 
     @Getter
@@ -47,17 +45,15 @@ public class UserController implements Serializable
     private String repeatedPassword;
 
     @Transactional
-    public String login() //Boolean grazinti??
+    public String login()
     {
         try{
-            user.setPasswordHash(hashGenerator.generatePasswordHash(passwordHash));
             user = userDAO.login(user.getEmail(), user.getPasswordHash());
             if (user.getBlocked()) {
                 Messages.addGlobalWarn("ERROR: You are blocked from system");
+                resetPasswordFields();
                 return null;
             }
-            //Messages.addGlobalWarn("Success");
-
             // ikelti vartotoja i home page
             return "home-page?faces-redirect=true";
         }
@@ -65,16 +61,15 @@ public class UserController implements Serializable
         {
             //Nerado tokio vartotojo
             Messages.addGlobalWarn("Incorrect email or password");
+            resetPasswordFields();
             return null;
         }
     }
 
     @Transactional
-    public String logout(){ //Boolean returninti?
+    public String logout(){
         try{
             FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-            // uzbaigti session scope: session.invalidate(); ???
-            //user = null; //?
             return "index?faces-redirect=true";
         }
         catch (Exception ex){
@@ -86,7 +81,7 @@ public class UserController implements Serializable
     @Transactional
     public String changePassword(){
         try{
-            if(!hashGenerator.generatePasswordHash(currentPassword).contentEquals(user.getPasswordHash())) {
+            if(!currentPassword.contentEquals(user.getPasswordHash())) {
                 Messages.addGlobalInfo("Current password is not correct");
                 return null;
             }
@@ -99,15 +94,35 @@ public class UserController implements Serializable
             userDAO.changeUserPassword(user.getEmail(), newPassword);
             user.setPasswordHash(newPassword);
             Messages.addGlobalInfo("Password was successfully changed");
-            currentPassword = "";
-            newPassword = "";
-            repeatedPassword = "";
+            resetPasswordFields();
             return "home-page?faces-redirect=true";
         }
         catch(Exception ex){
             Messages.addGlobalWarn("FATAL ERROR: User password change failed");
             return null;
         }
+    }
+
+    //Viskas uzhashinama cia
+    public void setPasswordHash(String password)
+    {
+        passwordHash = hashGenerator.generatePasswordHash(password);
+        user.setPasswordHash(passwordHash);
+    }
+
+    public void setCurrentPassword(String password)
+    {
+        currentPassword = hashGenerator.generatePasswordHash(password);
+    }
+
+    //Isvalo laukus
+    private void resetPasswordFields()
+    {
+        passwordHash = "";
+        currentPassword = "";
+        newPassword = "";
+        repeatedPassword = "";
+
     }
 
 }
