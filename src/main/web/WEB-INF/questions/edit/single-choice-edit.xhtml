@@ -1,0 +1,43 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h3>New free text question</h3>
+    <p:panelGrid id="newSingleChoiceQuestionGrid" columns="3">
+        <p:outputLabel for="text" value="Question text"/>
+        <p:inputTextarea id="text" required="#{param['survey:createSingleChoiceQuestion'] != null}" value="#{singleChoiceQuestionController.question.text}"
+                         maxlength="300" rows="4" cols="80"
+                         placeholder="Question text"/>
+        <p:message for="text"/>
+
+        <p:outputLabel for="required" value="Required"/>
+        <p:selectBooleanCheckbox id="required" value="#{singleChoiceQuestionController.question.required}"/>
+        <p:message for="required"/>
+    </p:panelGrid>
+    <p:panelGrid columns="1" rendered="#{not empty singleChoiceQuestionController.question.choices}">
+        <ui:repeat value="#{singleChoiceQuestionController.question.choices}" var="choice">
+            <h:outputText>#{choice.text}</h:outputText>
+            <br/>
+            <p:commandButton actionListener="#{singleChoiceQuestionController.removeChoice(choice)}" value="Remove choice" immediate="true"/>
+            <p:commandButton actionListener="#{singleChoiceQuestionController.editChoice(choice)}" value="Edit choice"/>
+            <br/>
+        </ui:repeat>
+    </p:panelGrid>
+    <p:panelGrid columns="3">
+        <p:outputLabel for="choice" value="Choice"/>
+        <p:inputText id="choice" required="#{param['survey:saveChoice'] != null}" value="#{singleChoiceQuestionController.choice.text}"
+                         maxlength="200" rows="2" cols="80"
+                         placeholder="Choice"/>
+        <p:message for="choice"/>
+
+        <p:commandButton value="Save choice"
+                         id="saveChoice"
+                         action="#{singleChoiceQuestionController.saveChoice}"/>
+    </p:panelGrid>
+
+    <p:commandButton value="Save question"
+                     id="createSingleChoiceQuestion"
+                     action="#{singleChoiceQuestionController.saveQuestion}"/>
+</ui:composition>

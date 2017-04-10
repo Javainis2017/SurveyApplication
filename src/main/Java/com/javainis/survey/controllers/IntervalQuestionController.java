@@ -45,7 +45,7 @@ public class IntervalQuestionController {
         }
     }
 */
-    public void validate(){
+    public void saveQuestion(){
         if(minValue <= maxValue){
             question.setMinValue(minValue);
             question.setMaxValue(maxValue);

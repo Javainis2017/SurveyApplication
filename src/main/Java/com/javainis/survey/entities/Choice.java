@@ -1,5 +1,6 @@
 package com.javainis.survey.entities;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ import javax.persistence.*;
         @NamedQuery(name = "Choice.findByQuestionId", query = "SELECT c FROM Choice c WHERE c.question.id = :questionId")
 })
 @Table(name="choice")
+@EqualsAndHashCode(of = "text")
 public class Choice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
