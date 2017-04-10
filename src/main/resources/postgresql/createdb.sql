@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS choice
 	FOREIGN KEY (question_id) REFERENCES question(id)
 );
 
-CREATE TABLE IF NOT EXISTS interval_choice
+CREATE TABLE IF NOT EXISTS interval_question
 (
 	id 					BIGSERIAL PRIMARY KEY,
 	min_value 	INTEGER,
@@ -119,3 +119,8 @@ CREATE TABLE IF NOT EXISTS single_choice_question
 
 ALTER TABLE question DROP CONSTRAINT IF EXISTS question_type_id_fkey;
 DROP TABLE IF EXISTS question_type;
+
+ALTER TABLE IF EXISTS interval_choice RENAME TO interval_question;
+
+ALTER TABLE interval_question DROP CONSTRAINT IF EXISTS interval_choice_question_id_fkey;
+ALTER TABLE interval_question DROP COLUMN IF EXISTS question_id;

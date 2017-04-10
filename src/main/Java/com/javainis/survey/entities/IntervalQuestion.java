@@ -11,9 +11,12 @@ import javax.persistence.*;
 @Setter
 @DiscriminatorValue("4")
 
-@Table(name = "interval_choice")
+@Table(name = "interval_question")
 public class IntervalQuestion extends Question{
 
-    private int min_value;
-    private int max_value;
+    @Column(name = "min_value")
+    private int minValue;
+
+    @Column(name = "max_value")
+    private int maxValue;
 }
