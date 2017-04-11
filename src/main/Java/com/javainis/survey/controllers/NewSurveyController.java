@@ -75,7 +75,6 @@ public class NewSurveyController implements Serializable{
 
     @Transactional
     public void createSurvey(){
-        System.out.println(userController.getUser());
         /* Check if survey has questions */
         if(survey.getQuestions().isEmpty()){
             Messages.addGlobalInfo("Survey must have at least 1 question.");
