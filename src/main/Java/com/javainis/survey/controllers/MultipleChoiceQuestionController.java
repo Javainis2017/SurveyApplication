@@ -47,18 +47,11 @@ public class MultipleChoiceQuestionController implements Serializable {
     public void saveChoice()
     {
         if(!edit) {
-            if (!question.getChoices().contains(choice)) {
-                choice.setQuestion(question);
-                addChoice(choice);
-                choice = new Choice();
-                edit = false;
-            } else {
-                Messages.addGlobalInfo("Duplicate choice is already in question.");
-            }
-        }else {
-            choice = new Choice();
-            edit = false;
+            choice.setQuestion(question);
+            addChoice(choice);
         }
+        choice = new Choice();
+        edit = false;
     }
 
     public void saveQuestion(){
