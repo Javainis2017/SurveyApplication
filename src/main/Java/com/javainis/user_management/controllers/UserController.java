@@ -9,6 +9,8 @@ import org.omnifaces.util.Messages;
 import sun.invoke.empty.Empty;
 
 import javax.enterprise.context.SessionScoped;
+
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -69,8 +71,10 @@ public class UserController implements Serializable
     @Transactional
     public String logout(){
         try{
-            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-            return "index?faces-redirect=true";
+            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+            context.redirect("/");
+            context.invalidateSession();
+            //return "index?faces-redirect=true";
         }
         catch (Exception ex){
             Messages.addGlobalWarn("FATAL ERROR: Could not log you out. Now you're stuck forever :(");
