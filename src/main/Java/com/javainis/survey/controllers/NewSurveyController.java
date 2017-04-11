@@ -56,15 +56,8 @@ public class NewSurveyController implements Serializable{
     public void saveQuestion(Question question){
         //Check if question is new
         if(surveyCreationStep == SURVEY_CREATION_STEP.NEW_QUESTION){
-            // Check for duplicate question
-            if(!survey.getQuestions().contains(question)){
-                //Question is not duplicate
-                question.setSurvey(survey);
-                survey.getQuestions().add(question);
-            }else{
-                // Question is duplicate
-                Messages.addGlobalInfo("Duplicate question is already in survey.");
-            }
+            question.setSurvey(survey);
+            survey.getQuestions().add(question);
         }
         surveyCreationStep = SURVEY_CREATION_STEP.QUESTION_TYPE_CHOICE;
         questionToEdit = null;
@@ -82,6 +75,7 @@ public class NewSurveyController implements Serializable{
 
     @Transactional
     public void createSurvey(){
+        System.out.println(userController.getUser());
         /* Check if survey has questions */
         if(survey.getQuestions().isEmpty()){
             Messages.addGlobalInfo("Survey must have at least 1 question.");
@@ -90,6 +84,7 @@ public class NewSurveyController implements Serializable{
 
         /* Generate unique URL*/
         String url = randomStringGenerator.generateString(32);
+        System.out.println(url);
         // Check if url is duplicate
         while(surveyDAO.existsByUrl(url)){
             url = randomStringGenerator.generateString(32);

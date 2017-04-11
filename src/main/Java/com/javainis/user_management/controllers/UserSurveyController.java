@@ -22,6 +22,9 @@ public class UserSurveyController {
         return surveyDAO.findByAuthorId(userController.getUser().getUserID());
     }
 
-
+    public List<Survey> getAllSurveys()
+    {
+        return surveyDAO.getAll();
+    }
 
 }
