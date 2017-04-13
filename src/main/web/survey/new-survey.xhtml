@@ -32,29 +32,29 @@
             <p:message for="description"/>
         </p:panelGrid>
 
-        <!-- Show already created survey - questions and choices -->
+        <!-- Preview already created survey - questions and choices -->
         <c:if test="#{not empty newSurveyController.survey.questions}">
             <h3>Questions</h3>
             <h:panelGroup id="questions">
                 <ui:repeat value="#{newSurveyController.survey.questions}" var="question">
                     <h:panelGroup>
                         <h:panelGroup rendered="#{question['class'].simpleName == 'FreeTextQuestion'}">
-                            <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
+                            <ui:include src="/WEB-INF/questions/preview/text-preview.xhtml">
                                 <ui:param name="question" value="#{question}"/>
                             </ui:include>
                         </h:panelGroup>
                         <h:panelGroup rendered="#{question['class'].simpleName == 'IntervalQuestion'}">
-                            <ui:include src="/WEB-INF/questions/show/interval-show.xhtml">
+                            <ui:include src="/WEB-INF/questions/preview/interval-preview.xhtml">
                                 <ui:param name="question" value="#{question}"/>
                             </ui:include>
                         </h:panelGroup>
                         <h:panelGroup rendered="#{question['class'].simpleName == 'SingleChoiceQuestion'}">
-                            <ui:include src="/WEB-INF/questions/show/single-choice-show.xhtml">
+                            <ui:include src="/WEB-INF/questions/preview/single-choice-preview.xhtml">
                                 <ui:param name="question" value="#{question}"/>
                             </ui:include>
                         </h:panelGroup>
                         <h:panelGroup rendered="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
-                            <ui:include src="/WEB-INF/questions/show/multi-choice-show.xhtml">
+                            <ui:include src="/WEB-INF/questions/preview/multi-choice-preview.xhtml">
                                 <ui:param name="question" value="#{question}"/>
                             </ui:include>
                         </h:panelGroup>

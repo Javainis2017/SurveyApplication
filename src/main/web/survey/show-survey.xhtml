@@ -28,46 +28,43 @@
             <p>#{surveyController.survey.description}</p>
         </c:if>
 
-        <ui:remove>
-            <!-- Change survey title and description -->
-            <h:form id="survey">
-                <!-- Show survey -->
-                <h:panelGroup id="questions">
-                    <ui:repeat value="#{newSurveyController.survey.questions}" var="question">
-                        <h:panelGroup>
-                            <h:panelGroup rendered="#{question['class'].simpleName == 'FreeTextQuestion'}">
-                                <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
-                                    <ui:param name="question" value="#{question}"/>
-                                </ui:include>
-                            </h:panelGroup>
-                            <h:panelGroup rendered="#{question['class'].simpleName == 'IntervalQuestion'}">
-                                <ui:include src="/WEB-INF/questions/show/interval-show.xhtml">
-                                    <ui:param name="question" value="#{question}"/>
-                                </ui:include>
-                            </h:panelGroup>
-                            <h:panelGroup rendered="#{question['class'].simpleName == 'SingleChoiceQuestion'}">
-                                <ui:include src="/WEB-INF/questions/show/single-choice-show.xhtml">
-                                    <ui:param name="question" value="#{question}"/>
-                                </ui:include>
-                            </h:panelGroup>
-                            <h:panelGroup rendered="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
-                                <ui:include src="/WEB-INF/questions/show/multi-choice-show.xhtml">
-                                    <ui:param name="question" value="#{question}"/>
-                                </ui:include>
-                            </h:panelGroup>
-                            <br/>
+        <!-- Show questions -->
+        <h:form id="survey">
+            <h:panelGroup id="questions">
+                <ui:repeat value="#{surveyController.survey.questions}" var="question">
+                    <h:panelGroup>
+                        <h:panelGroup rendered="#{question['class'].simpleName == 'FreeTextQuestion'}">
+                            <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
+                                <ui:param name="question" value="#{question}"/>
+                            </ui:include>
                         </h:panelGroup>
-                    </ui:repeat>
-                </h:panelGroup>
+                        <h:panelGroup rendered="#{question['class'].simpleName == 'IntervalQuestion'}">
+                            <ui:include src="/WEB-INF/questions/show/interval-show.xhtml">
+                                <ui:param name="question" value="#{question}"/>
+                            </ui:include>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{question['class'].simpleName == 'SingleChoiceQuestion'}">
+                            <ui:include src="/WEB-INF/questions/show/single-choice-show.xhtml">
+                                <ui:param name="question" value="#{question}"/>
+                            </ui:include>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
+                            <ui:include src="/WEB-INF/questions/show/multi-choice-show.xhtml">
+                                <ui:param name="question" value="#{question}"/>
+                            </ui:include>
+                        </h:panelGroup>
+                        <br/>
+                    </h:panelGroup>
+                </ui:repeat>
+            </h:panelGroup>
 
-                <!-- Save survey and show url in new page-->
-                <br/>
-                <p:commandButton id="create"
-                                 value="Create survey"
-                                 actionListener="#{newSurveyController.createSurvey}"/>
-                <p:messages globalOnly="true"/>
-            </h:form>
-        </ui:remove>
+            <!-- Submit answers-->
+            <br/>
+            <p:commandButton id="submit"
+                             value="Submit answers"
+                             actionListener="#{surveyController.submitAnswers}"/>
+            <p:messages globalOnly="true"/>
+        </h:form>
     </c:if>
 </h:body>
 </html>

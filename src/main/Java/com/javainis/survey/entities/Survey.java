@@ -49,7 +49,6 @@ public class Survey {
     private Integer optLockVersion;
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL)
-    //@OneToMany(mappedBy = "survey")
     private List<Question> questions = new ArrayList<>();
 
 }

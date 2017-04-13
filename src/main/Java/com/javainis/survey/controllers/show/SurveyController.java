@@ -10,6 +10,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 
 @Named
 @RequestScoped
@@ -25,6 +26,8 @@ public class SurveyController {
     @Getter
     private Survey survey;
 
+
+
     public void init(){
         // Check if parameter exists
         if(surveyUrl == null){
@@ -37,5 +40,11 @@ public class SurveyController {
         }catch (NoResultException ex){
             return;
         }
+    }
+
+    @Transactional
+    public void submitAnswers(){
+        // Save answers to DB
+
     }
 }

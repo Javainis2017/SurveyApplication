@@ -81,7 +81,9 @@ CREATE TABLE IF NOT EXISTS answer
 	result_id		BIGINT NOT NULL,
 	question_id BIGINT NOT NULL,
 	choice_id 	BIGINT,
-	answer			VARCHAR(1000),
+	text_answer			VARCHAR(1000),
+	number_answer INTEGER,
+	answer_type CHAR(1),
 	opt_lock_version INTEGER,
 	FOREIGN KEY (result_id) REFERENCES survey_result(id),
 	FOREIGN KEY (question_id) REFERENCES question(id),
@@ -124,3 +126,16 @@ ALTER TABLE IF EXISTS interval_choice RENAME TO interval_question;
 
 ALTER TABLE interval_question DROP CONSTRAINT IF EXISTS interval_choice_question_id_fkey;
 ALTER TABLE interval_question DROP COLUMN IF EXISTS question_id;
+
+ALTER TABLE answer ADD COLUMN IF NOT EXISTS answer_type CHAR(1);
+ALTER TABLE answer ADD COLUMN IF NOT EXISTS number_answer INTEGER;
+ALTER TABLE answer DROP COLUMN IF EXISTS answer;
+ALTER TABLE answer ADD COLUMN IF NOT EXISTS text_answer VARCHAR(1000);
+
+CREATE TABLE IF NOT EXISTS answer_choice
+(
+	answer_id BIGINT NOT NULL,
+	choice_id BIGINT NOT NULL,
+	FOREIGN KEY (answer_id) REFERENCES answer(id),
+	FOREIGN KEY (choice_id) REFERENCES choice(id)
+);
