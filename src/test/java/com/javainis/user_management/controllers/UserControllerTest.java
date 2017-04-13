@@ -6,9 +6,7 @@ import javax.inject.Inject;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Ignas on 2017-04-13.
- */
+
 public class UserControllerTest {
 
 

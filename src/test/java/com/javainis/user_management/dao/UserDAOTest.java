@@ -5,9 +5,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Ignas on 2017-04-13.
- */
 public class UserDAOTest {
     private UserDAO userDAO = new UserDAO();
     private User user = new User();
