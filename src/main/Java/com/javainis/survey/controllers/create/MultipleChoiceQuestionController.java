@@ -1,7 +1,6 @@
-package com.javainis.survey.controllers;
+package com.javainis.survey.controllers.create;
 
 import com.javainis.survey.entities.Choice;
-import com.javainis.survey.entities.FreeTextQuestion;
 import com.javainis.survey.entities.MultipleChoiceQuestion;
 import lombok.Getter;
 import lombok.Setter;

@@ -6,7 +6,7 @@
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:outputText>#{question.text}</h:outputText>
     <br/>
-    <p:selectManyCheckbox id="multi-choices" value="#{multipleChoiceQuestionController.answers}" layout="pageDirection">
+    <p:selectManyCheckbox id="multi-choices" value="#{multipleChoiceQuestionController.answers}" layout="pageDirection" disabled="true">
         <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}"/>
     </p:selectManyCheckbox>
     <br/>

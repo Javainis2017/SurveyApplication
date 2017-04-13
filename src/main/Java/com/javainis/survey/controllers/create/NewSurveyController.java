@@ -1,4 +1,4 @@
-package com.javainis.survey.controllers;
+package com.javainis.survey.controllers.create;
 
 import com.javainis.survey.dao.QuestionDAO;
 import com.javainis.survey.dao.SurveyDAO;
@@ -74,11 +74,11 @@ public class NewSurveyController implements Serializable{
     }
 
     @Transactional
-    public void createSurvey(){
+    public String createSurvey(){
         /* Check if survey has questions */
         if(survey.getQuestions().isEmpty()){
             Messages.addGlobalInfo("Survey must have at least 1 question.");
-            return;
+            return null;
         }
 
         /* Generate unique URL*/
@@ -103,5 +103,6 @@ public class NewSurveyController implements Serializable{
             e.printStackTrace();
 
         }
+        return "/home-page?faces-redirect=true";
     }
 }

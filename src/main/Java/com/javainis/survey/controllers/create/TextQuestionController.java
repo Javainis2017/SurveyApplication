@@ -1,13 +1,10 @@
-package com.javainis.survey.controllers;
+package com.javainis.survey.controllers.create;
 
 import com.javainis.survey.entities.FreeTextQuestion;
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.view.facelets.FaceletContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 

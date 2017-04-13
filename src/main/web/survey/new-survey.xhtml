@@ -68,10 +68,13 @@
 
         <!-- Save survey and show url in new page-->
         <br/>
+        <p:messages globalOnly="true"/>
+        <br/>
         <p:commandButton id="create"
                 value="Create survey"
-                actionListener="#{newSurveyController.createSurvey}"/>
-        <p:messages globalOnly="true"/>
+                action="#{newSurveyController.createSurvey}"
+                ajax="false"/>
+
 
         <!-- New question -->
         <c:if test="#{newSurveyController.surveyCreationStep == 'QUESTION_TYPE_CHOICE'}">
