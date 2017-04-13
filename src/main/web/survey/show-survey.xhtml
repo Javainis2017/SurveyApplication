@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xml:lang="en" lang="en">
+<f:metadata>
+    <f:viewParam name="sid" value="#{surveyController.surveyUrl}"/>
+    <f:viewAction action="#{surveyController.init}"/>
+</f:metadata>
+<h:head>
+    <title>#{surveyController.survey.title}</title>
+</h:head>
+<h:body>
+    <c:if test="#{surveyController.survey == null}">
+        <h1>Survey</h1>
+        <h2>Survey does not exist.</h2>
+    </c:if>
+    <c:if test="#{surveyController.survey != null}">
+        <h2>#{surveyController.survey.title}</h2>
+        <c:if test="#{surveyController.survey.description != null}">
+            <p>#{surveyController.survey.description}</p>
+        </c:if>
+
+        <ui:remove>
+            <!-- Change survey title and description -->
+            <h:form id="survey">
+                <!-- Show survey -->
+                <h:panelGroup id="questions">
+                    <ui:repeat value="#{newSurveyController.survey.questions}" var="question">
+                        <h:panelGroup>
+                            <h:panelGroup rendered="#{question['class'].simpleName == 'FreeTextQuestion'}">
+                                <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{question['class'].simpleName == 'IntervalQuestion'}">
+                                <ui:include src="/WEB-INF/questions/show/interval-show.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{question['class'].simpleName == 'SingleChoiceQuestion'}">
+                                <ui:include src="/WEB-INF/questions/show/single-choice-show.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
+                                <ui:include src="/WEB-INF/questions/show/multi-choice-show.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                            <br/>
+                        </h:panelGroup>
+                    </ui:repeat>
+                </h:panelGroup>
+
+                <!-- Save survey and show url in new page-->
+                <br/>
+                <p:commandButton id="create"
+                                 value="Create survey"
+                                 actionListener="#{newSurveyController.createSurvey}"/>
+                <p:messages globalOnly="true"/>
+            </h:form>
+        </ui:remove>
+    </c:if>
+</h:body>
+</html>

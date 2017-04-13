@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://java.sun.com/jsp/jstl/core" xml:lang="en" lang="en">
+      xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://xmlns.jcp.org/jsf/core" xml:lang="en" lang="en">
 <h:head>
     <h:outputStylesheet name="css/style.css" />
     <title>Home</title>
@@ -29,7 +29,9 @@
                 <h:outputText value="#{survey.description}" />
             </p:column>
             <p:column headerText="URL" style="width:110px;text-align: center">
-                <h:outputText value="#{survey.url}" />
+                <h:link value="Survey" outcome="survey/show-survey">
+                    <f:param name="sid" value="#{survey.url}"/>
+                </h:link>
             </p:column>
             <p:column headerText="Number of responses" style="width:110px;text-align: center">
                 <h:outputText value="soon..." />
