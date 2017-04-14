@@ -4,7 +4,7 @@
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:outputText>#{question.text}</h:outputText>
+    <h:outputText><b>#{question.text}</b></h:outputText>
     <br/>
     <p:selectOneRadio id="single-choices" value="" layout="pageDirection">
         <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}" itemDisabled="true"/>

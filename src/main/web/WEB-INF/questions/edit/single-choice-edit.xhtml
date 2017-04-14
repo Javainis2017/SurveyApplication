@@ -4,7 +4,7 @@
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h3>New free text question</h3>
+    <h3>New single choice question</h3>
     <p:panelGrid id="newSingleChoiceQuestionGrid" columns="3">
         <p:outputLabel for="text" value="Question text"/>
         <p:inputTextarea id="text" required="#{param['survey:createSingleChoiceQuestion'] != null}" value="#{singleChoiceQuestionController.question.text}"
@@ -20,8 +20,8 @@
         <ui:repeat value="#{singleChoiceQuestionController.question.choices}" var="choice">
             <h:outputText>#{choice.text}</h:outputText>
             <br/>
-            <p:commandButton actionListener="#{singleChoiceQuestionController.removeChoice(choice)}" value="Remove choice" immediate="true"/>
-            <p:commandButton actionListener="#{singleChoiceQuestionController.editChoice(choice)}" value="Edit choice"/>
+            <p:commandButton actionListener="#{singleChoiceQuestionController.removeChoice(choice)}" value="Remove choice" immediate="true" ajax="false"/>
+            <p:commandButton actionListener="#{singleChoiceQuestionController.editChoice(choice)}" value="Edit choice" ajax="false"/>
             <br/>
         </ui:repeat>
     </p:panelGrid>
@@ -30,14 +30,14 @@
         <p:inputText id="choice" required="#{param['survey:saveChoice'] != null}" value="#{singleChoiceQuestionController.choice.text}"
                          maxlength="200" rows="2" cols="80"
                          placeholder="Choice"/>
-        <p:message for="choice"/>
-
         <p:commandButton value="Save choice"
                          id="saveChoice"
-                         action="#{singleChoiceQuestionController.saveChoice}"/>
+                         action="#{singleChoiceQuestionController.saveChoice}"
+                         ajax="false"/>
     </p:panelGrid>
-
+    <p:message for="choice"/>
     <p:commandButton value="Save question"
                      id="createSingleChoiceQuestion"
-                     action="#{singleChoiceQuestionController.saveQuestion}"/>
+                     action="#{singleChoiceQuestionController.saveQuestion}"
+                     ajax="false"/>
 </ui:composition>

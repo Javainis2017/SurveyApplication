@@ -6,12 +6,16 @@
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <h3>New question</h3>
     <p:commandButton action="#{newSurveyController.createQuestion('text')}"
-                     value="Create text question"/>
+                     value="Create text question"
+                     ajax="false"/>
     <p:commandButton action="#{newSurveyController.createQuestion('interval')}"
-                     value="Create scale question"/>
+                     value="Create interval question"
+                     ajax="false"/>
     <p:commandButton action="#{newSurveyController.createQuestion('single-choice')}"
-                     value="Create single choice question"/>
+                     value="Create single choice question"
+                     ajax="false"/>
     <p:commandButton action="#{newSurveyController.createQuestion('multi-choice')}"
-                     value="Create multi choice question"/>
+                     value="Create multi choice question"
+                     ajax="false"/>
     <br/>
 </ui:composition>

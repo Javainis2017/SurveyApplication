@@ -9,7 +9,7 @@
 
     <h:outputText>#{question.text}</h:outputText><br/>
     <c:if test="#{question.required}">
-        <h:outputText>Required</h:outputText>
+        <h:outputText> (Required)</h:outputText>
         <br/>
     </c:if>
     <h:outputText>#{question.minValue} - #{question.maxValue}</h:outputText>

@@ -9,9 +9,10 @@
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xml:lang="en" lang="en">
-<head>
+<h:head>
+    <h:outputStylesheet name="css/style.css" />
     <title>New survey</title>
-</head>
+</h:head>
 <h:body rendered="#{userController.getUser().getEmail() != null}">
     <h1>New survey</h1>
     <h2>Create new survey</h2>
@@ -31,6 +32,12 @@
             <p:inputTextarea id="description" value="#{newSurveyController.survey.description}" rows="6" cols="80" placeholder="Survey description (Optional)"/>
             <p:message for="description"/>
         </p:panelGrid>
+
+        <!-- New question -->
+        <c:if test="#{newSurveyController.surveyCreationStep == 'QUESTION_TYPE_CHOICE'}">
+            <!-- Choose new question type -->
+            <ui:include src="/WEB-INF/questions/new-question.xhtml"/>
+        </c:if>
 
         <!-- Preview already created survey - questions and choices -->
         <c:if test="#{not empty newSurveyController.survey.questions}">
@@ -58,8 +65,13 @@
                                 <ui:param name="question" value="#{question}"/>
                             </ui:include>
                         </h:panelGroup>
-                        <p:commandButton value="Edit question" immediate="true" actionListener="#{newSurveyController.editQuestion(question)}"/>
-                        <p:commandButton value="Remove question" immediate="true" actionListener="#{newSurveyController.removeQuestion(question)}"/>
+                        <p:commandButton value="Edit question" immediate="true"
+                                         actionListener="#{newSurveyController.editQuestion(question)}"
+                                         ajax="false"
+                                         styleClass="previewPanel"/>
+                        <p:commandButton value="Remove question" immediate="true"
+                                         actionListener="#{newSurveyController.removeQuestion(question)}"
+                                         ajax="false"/>
                         <br/>
                     </h:panelGroup>
                 </ui:repeat>
@@ -76,11 +88,6 @@
                 ajax="false"/>
 
 
-        <!-- New question -->
-        <c:if test="#{newSurveyController.surveyCreationStep == 'QUESTION_TYPE_CHOICE'}">
-            <!-- Choose new question type -->
-            <ui:include src="/WEB-INF/questions/new-question.xhtml"/>
-        </c:if>
         <c:if test="#{newSurveyController.surveyCreationStep != 'QUESTION_TYPE_CHOICE'}">
             <!-- Create new question and add choices OR edit question-->
             <ui:include src="/WEB-INF/questions/edit/#{newSurveyController.newQuestionType}-edit.xhtml"/>

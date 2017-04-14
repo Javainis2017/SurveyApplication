@@ -20,8 +20,8 @@
         <ui:repeat value="#{multipleChoiceQuestionController.question.choices}" var="choice">
             <h:outputText>#{choice.text}</h:outputText>
             <br/>
-            <p:commandButton actionListener="#{multipleChoiceQuestionController.removeChoice(choice)}" value="Remove choice" immediate="true"/>
-            <p:commandButton actionListener="#{multipleChoiceQuestionController.editChoice(choice)}" value="Edit choice"/>
+            <p:commandButton actionListener="#{multipleChoiceQuestionController.removeChoice(choice)}" value="Remove choice" immediate="true" ajax="false"/>
+            <p:commandButton actionListener="#{multipleChoiceQuestionController.editChoice(choice)}" value="Edit choice" ajax="false"/>
             <br/>
         </ui:repeat>
     </p:panelGrid>
@@ -30,14 +30,14 @@
         <p:inputText id="choice" required="#{param['survey:saveChoice'] != null}" value="#{multipleChoiceQuestionController.choice.text}"
                      maxlength="200" rows="2" cols="80"
                      placeholder="Choice"/>
-        <p:message for="choice"/>
-
         <p:commandButton value="Save choice"
                          id="saveChoice"
-                         action="#{multipleChoiceQuestionController.saveChoice}"/>
+                         action="#{multipleChoiceQuestionController.saveChoice}"
+                         ajax="false"/>
     </p:panelGrid>
-
+    <p:message for="choice"/>
     <p:commandButton value="Save question"
                      id="createMultiChoiceQuestion"
-                     action="#{multipleChoiceQuestionController.saveQuestion}"/>
+                     action="#{multipleChoiceQuestionController.saveQuestion}"
+                     ajax="false"/>
 </ui:composition>
