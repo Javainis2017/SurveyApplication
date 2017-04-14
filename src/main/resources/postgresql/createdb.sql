@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS answer
 	FOREIGN KEY (choice_id) REFERENCES choice(id)
 );
 
-CREATE TABLE IF NOT EXISTS expiration
+CREATE TABLE IF NOT EXISTS mail_expiration
 (
 	id											BIGSERIAL PRIMARY KEY,
 	email										VARCHAR(50) NOT NULL,

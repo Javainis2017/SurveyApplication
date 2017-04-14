@@ -1,15 +1,51 @@
-package com.javainis.ejb;
+package com.javainis.user_management.controllers;
 
-import javax.ejb.Stateless;
+import com.javainis.user_management.dao.MailExpirationDAO;
+import com.javainis.user_management.entities.MailExpiration;
+import lombok.Getter;
+import lombok.Setter;
+import org.omnifaces.util.Messages;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletException;
+import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.Properties;
 
-@Stateless
-public class MailSenderBean {
+@Named
+@RequestScoped
+public class MailExpirationController {
+    @Getter
+    private MailExpiration mailExpiration = new MailExpiration();
 
-    public void sendEmail(String fromEmail, String username, String password, String toEmail, String subject, String message)
+    @Getter
+    @Setter
+    private String email;
+
+    @Inject
+    @Getter
+    private MailExpirationDAO mailExpirationDAO;
+
+    @Transactional
+    public void doPost() throws ServletException, IOException
+    {
+        String subject = "Password reminder";
+        String message = "Your password reminder link: ";
+
+        String fromEmail = "javainis2017@gmail.com";
+        String username = "javainis2017@gmail.com";
+        String password = "javainiai";
+
+        sendEmail(fromEmail, username, password, email, subject, message);
+        Messages.addGlobalInfo("Email was sent successfully");
+    }
+
+    private void sendEmail(String fromEmail, String username, String password, String toEmail, String subject, String message)
     {
         Properties props = new Properties();
         props.put("mail.smtp.user", fromEmail);
@@ -40,7 +76,7 @@ public class MailSenderBean {
             msg.setText(message);
 
             Transport transport = session.getTransport("smtps");
-            transport.connect("smtp.gmail.com", Integer.valueOf("465"), fromEmail, password);
+            transport.connect("smtp.gmail.com", Integer.valueOf("465"), username, password);
             transport.sendMessage(msg, msg.getAllRecipients());
             transport.close();
 
