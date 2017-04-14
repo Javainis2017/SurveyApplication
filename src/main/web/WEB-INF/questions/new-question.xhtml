@@ -7,15 +7,19 @@
     <h3>New question</h3>
     <p:commandButton action="#{newSurveyController.createQuestion('text')}"
                      value="Create text question"
-                     ajax="false"/>
+                     ajax="true"
+                     update="survey"/>
     <p:commandButton action="#{newSurveyController.createQuestion('interval')}"
                      value="Create interval question"
-                     ajax="false"/>
+                     ajax="true"
+                     update="survey"/>
     <p:commandButton action="#{newSurveyController.createQuestion('single-choice')}"
                      value="Create single choice question"
-                     ajax="false"/>
+                     ajax="true"
+                     update="survey"/>
     <p:commandButton action="#{newSurveyController.createQuestion('multi-choice')}"
                      value="Create multi choice question"
-                     ajax="false"/>
+                     ajax="true"
+                     update="survey"/>
     <br/>
 </ui:composition>

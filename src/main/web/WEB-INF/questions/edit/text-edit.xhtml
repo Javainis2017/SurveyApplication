@@ -23,6 +23,7 @@
         <p:commandButton value="Save question"
                          id="createTextQuestion"
                          action="#{newSurveyController.saveQuestion(textQuestionController.question)}"
-                         ajax="false"/>
+                         ajax="true"
+                         update="survey"/>
     </p:panelGrid>
 </ui:composition>

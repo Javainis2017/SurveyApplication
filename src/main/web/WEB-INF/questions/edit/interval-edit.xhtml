@@ -45,6 +45,7 @@
         <p:commandButton value="Save question"
                          id="createIntervalQuestion"
                          action="#{intervalQuestionController.saveQuestion}"
-                         ajax="false"/>
+                         ajax="true"
+                         update="survey"/>
     </p:panelGrid>
 </ui:composition>

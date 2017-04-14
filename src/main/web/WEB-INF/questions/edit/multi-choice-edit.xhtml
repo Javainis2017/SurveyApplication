@@ -20,27 +20,37 @@
         </p:column>
     </p:panelGrid>
     <p:panelGrid columns="1" rendered="#{not empty multipleChoiceQuestionController.question.choices}">
-        <ui:repeat value="#{multipleChoiceQuestionController.question.choices}" var="choice">
+        <ui:repeat id="choiceRender"  value="#{multipleChoiceQuestionController.question.choices}" var="choice">
             <h:outputText>#{choice.text}</h:outputText>
             <br/>
-            <p:commandButton actionListener="#{multipleChoiceQuestionController.removeChoice(choice)}" value="Remove choice" immediate="true" ajax="false"/>
-            <p:commandButton actionListener="#{multipleChoiceQuestionController.editChoice(choice)}" value="Edit choice" ajax="false"/>
+            <p:commandButton actionListener="#{multipleChoiceQuestionController.removeChoice(choice)}"
+                             value="Remove choice"
+                             immediate="true"
+                             ajax="true"
+                             update="survey"/>
+            <p:commandButton actionListener="#{multipleChoiceQuestionController.editChoice(choice)}"
+                             value="Edit choice"
+                             ajax="true"
+                             update="survey"/>
             <br/>
         </ui:repeat>
     </p:panelGrid>
     <p:panelGrid columns="3">
         <p:outputLabel for="multiChoice" value="Choice"/>
-        <p:inputText id="multiChoice" required="#{param['survey:saveChoice'] != null}" value="#{multipleChoiceQuestionController.choice.text}"
+        <p:inputText id="multiChoice" required="#{param['survey:saveChoice'] != null}"
+                     value="#{multipleChoiceQuestionController.choice.text}"
                      maxlength="200" rows="2" cols="80"
                      placeholder="Choice"/>
         <p:commandButton value="Save choice"
                          id="saveMultiChoice"
                          action="#{multipleChoiceQuestionController.saveChoice}"
-                         ajax="false"/>
+                         ajax="true"
+                         update="survey"/>
     </p:panelGrid>
     <p:message for="multiChoice"/>
     <p:commandButton value="Save question"
                      id="createMultiChoiceQuestion"
                      action="#{multipleChoiceQuestionController.saveQuestion}"
-                     ajax="false"/>
+                     ajax="true"
+                     update="survey"/>
 </ui:composition>

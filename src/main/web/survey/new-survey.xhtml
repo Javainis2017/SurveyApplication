@@ -77,11 +77,13 @@
                         </h:panelGroup>
                         <p:commandButton value="Edit question" immediate="true"
                                          actionListener="#{newSurveyController.editQuestion(question)}"
-                                         ajax="false"
+                                         ajax="true"
+                                         update="survey"
                                          styleClass="previewPanel"/>
                         <p:commandButton value="Remove question" immediate="true"
                                          actionListener="#{newSurveyController.removeQuestion(question)}"
-                                         ajax="false"/>
+                                         ajax="true"
+                                         update="survey"/>
                         <br/>
                     </h:panelGroup>
                 </ui:repeat>
