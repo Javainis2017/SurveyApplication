@@ -4,7 +4,7 @@
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-    <h3>New free text question</h3>
+    <h3>Text question</h3>
     <p:panelGrid id="newTextQuestionGrid" columns="3">
         <p:outputLabel for="text" value="Question text"/>
         <p:inputTextarea id="text" required="#{param['survey:createTextQuestion'] != null}" value="#{textQuestionController.question.text}"
@@ -12,9 +12,9 @@
                          placeholder="Question text"/>
         <p:message for="text"/>
 
-        <p:outputLabel for="required" value="Required"/>
-        <p:selectBooleanCheckbox id="required" value="#{textQuestionController.question.required}"/>
-        <p:message for="required"/>
+        <p:outputLabel for="requiredText" value="Required"/>
+        <p:selectBooleanCheckbox id="requiredText" value="#{textQuestionController.question.required}"/>
+        <p:message for="requiredText"/>
 
         <p:commandButton value="Save question"
                          id="createTextQuestion"

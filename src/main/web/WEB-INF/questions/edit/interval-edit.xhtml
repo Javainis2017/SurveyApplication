@@ -4,13 +4,13 @@
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-    <h3>New interval question</h3>
+    <h3>Interval question</h3>
     <p:panelGrid id="newIntervalQuestionGrid" columns="3">
-        <p:outputLabel for="text" value="Question text"/>
-        <p:inputTextarea id="text" required="#{param['survey:createIntervalQuestion'] != null}" value="#{intervalQuestionController.question.text}"
+        <p:outputLabel for="intervalText" value="Question text"/>
+        <p:inputTextarea id="intervalText" required="#{param['survey:createIntervalQuestion'] != null}" value="#{intervalQuestionController.question.text}"
                          maxlength="300" rows="4" cols="80"
                          placeholder="Question text"/>
-        <p:message for="text"/>
+        <p:message for="intervalText"/>
 
         <p:outputLabel for="minimum" value="Min"/>
         <p:inputText id="minimum"
@@ -30,9 +30,9 @@
                      type="number"/>
         <p:message for="maximum"/>
 
-        <p:outputLabel for="required" value="Required"/>
-        <p:selectBooleanCheckbox id="required" value="#{intervalQuestionController.question.required}"/>
-        <p:message for="required"/>
+        <p:outputLabel for="requiredInterval" value="Required"/>
+        <p:selectBooleanCheckbox id="requiredInterval" value="#{intervalQuestionController.question.required}"/>
+        <p:message for="requiredInterval"/>
 
         <p:commandButton value="Save question"
                          id="createIntervalQuestion"

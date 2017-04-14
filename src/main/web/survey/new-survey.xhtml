@@ -93,9 +93,25 @@
                 ajax="false"/>
 
 
-        <c:if test="#{newSurveyController.surveyCreationStep != 'QUESTION_TYPE_CHOICE'}">
-            <!-- Create new question and add choices OR edit question-->
+        <c:if test="#{newSurveyController.surveyCreationStep == 'NEW_QUESTION'}">
+            <!-- Create new question -->
             <ui:include src="/WEB-INF/questions/edit/#{newSurveyController.newQuestionType}-edit.xhtml"/>
+        </c:if>
+        <c:if test="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION'}">
+            <h:panelGroup>
+                <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'FreeTextQuestion'}">
+                    <ui:include src="/WEB-INF/questions/edit/text-edit.xhtml"/>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'IntervalQuestion'}">
+                    <ui:include src="/WEB-INF/questions/edit/interval-edit.xhtml"/>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'SingleChoiceQuestion'}">
+                    <ui:include src="/WEB-INF/questions/edit/single-choice-edit.xhtml"/>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'MultipleChoiceQuestion'}">
+                    <ui:include src="/WEB-INF/questions/edit/multi-choice-edit.xhtml"/>
+                </h:panelGroup>
+            </h:panelGroup>
         </c:if>
     </h:form>
 </h:body>

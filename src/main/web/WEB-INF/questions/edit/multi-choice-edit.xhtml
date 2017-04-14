@@ -4,17 +4,17 @@
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h3>New multi choice question</h3>
+    <h3>Multi choice question</h3>
     <p:panelGrid id="newMultiChoiceQuestionGrid" columns="3">
-        <p:outputLabel for="text" value="Question text"/>
-        <p:inputTextarea id="text" required="#{param['survey:createMultiChoiceQuestion'] != null}" value="#{multipleChoiceQuestionController.question.text}"
+        <p:outputLabel for="multiText" value="Question text"/>
+        <p:inputTextarea id="multiText" required="#{param['survey:createMultiChoiceQuestion'] != null}" value="#{multipleChoiceQuestionController.question.text}"
                          maxlength="300" rows="4" cols="80"
                          placeholder="Question text"/>
-        <p:message for="text"/>
+        <p:message for="multiText"/>
 
-        <p:outputLabel for="required" value="Required"/>
-        <p:selectBooleanCheckbox id="required" value="#{multipleChoiceQuestionController.question.required}"/>
-        <p:message for="required"/>
+        <p:outputLabel for="requiredMulti" value="Required"/>
+        <p:selectBooleanCheckbox id="requiredMulti" value="#{multipleChoiceQuestionController.question.required}"/>
+        <p:message for="requiredMulti"/>
     </p:panelGrid>
     <p:panelGrid columns="1" rendered="#{not empty multipleChoiceQuestionController.question.choices}">
         <ui:repeat value="#{multipleChoiceQuestionController.question.choices}" var="choice">
@@ -26,16 +26,16 @@
         </ui:repeat>
     </p:panelGrid>
     <p:panelGrid columns="3">
-        <p:outputLabel for="choice" value="Choice"/>
-        <p:inputText id="choice" required="#{param['survey:saveChoice'] != null}" value="#{multipleChoiceQuestionController.choice.text}"
+        <p:outputLabel for="multiChoice" value="Choice"/>
+        <p:inputText id="multiChoice" required="#{param['survey:saveChoice'] != null}" value="#{multipleChoiceQuestionController.choice.text}"
                      maxlength="200" rows="2" cols="80"
                      placeholder="Choice"/>
         <p:commandButton value="Save choice"
-                         id="saveChoice"
+                         id="saveMultiChoice"
                          action="#{multipleChoiceQuestionController.saveChoice}"
                          ajax="false"/>
     </p:panelGrid>
-    <p:message for="choice"/>
+    <p:message for="multiChoice"/>
     <p:commandButton value="Save question"
                      id="createMultiChoiceQuestion"
                      action="#{multipleChoiceQuestionController.saveQuestion}"

@@ -4,17 +4,17 @@
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h3>New single choice question</h3>
+    <h3>Single choice question</h3>
     <p:panelGrid id="newSingleChoiceQuestionGrid" columns="3">
-        <p:outputLabel for="text" value="Question text"/>
-        <p:inputTextarea id="text" required="#{param['survey:createSingleChoiceQuestion'] != null}" value="#{singleChoiceQuestionController.question.text}"
+        <p:outputLabel for="singleText" value="Question text"/>
+        <p:inputTextarea id="singleText" required="#{param['survey:createSingleChoiceQuestion'] != null}" value="#{singleChoiceQuestionController.question.text}"
                          maxlength="300" rows="4" cols="80"
                          placeholder="Question text"/>
-        <p:message for="text"/>
+        <p:message for="singleText"/>
 
-        <p:outputLabel for="required" value="Required"/>
-        <p:selectBooleanCheckbox id="required" value="#{singleChoiceQuestionController.question.required}"/>
-        <p:message for="required"/>
+        <p:outputLabel for="requiredSingle" value="Required"/>
+        <p:selectBooleanCheckbox id="requiredSingle" value="#{singleChoiceQuestionController.question.required}"/>
+        <p:message for="requiredSingle"/>
     </p:panelGrid>
     <p:panelGrid columns="1" rendered="#{not empty singleChoiceQuestionController.question.choices}">
         <ui:repeat value="#{singleChoiceQuestionController.question.choices}" var="choice">
@@ -26,16 +26,16 @@
         </ui:repeat>
     </p:panelGrid>
     <p:panelGrid columns="3">
-        <p:outputLabel for="choice" value="Choice"/>
-        <p:inputText id="choice" required="#{param['survey:saveChoice'] != null}" value="#{singleChoiceQuestionController.choice.text}"
+        <p:outputLabel for="singleChoice" value="Choice"/>
+        <p:inputText id="singleChoice" required="#{param['survey:saveChoice'] != null}" value="#{singleChoiceQuestionController.choice.text}"
                          maxlength="200" rows="2" cols="80"
                          placeholder="Choice"/>
         <p:commandButton value="Save choice"
-                         id="saveChoice"
+                         id="saveSingleChoice"
                          action="#{singleChoiceQuestionController.saveChoice}"
                          ajax="false"/>
     </p:panelGrid>
-    <p:message for="choice"/>
+    <p:message for="singleChoice"/>
     <p:commandButton value="Save question"
                      id="createSingleChoiceQuestion"
                      action="#{singleChoiceQuestionController.saveQuestion}"
