@@ -1,6 +1,7 @@
 package com.javainis.user_management.controllers;
 
 import com.javainis.user_management.dao.MailExpirationDAO;
+import com.javainis.user_management.dao.UserDAO;
 import com.javainis.user_management.entities.MailExpiration;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,18 +32,30 @@ public class MailExpirationController {
     @Getter
     private MailExpirationDAO mailExpirationDAO;
 
+    @Inject
+    private UserDAO userDAO;
+
     @Transactional
     public void doPost() throws ServletException, IOException
     {
-        String subject = "Password reminder";
-        String message = "Your password reminder link: ";
+        if(userDAO.emailIsRegistered(email))
+        {
+            String subject = "Password reminder";
+            String message = "Your password reminder link: ";
 
-        String fromEmail = "javainis2017@gmail.com";
-        String username = "javainis2017@gmail.com";
-        String password = "javainiai";
+            String fromEmail = "javainis2017@gmail.com";
+            String username = "javainis2017@gmail.com";
+            String password = "javainiai";
 
-        sendEmail(fromEmail, username, password, email, subject, message);
-        Messages.addGlobalInfo("Email was sent successfully");
+            sendEmail(fromEmail, username, password, email, subject, message);
+
+            //mailExpirationDAO.create(mailExpiration);
+            Messages.addGlobalInfo("Email was sent successfully");
+        }
+        else
+        {
+            Messages.addGlobalInfo("User with specified email does not exist");
+        }
     }
 
     private void sendEmail(String fromEmail, String username, String password, String toEmail, String subject, String message)
