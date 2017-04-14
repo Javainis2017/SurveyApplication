@@ -25,11 +25,16 @@
                          value="#{newSurveyController.survey.title}"
                          maxlength="80"
                          size="80"
-                         placeholder="Survey title"/>
+                         placeholder="Survey title"
+                         styleClass="newSurveyField"/>
             <p:message for="title"/>
 
             <p:outputLabel for="description" value="Survey description"/>
-            <p:inputTextarea id="description" value="#{newSurveyController.survey.description}" rows="6" cols="80" placeholder="Survey description (Optional)"/>
+            <p:inputTextarea id="description"
+                             value="#{newSurveyController.survey.description}"
+                             rows="6" cols="80"
+                             placeholder="Survey description (Optional)"
+                             styleClass="newSurveyField"/>
             <p:message for="description"/>
         </p:panelGrid>
 
