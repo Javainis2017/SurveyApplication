@@ -40,7 +40,7 @@
     </table>
     <p:commandButton value="Add"
                      actionListener="#{adminWhitelistController.whitelistEmail()}"
-                     ajax="false"/>
+                     ajax="true" update="whitelistTable"/>
     <p:messages globalOnly="true"/>
 </h:form>
 </h:body>

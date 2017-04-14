@@ -40,7 +40,7 @@ public class AdminWhitelistController{
         if (!whitelistDAO.findEmail(whitelist.getEmail()))
         {
             whitelistDAO.create(whitelist);
-            Messages.addGlobalWarn("Success");
+            Messages.addGlobalInfo("Success");
         }
         else
         {

@@ -41,7 +41,7 @@
 
     <h:panelGroup rendered="#{userController.getUser().getUserTypeID().getId() == 1}">
         <h2>User administration</h2>
-        <p:fieldset legend="Whitelist" toggleable="true" collapsed="true" styleClass="fieldPanel">
+        <p:fieldset id="whitelist" legend="Whitelist" toggleable="true" collapsed="true" styleClass="fieldPanel">
             <p:dataTable id="whitelistTable" var="whitelist" value="#{adminWhitelistController.getAllWhitelist()}">
                 <p:column headerText="Email">
                     <h:outputText value="#{whitelist.email}" />
@@ -50,30 +50,25 @@
                     <p:commandButton title="Remove"
                                      rendered="#{adminWhitelistController.whitelistDAO.findEmail(whitelist.email) != userController.userDAO.emailIsRegistered(whitelist.email)}"
                                      actionListener="#{adminWhitelistController.removeFromWhitelist(whitelist.email)}"
-                                     ajax="false" >
+                                     ajax="true" update="whitelistTable" >
                     </p:commandButton>
                 </p:column>
             </p:dataTable>
             <p>Whitelist new email</p>
-            <table>
-                <tr>
-                    <td>
-                        <h:panelGrid columns="3">
-                            <p:outputLabel for="email" value="E-mail"/>
-                            <p:inputText id="email" value="#{adminWhitelistController.whitelist.email}"/>
-                            <p:message for="email"/>
-                        </h:panelGrid>
-                    </td>
-                </tr>
-            </table>
-            <p:commandButton value="Add to whitelist"
-                             actionListener="#{adminWhitelistController.whitelistEmail()}"
-                             ajax="false"/>
+            <h:panelGrid columns="4">
+                <p:outputLabel for="email" value="E-mail"/>
+                <p:inputText id="email" value="#{adminWhitelistController.whitelist.email}"/>
+                <p:message for="email"/>
+                <p:commandButton value="Add to whitelist"
+                                 actionListener="#{adminWhitelistController.whitelistEmail()}"
+                                 ajax="true" update="whitelist"/>
+            </h:panelGrid>
             <p:messages globalOnly="true"/>
         </p:fieldset>
+
         <p:fieldset legend="User List" toggleable="true" collapsed="true" styleClass="fieldPanel">
-            <p:dataTable value="#{adminBlockController.allUser}" var="user">
-                <p:column headerText="Email" styleClass="emailColumn">
+            <p:dataTable id="userList" value="#{adminBlockController.allUser}" var="user">
+                <p:column headerText="Email" styleClass="emailColumn" sortable="true" sortBy="#{user.email}">
                     <h:outputText value="#{user.email}" />
                 </p:column>
                 <p:column headerText="Name">
@@ -89,16 +84,17 @@
                 <p:column headerText="Change block status">
                     <p:commandButton value = "#{adminBlockController.getBlockedButtonLabel(user.getBlocked())}"
                                      rendered="#{user.getEmail() != userController.getUser().getEmail()}"
-                        actionListener="#{adminBlockController.changeUserBlockStatus(user.email)}"
-                        ajax="false" styleClass="buttonColumn dynamicButton"/>
+                                     actionListener="#{adminBlockController.changeUserBlockStatus(user.email)}"
+                                     ajax="true" update="userList"
+                                     styleClass="buttonColumn dynamicButton"/>
                 </p:column>
                 <p:column headerText="Change User type">
-                    <!-- REIKES KEISTI leisti pasirinkti usertype-->
                     <p:commandButton
                         value="#{adminTypeController.getTypeButtonLabel(user.userTypeID.id)}"
                         rendered="#{user.getEmail() != userController.getUser().getEmail()}"
                         actionListener="#{adminTypeController.toggleUserType(user.email)}"
-                        ajax="false" styleClass="buttonColumn"/>
+                        ajax="true" update="userList"
+                        styleClass="buttonColumn"/>
                 </p:column>
             </p:dataTable>
             <p:messages globalOnly="true"/>
