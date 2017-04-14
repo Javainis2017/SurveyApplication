@@ -71,6 +71,9 @@ public class NewSurveyController implements Serializable{
     public void removeQuestion(Question question){
         question.setSurvey(null);
         survey.getQuestions().remove(question);
+        if(questionToEdit == question){
+            surveyCreationStep = SURVEY_CREATION_STEP.QUESTION_TYPE_CHOICE;
+        }
     }
 
     @Transactional
