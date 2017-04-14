@@ -93,6 +93,7 @@ CREATE TABLE IF NOT EXISTS answer
 CREATE TABLE IF NOT EXISTS expiration
 (
 	id											BIGSERIAL PRIMARY KEY,
+	email										VARCHAR(50) NOT NULL,
 	token										BIGSERIAL,
 	expiration_date					DATE,
 	opt_lock_version 				INTEGER,

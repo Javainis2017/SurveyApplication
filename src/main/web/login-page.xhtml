@@ -4,8 +4,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xml:lang="en" lang="en">
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title>User Login</title>
 </h:head>
@@ -32,6 +31,7 @@
                          action="#{userController.login()}"
                          ajax="false"/>
         <p:messages globalOnly="true"/>
+        <h:link outcome="passwordReminder-page">Forgot your password?</h:link><br/>
     </h:form>
 </h:body>
 </html>
