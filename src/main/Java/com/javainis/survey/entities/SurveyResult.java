@@ -9,6 +9,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "survey_result")
+@NamedQueries({
+        @NamedQuery(name = "SurveyResult.findBySurveyId", query = "SELECT sr FROM SurveyResult sr WHERE sr.survey.id = :surveyId")
+})
 @Getter
 @Setter
 public class SurveyResult {

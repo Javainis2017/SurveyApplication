@@ -16,7 +16,7 @@ import javax.persistence.*;
         @NamedQuery(name = "Choice.findByQuestionId", query = "SELECT c FROM Choice c WHERE c.question.id = :questionId")
 })
 @Table(name="choice")
-@EqualsAndHashCode(of = "text")
+@EqualsAndHashCode(of = {"id", "text"})
 public class Choice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,4 +33,10 @@ public class Choice {
     @Version
     @Column(name = "opt_lock_version")
     private Integer optLockVersion;
+
+    @Override
+    public String toString() {
+        return "Choice{" +
+                "id=" + id + '}';
+    }
 }

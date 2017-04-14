@@ -139,3 +139,7 @@ CREATE TABLE IF NOT EXISTS answer_choice
 	FOREIGN KEY (answer_id) REFERENCES answer(id),
 	FOREIGN KEY (choice_id) REFERENCES choice(id)
 );
+
+ALTER TABLE answer ADD COLUMN IF NOT EXISTS choice_id BIGINT;
+ALTER TABLE answer DROP CONSTRAINT IF EXISTS choice_id_fkey;
+ALTER TABLE answer ADD FOREIGN KEY (choice_id) REFERENCES choice(id);

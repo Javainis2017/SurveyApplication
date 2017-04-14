@@ -1,9 +1,23 @@
 <ui:composition
-xmlns="http://www.w3.org/1999/xhtml"
-xmlns:h="http://xmlns.jcp.org/jsf/html"
-xmlns:p="http://primefaces.org/ui"
-xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+
     <h:outputText>#{question.text}</h:outputText>
-    <br/>
+    <c:if test="#{question.required}">
+        <h:outputText>Required</h:outputText>
+        <br/>
+    </c:if>
+    <h:panelGrid columns="2">
+        <p:inputTextarea value="#{surveyController.answers[question].text}"
+                         id="q#{question.id}"
+                         cols="80" rows="4"
+                         placeholder="Answer"
+                         required="#{question.required}"
+                         requiredMessage="This question is required."/>
+        <p:message for="q#{question.id}"/>
+    </h:panelGrid>
 </ui:composition>

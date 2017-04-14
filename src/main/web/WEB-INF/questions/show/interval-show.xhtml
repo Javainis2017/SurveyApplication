@@ -3,10 +3,25 @@
         xmlns:h="http://xmlns.jcp.org/jsf/html"
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-    <h:outputText>#{question.text}</h:outputText>
-    <br/>
-    <h:outputText>Min = #{question.minValue} </h:outputText>
-    <h:outputText>Max = #{question.maxValue}</h:outputText>
-    <br/>
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <h:outputText>#{question.text}</h:outputText><br/>
+    <c:if test="#{question.required}">
+        <h:outputText>Required</h:outputText>
+        <br/>
+    </c:if>
+    <h:outputText>#{question.minValue} - #{question.maxValue}</h:outputText>
+    <h:panelGrid columns="2">
+        <p:inputText value="#{surveyController.answers[question].number}"
+                         id="q#{question.id}"
+                         required="#{question.required}"
+                         type="number"
+                         validatorMessage="Value must be between #{question.minValue} and #{question.maxValue}."
+                         requiredMessage="This question is required.">
+            <f:validateLongRange minimum="#{question.minValue}" maximum="#{question.maxValue}"/>
+        </p:inputText>
+        <p:message for="q#{question.id}"/>
+    </h:panelGrid>
 </ui:composition>

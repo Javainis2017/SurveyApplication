@@ -31,37 +31,45 @@
         <!-- Show questions -->
         <h:form id="survey">
             <h:panelGroup id="questions">
-                <ui:repeat value="#{surveyController.survey.questions}" var="question">
+                <c:forEach items="#{surveyController.survey.questions}" var="question">
                     <h:panelGroup>
-                        <h:panelGroup rendered="#{question['class'].simpleName == 'FreeTextQuestion'}">
-                            <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
-                                <ui:param name="question" value="#{question}"/>
-                            </ui:include>
-                        </h:panelGroup>
-                        <h:panelGroup rendered="#{question['class'].simpleName == 'IntervalQuestion'}">
-                            <ui:include src="/WEB-INF/questions/show/interval-show.xhtml">
-                                <ui:param name="question" value="#{question}"/>
-                            </ui:include>
-                        </h:panelGroup>
-                        <h:panelGroup rendered="#{question['class'].simpleName == 'SingleChoiceQuestion'}">
-                            <ui:include src="/WEB-INF/questions/show/single-choice-show.xhtml">
-                                <ui:param name="question" value="#{question}"/>
-                            </ui:include>
-                        </h:panelGroup>
-                        <h:panelGroup rendered="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
-                            <ui:include src="/WEB-INF/questions/show/multi-choice-show.xhtml">
-                                <ui:param name="question" value="#{question}"/>
-                            </ui:include>
-                        </h:panelGroup>
-                        <br/>
+                        <c:if test="#{question['class'].simpleName == 'FreeTextQuestion'}">
+                            <h:panelGroup>
+                                <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                        </c:if>
+                        <c:if test="#{question['class'].simpleName == 'IntervalQuestion'}">
+                            <h:panelGroup>
+                                <ui:include src="/WEB-INF/questions/show/interval-show.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                        </c:if>
+                        <c:if test="#{question['class'].simpleName == 'SingleChoiceQuestion'}">
+                            <h:panelGroup>
+                                <ui:include src="/WEB-INF/questions/show/single-choice-show.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                        </c:if>
+                        <c:if test="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
+                            <h:panelGroup>
+                                <ui:include src="/WEB-INF/questions/show/multi-choice-show.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                        </c:if>
                     </h:panelGroup>
-                </ui:repeat>
+                </c:forEach>
             </h:panelGroup>
 
             <!-- Submit answers-->
             <br/>
             <p:commandButton id="submit"
                              value="Submit answers"
+                             update="questions"
                              actionListener="#{surveyController.submitAnswers}"/>
             <p:messages globalOnly="true"/>
         </h:form>
