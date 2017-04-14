@@ -18,20 +18,20 @@ public class MailExpirationDAO
         manager.persist(mailExpiration);
     }
 
-    public int removeFromMailExpiration(String token)
+    public int removeFromMailExpiration(String url)
     {
         return manager.createNamedQuery("MailExpiration.remove")
-                .setParameter("token", token)
+                .setParameter("url", url)
                 .executeUpdate();
     }
 
-    public Boolean findMailExpiration(String token)
+    public Boolean findMailExpiration(String url)
     {
         try {
-            MailExpiration result = manager.createNamedQuery("MailExpiration.findToken", MailExpiration.class)
-                    .setParameter("token", token)
+            MailExpiration result = manager.createNamedQuery("MailExpiration.findUrl", MailExpiration.class)
+                    .setParameter("url", url)
                     .getSingleResult();
-            return result.getToken().equals(token);
+            return result.getUrl().equals(url);
         }
         catch(NoResultException ex)
         {

@@ -3,6 +3,8 @@ package com.javainis.user_management.controllers;
 import com.javainis.user_management.dao.MailExpirationDAO;
 import com.javainis.user_management.dao.UserDAO;
 import com.javainis.user_management.entities.MailExpiration;
+import com.javainis.utility.DateUtil;
+import com.javainis.utility.RandomStringGenerator;
 import lombok.Getter;
 import lombok.Setter;
 import org.omnifaces.util.Messages;
@@ -16,6 +18,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Properties;
 
 @Named
@@ -35,21 +38,27 @@ public class MailExpirationController {
     @Inject
     private UserDAO userDAO;
 
+    @Inject
+    private RandomStringGenerator randomStringGenerator;
+
+    @Inject
+    private DateUtil dateUtil;
+
     @Transactional
     public void doPost() throws ServletException, IOException
     {
         if(userDAO.emailIsRegistered(email))
         {
             String subject = "Password reminder";
-            String message = "Your password reminder link: ";
 
             String fromEmail = "javainis2017@gmail.com";
             String username = "javainis2017@gmail.com";
             String password = "javainiai";
 
+            setSentEmailProperties();
+            String message = "Your password reminder link: " + " " + "domain.com/password/" + mailExpiration.getUrl();
             sendEmail(fromEmail, username, password, email, subject, message);
-
-            //mailExpirationDAO.create(mailExpiration);
+            mailExpirationDAO.create(mailExpiration);
             Messages.addGlobalInfo("Email was sent successfully");
         }
         else
@@ -96,5 +105,13 @@ public class MailExpirationController {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setSentEmailProperties()
+    {
+        Date date = new Date();
+        mailExpiration.setUser(userDAO.getUserByEmail(email));
+        mailExpiration.setExpirationDate(dateUtil.addDays(date, 2));
+        mailExpiration.setUrl(randomStringGenerator.generateString(32));
     }
 }

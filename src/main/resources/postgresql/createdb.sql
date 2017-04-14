@@ -77,14 +77,14 @@ CREATE TABLE IF NOT EXISTS survey_result
 
 CREATE TABLE IF NOT EXISTS answer
 (
-	id 					BIGSERIAL PRIMARY KEY,
-	result_id		BIGINT NOT NULL,
-	question_id BIGINT NOT NULL,
-	choice_id 	BIGINT,
-	text_answer			VARCHAR(1000),
-	number_answer INTEGER,
-	answer_type CHAR(1),
-	opt_lock_version INTEGER,
+	id 					      BIGSERIAL PRIMARY KEY,
+	result_id		      BIGINT NOT NULL,
+	question_id       BIGINT NOT NULL,
+	choice_id 	      BIGINT,
+	text_answer			  VARCHAR(1000),
+	number_answer     INTEGER,
+	answer_type       CHAR(1),
+	opt_lock_version  INTEGER,
 	FOREIGN KEY (result_id) REFERENCES survey_result(id),
 	FOREIGN KEY (question_id) REFERENCES question(id),
 	FOREIGN KEY (choice_id) REFERENCES choice(id)
@@ -93,11 +93,11 @@ CREATE TABLE IF NOT EXISTS answer
 CREATE TABLE IF NOT EXISTS mail_expiration
 (
 	id											BIGSERIAL PRIMARY KEY,
-	email										VARCHAR(50) NOT NULL,
-	token										BIGSERIAL,
+	user_id									BIGINT NOT NULL,
+	url										  CHAR(32) NOT NULL,
 	expiration_date					DATE,
 	opt_lock_version 				INTEGER,
-	FOREIGN KEY (id) REFERENCES app_user (id)
+  FOREIGN KEY (user_id) REFERENCES app_user(id)
 );
 
 INSERT INTO user_type (NAME) VALUES ('Admin'), ('User');
