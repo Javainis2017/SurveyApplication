@@ -37,7 +37,12 @@ public class AdminWhitelistController{
     @Transactional
     public void whitelistEmail()
     {
-        if (!whitelistDAO.findEmail(whitelist.getEmail()))
+        String result = validateEmail(whitelist.getEmail());
+        if(result != null)
+        {
+            Messages.addGlobalWarn(result);
+        }
+        else if (!whitelistDAO.findEmail(whitelist.getEmail()))
         {
             whitelistDAO.create(whitelist);
             Messages.addGlobalInfo("Success");
@@ -46,6 +51,19 @@ public class AdminWhitelistController{
         {
             Messages.addGlobalWarn("Email is already in whitelist");
         }
+    }
+
+    private String validateEmail(String email)
+    {
+        if (!email.contains("@"))
+        {
+            return "Email must contain @";
+        }
+        else if (email.length() < 3)
+        {
+            return "Email is too short";
+        }
+        return null;
     }
 
     public List<Whitelist> getAllWhitelist()
