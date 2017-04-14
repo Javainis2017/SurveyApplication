@@ -5,34 +5,42 @@
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <h3>Interval question</h3>
-    <p:panelGrid id="newIntervalQuestionGrid" columns="3">
+    <p:panelGrid id="newIntervalQuestionGrid" columns="2">
         <p:outputLabel for="intervalText" value="Question text"/>
-        <p:inputTextarea id="intervalText" required="#{param['survey:createIntervalQuestion'] != null}" value="#{intervalQuestionController.question.text}"
-                         maxlength="300" rows="4" cols="80"
-                         placeholder="Question text"/>
-        <p:message for="intervalText"/>
+        <p:column>
+            <p:inputTextarea id="intervalText" required="#{param['survey:createIntervalQuestion'] != null}" value="#{intervalQuestionController.question.text}"
+                             maxlength="300" rows="4" cols="80"
+                             placeholder="Question text"/>
+            <p:message for="intervalText"/>
+        </p:column>
 
         <p:outputLabel for="minimum" value="Min"/>
-        <p:inputText id="minimum"
-                     value="#{intervalQuestionController.minValue}"
-                     max="2147483647"
-                     min="-2147483648"
-                     size="11"
-                     type="number"/>
-        <p:message for="minimum"/>
+        <p:column>
+            <p:inputText id="minimum"
+                         value="#{intervalQuestionController.minValue}"
+                         max="2147483647"
+                         min="-2147483648"
+                         size="11"
+                         type="number"/>
+            <p:message for="minimum"/>
+        </p:column>
 
         <p:outputLabel for="maximum" value="Max"/>
-        <p:inputText id="maximum"
-                     value="#{intervalQuestionController.maxValue}"
-                     max="2147483647"
-                     min="-2147483648"
-                     size="11"
-                     type="number"/>
-        <p:message for="maximum"/>
+        <p:column>
+            <p:inputText id="maximum"
+                         value="#{intervalQuestionController.maxValue}"
+                         max="2147483647"
+                         min="-2147483648"
+                         size="11"
+                         type="number"/>
+            <p:message for="maximum"/>
+        </p:column>
 
         <p:outputLabel for="requiredInterval" value="Required"/>
-        <p:selectBooleanCheckbox id="requiredInterval" value="#{intervalQuestionController.question.required}"/>
-        <p:message for="requiredInterval"/>
+        <p:column>
+            <p:selectBooleanCheckbox id="requiredInterval" value="#{intervalQuestionController.question.required}"/>
+            <p:message for="requiredInterval"/>
+        </p:column>
 
         <p:commandButton value="Save question"
                          id="createIntervalQuestion"

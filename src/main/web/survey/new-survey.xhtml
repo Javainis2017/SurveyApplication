@@ -18,24 +18,29 @@
     <h2>Create new survey</h2>
     <!-- Change survey title and description -->
     <h:form id="survey">
-        <p:panelGrid id="infoGrid" columns="3">
+        <p:panelGrid id="infoGrid" styleClass="surveyPanel" columns="2">
             <p:outputLabel for="title" value="Survey title"/>
-            <p:inputText id="title"
-                         required="#{param['survey:create'] != null}"
-                         value="#{newSurveyController.survey.title}"
-                         maxlength="80"
-                         size="80"
-                         placeholder="Survey title"
-                         styleClass="newSurveyField"/>
-            <p:message for="title"/>
-
-            <p:outputLabel for="description" value="Survey description"/>
-            <p:inputTextarea id="description"
-                             value="#{newSurveyController.survey.description}"
-                             rows="6" cols="80"
-                             placeholder="Survey description (Optional)"
+            <p:column>
+                <p:inputText id="title"
+                             required="#{param['survey:create'] != null}"
+                             value="#{newSurveyController.survey.title}"
+                             maxlength="80"
+                             size="80"
+                             placeholder="Survey title"
                              styleClass="newSurveyField"/>
-            <p:message for="description"/>
+                <p:message for="title"/>
+            </p:column>
+            <p:column>
+                <p:outputLabel for="description" value="Survey description" />
+            </p:column>
+            <p:column>
+                <p:inputTextarea id="description"
+                                 value="#{newSurveyController.survey.description}"
+                                 rows="6" cols="80"
+                                 placeholder="Survey description (Optional)"
+                                 styleClass="newSurveyField"/>
+                <p:message for="description"/>
+            </p:column>
         </p:panelGrid>
 
         <!-- New question -->

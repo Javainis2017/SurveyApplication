@@ -5,16 +5,20 @@
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <h3>Text question</h3>
-    <p:panelGrid id="newTextQuestionGrid" columns="3">
+    <p:panelGrid id="newTextQuestionGrid" columns="2">
         <p:outputLabel for="text" value="Question text"/>
-        <p:inputTextarea id="text" required="#{param['survey:createTextQuestion'] != null}" value="#{textQuestionController.question.text}"
-                         maxlength="300" rows="4" cols="80"
-                         placeholder="Question text"/>
-        <p:message for="text"/>
+        <p:column>
+            <p:inputTextarea id="text" required="#{param['survey:createTextQuestion'] != null}" value="#{textQuestionController.question.text}"
+                             maxlength="300" rows="4" cols="80"
+                             placeholder="Question text"/>
+            <p:message for="text"/>
+        </p:column>
 
         <p:outputLabel for="requiredText" value="Required"/>
-        <p:selectBooleanCheckbox id="requiredText" value="#{textQuestionController.question.required}"/>
-        <p:message for="requiredText"/>
+        <p:column>
+            <p:selectBooleanCheckbox id="requiredText" value="#{textQuestionController.question.required}"/>
+            <p:message for="requiredText"/>
+        </p:column>
 
         <p:commandButton value="Save question"
                          id="createTextQuestion"

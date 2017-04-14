@@ -5,16 +5,20 @@
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h3>Single choice question</h3>
-    <p:panelGrid id="newSingleChoiceQuestionGrid" columns="3">
+    <p:panelGrid id="newSingleChoiceQuestionGrid" columns="2">
         <p:outputLabel for="singleText" value="Question text"/>
-        <p:inputTextarea id="singleText" required="#{param['survey:createSingleChoiceQuestion'] != null}" value="#{singleChoiceQuestionController.question.text}"
-                         maxlength="300" rows="4" cols="80"
-                         placeholder="Question text"/>
-        <p:message for="singleText"/>
+        <p:column>
+            <p:inputTextarea id="singleText" required="#{param['survey:createSingleChoiceQuestion'] != null}" value="#{singleChoiceQuestionController.question.text}"
+                             maxlength="300" rows="4" cols="80"
+                             placeholder="Question text"/>
+            <p:message for="singleText"/>
+        </p:column>
 
         <p:outputLabel for="requiredSingle" value="Required"/>
-        <p:selectBooleanCheckbox id="requiredSingle" value="#{singleChoiceQuestionController.question.required}"/>
-        <p:message for="requiredSingle"/>
+        <p:column>
+            <p:selectBooleanCheckbox id="requiredSingle" value="#{singleChoiceQuestionController.question.required}"/>
+            <p:message for="requiredSingle"/>
+        </p:column>
     </p:panelGrid>
     <p:panelGrid columns="1" rendered="#{not empty singleChoiceQuestionController.question.choices}">
         <ui:repeat value="#{singleChoiceQuestionController.question.choices}" var="choice">

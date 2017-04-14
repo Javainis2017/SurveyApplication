@@ -5,16 +5,19 @@
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h3>Multi choice question</h3>
-    <p:panelGrid id="newMultiChoiceQuestionGrid" columns="3">
+    <p:panelGrid id="newMultiChoiceQuestionGrid" columns="2">
         <p:outputLabel for="multiText" value="Question text"/>
-        <p:inputTextarea id="multiText" required="#{param['survey:createMultiChoiceQuestion'] != null}" value="#{multipleChoiceQuestionController.question.text}"
-                         maxlength="300" rows="4" cols="80"
-                         placeholder="Question text"/>
-        <p:message for="multiText"/>
-
+        <p:column>
+            <p:inputTextarea id="multiText" required="#{param['survey:createMultiChoiceQuestion'] != null}" value="#{multipleChoiceQuestionController.question.text}"
+                             maxlength="300" rows="4" cols="80"
+                             placeholder="Question text"/>
+            <p:message for="multiText"/>
+        </p:column>
         <p:outputLabel for="requiredMulti" value="Required"/>
-        <p:selectBooleanCheckbox id="requiredMulti" value="#{multipleChoiceQuestionController.question.required}"/>
-        <p:message for="requiredMulti"/>
+        <p:column>
+            <p:selectBooleanCheckbox id="requiredMulti" value="#{multipleChoiceQuestionController.question.required}"/>
+            <p:message for="requiredMulti"/>
+        </p:column>
     </p:panelGrid>
     <p:panelGrid columns="1" rendered="#{not empty multipleChoiceQuestionController.question.choices}">
         <ui:repeat value="#{multipleChoiceQuestionController.question.choices}" var="choice">
