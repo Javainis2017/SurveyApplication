@@ -14,14 +14,14 @@
     </c:if>
     <h:outputText>#{question.minValue} - #{question.maxValue}</h:outputText>
     <h:panelGrid columns="2">
-        <p:inputText value="#{surveyController.answers[question].number}"
+        <h:inputText value="#{surveyController.answers[question].number}"
                          id="q#{question.id}"
                          required="#{question.required}"
                          type="number"
                          validatorMessage="Value must be between #{question.minValue} and #{question.maxValue}."
                          requiredMessage="This question is required.">
             <f:validateLongRange minimum="#{question.minValue}" maximum="#{question.maxValue}"/>
-        </p:inputText>
+        </h:inputText>
         <p:message for="q#{question.id}"/>
     </h:panelGrid>
 </ui:composition>

@@ -12,14 +12,14 @@
         <br/>
     </c:if>
     <h:panelGrid columns="2">
-        <p:selectManyCheckbox id="q#{question.id}"
+        <h:selectManyCheckbox id="q#{question.id}"
                           value="#{surveyController.answers[question].choices}"
                           layout="pageDirection"
                           required="#{question.required}"
                           requiredMessage="This question is required."
                           converter="omnifaces.SelectItemsConverter">
             <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}" itemValue="#{choice}"/>
-        </p:selectManyCheckbox>
+        </h:selectManyCheckbox>
         <p:message for="q#{question.id}"/>
     </h:panelGrid>
 </ui:composition>
