@@ -24,7 +24,6 @@ public class Resources
 
     private void closeUnsynchronizedEntityManager(@Disposes EntityManager em)
     {
-
         em.close();
     }
 }
