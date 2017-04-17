@@ -6,10 +6,8 @@ import com.javainis.utility.HashGenerator;
 import lombok.Getter;
 import lombok.Setter;
 import org.omnifaces.util.Messages;
-import sun.invoke.empty.Empty;
 
 import javax.enterprise.context.SessionScoped;
-
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -126,7 +124,6 @@ public class UserController implements Serializable
         currentPassword = "";
         newPassword = "";
         repeatedPassword = "";
-
     }
 
 }
