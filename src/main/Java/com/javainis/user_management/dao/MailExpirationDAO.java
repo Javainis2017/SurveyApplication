@@ -25,17 +25,18 @@ public class MailExpirationDAO
                 .executeUpdate();
     }
 
-    public Boolean findMailExpiration(String url)
+    public MailExpiration findMailExpiration(String url)
     {
         try {
             MailExpiration result = manager.createNamedQuery("MailExpiration.findUrl", MailExpiration.class)
                     .setParameter("url", url)
                     .getSingleResult();
-            return result.getUrl().equals(url);
+
+            return result;
         }
         catch(NoResultException ex)
         {
-            return false;
+            return null;
         }
     }
 

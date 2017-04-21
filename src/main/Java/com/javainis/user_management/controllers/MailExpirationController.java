@@ -3,7 +3,9 @@ package com.javainis.user_management.controllers;
 import com.javainis.user_management.dao.MailExpirationDAO;
 import com.javainis.user_management.dao.UserDAO;
 import com.javainis.user_management.entities.MailExpiration;
+import com.javainis.user_management.entities.User;
 import com.javainis.utility.DateUtil;
+import com.javainis.utility.HashGenerator;
 import com.javainis.utility.RandomStringGenerator;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,15 +17,17 @@ import javax.inject.Named;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.persistence.NoResultException;
 import javax.servlet.ServletException;
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Properties;
 
 @Named
 @RequestScoped
-public class MailExpirationController {
+public class MailExpirationController implements Serializable {
     @Getter
     private MailExpiration mailExpiration = new MailExpiration();
 
@@ -32,11 +36,17 @@ public class MailExpirationController {
     private String email;
 
     @Inject
-    @Getter
     private MailExpirationDAO mailExpirationDAO;
 
     @Inject
+    @Getter
     private UserDAO userDAO;
+
+    @Getter
+    private User user;
+
+    @Inject
+    private HashGenerator hashGenerator;
 
     @Inject
     private RandomStringGenerator randomStringGenerator;
@@ -44,21 +54,33 @@ public class MailExpirationController {
     @Inject
     private DateUtil dateUtil;
 
+    @Setter
+    @Getter
+    private String url;
+
+    @Getter
+    @Setter
+    private String newPassword;
+
+    @Getter
+    @Setter
+    private String repeatedPassword;
+
     @Transactional
     public void doPost() throws ServletException, IOException
     {
         if(userDAO.emailIsRegistered(email))
         {
             String subject = "Password reminder";
-
             String fromEmail = "javainis2017@gmail.com";
             String username = "javainis2017@gmail.com";
             String password = "javainiai";
 
             setSentEmailProperties();
-            String message = "Your password reminder link: " + " " + "domain.com/password/" + mailExpiration.getUrl();
+            String message = "Your password reminder link: http://localhost:8080/user-management/passwordChangeFromEmail.html?sid=" + mailExpiration.getUrl();
             sendEmail(fromEmail, username, password, email, subject, message);
             mailExpirationDAO.create(mailExpiration);
+            url = mailExpiration.getUrl();
             Messages.addGlobalInfo("Email was sent successfully");
         }
         else
@@ -113,5 +135,55 @@ public class MailExpirationController {
         mailExpiration.setUser(userDAO.getUserByEmail(email));
         mailExpiration.setExpirationDate(dateUtil.addDays(date, 2));
         mailExpiration.setUrl(randomStringGenerator.generateString(32));
+    }
+
+    @Transactional
+    public void changePassword(){
+        try{
+            user = mailExpirationDAO.findMailExpiration(url).getUser();
+            if(user == null)
+                throw new Exception("Stop hacking");
+
+            if(!newPassword.contentEquals(repeatedPassword)) {
+                Messages.addGlobalWarn("New and repeated password are not equal");
+            }
+
+            newPassword = hashGenerator.generatePasswordHash(newPassword);
+            userDAO.changeUserPassword(user.getEmail(), newPassword);
+            user.setPasswordHash(newPassword);
+            Messages.addGlobalInfo("Password was successfully changed");
+            resetPasswordFields();
+        }
+        catch(Exception ex){
+            Messages.addGlobalWarn("FATAL ERROR: User password change failed");
+        }
+    }
+
+    private void resetPasswordFields()
+    {
+        newPassword = "";
+        repeatedPassword = "";
+    }
+
+    public void init() {
+        if(url == null){
+            return;
+        }
+
+        try{
+            mailExpiration = mailExpirationDAO.findMailExpiration(url);
+        }catch (NoResultException ex){
+            return;
+        }
+
+        if(mailExpiration == null)
+        {
+            url = null;
+        }
+        else
+        {
+            user = mailExpiration.getUser();
+        }
+
     }
 }
