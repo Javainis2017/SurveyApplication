@@ -703,4 +703,15 @@ group=5</panel_attributes>
 group=7</panel_attributes>
     <additional_attributes/>
   </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>96</x>
+      <y>32</y>
+      <w>1104</w>
+      <h>1040</h>
+    </coordinates>
+    <panel_attributes>Reports</panel_attributes>
+    <additional_attributes/>
+  </element>
 </diagram>
