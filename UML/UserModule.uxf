@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.2">
-  <zoom_level>9</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>72</x>
-      <y>243</y>
-      <w>225</w>
-      <h>144</h>
+      <x>476</x>
+      <y>189</y>
+      <w>175</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Entity&gt;&gt;
 User
@@ -24,21 +24,21 @@ User
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>684</x>
-      <y>378</y>
-      <w>306</w>
-      <h>153</h>
+      <x>938</x>
+      <y>413</y>
+      <w>294</w>
+      <h>119</h>
     </coordinates>
     <panel_attributes>UserDAO
 --
 -manager: EntityManager
 --
-+create(user: User)
 +login(email: String, pwHash: String): User
 +getAllUsers(): List&lt;User&gt;
-+changePassword(user: User, pwHash: String)
-+changeUserType(user: User, type: int)
-+allowUserAccess(user: User, allowed: Bool)
++getUserByEmail(String email): User
++changeBlockStatus(String email): Boolean
++emailIsRegistered(String email): String
++changeUserPassword(String email, String newPasswordHash)
 
 </panel_attributes>
     <additional_attributes/>
@@ -46,10 +46,10 @@ User
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>900</x>
-      <y>72</y>
-      <w>126</w>
-      <h>63</h>
+      <x>1120</x>
+      <y>56</y>
+      <w>98</w>
+      <h>49</h>
     </coordinates>
     <panel_attributes>Database
 --
@@ -59,75 +59,60 @@ bg=orange</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>423</x>
-      <y>378</y>
-      <w>225</w>
-      <h>144</h>
+      <x>735</x>
+      <y>413</y>
+      <w>175</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>WhitelistDAO
 --
 -manager: EntityManager
 --
 +create(whitelist: Whitelist)
-+removeFromWhitelist(email:String)
-+findEmail(email: String): Bool
-+getAll(): List&lt;Whitelist&gt;</panel_attributes>
++findEmail(String email): Boolean
++getAll((: List&lt;Whitelist&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>180</x>
-      <y>414</y>
-      <w>171</w>
-      <h>81</h>
+      <x>560</x>
+      <y>322</y>
+      <w>133</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Entity&gt;&gt;
 Whitelist
 --
--emailID: String
+-emailID: long
 -email: String</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLPackage</id>
-    <coordinates>
-      <x>54</x>
-      <y>180</y>
-      <w>954</w>
-      <h>666</h>
-    </coordinates>
-    <panel_attributes>User Management
---
-bg=yellow
-layer=-100</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>387</x>
-      <y>594</y>
-      <w>306</w>
-      <h>243</h>
+      <x>714</x>
+      <y>574</y>
+      <w>238</w>
+      <h>189</h>
     </coordinates>
     <panel_attributes>UserController
 --
--manager: EntityManager
 -userDAO: UserDAO
 -whitelistDAO: WhitelistDAO
 -user: User
+-passwordHash: String
+-currentPassword: String
+-newPassword: String
+-repeatedPassword: String
 -whitelist: Whitelist
 --
 +login()
 +logout()
-+createUser()
-+whitelistEmail()
-+deleteEmail()
-+recoverPassword()
 +changePassword()
-+changeUserType()
-+allowUserAccess()
++setPasswordHash(String password)
++setCurrentPassword(String password)
++resetPasswordFields()
 
 </panel_attributes>
     <additional_attributes/>
@@ -135,10 +120,10 @@ layer=-100</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>549</x>
-      <y>81</y>
-      <w>144</w>
-      <h>63</h>
+      <x>847</x>
+      <y>63</y>
+      <w>112</w>
+      <h>49</h>
     </coordinates>
     <panel_attributes>EntityManager
 --
@@ -148,10 +133,10 @@ layer=-100</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>684</x>
-      <y>99</y>
-      <w>234</w>
-      <h>36</h>
+      <x>952</x>
+      <y>77</y>
+      <w>182</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>240.0;10.0;10.0;20.0</additional_attributes>
@@ -159,10 +144,10 @@ layer=-100</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>225</x>
-      <y>126</y>
-      <w>342</w>
-      <h>135</h>
+      <x>595</x>
+      <y>98</y>
+      <w>266</w>
+      <h>105</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 use</panel_attributes>
@@ -171,10 +156,10 @@ use</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>315</x>
-      <y>117</y>
-      <w>252</w>
-      <h>315</h>
+      <x>665</x>
+      <y>91</y>
+      <w>196</w>
+      <h>245</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 use</panel_attributes>
@@ -183,98 +168,98 @@ use</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>666</x>
-      <y>135</y>
-      <w>117</w>
-      <h>261</h>
+      <x>938</x>
+      <y>105</y>
+      <w>77</w>
+      <h>322</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>110.0;270.0;10.0;10.0</additional_attributes>
+    <additional_attributes>90.0;440.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>576</x>
-      <y>135</y>
-      <w>27</w>
-      <h>261</h>
+      <x>854</x>
+      <y>105</y>
+      <w>35</w>
+      <h>322</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;270.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;440.0;30.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>531</x>
-      <y>513</y>
-      <w>27</w>
-      <h>99</h>
+      <x>819</x>
+      <y>518</y>
+      <w>28</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+    <additional_attributes>20.0;80.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>675</x>
-      <y>522</y>
-      <w>108</w>
-      <h>90</h>
+      <x>938</x>
+      <y>525</y>
+      <w>77</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;80.0;100.0;10.0</additional_attributes>
+    <additional_attributes>10.0;70.0;90.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>288</x>
-      <y>315</y>
-      <w>414</w>
-      <h>99</h>
+      <x>644</x>
+      <y>245</y>
+      <w>308</w>
+      <h>196</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;390.0;10.0;440.0;90.0</additional_attributes>
+    <additional_attributes>10.0;10.0;390.0;10.0;420.0;260.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>342</x>
-      <y>441</y>
-      <w>99</w>
-      <h>27</h>
+      <x>686</x>
+      <y>343</y>
+      <w>63</w>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;70.0;180.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>333</x>
-      <y>486</y>
-      <w>90</w>
-      <h>126</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>80.0;120.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>99</x>
+      <x>644</x>
       <y>378</y>
-      <w>306</w>
-      <h>342</h>
+      <w>28</w>
+      <h>308</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>320.0;360.0;10.0;230.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;420.0;20.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>497</x>
+      <y>294</y>
+      <w>231</w>
+      <h>378</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>310.0;520.0;10.0;230.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>9</x>
+      <x>427</x>
       <y>0</y>
-      <w>342</w>
-      <h>81</h>
+      <w>266</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>Resources
 --
@@ -288,10 +273,10 @@ use</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>342</x>
-      <y>27</y>
-      <w>225</w>
-      <h>90</h>
+      <x>686</x>
+      <y>21</y>
+      <w>175</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 create</panel_attributes>
@@ -300,12 +285,365 @@ create</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>648</x>
-      <y>135</y>
-      <w>27</w>
-      <h>477</h>
+      <x>917</x>
+      <y>105</y>
+      <w>28</w>
+      <h>483</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;510.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;670.0;20.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>714</x>
+      <y>784</y>
+      <w>238</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>AdminBlockController
+--
+-userComtroller: UserController
+--
++changeUserBlockStatus(String email) : Boolean
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>217</x>
+      <y>623</y>
+      <w>238</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>AdminTypeController
+--
+-userTypeDAO: UserTypeDAO
+-userController: UserController
+--
++toggleUserType(String email): Boolean
++isAdmin(): Boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1246</x>
+      <y>574</y>
+      <w>231</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>MailExpirationController
+--
+-mailExpirationDAO: MailExpirationDAO
+-userDAO: UserDAO
+-user: User
+-hashGenerator: hashGenerator
+-randomStringGenerator: RandomStringGenerator
+-dateUtil: DateUtil
+-url: String
+-newPassword: String
+-repeatedPassword: String
+--
++doPost()
++sendEmail(String fromEmail, String username,
+String password, String toEmail,
+String subject, String message)
++setSentEmailProperties()
++changePassword()
++resetPasswordFields()
++init()
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>462</x>
+      <y>672</y>
+      <w>238</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>AdminWhitelistController
+--
+-userTypeDAO: UserTypeDAO
+-whitelistDAO: WhitelistDAO
+-userController: UserController
+-whitelist: Whitelist
+-selectedEmail: Whitelist
+--
++whitelistEmail()
++validateEmail(String email) : String
++removeFromWhitelist()String email) : Boolean
++isAdmin() : Boolean
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>966</x>
+      <y>588</y>
+      <w>238</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>UserRegistrationController
+--
+-manager: EntityManager
+-typeDAO: UserTypeDAO
+-whitelistDAO: WhitelistDAO
+-user: User
+-whitelist: Whitelist
+-hashGenerator: HashGenerator
+-passwordHash: Stirng
+--
+=register(): String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>966</x>
+      <y>728</y>
+      <w>238</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>UserSurveyController
+--
+-userController: UserController
+-surveyDAO: SurveyDAO
+--
+-getAllUserSurvey(): ListSurvey
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>322</x>
+      <y>441</y>
+      <w>238</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>UserTypeDAO
+--
+-manager: EntityManager
+--
++create(userType: UserType)
++getUserTypeById(int id): UserType
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1239</x>
+      <y>350</y>
+      <w>238</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>MailExpirationDAO
+--
+-manager: EntityManager
+--
++create(MailExpiration mailExpiration)
++findMailExpiration(String url): MailExpiration</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>245</x>
+      <y>196</y>
+      <w>175</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Entity&gt;&gt;
+UserType
+--
+-id: long
+-name: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1225</x>
+      <y>203</y>
+      <w>175</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Entity&gt;&gt;
+Mail Expiration
+--
+-mailID: long
+-url: String
+-expirationDate: Date
+-user: User</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>658</x>
+      <y>511</y>
+      <w>91</w>
+      <h>175</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;230.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>483</x>
+      <y>497</y>
+      <w>35</w>
+      <h>189</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;250.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>385</x>
+      <y>497</y>
+      <w>21</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;180.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>889</x>
+      <y>756</y>
+      <w>21</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>945</x>
+      <y>742</y>
+      <w>35</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>30.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>945</x>
+      <y>644</y>
+      <w>35</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>30.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>693</x>
+      <y>742</y>
+      <w>35</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>448</x>
+      <y>623</y>
+      <w>280</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;380.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>945</x>
+      <y>707</y>
+      <w>315</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>430.0;20.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1253</x>
+      <y>462</y>
+      <w>21</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;160.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>413</x>
+      <y>84</y>
+      <w>448</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+use</panel_attributes>
+    <additional_attributes>10.0;170.0;620.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>952</x>
+      <y>98</y>
+      <w>287</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+use</panel_attributes>
+    <additional_attributes>390.0;180.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1309</x>
+      <y>308</y>
+      <w>42</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>357</x>
+      <y>301</y>
+      <w>35</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;200.0</additional_attributes>
   </element>
 </diagram>
