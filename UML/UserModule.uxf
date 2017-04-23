@@ -241,7 +241,6 @@ create</panel_attributes>
     </coordinates>
     <panel_attributes>AdminBlockController
 --
--userComtroller: UserController
 --
 +changeUserBlockStatus(String email) : Boolean
 
@@ -334,7 +333,6 @@ String subject, String message)
     </coordinates>
     <panel_attributes>UserSurveyController
 --
--userController: UserController
 -surveyDAO: SurveyDAO
 --
 -getAllUserSurvey(): ListSurvey
