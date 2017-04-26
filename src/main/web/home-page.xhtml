@@ -58,12 +58,12 @@
             <h:panelGrid columns="4">
                 <p:outputLabel for="email" value="E-mail"/>
                 <p:inputText type="email" maxlength="50" id="email" value="#{adminWhitelistController.whitelist.email}"/>
-                <p:message for="email"/>
+                <p:message for="email" autoUpdate="true"/>
                 <p:commandButton value="Add to whitelist"
                                  actionListener="#{adminWhitelistController.whitelistEmail()}"
                                  ajax="true" update="whitelist"/>
             </h:panelGrid>
-            <p:messages globalOnly="true"/>
+            <p:messages globalOnly="true" autoUpdate="true"/>
         </p:fieldset>
 
         <p:fieldset legend="User List" toggleable="true" collapsed="true" styleClass="fieldPanel">

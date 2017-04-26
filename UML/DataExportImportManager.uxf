@@ -26,7 +26,7 @@ layer=-100</panel_attributes>
     <panel_attributes>SurveyExportController
 --
 -surveyDAO: SurveyDAO
--answerDAO: AnswerDAO
+-surveyResultDAO: SurveyResultDAO
 -selectedSurvey: Survey
 -surveyAnswers: List&lt;Answer&gt;
 --
@@ -142,9 +142,9 @@ m1=-importer</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>207</x>
+      <x>189</x>
       <y>216</y>
-      <w>297</w>
+      <w>333</w>
       <h>81</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
@@ -152,7 +152,7 @@ DataExporter
 --
 --
 +exportSurvey(Survey survey, File destination)
-+exportAnswers(List&lt;Answer&gt;, File destination)</panel_attributes>
++exportAnswers(List&lt;Answer&gt; answers, File destination)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
