@@ -48,29 +48,33 @@ public class XLSXDataExporter implements DataExporter{
         List<Question> surveyQuestions = survey.getQuestions();
         for(int i = 0; i < surveyQuestions.size(); i++)
         {
+            String questionType = "";
             Question question = surveyQuestions.get(i);
             XSSFRow row = surveySheet.createRow(i+1);
             row.createCell(0).setCellValue(i+1);
             row.createCell(1).setCellValue(question.getText());
             if (question instanceof MultipleChoiceQuestion)
             {
-                row.createCell(2).setCellValue("MULTIPLECHOICE");
+                questionType = "CHECKBOX";
                 exportChoices(row, ((MultipleChoiceQuestion) question).getChoices());
             }
             else if (question instanceof SingleChoiceQuestion)
             {
-                row.createCell(2).setCellValue("CHECKBOX");
+                questionType = "MULTIPLECHOICE";
                 exportChoices(row, ((SingleChoiceQuestion) question).getChoices());
             }
             else if (question instanceof IntervalQuestion)
             {
-                row.createCell(2).setCellValue("SCALE");
+                questionType = "SCALE";
                 IntervalQuestion iq = (IntervalQuestion) question;
                 exportInterval(row, iq.getMinValue(), iq.getMaxValue());
             }
             else{
-                row.createCell(2).setCellValue("TEXT");
+                questionType = "TEXT";
             }
+            if (question.getRequired()) questionType += "*";
+            row.createCell(2).setCellValue(questionType);
+
         }
         try {
             wb.write(destination);
