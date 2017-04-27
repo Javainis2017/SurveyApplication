@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javainis.reports.mybatis.dao.SurveyMapper">
+  <resultMap id="BaseResultMap" type="com.javainis.reports.mybatis.model.Survey">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="url" jdbcType="CHAR" property="url" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from public.survey
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.javainis.reports.mybatis.model.Survey" useGeneratedKeys="true">
+    insert into public.survey (name, description, url, 
+      user_id)
+    values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{url,jdbcType=CHAR}, 
+      #{userId,jdbcType=BIGINT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.javainis.reports.mybatis.model.Survey">
+    update public.survey
+    set name = #{name,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      url = #{url,jdbcType=CHAR},
+      user_id = #{userId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, name, description, url, user_id
+    from public.survey
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, description, url, user_id
+    from public.survey
+  </select>
+</mapper>
