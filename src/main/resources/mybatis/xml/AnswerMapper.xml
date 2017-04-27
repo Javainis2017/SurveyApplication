@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javainis.reports.mybatis.dao.AnswerMapper">
+  <resultMap id="BaseResultMap" type="com.javainis.reports.mybatis.model.Answer">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="result_id" jdbcType="BIGINT" property="resultId" />
+    <result column="question_id" jdbcType="BIGINT" property="questionId" />
+    <result column="choice_id" jdbcType="BIGINT" property="choiceId" />
+    <result column="text_answer" jdbcType="VARCHAR" property="textAnswer" />
+    <result column="number_answer" jdbcType="INTEGER" property="numberAnswer" />
+    <result column="answer_type" jdbcType="CHAR" property="answerType" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from public.answer
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.javainis.reports.mybatis.model.Answer" useGeneratedKeys="true">
+    insert into public.answer (result_id, question_id, choice_id, 
+      text_answer, number_answer, answer_type
+      )
+    values (#{resultId,jdbcType=BIGINT}, #{questionId,jdbcType=BIGINT}, #{choiceId,jdbcType=BIGINT}, 
+      #{textAnswer,jdbcType=VARCHAR}, #{numberAnswer,jdbcType=INTEGER}, #{answerType,jdbcType=CHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.javainis.reports.mybatis.model.Answer">
+    update public.answer
+    set result_id = #{resultId,jdbcType=BIGINT},
+      question_id = #{questionId,jdbcType=BIGINT},
+      choice_id = #{choiceId,jdbcType=BIGINT},
+      text_answer = #{textAnswer,jdbcType=VARCHAR},
+      number_answer = #{numberAnswer,jdbcType=INTEGER},
+      answer_type = #{answerType,jdbcType=CHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, result_id, question_id, choice_id, text_answer, number_answer, answer_type
+    from public.answer
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, result_id, question_id, choice_id, text_answer, number_answer, answer_type
+    from public.answer
+  </select>
+</mapper>

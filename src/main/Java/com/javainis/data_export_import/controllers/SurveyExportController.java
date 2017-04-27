@@ -1,6 +1,5 @@
 package com.javainis.data_export_import.controllers;
 
-import com.javainis.data_export_import.data_converters.XLSXDataExporter;
 import com.javainis.data_export_import.interfaces.DataExporter;
 import com.javainis.survey.dao.SurveyDAO;
 import com.javainis.survey.dao.SurveyResultDAO;
@@ -10,15 +9,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
-import java.io.File;
+import java.io.*;
 import java.util.List;
 
 @Named
 @RequestScoped
 public class SurveyExportController {
+
+    private OutputStream stream;
 
     @Inject
     private DataExporter exporter;
@@ -40,11 +43,28 @@ public class SurveyExportController {
     @Transactional
     public void exportSurvey()
     {
-        Survey test1 = surveyDAO.getAll().get(0);
-        exporter.exportSurvey(test1, new File("survey.xlsx"));
-
+        //Pagal http://stackoverflow.com/a/9394237
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        ec.responseReset();
+        ec.setResponseContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        ec.setResponseHeader("Content-Disposition", "attachment; filename=\"Survey.xlsx\"");
+        //TODO: padaryt visom apklausom
+        selectedSurvey = surveyDAO.getAll().get(0); //TIK TESTAVIMUI
+        try {
+            stream = ec.getResponseOutputStream();
+            exporter.exportSurvey(selectedSurvey, stream);
+        }
+        catch(IOException ex)
+        {
+            ex.printStackTrace();
+        }
+        finally {
+            fc.responseComplete();
+        }
     }
 
+    //TODO:exportuotiAtsakymus
     public void exportAnswers()
     {
 

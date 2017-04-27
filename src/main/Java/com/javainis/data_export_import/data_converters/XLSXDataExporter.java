@@ -3,21 +3,18 @@ package com.javainis.data_export_import.data_converters;
 import com.javainis.data_export_import.interfaces.DataExporter;
 import com.javainis.survey.entities.*;
 
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.primefaces.model.StreamedContent;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
 import java.io.*;
 import java.util.List;
 
 @ApplicationScoped
 public class XLSXDataExporter implements DataExporter{
 
-    private void ChoiceQuestion(XSSFRow row, List<Choice> choices)
+    private void exportChoices(XSSFRow row, List<Choice> choices)
     {
         int cell = 3;
         for(Choice c: choices)
@@ -26,54 +23,61 @@ public class XLSXDataExporter implements DataExporter{
         }
     }
 
-    private void IntervalQuestion(XSSFRow row, int min, int max)
+    private void exportInterval(XSSFRow row, int min, int max)
     {
         row.createCell(3).setCellValue(min);
         row.createCell(4).setCellValue(max);
     }
 
-    @Override
-    public void exportSurvey(Survey survey, File destination)
+    private void createStatusRow(XSSFSheet sheet)
     {
-        System.out.println("Exporting survey");
-        XSSFWorkbook wb = new XSSFWorkbook();
-        XSSFSheet surveySheet = wb.createSheet("Survey");
-        XSSFRow statusRow = surveySheet.createRow(0);
+        XSSFRow statusRow = sheet.createRow(0);
         statusRow.createCell(0).setCellValue("$questionNumber");
         statusRow.createCell(1).setCellValue("$question");
         statusRow.createCell(2).setCellValue("$questionType");
         statusRow.createCell(3).setCellValue("$optionsList");
+    }
+
+    @Override
+    public void exportSurvey(Survey survey, OutputStream destination)
+    {
+        System.out.println("Exporting survey");
+        XSSFWorkbook wb = new XSSFWorkbook();
+        XSSFSheet surveySheet = wb.createSheet("Survey");
+        createStatusRow(surveySheet);
         List<Question> surveyQuestions = survey.getQuestions();
         for(int i = 0; i < surveyQuestions.size(); i++)
         {
+            String questionType = "";
             Question question = surveyQuestions.get(i);
             XSSFRow row = surveySheet.createRow(i+1);
             row.createCell(0).setCellValue(i+1);
             row.createCell(1).setCellValue(question.getText());
             if (question instanceof MultipleChoiceQuestion)
             {
-                row.createCell(2).setCellValue("MULTIPLECHOICE");
-                ChoiceQuestion(row, ((MultipleChoiceQuestion) question).getChoices());
+                questionType = "CHECKBOX";
+                exportChoices(row, ((MultipleChoiceQuestion) question).getChoices());
             }
             else if (question instanceof SingleChoiceQuestion)
             {
-                row.createCell(2).setCellValue("CHECKBOX");
-                ChoiceQuestion(row, ((SingleChoiceQuestion) question).getChoices());
+                questionType = "MULTIPLECHOICE";
+                exportChoices(row, ((SingleChoiceQuestion) question).getChoices());
             }
             else if (question instanceof IntervalQuestion)
             {
-                row.createCell(2).setCellValue("SCALE");
+                questionType = "SCALE";
                 IntervalQuestion iq = (IntervalQuestion) question;
-                IntervalQuestion(row, iq.getMinValue(), iq.getMaxValue());
+                exportInterval(row, iq.getMinValue(), iq.getMaxValue());
             }
             else{
-                row.createCell(2).setCellValue("TEXT");
+                questionType = "TEXT";
             }
+            if (question.getRequired()) questionType += "*";
+            row.createCell(2).setCellValue(questionType);
+
         }
         try {
-            FileOutputStream fileOut = new FileOutputStream(destination);
-            wb.write(fileOut);
-            fileOut.close();
+            wb.write(destination);
             System.out.println("Export finished");
         }
         catch (IOException ex)
@@ -83,7 +87,7 @@ public class XLSXDataExporter implements DataExporter{
     }
 
     @Override
-    public void exportAnswers(List<Answer> answers, File destination)
+    public void exportAnswers(List<SurveyResult> answers, OutputStream destination)
     {
 
     }
