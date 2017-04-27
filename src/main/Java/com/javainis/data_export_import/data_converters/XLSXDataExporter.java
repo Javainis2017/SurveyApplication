@@ -83,7 +83,7 @@ public class XLSXDataExporter implements DataExporter{
     }
 
     @Override
-    public void exportAnswers(List<Answer> answers, OutputStream destination)
+    public void exportAnswers(List<SurveyResult> answers, OutputStream destination)
     {
 
     }
