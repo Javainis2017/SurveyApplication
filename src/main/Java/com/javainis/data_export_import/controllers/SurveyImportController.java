@@ -10,7 +10,10 @@ import lombok.Setter;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.transaction.Transactional;
 import javax.ws.rs.GET;
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 
@@ -25,6 +28,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 /**
  * Created by Ignas on 2017-04-26.
  */
+@Named
 @RequestScoped
 public class SurveyImportController {
 
@@ -43,8 +47,10 @@ public class SurveyImportController {
     @Getter
     private List<Answer> surveyAnswers;
 
+    @Transactional
     public void importSurvey(){
-
+        File file = new File("survey.xlsx");
+        dataImporter.importSurvey(file);
     }
 
     public void importAnswers(){
