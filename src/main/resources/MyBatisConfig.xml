@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <!--<typeAlias type="lt.vu.usecases.mybatis.model.Student" alias="Student"/>
+        <typeAlias type="lt.vu.usecases.mybatis.model.Course" alias="Course"/>
+        <typeAlias type="lt.vu.usecases.mybatis.model.University" alias="University"/>
+        <typeAlias type="lt.vu.usecases.mybatis.model.StudentCourse" alias="StudentCourse"/>-->
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="MANAGED"/>
+            <dataSource type="JNDI">
+                <!--<property name="data_source" value="java:global/StudentsDataSource"/>-->
+                <property name="data_source" value="openejb:Resource/SurveyDataSource"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mybatis/xml/CourseMapper.xml"/>
+        <mapper resource="mybatis/xml/StudentMapper.xml"/>
+        <mapper resource="mybatis/xml/StudentCourseMapper.xml"/>
+        <mapper resource="mybatis/xml/UniversityMapper.xml"/>
+    </mappers>
+</configuration>
