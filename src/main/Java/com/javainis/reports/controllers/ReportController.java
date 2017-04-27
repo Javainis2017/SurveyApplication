@@ -7,9 +7,10 @@ import com.javainis.user_management.controllers.UserController;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import java.io.Serializable;
 
 @ViewScoped
-public class ReportController {
+public class ReportController implements Serializable {
     @Inject
     private UserController userController;
     @Inject
