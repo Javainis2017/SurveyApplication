@@ -1,4 +1,4 @@
 package com.javainis.reports.api;
 
-public interface IntervalQuestionReport {
+public interface IntervalQuestionReport extends QuestionReport{
 }
