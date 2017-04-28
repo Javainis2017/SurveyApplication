@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,11 +31,6 @@ public class XLSXDataImporter implements DataImporter{
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(selectedFile));
             XSSFSheet sheet = workbook.getSheetAt(0); //reiks tobulint
-//            XSSFRow row = sheet.getRow(0);
-//            String data = row.getCell(0).getStringCellValue();
-//            System.out.println(data);
-//            row = sheet.getRow(1);
-//            double number = row.getCell(0).getNumericCellValue();
             Row headerRow = sheet.getRow(0);
             List<String> headerColumn = new ArrayList<>();
             for (Cell cell : headerRow){
@@ -49,43 +45,75 @@ public class XLSXDataImporter implements DataImporter{
 
                 String questionType = row.getCell(2).getStringCellValue(); // Question format
                 String quesstionName = row.getCell(1).getStringCellValue();
-                String quesstionNumber = row.getCell(0).getStringCellValue();
+                double quesstionNumber = row.getCell(0).getNumericCellValue();
 
                 switch (questionType){
                     case "TEXT":
                     case "TEXT*":
                         FreeTextQuestion freeTextQuestion = new FreeTextQuestion();
                         if (questionType.contains("*")) freeTextQuestion.setRequired(true);
-                        //freeTextQuestion.
+                        else freeTextQuestion.setRequired(false);
 
+                        freeTextQuestion.setSurvey(survey); //need this?
+                        //survey.setQuestions();
+                        System.out.println("TEXT");
                         break;
                     case "CHECKBOX":
                     case "CHECKBOX*":
                         MultipleChoiceQuestion multipleChoiceQuestion = new MultipleChoiceQuestion();
+                        if (questionType.contains("*")) multipleChoiceQuestion.setRequired(true);
+                        else multipleChoiceQuestion.setRequired(false);
 
+                        List<Choice> choiceList = new ArrayList<>();
+                        for (Cell cell : row){
+                            if(cell.getColumnIndex() == 0 || cell.getColumnIndex() == 1 || cell.getColumnIndex() == 2) continue;
+                            Choice choice = new Choice();
+
+                            if (cell.getCellTypeEnum() == CellType.STRING){
+                                String option = cell.getStringCellValue();
+                                choice.setText(option);
+                            }
+                            if (cell.getCellTypeEnum() == CellType.NUMERIC){
+                                double optionNumber = cell.getNumericCellValue();
+                                choice.setText(String.valueOf(optionNumber));
+                            } else{
+                                System.out.println("Gali būti kazkoks kitas formatas???");
+                            }
+                            choice.setQuestion(multipleChoiceQuestion); //taip ar ne?
+                            choiceList.add(choice);
+                        }
+                        multipleChoiceQuestion.setChoices(choiceList);
+                        multipleChoiceQuestion.setText(quesstionName);
+                        multipleChoiceQuestion.setSurvey(survey); //need this?
+
+                        System.out.println("CHECKBOX");
                         break;
                     case "MULTIPLECHOICE":
                     case "MULTIPLECHOICE*":
                         SingleChoiceQuestion singleChoiceQuestion = new SingleChoiceQuestion();
-
+                        if (questionType.contains("*")) singleChoiceQuestion.setRequired(true);
+                        else singleChoiceQuestion.setRequired(false);
+                        System.out.println("MULTIPLECHOICE");
                         break;
                     case "SCALE":
                     case "SCALE*":
                         IntervalQuestion intervalQuestion = new IntervalQuestion();
+                        if (questionType.contains("*")) intervalQuestion.setRequired(true);
+                        else intervalQuestion.setRequired(false);
+                        System.out.println("SCALE");
+
                         break;
                 }
 
 
                 for (Cell cell : row){
                     System.out.print(cell.getColumnIndex() + ". ");
-
+                    if(cell.getColumnIndex() == 0 || cell.getColumnIndex() == 1 || cell.getColumnIndex() == 2) continue; // only option
 
 
                     if (cell.getCellTypeEnum() == CellType.STRING) System.out.print(cell.getStringCellValue());
                     if (cell.getCellTypeEnum() == CellType.NUMERIC) System.out.print(cell.getNumericCellValue());
-                    if (cell.getCellTypeEnum() == CellType.STRING) {
 
-                    }
                 }
                 System.out.println();
             }
