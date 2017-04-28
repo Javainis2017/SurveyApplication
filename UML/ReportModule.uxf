@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>520</x>
-      <y>480</y>
+      <x>760</x>
+      <y>448</y>
       <w>232</w>
       <h>88</h>
     </coordinates>
@@ -13,29 +13,32 @@
 --
 -userController: UserController
 --
+-init()
++userCanAccess(): boolean
 group=7</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>536</x>
-      <y>872</y>
+      <x>776</x>
+      <y>840</y>
       <w>112</w>
-      <h>40</h>
+      <h>64</h>
     </coordinates>
     <panel_attributes>/Answer/
 --
 -id: Long
-
-group=1</panel_attributes>
+-resultId: Long
+-questionId: Long
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>848</x>
-      <y>728</y>
+      <x>1088</x>
+      <y>696</y>
       <w>272</w>
       <h>72</h>
     </coordinates>
@@ -50,143 +53,132 @@ group=3</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>320</x>
-      <y>904</y>
+      <x>560</x>
+      <y>872</y>
       <w>80</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>TextAnswer
 --
 -text: String
-
-group=1</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>352</x>
-      <y>968</y>
+      <x>592</x>
+      <y>936</y>
       <w>96</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>NumberAnswer
 --
--number: int
-group=1</panel_attributes>
+-number: int</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>464</x>
-      <y>968</y>
+      <x>704</x>
+      <y>936</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>SingleChoiceAnswer
 --
--choice: Choice
-group=1</panel_attributes>
+-choiceId: Long</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>600</x>
-      <y>968</y>
+      <x>840</x>
+      <y>936</y>
       <w>136</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>MultipleChoiceAnswer
 --
--choices: List&lt;Choice&gt;
-group=1</panel_attributes>
+-choiceIds: List&lt;Long&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>352</x>
-      <y>880</y>
-      <w>200</w>
+      <x>632</x>
+      <y>872</y>
+      <w>160</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-group=1</panel_attributes>
-    <additional_attributes>230.0;10.0;10.0;30.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>180.0;10.0;10.0;30.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>392</x>
-      <y>904</y>
+      <x>632</x>
+      <y>896</y>
       <w>184</w>
-      <h>80</h>
+      <h>56</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-group=1</panel_attributes>
-    <additional_attributes>210.0;10.0;10.0;80.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>210.0;10.0;10.0;50.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>640</x>
-      <y>888</y>
-      <w>40</w>
-      <h>96</h>
+      <x>864</x>
+      <y>896</y>
+      <w>56</w>
+      <h>56</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-group=1</panel_attributes>
-    <additional_attributes>10.0;10.0;30.0;100.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;50.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>512</x>
-      <y>904</y>
+      <x>752</x>
+      <y>896</y>
       <w>104</w>
-      <h>80</h>
+      <h>56</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-group=1</panel_attributes>
-    <additional_attributes>110.0;10.0;10.0;80.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;50.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>536</x>
-      <y>752</y>
+      <x>776</x>
+      <y>736</y>
       <w>112</w>
-      <h>80</h>
+      <h>72</h>
     </coordinates>
     <panel_attributes>/Question/
 --
 -id: Long
 -text: String
--survey: Survey
--required: boolean
-group=1</panel_attributes>
+-required: boolean</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>576</x>
-      <y>824</y>
+      <x>816</x>
+      <y>800</y>
       <w>64</w>
-      <h>64</h>
+      <h>56</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m2=-answers
-group=1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+m2=-answers</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>592</x>
-      <y>560</y>
+      <x>832</x>
+      <y>528</y>
       <w>64</w>
       <h>96</h>
     </coordinates>
@@ -197,38 +189,37 @@ m1=-survey</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>528</x>
-      <y>640</y>
+      <x>768</x>
+      <y>608</y>
       <w>152</w>
-      <h>72</h>
+      <h>88</h>
     </coordinates>
     <panel_attributes>Survey
 --
 -id: Long
 -title: String
 -description: String
--responseCount: int
-group=1</panel_attributes>
+-url: String
+-authorId: Long</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>584</x>
-      <y>704</y>
+      <x>824</x>
+      <y>688</y>
       <w>72</w>
       <h>64</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m2=-questions
-group=1</panel_attributes>
+m2=-questions</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>848</x>
-      <y>816</y>
+      <x>1088</x>
+      <y>784</y>
       <w>288</w>
       <h>64</h>
     </coordinates>
@@ -236,15 +227,14 @@ group=1</panel_attributes>
 AnswerMapper
 --
 --
-+selectByQuestionId(questionId: Long) : List&lt;Answer&gt; 
 group=3</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>904</x>
-      <y>640</y>
+      <x>1144</x>
+      <y>608</y>
       <w>176</w>
       <h>64</h>
     </coordinates>
@@ -252,15 +242,15 @@ group=3</panel_attributes>
 SurveyMapper
 --
 --
-+selectById(id: Long) : Survey 
++selectByUrl(url: String) : Survey 
 group=3</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>744</x>
-      <y>512</y>
+      <x>984</x>
+      <y>480</y>
       <w>176</w>
       <h>160</h>
     </coordinates>
@@ -271,8 +261,8 @@ m1=-surveyMapper</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>328</x>
-      <y>216</y>
+      <x>568</x>
+      <y>184</y>
       <w>136</w>
       <h>48</h>
     </coordinates>
@@ -286,34 +276,32 @@ group=5</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>256</x>
-      <y>624</y>
+      <x>496</x>
+      <y>600</y>
       <w>112</w>
-      <h>56</h>
+      <h>48</h>
     </coordinates>
     <panel_attributes>TextQuestion
 --
-
-group=1</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>360</x>
-      <y>624</y>
+      <x>600</x>
+      <y>600</y>
       <w>192</w>
-      <h>160</h>
+      <h>168</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-group=1</panel_attributes>
-    <additional_attributes>220.0;180.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>220.0;190.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>256</x>
-      <y>688</y>
+      <x>496</x>
+      <y>656</y>
       <w>112</w>
       <h>56</h>
     </coordinates>
@@ -321,81 +309,73 @@ group=1</panel_attributes>
 --
 -min: int
 -max: int
-
-group=1</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>360</x>
-      <y>688</y>
+      <x>600</x>
+      <y>656</y>
       <w>192</w>
-      <h>112</h>
+      <h>128</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-group=1</panel_attributes>
-    <additional_attributes>220.0;120.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>220.0;140.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>248</x>
-      <y>752</y>
-      <w>128</w>
-      <h>56</h>
+      <x>496</x>
+      <y>728</y>
+      <w>120</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>SingleChoiceQuestion
 --
--choices: List&lt;Choice&gt;
-
-group=1</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>368</x>
-      <y>752</y>
+      <x>608</x>
+      <y>728</y>
       <w>184</w>
-      <h>64</h>
+      <h>72</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-group=1</panel_attributes>
-    <additional_attributes>210.0;60.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>210.0;70.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>248</x>
-      <y>816</y>
+      <x>488</x>
+      <y>784</y>
       <w>128</w>
-      <h>56</h>
+      <h>48</h>
     </coordinates>
     <panel_attributes>MultipleChoiceQuestion
 --
--choices: List&lt;Choice&gt;
-
-group=1</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>368</x>
-      <y>800</y>
+      <x>608</x>
+      <y>784</y>
       <w>184</w>
-      <h>40</h>
+      <h>24</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-group=1</panel_attributes>
-    <additional_attributes>210.0;10.0;10.0;30.0</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>210.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>480</x>
-      <y>216</y>
+      <x>720</x>
+      <y>184</y>
       <w>136</w>
       <h>48</h>
     </coordinates>
@@ -409,8 +389,8 @@ group=5</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>624</x>
-      <y>216</y>
+      <x>864</x>
+      <y>184</y>
       <w>168</w>
       <h>48</h>
     </coordinates>
@@ -425,8 +405,8 @@ group=5</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>816</x>
-      <y>216</y>
+      <x>1056</x>
+      <y>184</y>
       <w>168</w>
       <h>48</h>
     </coordinates>
@@ -441,8 +421,8 @@ group=5</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>608</x>
-      <y>88</y>
+      <x>848</x>
+      <y>56</y>
       <w>160</w>
       <h>56</h>
     </coordinates>
@@ -458,8 +438,8 @@ group=5</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>408</x>
-      <y>136</y>
+      <x>648</x>
+      <y>104</y>
       <w>248</w>
       <h>96</h>
     </coordinates>
@@ -470,8 +450,8 @@ group=5</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>696</x>
-      <y>136</y>
+      <x>936</x>
+      <y>104</y>
       <w>40</w>
       <h>96</h>
     </coordinates>
@@ -482,8 +462,8 @@ group=5</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>752</x>
-      <y>136</y>
+      <x>992</x>
+      <y>104</y>
       <w>80</w>
       <h>112</h>
     </coordinates>
@@ -494,8 +474,8 @@ group=5</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>568</x>
-      <y>136</y>
+      <x>808</x>
+      <y>104</y>
       <w>136</w>
       <h>96</h>
     </coordinates>
@@ -506,20 +486,20 @@ group=5</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>384</x>
-      <y>256</y>
+      <x>624</x>
+      <y>224</y>
       <w>152</w>
       <h>288</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=-textQuestionReport</panel_attributes>
-    <additional_attributes>10.0;10.0;40.0;260.0;170.0;340.0</additional_attributes>
+    <additional_attributes>10.0;10.0;20.0;260.0;170.0;340.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>512</x>
-      <y>256</y>
+      <x>752</x>
+      <y>224</y>
       <w>144</w>
       <h>240</h>
     </coordinates>
@@ -530,8 +510,8 @@ m1=-intervalQuestionReport</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>648</x>
-      <y>256</y>
+      <x>888</x>
+      <y>224</y>
       <w>168</w>
       <h>240</h>
     </coordinates>
@@ -542,8 +522,8 @@ m1=-singleChoiceQuestionReport</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>704</x>
-      <y>256</y>
+      <x>944</x>
+      <y>224</y>
       <w>312</w>
       <h>240</h>
     </coordinates>
@@ -554,8 +534,8 @@ m1=-multipleChoiceQuestionReport</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>896</x>
-      <y>376</y>
+      <x>1136</x>
+      <y>344</y>
       <w>160</w>
       <h>32</h>
     </coordinates>
@@ -569,8 +549,8 @@ group=7</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>976</x>
-      <y>224</y>
+      <x>1216</x>
+      <y>192</y>
       <w>72</w>
       <h>168</h>
     </coordinates>
@@ -580,8 +560,8 @@ group=7</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>216</x>
-      <y>376</y>
+      <x>456</x>
+      <y>344</y>
       <w>136</w>
       <h>32</h>
     </coordinates>
@@ -595,8 +575,8 @@ group=7</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>312</x>
-      <y>256</y>
+      <x>552</x>
+      <y>224</y>
       <w>64</w>
       <h>136</h>
     </coordinates>
@@ -606,8 +586,8 @@ group=7</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>408</x>
-      <y>392</y>
+      <x>648</x>
+      <y>360</y>
       <w>136</w>
       <h>32</h>
     </coordinates>
@@ -621,8 +601,8 @@ group=7</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>464</x>
-      <y>256</y>
+      <x>704</x>
+      <y>224</y>
       <w>56</w>
       <h>152</h>
     </coordinates>
@@ -632,8 +612,8 @@ group=7</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>784</x>
-      <y>240</y>
+      <x>1024</x>
+      <y>208</y>
       <w>40</w>
       <h>152</h>
     </coordinates>
@@ -643,8 +623,8 @@ group=7</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>672</x>
-      <y>376</y>
+      <x>912</x>
+      <y>344</y>
       <w>152</w>
       <h>32</h>
     </coordinates>
@@ -658,20 +638,19 @@ group=7</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>120</x>
-      <y>600</y>
+      <x>360</x>
+      <y>568</y>
       <w>664</w>
       <h>448</h>
     </coordinates>
-    <panel_attributes>mybatis.model
-group=1</panel_attributes>
+    <panel_attributes>mybatis.model</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>832</x>
-      <y>616</y>
+      <x>1072</x>
+      <y>584</y>
       <w>344</w>
       <h>296</h>
     </coordinates>
@@ -682,10 +661,10 @@ group=3</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>320</x>
-      <y>64</y>
+      <x>560</x>
+      <y>32</y>
       <w>688</w>
-      <h>224</h>
+      <h>232</h>
     </coordinates>
     <panel_attributes>api
 group=5</panel_attributes>
@@ -694,8 +673,8 @@ group=5</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>120</x>
-      <y>320</y>
+      <x>360</x>
+      <y>288</y>
       <w>984</w>
       <h>272</h>
     </coordinates>
@@ -706,12 +685,52 @@ group=7</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>96</x>
-      <y>32</y>
+      <x>336</x>
+      <y>0</y>
       <w>1104</w>
       <h>1040</h>
     </coordinates>
-    <panel_attributes>Reports</panel_attributes>
+    <panel_attributes>Reports
+layer=-2</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>376</x>
+      <y>888</y>
+      <w>80</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Choice
+--
+-id: Long
+-text: String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>384</x>
+      <y>744</y>
+      <w>128</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=-choices</panel_attributes>
+    <additional_attributes>140.0;10.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>808</y>
+      <w>72</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=-choices</panel_attributes>
+    <additional_attributes>70.0;10.0;10.0;100.0</additional_attributes>
   </element>
 </diagram>
