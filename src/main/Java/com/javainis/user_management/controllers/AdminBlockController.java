@@ -38,7 +38,7 @@ public class AdminBlockController {
 
     private Boolean isAdmin(){
         // 1 - Admin, 2 - User
-        return userController.getUser().getUserTypeID().getId() == UserTypeDAO.USER_TYPE_ADMIN;
+        return userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN;
     }
 
     public String getBlockedButtonLabel(Boolean blocked)

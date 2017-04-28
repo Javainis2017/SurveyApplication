@@ -46,7 +46,7 @@ public class UserRegistrationController {
     public String register()
     {
         UserType type = typeDAO.getUserTypeById(2); // 1-Admin, 2-User
-        user.setUserTypeID(type);
+        user.setUserType(type);
         //Ar toks email jau uzregistruotas
         if (userDAO.emailIsRegistered(user.getEmail()))
         {

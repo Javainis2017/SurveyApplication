@@ -39,7 +39,7 @@
         </p:dataTable>
     </p:fieldset>
 
-    <h:panelGroup rendered="#{userController.getUser().getUserTypeID().getId() == 1}">
+    <h:panelGroup rendered="#{userController.getUser().getUserType().getId() == 1}">
         <h2>User administration</h2>
         <p:fieldset id="whitelist" legend="Whitelist" toggleable="true" collapsed="true" styleClass="fieldPanel">
             <p:dataTable id="whitelistTable" var="whitelist" value="#{adminWhitelistController.getAllWhitelist()}">
@@ -79,7 +79,7 @@
                     <h:outputText value="Yes" rendered="#{user.getBlocked() == true}"/>
                 </p:column>
                 <p:column headerText="Type" styleClass="typeColumn">
-                    <h:outputText value="#{user.userTypeID.name}" />
+                    <h:outputText value="#{user.userType.name}" />
                 </p:column>
                 <p:column headerText="Change block status">
                     <p:commandButton value = "#{adminBlockController.getBlockedButtonLabel(user.getBlocked())}"
@@ -90,7 +90,7 @@
                 </p:column>
                 <p:column headerText="Change User type">
                     <p:commandButton
-                        value="#{adminTypeController.getTypeButtonLabel(user.userTypeID.id)}"
+                        value="#{adminTypeController.getTypeButtonLabel(user.userType.id)}"
                         rendered="#{user.getEmail() != userController.getUser().getEmail()}"
                         actionListener="#{adminTypeController.toggleUserType(user.email)}"
                         ajax="true" update="userList"

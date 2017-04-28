@@ -45,8 +45,8 @@ public class UserDAO
             UserType userType = manager.createNamedQuery("UserType.findType", UserType.class)
                     .setParameter("id", typeID)
                     .getSingleResult();
-            if (user.getUserTypeID().getId() == typeID) return false; // nesikeicia type
-            user.setUserTypeID(userType);
+            if (user.getUserType().getId() == typeID) return false; // nesikeicia type
+            user.setUserType(userType);
             manager.persist(user); //nereikia?
             return true;
         }

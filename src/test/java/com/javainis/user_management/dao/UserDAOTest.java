@@ -64,7 +64,7 @@ public class UserDAOTest {
         user.setUserID(userId);
         user.setFirstName("Tom");
         user.setLastName("Hogwards");
-        user.setUserTypeID(new UserType());
+        user.setUserType(new UserType());
         userDAO.create(user);
     }
 
@@ -76,7 +76,7 @@ public class UserDAOTest {
         user.setUserID(userId);
         user.setFirstName("Tom");
         user.setLastName("Hogwards");
-        user.setUserTypeID(new UserType());
+        user.setUserType(new UserType());
         userDAO.create(user);
         User userTest = userDAO.getUserByEmail("c@c.lt");
         assertEquals("c@c.lt", userTest.getEmail());

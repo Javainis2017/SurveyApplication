@@ -51,7 +51,7 @@ public class User
     @JoinColumn(name = "user_type_id", referencedColumnName = "id")
     @ManyToOne
     @NotNull
-    private UserType userTypeID;
+    private UserType userType;
 
     private Boolean blocked = false;
 }
