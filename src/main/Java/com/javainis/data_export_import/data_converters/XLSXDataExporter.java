@@ -67,7 +67,7 @@ public class XLSXDataExporter implements DataExporter{
             {
                 questionType = "SCALE";
                 IntervalQuestion iq = (IntervalQuestion) question;
-                exportInterval(row, iq.getMinValue(), iq.getMaxValue());
+                exportInterval(row, iq.getMin(), iq.getMax());
             }
             else{
                 questionType = "TEXT";

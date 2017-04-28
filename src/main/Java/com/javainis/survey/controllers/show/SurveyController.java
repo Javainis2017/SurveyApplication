@@ -5,7 +5,9 @@ import com.javainis.survey.dao.SurveyResultDAO;
 import com.javainis.survey.entities.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.omnifaces.cdi.Param;
 
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,8 +29,8 @@ public class SurveyController implements Serializable{
     @Inject
     private SurveyResultDAO surveyResultDAO;
 
-    @Setter
-    @Getter
+    @Inject
+    @Param(pathIndex = 0)
     private String surveyUrl;
 
     @Getter
@@ -37,6 +39,7 @@ public class SurveyController implements Serializable{
     @Getter
     private Map<Question, Answer> answers = new HashMap<>();
 
+    @PostConstruct
     public void init(){
         // Check if parameter exists
         if(surveyUrl == null){
@@ -74,7 +77,7 @@ public class SurveyController implements Serializable{
     }
 
     @Transactional
-    public void submitAnswers(){
+    public String submitAnswers(){
         // Create SurveyResult object
         SurveyResult result = new SurveyResult();
         result.setSurvey(survey);
@@ -89,5 +92,7 @@ public class SurveyController implements Serializable{
 
         // Save answers to DB
         surveyResultDAO.create(result);
+
+        return "/survey/success?faces-redirect=true";
     }
 }

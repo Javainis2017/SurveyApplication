@@ -46,8 +46,8 @@ public class IntervalQuestionController {
 */
     public void saveQuestion(){
         if(minValue <= maxValue){
-            question.setMinValue(minValue);
-            question.setMaxValue(maxValue);
+            question.setMin(minValue);
+            question.setMax(maxValue);
             surveyController.saveQuestion(question);
         }else{
             Messages.addGlobalInfo("Minimum value must not be higher than maximum");
@@ -58,8 +58,8 @@ public class IntervalQuestionController {
         // Check if edit question
         if(surveyController.getSurveyCreationStep() == NewSurveyController.SURVEY_CREATION_STEP.EDIT_QUESTION){
             question = (IntervalQuestion) surveyController.getQuestionToEdit();
-            minValue = question.getMinValue();
-            maxValue = question.getMaxValue();
+            minValue = question.getMin();
+            maxValue = question.getMax();
         }
     }
 }

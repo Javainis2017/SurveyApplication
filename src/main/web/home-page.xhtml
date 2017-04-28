@@ -5,7 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://xmlns.jcp.org/jsf/core" xml:lang="en" lang="en">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xml:lang="en" lang="en">
+<o:importConstants type="com.javainis.user_management.dao.UserTypeDAO"/>
 <h:head>
     <h:outputStylesheet name="css/style.css" />
     <title>Home</title>
@@ -17,7 +21,7 @@
     <h:commandLink actionListener="#{userController.logout()}" action="index">Log out</h:commandLink><br/>
     <h:link outcome="passwordChange-page">Change password</h:link><br/>
     <h2>Survey creation</h2>
-    <h:link outcome="survey/new-survey">Create new survey</h:link><br/>
+    <h:link outcome="survey/new">Create new survey</h:link><br/>
 
     <h2>My surveys</h2>
     <p:fieldset legend="Surveys" toggleable="true" collapsed="true" styleClass="fieldPanel">
@@ -29,17 +33,19 @@
                 <h:outputText value="#{survey.description}" />
             </p:column>
             <p:column headerText="URL" style="width:110px;text-align: center">
-                <h:link value="Survey" outcome="survey/show-survey">
-                    <f:param name="sid" value="#{survey.url}"/>
-                </h:link>
+                <h:outputLink value="survey/show/#{survey.url}">
+                    Survey
+                </h:outputLink>
             </p:column>
-            <p:column headerText="Number of responses" style="width:110px;text-align: center">
-                <h:outputText value="soon..." />
+            <p:column headerText="Results" style="width:110px;text-align: center">
+                <h:outputLink value="reports/report/#{survey.url}">
+                    Results
+                </h:outputLink>
             </p:column>
         </p:dataTable>
     </p:fieldset>
 
-    <h:panelGroup rendered="#{userController.getUser().getUserType().getId() == 1}">
+    <h:panelGroup rendered="#{userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN}">
         <h2>User administration</h2>
         <p:fieldset id="whitelist" legend="Whitelist" toggleable="true" collapsed="true" styleClass="fieldPanel">
             <p:dataTable id="whitelistTable" var="whitelist" value="#{adminWhitelistController.getAllWhitelist()}">

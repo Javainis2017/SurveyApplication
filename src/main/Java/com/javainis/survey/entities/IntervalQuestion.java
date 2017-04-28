@@ -15,8 +15,8 @@ import javax.persistence.*;
 public class IntervalQuestion extends Question{
 
     @Column(name = "min_value")
-    private int minValue;
+    private int min;
 
     @Column(name = "max_value")
-    private int maxValue;
+    private int max;
 }
