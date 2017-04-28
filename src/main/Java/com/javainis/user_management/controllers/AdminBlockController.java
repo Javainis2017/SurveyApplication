@@ -1,6 +1,7 @@
 package com.javainis.user_management.controllers;
 
 
+import com.javainis.user_management.dao.UserTypeDAO;
 import com.javainis.user_management.entities.User;
 import org.omnifaces.util.Messages;
 
@@ -37,7 +38,7 @@ public class AdminBlockController {
 
     private Boolean isAdmin(){
         // 1 - Admin, 2 - User
-        return userController.getUser().getUserTypeID().getId() == 1;
+        return userController.getUser().getUserTypeID().getId() == UserTypeDAO.USER_TYPE_ADMIN;
     }
 
     public String getBlockedButtonLabel(Boolean blocked)

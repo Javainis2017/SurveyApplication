@@ -81,7 +81,7 @@ public class AdminWhitelistController{
 
     private Boolean isAdmin(){
         // 1 - Admin, 2 - User
-        return userController.getUser().getUserTypeID().getId() == 1;
+        return userController.getUser().getUserTypeID().getId() == UserTypeDAO.USER_TYPE_ADMIN;
     }
 
 }

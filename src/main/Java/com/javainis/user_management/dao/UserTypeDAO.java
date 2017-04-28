@@ -12,6 +12,8 @@ public class UserTypeDAO
     @Inject
     private EntityManager manager;
 
+    public final static int USER_TYPE_ADMIN = 1;
+
     public void create(UserType type) {
         manager.persist(type);
     }
