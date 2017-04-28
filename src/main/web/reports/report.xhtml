@@ -10,15 +10,15 @@
       xml:lang="en" lang="en">
 
 <h:head>
-    <c:if test="#{reportController.canAccess()}">
+    <c:if test="#{reportController.userCanAccess()}">
         <title>#{reportController.survey.title} results</title>
     </c:if>
-    <c:if test="#{!reportController.canAccess()}">
+    <c:if test="#{!reportController.userCanAccess()}">
         <title>Access denied</title>
     </c:if>
 </h:head>
 <h:body>
-    <c:if test="#{reportController.canAccess()}">
+    <c:if test="#{reportController.userCanAccess()}">
         <h1>Survey results</h1>
         <h2>#{reportController.survey.title}</h2>
         <p>#{reportController.survey.description}</p>
@@ -71,7 +71,7 @@
             </c:forEach>
         </h:panelGroup>
     </c:if>
-    <c:if test="#{!reportController.canAccess()}">
+    <c:if test="#{!reportController.userCanAccess()}">
         <h2>Survey results</h2>
         <h3>Survey not found or no permission to view results.</h3>
     </c:if>

@@ -47,13 +47,13 @@ public class ReportController implements Serializable {
             return;
         }
         /*if(userController.getUser().getUserID() == survey.getAuthorId() || userController.getUser().getUserTypeID() == USER_TYPE_ADMIN || !survey.isPrivate()){
-            canAccess = true;
+            userCanAccess = true;
         }*/
         if(userController.getUser().getUserID() == survey.getAuthorId() || userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN){
             canAccess = true;
         }
     }
-    public boolean canAccess(){
+    public boolean userCanAccess(){
         return canAccess;
     }
 
