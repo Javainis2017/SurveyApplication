@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Answer {
+public abstract class Answer {
 
     private Long id;
     private Long resultId;

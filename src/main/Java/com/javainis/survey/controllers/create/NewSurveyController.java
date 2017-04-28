@@ -106,6 +106,6 @@ public class NewSurveyController implements Serializable{
             e.printStackTrace();
 
         }
-        return "/home-page?faces-redirect=true";
+        return "/home?faces-redirect=true";
     }
 }

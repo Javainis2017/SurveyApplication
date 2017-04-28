@@ -55,7 +55,7 @@ public class UserController implements Serializable
                 return null;
             }
             // ikelti vartotoja i home page
-            return "home-page?faces-redirect=true";
+            return "home?faces-redirect=true";
         }
         catch (NoResultException ex)
         {
@@ -97,7 +97,7 @@ public class UserController implements Serializable
             user.setPasswordHash(newPassword);
             Messages.addGlobalInfo("Password was successfully changed");
             resetPasswordFields();
-            return "home-page?faces-redirect=true";
+            return "home?faces-redirect=true";
         }
         catch(Exception ex){
             Messages.addGlobalWarn("FATAL ERROR: User password change failed");

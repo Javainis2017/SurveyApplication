@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Question {
+public abstract class Question {
 
     private Long id;
     private String text;

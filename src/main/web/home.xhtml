@@ -19,7 +19,7 @@
 <h1>Welcome, #{userController.getUser().getFirstName()} #{userController.getUser().getLastName()}</h1>
 <h:form>
     <h:commandLink actionListener="#{userController.logout()}" action="index">Log out</h:commandLink><br/>
-    <h:link outcome="passwordChange-page">Change password</h:link><br/>
+    <h:link outcome="change-password">Change password</h:link><br/>
     <h2>Survey creation</h2>
     <h:link outcome="survey/new">Create new survey</h:link><br/>
 

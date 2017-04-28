@@ -77,7 +77,7 @@ public class MailExpirationController implements Serializable {
             String password = "javainiai";
 
             setSentEmailProperties();
-            String message = "Your password reminder link: http://localhost:8080/user-management/passwordChangeFromEmail.html?sid=" + mailExpiration.getUrl();
+            String message = "Your password reminder link: http://localhost:8080/user-management/change-password-email.html?sid=" + mailExpiration.getUrl();
             sendEmail(fromEmail, username, password, email, subject, message);
             mailExpirationDAO.create(mailExpiration);
             url = mailExpiration.getUrl();
@@ -133,7 +133,7 @@ public class MailExpirationController implements Serializable {
     {
         Date date = new Date();
         mailExpiration.setUser(userDAO.getUserByEmail(email));
-        mailExpiration.setExpirationDate(dateUtil.addDays(date, 2));
+        mailExpiration.setExpirationDate(DateUtil.addDays(date, 2));
         mailExpiration.setUrl(randomStringGenerator.generateString(32));
     }
 
