@@ -5,9 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Answer {
+public class NumberAnswer extends Answer{
 
-    private Long id;
-    private Long resultId;
-    private Long questionId;
+    private Integer number;
 }

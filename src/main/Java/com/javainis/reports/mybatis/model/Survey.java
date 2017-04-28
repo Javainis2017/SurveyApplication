@@ -10,10 +10,10 @@ import java.util.List;
 public class Survey {
 
     private Long id;
-    private String name;
+    private String title;
     private String description;
     private String url;
-    private Long userId;
+    private Long authorId;
 
     private List<Question> questions;
 

@@ -6,7 +6,6 @@
     <typeAliases>
         <typeAlias type="com.javainis.reports.mybatis.model.Survey" alias="Survey"/>
         <typeAlias type="com.javainis.reports.mybatis.model.Answer" alias="Answer"/>
-        <typeAlias type="com.javainis.reports.mybatis.model.SurveyResult" alias="SurveyResult"/>
         <typeAlias type="com.javainis.reports.mybatis.model.Question" alias="Question"/>
         <typeAlias type="com.javainis.reports.mybatis.model.Choice" alias="Choice"/>
     </typeAliases>
@@ -22,8 +21,6 @@
     <mappers>
         <mapper resource="mybatis/xml/AnswerMapper.xml"/>
         <mapper resource="mybatis/xml/SurveyMapper.xml"/>
-        <mapper resource="mybatis/xml/SurveyResultMapper.xml"/>
         <mapper resource="mybatis/xml/QuestionMapper.xml"/>
-        <mapper resource="mybatis/xml/ChoiceMapper.xml"/>
     </mappers>
 </configuration>

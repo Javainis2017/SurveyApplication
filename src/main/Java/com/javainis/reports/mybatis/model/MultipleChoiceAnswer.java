@@ -7,11 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class SurveyResult {
+public class MultipleChoiceAnswer extends Answer{
 
-    private Long id;
-    private Long surveyId;
-
-    private List<Answer> answers;
-
+    private List<Long> choiceIds;
 }

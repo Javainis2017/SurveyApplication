@@ -1,13 +1,12 @@
 package com.javainis.reports.mybatis.dao;
 
 import com.javainis.reports.mybatis.model.Survey;
+import org.mybatis.cdi.Mapper;
+
 import java.util.List;
 
+@Mapper
 public interface SurveyMapper {
 
-    int deleteByPrimaryKey(Long id);
-    int insert(Survey record);
-    Survey selectByPrimaryKey(Long id);
-    List<Survey> selectAll();
-    int updateByPrimaryKey(Survey record);
+    Survey selectByUrl(String url);
 }

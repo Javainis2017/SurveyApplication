@@ -5,46 +5,61 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="text" jdbcType="VARCHAR" property="text" />
     <result column="required" jdbcType="BIT" property="required" />
-    <result column="survey_id" jdbcType="BIGINT" property="surveyId" />
-    <result column="question_type_id" jdbcType="BIGINT" property="questionTypeId" />
+
+    <collection property="answers" javaType="ArrayList" column="id" ofType="Answer" resultMap="com.javainis.reports.mybatis.dao.AnswerMapper.AnswerResultMap" columnPrefix="answer_"/>
+
+    <discriminator javaType="java.lang.Long" column="question_type_id">
+      <case value="1" resultMap="TextQuestionResultMap"/>
+      <case value="2" resultMap="SingleChoiceQuestionResultMap"/>
+      <case value="3" resultMap="MultipleChoiceQuestionResultMap"/>
+      <case value="4" resultMap="IntervalQuestionResultMap"/>
+    </discriminator>
   </resultMap>
   <resultMap id="TextQuestionResultMap" type="com.javainis.reports.mybatis.model.FreeTextQuestion" extends="QuestionResultMap">
 
   </resultMap>
-  <resultMap id="TextQuestionResultMap" type="com.javainis.reports.mybatis.model.FreeTextQuestion" extends="QuestionResultMap">
 
+  <resultMap id="IntervalQuestionResultMap" type="com.javainis.reports.mybatis.model.IntervalQuestion" extends="QuestionResultMap">
+    <result column="min_value" jdbcType="INTEGER" property="min"/>
+    <result column="max_value" jdbcType="INTEGER" property="max"/>
   </resultMap>
-  <resultMap id="TextQuestionResultMap" type="com.javainis.reports.mybatis.model.FreeTextQuestion" extends="QuestionResultMap">
 
+  <resultMap id="SingleChoiceQuestionResultMap" type="com.javainis.reports.mybatis.model.SingleChoiceQuestion" extends="QuestionResultMap">
+    <collection property="choices" javaType="ArrayList" ofType="Choice" resultMap="ChoiceResultMap" columnPrefix="choice_"/>
   </resultMap>
-  <resultMap id="TextQuestionResultMap" type="com.javainis.reports.mybatis.model.FreeTextQuestion" extends="QuestionResultMap">
 
+  <resultMap id="MultipleChoiceQuestionResultMap" type="com.javainis.reports.mybatis.model.MultipleChoiceQuestion" extends="QuestionResultMap">
+    <collection property="choices" javaType="ArrayList" ofType="Choice" resultMap="ChoiceResultMap" columnPrefix="choice_"/>
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from public.question
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.javainis.reports.mybatis.model.Question" useGeneratedKeys="true">
-    insert into public.question (text, required, survey_id, 
-      question_type_id)
-    values (#{text,jdbcType=VARCHAR}, #{required,jdbcType=BIT}, #{surveyId,jdbcType=BIGINT}, 
-      #{questionTypeId,jdbcType=BIGINT})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.javainis.reports.mybatis.model.Question">
-    update public.question
-    set text = #{text,jdbcType=VARCHAR},
-      required = #{required,jdbcType=BIT},
-      survey_id = #{surveyId,jdbcType=BIGINT},
-      question_type_id = #{questionTypeId,jdbcType=BIGINT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select id, text, required, survey_id, question_type_id
-    from public.question
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, text, required, survey_id, question_type_id
-    from public.question
+
+  <resultMap id="ChoiceResultMap" type="com.javainis.reports.mybatis.model.Choice">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="text" jdbcType="VARCHAR" property="text" />
+  </resultMap>
+
+  <select id="selectBySurveyId" parameterType="java.lang.Long" resultMap="QuestionResultMap">
+    SELECT
+      q.id,
+      q.text,
+      q.required,
+      q.question_type_id,
+      iq.min_value,
+      iq.max_value,
+      c.id as choice_id,
+      c.text as choice_text,
+      a.id as answer_id,
+      a.result_id as answer_result_id,
+      a.question_id as answer_question_id,
+      a.answer_type as answer_answer_type,
+      a.text_answer as answer_text_answer,
+      a.number_answer as answer_number_answer,
+      a.choice_id as answer_choice_id,
+      ac.choice_id as answer_choice_id
+    FROM public.question q
+      LEFT JOIN public.choice c on c.question_id = q.id
+      LEFT JOIN public.interval_question iq on iq.id = q.id
+      LEFT JOIN public.answer a on a.question_id = q.id
+      LEFT JOIN public.answer_choice ac on ac.answer_id = a.id
+    WHERE q.survey_id = #{id,jdbcType=BIGINT}
   </select>
 </mapper>

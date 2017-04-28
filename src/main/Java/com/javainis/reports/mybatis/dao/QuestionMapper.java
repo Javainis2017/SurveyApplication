@@ -1,13 +1,12 @@
 package com.javainis.reports.mybatis.dao;
 
 import com.javainis.reports.mybatis.model.Question;
+import org.mybatis.cdi.Mapper;
+
 import java.util.List;
 
+@Mapper
 public interface QuestionMapper {
 
-    int deleteByPrimaryKey(Long id);
-    int insert(Question record);
-    Question selectByPrimaryKey(Long id);
-    List<Question> selectAll();
-    int updateByPrimaryKey(Question record);
+    List<Question> selectBySurveyId(Long id);
 }
