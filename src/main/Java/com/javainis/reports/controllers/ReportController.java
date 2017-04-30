@@ -14,20 +14,19 @@ import lombok.Getter;
 import org.omnifaces.cdi.Param;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 @Named
 @ViewScoped
 @Getter
 public class ReportController implements Serializable {
+    private static final int TIMEOUT_LIMIT = 60;
 
     @Inject
     private UserController userController;
@@ -41,7 +40,11 @@ public class ReportController implements Serializable {
 
     private Survey survey;
 
+    private int refreshCount = 0;
+
     private boolean canAccess = false;
+
+    private boolean timeout = false;
 
     private Map<Question, QuestionReport> questionReports;
 
@@ -88,13 +91,19 @@ public class ReportController implements Serializable {
         }
     }
 
-    public boolean allReportsDone() {
+    public void checkProgress() {
+        timeout = true;
+        System.out.println("polling");
+        refreshCount++;
+        if(refreshCount >= TIMEOUT_LIMIT){
+            timeout = true;
+            System.out.println("timeout");
+            return;
+        }
         for (Future future : reports.values()) {
             if (!future.isDone()) {
-                return false;
+                timeout = false;
             }
         }
-        return true;
     }
-
 }

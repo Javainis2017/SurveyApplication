@@ -35,8 +35,11 @@
                             <ui:param name="question" value="#{question}"/>
                         </ui:include>
                     </h:panelGroup>
-                    <h:panelGroup rendered="#{!reportController.reports[question].done}">
+                    <h:panelGroup rendered="#{not reportController.reports[question].done and not reportController.timeout}">
                         <h:outputText>Report loading...</h:outputText>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{not reportController.reports[question].done and reportController.timeout}">
+                        <h:outputText>Report timeout</h:outputText>
                     </h:panelGroup>
                 </h:panelGroup>
             </c:forEach>
@@ -89,7 +92,11 @@
             </ui:remove>
         </h:panelGroup>
         <h:form>
-            <p:poll  interval="1" update="report" autoStart="true" rendered="#{!reportController.allReportsDone()}"/>
+            <p:poll interval="1" update="report"
+                    listener="#{reportController.checkProgress()}"
+                    autoStart="true"
+                    stop="#{reportController.timeout}"
+                    timeout="10000"/>
         </h:form>
     </c:if>
     <c:if test="#{!reportController.canAccess}">
