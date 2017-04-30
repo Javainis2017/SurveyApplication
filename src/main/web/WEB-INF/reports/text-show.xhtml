@@ -11,7 +11,10 @@
         <h:outputText> (Required)</h:outputText>
         <br/>
     </c:if>
-    <h:panelGrid columns="2">
-
-    </h:panelGrid>
+    <h:form>
+        <p:growl id="msgs" showDetail="true" />
+        <p:tagCloud model="#{textTagCloudController.model}">
+            <p:ajax event="select" update="msgs" listener="#{textTagCloudController.onSelect}" />
+        </p:tagCloud>
+    </h:form>
 </ui:composition>
