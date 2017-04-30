@@ -6,15 +6,15 @@
     <coordinates>
       <x>760</x>
       <y>448</y>
-      <w>232</w>
-      <h>88</h>
+      <w>216</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>ReportController
 --
 -userController: UserController
+-canAccess: boolean
 --
 -init()
-+userCanAccess(): boolean
 group=7</panel_attributes>
     <additional_attributes/>
   </element>
@@ -178,13 +178,13 @@ m2=-answers</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>832</x>
-      <y>528</y>
+      <y>512</y>
       <w>64</w>
-      <h>96</h>
+      <h>112</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=-survey</panel_attributes>
-    <additional_attributes>10.0;100.0;50.0;10.0</additional_attributes>
+    <additional_attributes>10.0;120.0;50.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -249,14 +249,14 @@ group=3</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>984</x>
+      <x>968</x>
       <y>480</y>
-      <w>176</w>
+      <w>192</w>
       <h>160</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=-surveyMapper</panel_attributes>
-    <additional_attributes>200.0;180.0;10.0;10.0</additional_attributes>
+    <additional_attributes>220.0;180.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -423,14 +423,16 @@ group=5</panel_attributes>
     <coordinates>
       <x>848</x>
       <y>56</y>
-      <w>160</w>
-      <h>56</h>
+      <w>184</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 QuestionReport
 --
 --
 +getTemplateName(): String
++setQuestion(Question: question)
++generateReportAsync(): Future
 
 group=5</panel_attributes>
     <additional_attributes/>
@@ -439,49 +441,49 @@ group=5</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>648</x>
-      <y>104</y>
+      <y>128</y>
       <w>248</w>
-      <h>96</h>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
 group=5</panel_attributes>
-    <additional_attributes>290.0;10.0;10.0;100.0</additional_attributes>
+    <additional_attributes>290.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>936</x>
-      <y>104</y>
+      <y>128</y>
       <w>40</w>
-      <h>96</h>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
 group=5</panel_attributes>
-    <additional_attributes>30.0;10.0;10.0;100.0</additional_attributes>
+    <additional_attributes>30.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>992</x>
-      <y>104</y>
+      <y>128</y>
       <w>80</w>
-      <h>112</h>
+      <h>88</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
 group=5</panel_attributes>
-    <additional_attributes>10.0;10.0;80.0;120.0</additional_attributes>
+    <additional_attributes>10.0;10.0;80.0;90.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>808</x>
-      <y>104</y>
+      <y>128</y>
       <w>136</w>
-      <h>96</h>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
 group=5</panel_attributes>
-    <additional_attributes>150.0;10.0;10.0;100.0</additional_attributes>
+    <additional_attributes>150.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -529,20 +531,22 @@ m1=-singleChoiceQuestionReport</panel_attributes>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=-multipleChoiceQuestionReport</panel_attributes>
-    <additional_attributes>180.0;10.0;170.0;240.0;10.0;280.0</additional_attributes>
+    <additional_attributes>180.0;10.0;200.0;250.0;10.0;280.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>1136</x>
       <y>344</y>
-      <w>160</w>
-      <h>32</h>
+      <w>176</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>MultipleChoiceChartController
 --
 --
-
++getTemplateName(): String
++setQuestion(Question: question)
++generateReportAsync(): Future
 group=7</panel_attributes>
     <additional_attributes/>
   </element>
@@ -560,15 +564,17 @@ group=7</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>456</x>
+      <x>416</x>
       <y>344</y>
-      <w>136</w>
-      <h>32</h>
+      <w>176</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>TextTagCloudController
 --
 --
-
++getTemplateName(): String
++setQuestion(Question: question)
++generateReportAsync(): Future
 group=7</panel_attributes>
     <additional_attributes/>
   </element>
@@ -588,13 +594,15 @@ group=7</panel_attributes>
     <coordinates>
       <x>648</x>
       <y>360</y>
-      <w>136</w>
-      <h>32</h>
+      <w>176</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>IntervalChartController
 --
 --
-
++getTemplateName(): String
++setQuestion(Question: question)
++generateReportAsync(): Future
 group=7</panel_attributes>
     <additional_attributes/>
   </element>
@@ -625,13 +633,15 @@ group=7</panel_attributes>
     <coordinates>
       <x>912</x>
       <y>344</y>
-      <w>152</w>
-      <h>32</h>
+      <w>176</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>SingleChoiceChartController
 --
 --
-
++getTemplateName(): String
++setQuestion(Question: question)
++generateReportAsync(): Future
 group=7</panel_attributes>
     <additional_attributes/>
   </element>
