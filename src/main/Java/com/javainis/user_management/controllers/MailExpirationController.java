@@ -4,7 +4,6 @@ import com.javainis.user_management.dao.MailExpirationDAO;
 import com.javainis.user_management.dao.UserDAO;
 import com.javainis.user_management.entities.MailExpiration;
 import com.javainis.user_management.entities.User;
-import com.javainis.utility.DateUtil;
 import com.javainis.utility.HashGenerator;
 import com.javainis.utility.RandomStringGenerator;
 import lombok.Getter;
@@ -24,7 +23,7 @@ import javax.servlet.ServletException;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.Properties;
 
 @Named
@@ -54,9 +53,6 @@ public class MailExpirationController implements Serializable {
     private RandomStringGenerator randomStringGenerator;
 
     @Inject
-    private DateUtil dateUtil;
-
-    @Inject
     @Param(pathIndex = 0)
     @Getter
     private String url;
@@ -82,6 +78,7 @@ public class MailExpirationController implements Serializable {
             setSentEmailProperties();
             String message = "Your password reminder link: http://localhost:8080/user-management/change-password-email/" + mailExpiration.getUrl();
             sendEmail(fromEmail, username, password, email, subject, message);
+            findAndRemoveOlderMails(email);
             mailExpirationDAO.create(mailExpiration);
             url = mailExpiration.getUrl();
             Messages.addGlobalInfo("Email was sent successfully");
@@ -90,6 +87,11 @@ public class MailExpirationController implements Serializable {
         {
             Messages.addGlobalInfo("User with specified email does not exist");
         }
+    }
+
+    private void findAndRemoveOlderMails(String email) {
+        User user = userDAO.getUserByEmail(email);
+        mailExpirationDAO.removeFromMailExpiration(user);
     }
 
     private void sendEmail(String fromEmail, String username, String password, String toEmail, String subject, String message)
@@ -134,9 +136,11 @@ public class MailExpirationController implements Serializable {
 
     private void setSentEmailProperties()
     {
-        Date date = new Date();
+        long duration = 48 * 60 * 60 * 1000;
         mailExpiration.setUser(userDAO.getUserByEmail(email));
-        mailExpiration.setExpirationDate(DateUtil.addDays(date, 2));
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        mailExpiration.setExpirationDate(timestamp);
+        mailExpiration.getExpirationDate().setTime(timestamp.getTime() + duration);
         mailExpiration.setUrl(randomStringGenerator.generateString(32));
     }
 
@@ -186,7 +190,9 @@ public class MailExpirationController implements Serializable {
         }
         else
         {
-            user = mailExpiration.getUser();
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            if(timestamp.before(mailExpiration.getExpirationDate()))
+                user = mailExpiration.getUser();
         }
 
     }

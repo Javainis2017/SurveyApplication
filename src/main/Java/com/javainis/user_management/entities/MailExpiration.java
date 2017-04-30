@@ -1,21 +1,19 @@
 package com.javainis.user_management.entities;
 
-import com.javainis.survey.entities.Choice;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "mail_expiration")
 @NamedQueries({
         @NamedQuery(name = "MailExpiration.findUrl", query = "SELECT u FROM MailExpiration u WHERE u.url = :url"),
         @NamedQuery(name = "MailExpiration.findAll", query = "SELECT u FROM MailExpiration u"),
-        @NamedQuery(name = "MailExpiration.remove", query = "DELETE FROM MailExpiration u WHERE u.url = :url"),
+        @NamedQuery(name = "MailExpiration.remove", query = "DELETE FROM MailExpiration u WHERE u.user = :user"),
 })
 
 @Getter
@@ -32,7 +30,7 @@ public class MailExpiration {
 
     @Column(name = "expiration_date")
     @NotNull
-    private Date expirationDate;
+    private Timestamp expirationDate;
 
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne

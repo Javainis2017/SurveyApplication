@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS mail_expiration
 	id											BIGSERIAL PRIMARY KEY,
 	user_id									BIGINT NOT NULL,
 	url										  CHAR(32) NOT NULL,
-	expiration_date					DATE,
+	expiration_date					TIMESTAMP,
 	opt_lock_version 				INTEGER,
   FOREIGN KEY (user_id) REFERENCES app_user(id)
 );

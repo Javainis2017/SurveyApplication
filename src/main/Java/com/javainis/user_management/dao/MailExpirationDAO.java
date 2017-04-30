@@ -1,6 +1,7 @@
 package com.javainis.user_management.dao;
 
 import com.javainis.user_management.entities.MailExpiration;
+import com.javainis.user_management.entities.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -18,10 +19,10 @@ public class MailExpirationDAO
         manager.persist(mailExpiration);
     }
 
-    public int removeFromMailExpiration(String url)
+    public int removeFromMailExpiration(User user)
     {
         return manager.createNamedQuery("MailExpiration.remove")
-                .setParameter("url", url)
+                .setParameter("user", user)
                 .executeUpdate();
     }
 
