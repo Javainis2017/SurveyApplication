@@ -21,6 +21,8 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @Named
 @ViewScoped
@@ -43,43 +45,56 @@ public class ReportController implements Serializable {
 
     private Map<Question, QuestionReport> questionReports;
 
+    private Map<Question, Future<Void>> reports;
+
     @PostConstruct
-    private void init(){
+    private void init() {
         survey = surveyMapper.selectByUrl(surveyUrl);
-        if(survey == null){
+        if (survey == null) {
             canAccess = false;
             return;
         }
         /*if(userController.getUser().getUserID() == survey.getAuthorId() || userController.getUser().getUserTypeID() == USER_TYPE_ADMIN || !survey.isPrivate()){
             userCanAccess = true;
         }*/
-        if(userController.getUser().getUserID() == survey.getAuthorId() || userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN){
+        if (userController.getUser().getUserID() == survey.getAuthorId() || userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN) {
             canAccess = true;
         }
 
         /* Link questions and controllers */
         questionReports = new HashMap<>();
-        for(Question question : survey.getQuestions()){
+        reports = new HashMap<>();
+        for (Question question : survey.getQuestions()) {
             QuestionReport report;
-            if(question instanceof FreeTextQuestion){
+            Future<Void> future;
+            if (question instanceof FreeTextQuestion) {
                 report = javax.enterprise.inject.spi.CDI.current().select(TextQuestionReport.class).get();
                 report.setQuestion(question);
+                future = report.generateReportAsync();
+                reports.put(question, future);
                 questionReports.put(question, report);
-            }else if(question instanceof IntervalQuestion){
+            } else if (question instanceof IntervalQuestion) {
                 report = javax.enterprise.inject.spi.CDI.current().select(IntervalQuestionReport.class).get();
                 report.setQuestion(question);
+                future = report.generateReportAsync();
+                reports.put(question, future);
                 questionReports.put(question, report);
             }
+            //TODO: add missing reports
             /*
             report.setQuestion(question);
-            questionReports.put(question, report);*/
+            questionReports.put(question, report);
+            reports.add(report.generateReportAsync());*/
         }
     }
 
-    @PreDestroy
-    private void preDestroy(){
-        for(QuestionReport report : questionReports.values()){
-            javax.enterprise.inject.spi.CDI.current().select(QuestionReport.class).destroy(report);
+    public boolean allReportsDone() {
+        for (Future future : reports.values()) {
+            if (!future.isDone()) {
+                return false;
+            }
         }
+        return true;
     }
+
 }

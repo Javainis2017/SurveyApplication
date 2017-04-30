@@ -23,12 +23,23 @@
         <p>#{reportController.survey.description}</p>
 
         <h:panelGroup id="report">
-            <c:forEach items="#{reportController.questionReports}" var="entry">
-                <ui:include src="/WEB-INF/reports/#{entry.value.templateName}">
-                    <ui:param name="question" value="#{entry.key}"/>
-                </ui:include>
+            <c:forEach items="#{reportController.survey.questions}" var="question">
+                <h3>#{question.text} </h3>
+                <c:if test="#{question.required}">
+                    <h:outputText>(Required)</h:outputText>
+                    <br/>
+                </c:if>
+                <h:panelGroup>
+                    <h:panelGroup rendered="#{reportController.reports[question].done}">
+                        <ui:include src="/WEB-INF/reports/#{reportController.questionReports[question].templateName}">
+                            <ui:param name="question" value="#{question}"/>
+                        </ui:include>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{!reportController.reports[question].done}">
+                        <h:outputText>Report loading...</h:outputText>
+                    </h:panelGroup>
+                </h:panelGroup>
             </c:forEach>
-
             <ui:remove>
                 <c:forEach items="#{reportController.survey.questions}" var="question">
                     <h3>#{question.text} </h3>
@@ -77,6 +88,9 @@
                 </c:forEach>
             </ui:remove>
         </h:panelGroup>
+        <h:form>
+            <p:poll  interval="1" update="report" autoStart="true" rendered="#{!reportController.allReportsDone()}"/>
+        </h:form>
     </c:if>
     <c:if test="#{!reportController.canAccess}">
         <h2>Survey results</h2>

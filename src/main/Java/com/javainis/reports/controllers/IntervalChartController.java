@@ -5,7 +5,9 @@ import com.javainis.reports.mybatis.model.IntervalQuestion;
 import com.javainis.reports.mybatis.model.NumberAnswer;
 import com.javainis.reports.mybatis.model.Question;
 import lombok.Getter;
+import org.apache.deltaspike.core.api.future.Futureable;
 
+import javax.ejb.AsyncResult;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
@@ -34,8 +36,14 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
     }
 
     @Override
-    public Future generateReportAsync() {
-        //TODO
-        return null;
+    @Futureable
+    public Future<Void> generateReportAsync() {
+        // TODO: REMOVE
+        try{
+            Thread.sleep(3000);
+        }catch (InterruptedException e){
+
+        }
+        return new AsyncResult<>(null);
     }
 }

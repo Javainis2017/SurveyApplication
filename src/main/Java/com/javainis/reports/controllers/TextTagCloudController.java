@@ -6,6 +6,7 @@ import com.javainis.reports.mybatis.model.Question;
 import com.javainis.reports.mybatis.model.TextAnswer;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.deltaspike.core.api.future.Futureable;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.tagcloud.DefaultTagCloudItem;
 import org.primefaces.model.tagcloud.DefaultTagCloudModel;
@@ -13,6 +14,7 @@ import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.AsyncResult;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Alternative;
 import javax.faces.application.FacesMessage;
@@ -52,12 +54,18 @@ public class TextTagCloudController implements TextQuestionReport, Serializable 
     }
 
     @Override
-    public Future generateReportAsync() {
-        //TODO
-        return null;
+    @Futureable
+    public Future<Void> generateReportAsync() {
+        // TODO: REMOVE
+        try{
+            Thread.sleep(5000);
+        }catch (InterruptedException e){
+
+        }
+        return new AsyncResult<>(null);
     }
 
-    @PostConstruct
+    //@PostConstruct
     public void init() {
         model = new DefaultTagCloudModel();
         for(Map.Entry<String, Integer> entry : getNTopWords(wordCount).entrySet())

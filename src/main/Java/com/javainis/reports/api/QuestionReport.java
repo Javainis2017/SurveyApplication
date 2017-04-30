@@ -7,5 +7,5 @@ import java.util.concurrent.Future;
 public interface QuestionReport {
     String getTemplateName();
     void setQuestion(Question question);
-    Future generateReportAsync();
+    Future<Void> generateReportAsync();
 }
