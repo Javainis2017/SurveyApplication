@@ -1,16 +1,27 @@
 package com.javainis.reports.controllers;
 
 import com.javainis.reports.api.TextQuestionReport;
+import com.javainis.reports.mybatis.model.Question;
 
+import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Alternative;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TextTagCloudController implements TextQuestionReport {
+@Alternative
+@Dependent
+public class TextTagCloudController implements TextQuestionReport, Serializable {
     @Override
     public String getTemplateName() {
         return "text-show.xhtml";
+    }
+
+    @Override
+    public void setQuestion(Question question) {
+
     }
 
     private Map<String, Integer> findMostFrequentWords(List<String> texts)

@@ -6,7 +6,7 @@
     <result column="text" jdbcType="VARCHAR" property="text" />
     <result column="required" jdbcType="BIT" property="required" />
 
-    <collection property="answers" javaType="ArrayList" column="id" ofType="Answer" resultMap="com.javainis.reports.mybatis.dao.AnswerMapper.AnswerResultMap" columnPrefix="answer_"/>
+    <collection property="answers" javaType="ArrayList" column="id" ofType="Answer" select="selectAnswersForQuestion"/>
 
     <discriminator javaType="java.lang.Long" column="question_type_id">
       <case value="1" resultMap="TextQuestionResultMap"/>
@@ -46,20 +46,24 @@
       iq.min_value,
       iq.max_value,
       c.id as choice_id,
-      c.text as choice_text,
-      a.id as answer_id,
-      a.result_id as answer_result_id,
-      a.question_id as answer_question_id,
-      a.answer_type as answer_answer_type,
-      a.text_answer as answer_text_answer,
-      a.number_answer as answer_number_answer,
-      a.choice_id as answer_choice_id,
-      ac.choice_id as answer_choice_id
+      c.text as choice_text
     FROM public.question q
       LEFT JOIN public.choice c on c.question_id = q.id
       LEFT JOIN public.interval_question iq on iq.id = q.id
-      LEFT JOIN public.answer a on a.question_id = q.id
-      LEFT JOIN public.answer_choice ac on ac.answer_id = a.id
     WHERE q.survey_id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectAnswersForQuestion" parameterType="java.lang.Long" resultMap="com.javainis.reports.mybatis.dao.AnswerMapper.AnswerResultMap">
+    SELECT
+      a.id,
+      a.result_id,
+      a.question_id,
+      a.answer_type,
+      a.text_answer,
+      a.number_answer,
+      a.choice_id,
+      ac.choice_id
+    FROM public.answer a
+      LEFT JOIN public.answer_choice ac on ac.answer_id = a.id
   </select>
 </mapper>
