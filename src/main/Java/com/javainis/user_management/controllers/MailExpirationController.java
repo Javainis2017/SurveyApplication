@@ -9,8 +9,10 @@ import com.javainis.utility.HashGenerator;
 import com.javainis.utility.RandomStringGenerator;
 import lombok.Getter;
 import lombok.Setter;
+import org.omnifaces.cdi.Param;
 import org.omnifaces.util.Messages;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -54,7 +56,8 @@ public class MailExpirationController implements Serializable {
     @Inject
     private DateUtil dateUtil;
 
-    @Setter
+    @Inject
+    @Param(pathIndex = 0)
     @Getter
     private String url;
 
@@ -77,7 +80,7 @@ public class MailExpirationController implements Serializable {
             String password = "javainiai";
 
             setSentEmailProperties();
-            String message = "Your password reminder link: http://localhost:8080/user-management/change-password-email.html?sid=" + mailExpiration.getUrl();
+            String message = "Your password reminder link: http://localhost:8080/user-management/change-password-email/" + mailExpiration.getUrl();
             sendEmail(fromEmail, username, password, email, subject, message);
             mailExpirationDAO.create(mailExpiration);
             url = mailExpiration.getUrl();
@@ -165,7 +168,8 @@ public class MailExpirationController implements Serializable {
         repeatedPassword = "";
     }
 
-    public void init() {
+    @PostConstruct
+    private void init() {
         if(url == null){
             return;
         }
