@@ -1,11 +1,9 @@
 package com.javainis.reports.controllers;
 
 import com.javainis.reports.api.TextQuestionReport;
-import com.javainis.reports.mybatis.model.Answer;
 import com.javainis.reports.mybatis.model.FreeTextQuestion;
 import com.javainis.reports.mybatis.model.Question;
 import com.javainis.reports.mybatis.model.TextAnswer;
-import com.javainis.survey.controllers.create.TextQuestionController;
 import lombok.Getter;
 import lombok.Setter;
 import org.primefaces.event.SelectEvent;
@@ -15,14 +13,19 @@ import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Alternative;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.Future;
+
 @Named
-@RequestScoped
-public class TextTagCloudController implements TextQuestionReport {
+@Dependent
+@Alternative
+public class TextTagCloudController implements TextQuestionReport, Serializable {
     @Getter
     FreeTextQuestion freeTextQuestion;
     @Getter
@@ -31,6 +34,7 @@ public class TextTagCloudController implements TextQuestionReport {
     int wordCount = 30;
     @Getter
     private TagCloudModel model;
+
     @Override
     public String getTemplateName() {
         return "text-show.xhtml";
@@ -45,6 +49,12 @@ public class TextTagCloudController implements TextQuestionReport {
         else {
             System.out.println("FreeTextQuestion was not set successfully");
         }
+    }
+
+    @Override
+    public Future generateReportAsync() {
+        //TODO
+        return null;
     }
 
     @PostConstruct
