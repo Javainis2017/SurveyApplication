@@ -43,14 +43,19 @@ public class SurveyExportController {
     @Transactional
     public void exportSurvey()
     {
+
+
+        //TIK TESTAVIMUI
+        selectedSurvey = surveyDAO.getAll().get(0); //TIK TESTAVIMUI
+        //TIK TESTAVIMUI
+
         //Pagal http://stackoverflow.com/a/9394237
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext ec = fc.getExternalContext();
         ec.responseReset();
         ec.setResponseContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        ec.setResponseHeader("Content-Disposition", "attachment; filename=\"Survey.xlsx\"");
+        ec.setResponseHeader("Content-Disposition", "attachment; filename=\" " + selectedSurvey.getTitle() + ".xlsx\"");
         //TODO: padaryt visom apklausom
-        selectedSurvey = surveyDAO.getAll().get(0); //TIK TESTAVIMUI
         try {
             stream = ec.getResponseOutputStream();
             exporter.exportSurvey(selectedSurvey, stream);
@@ -64,9 +69,4 @@ public class SurveyExportController {
         }
     }
 
-    //TODO:exportuotiAtsakymus
-    public void exportAnswers()
-    {
-
-    }
 }
