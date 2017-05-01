@@ -33,6 +33,7 @@
                     <h:panelGroup rendered="#{reportController.reports[question].done}">
                         <ui:include src="/WEB-INF/reports/#{reportController.questionReports[question].templateName}">
                             <ui:param name="question" value="#{question}"/>
+                            <ui:param name="controller" value="#{reportController}"/>
                         </ui:include>
                     </h:panelGroup>
                     <h:panelGroup rendered="#{not reportController.reports[question].done and not reportController.timeout}">

@@ -63,38 +63,21 @@ public class ReportController implements Serializable {
         questionReports = new HashMap<>();
         reports = new HashMap<>();
         for (Question question : survey.getQuestions()) {
-            QuestionReport report;
+            QuestionReport report = null;
             Future<Void> future;
             if (question instanceof FreeTextQuestion) {
                 report = javax.enterprise.inject.spi.CDI.current().select(TextQuestionReport.class).get();
-                report.setQuestion(question);
-                future = report.generateReportAsync();
-                reports.put(question, future);
-                questionReports.put(question, report);
             } else if (question instanceof IntervalQuestion) {
                 report = javax.enterprise.inject.spi.CDI.current().select(IntervalQuestionReport.class).get();
-                report.setQuestion(question);
-                future = report.generateReportAsync();
-                reports.put(question, future);
-                questionReports.put(question, report);
             } else if (question instanceof SingleChoiceQuestion) {
                 report = javax.enterprise.inject.spi.CDI.current().select(SingleChoiceQuestionReport.class).get();
-                report.setQuestion(question);
-                future = report.generateReportAsync();
-                reports.put(question, future);
-                questionReports.put(question, report);
             } else if (question instanceof MultipleChoiceQuestion) {
                 report = javax.enterprise.inject.spi.CDI.current().select(MultiChoiceQuestionReport.class).get();
-                report.setQuestion(question);
-                future = report.generateReportAsync();
-                reports.put(question, future);
-                questionReports.put(question, report);
             }
-            //TODO: add missing reports
-            /*
             report.setQuestion(question);
+            future = report.generateReportAsync();
+            reports.put(question, future);
             questionReports.put(question, report);
-            reports.add(report.generateReportAsync());*/
         }
     }
 

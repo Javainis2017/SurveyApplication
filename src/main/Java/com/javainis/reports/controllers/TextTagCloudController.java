@@ -56,12 +56,7 @@ public class TextTagCloudController implements TextQuestionReport, Serializable 
     @Override
     @Futureable
     public Future<Void> generateReportAsync() {
-        // TODO: REMOVE
-        try{
-            Thread.sleep(5000);
-        }catch (InterruptedException e){
-
-        }
+        init();
         return new AsyncResult<>(null);
     }
 

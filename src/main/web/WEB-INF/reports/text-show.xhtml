@@ -6,15 +6,13 @@
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
         xmlns:c="http://java.sun.com/jsp/jstl/core">
-    <h:outputText>#{question.text}</h:outputText>
-    <c:if test="#{question.required}">
-        <h:outputText> (Required)</h:outputText>
-        <br/>
-    </c:if>
+    <!--@elvariable id="question" type="com.javainis.reports.mybatis.model.FreeTextQuestion"-->
+    <!--@elvariable id="controller" type="com.javainis.reports.controllers.ReportController"-->
     <h:form>
         <p:growl id="msgs" showDetail="true" />
-        <p:tagCloud model="#{textTagCloudController.model}">
-            <p:ajax event="select" update="msgs" listener="#{textTagCloudController.onSelect}" />
+        <p:tagCloud model="#{controller.questionReports[question].model}">
+            <p:ajax event="select" update="msgs" listener="#{controller.questionReports[question].onSelect}" />
         </p:tagCloud>
     </h:form>
+
 </ui:composition>
