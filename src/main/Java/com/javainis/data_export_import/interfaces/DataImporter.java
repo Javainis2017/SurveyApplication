@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface DataImporter {
     Survey importSurvey(File selectedFile);
-    List<Answer> importAnswers(File selectedFile);
+    List<Answer> importAnswers(File selectedFile, Survey survey);
 }

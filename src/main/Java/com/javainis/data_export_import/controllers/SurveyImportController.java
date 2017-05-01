@@ -5,6 +5,7 @@ import com.javainis.survey.controllers.create.NewSurveyController;
 import com.javainis.survey.dao.SurveyDAO;
 import com.javainis.survey.dao.SurveyResultDAO;
 import com.javainis.survey.entities.Answer;
+import com.javainis.survey.entities.Question;
 import com.javainis.survey.entities.Survey;
 import com.javainis.user_management.controllers.UserController;
 import com.javainis.user_management.entities.User;
@@ -41,10 +42,10 @@ public class SurveyImportController {
     DataImporter dataImporter;
 
     @Inject
-    private UserController userController; //UML
+    private UserController userController;
 
     @Inject
-    private RandomStringGenerator randomStringGenerator; //UML
+    private RandomStringGenerator randomStringGenerator;
 
     @Inject
     private SurveyDAO surveyDAO;
@@ -62,18 +63,21 @@ public class SurveyImportController {
     public void importSurvey(){
         File file = new File("survey.xlsx");
         selectedSurvey = dataImporter.importSurvey(file);
-        System.out.println(selectedSurvey);
         selectedSurvey.setDescription("This survey is imported from file: survey.xlsx");
         selectedSurvey.setTitle("survey.xlsx");
-        System.out.println(selectedSurvey.getTitle());
+        List <Question> questions = selectedSurvey.getQuestions();
+        for  (int i = 0; i < selectedSurvey.getQuestions().size(); i++){
+            System.out.println(questions.get(i).getText() + " " + i);
+        }
         saveSurvey();
     }
 
     @Transactional
     public void importAnswers(){
+        // You can only import answers with survey
+        File file = new File("survey.xlsx");
+        List <Answer> answers = dataImporter.importAnswers(file, selectedSurvey);
 
-
-        //surveyResultDAO.create(surveyResult);
     }
 
     @Transactional

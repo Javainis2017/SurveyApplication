@@ -30,7 +30,7 @@ public class XLSXDataImporter implements DataImporter{
         Survey survey = new Survey();
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(selectedFile));
-            XSSFSheet sheet = workbook.getSheetAt(0); //reiks tobulint
+            XSSFSheet sheet = workbook.getSheet("Survey");
             Row headerRow = sheet.getRow(0);
             List<String> headerColumn = new ArrayList<>();
             for (Cell cell : headerRow){
@@ -171,7 +171,80 @@ public class XLSXDataImporter implements DataImporter{
     }
 
     @Override
-    public List<Answer> importAnswers(File selectedFile) {
+    public List<Answer> importAnswers(File selectedFile, Survey survey) {
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(selectedFile));
+            XSSFSheet sheet = workbook.getSheet("Survey");
+            Row headerRow = sheet.getRow(0);
+            List<String> headerColumn = new ArrayList<>();
+            for (Cell cell : headerRow) {
+                if (cell.getCellTypeEnum() == CellType.STRING) {
+                    headerColumn.add(cell.getStringCellValue());
+                }
+            }
+
+            for (Row row : sheet) {
+                System.out.println(row.getRowNum());
+                if (row.getRowNum() == 0) continue; // header avoid reading
+
+
+                double questionNumber = row.getCell(1).getNumericCellValue();
+                double answerID = row.getCell(0).getNumericCellValue(); //id set?
+
+
+                Question question = survey.getQuestions().get((int)questionNumber - 1);
+
+                if (question instanceof FreeTextQuestion){
+                    TextAnswer textAnswer = new TextAnswer();
+                    if (row.getCell(2).getCellTypeEnum() == CellType.STRING) {
+                        textAnswer.setText(row.getCell(2).getStringCellValue());
+                    } else if (row.getCell(2).getCellTypeEnum() == CellType.NUMERIC) {
+                        textAnswer.setText(String.valueOf(row.getCell(2).getNumericCellValue()));
+                    } else if (row.getCell(2).getCellTypeEnum() == CellType.BLANK) {
+                        textAnswer.setText(""); // ar null, jei buvo neprivalomas?
+                    }
+                    textAnswer.setQuestion(question);
+
+                } else if (question instanceof MultipleChoiceQuestion){
+                    MultipleChoiceAnswer multipleChoiceAnswer = new MultipleChoiceAnswer();
+                    List<Choice> choices = new ArrayList<>();
+                    for (Cell cell : row) {
+                        if (cell.getColumnIndex() == 0 || cell.getColumnIndex() == 1) continue;
+                        if (row.getCell(cell.getColumnIndex()).getCellTypeEnum() == CellType.NUMERIC) {
+                            double number = row.getCell(2).getNumericCellValue();
+                            Choice choice = ((MultipleChoiceQuestion) question).getChoices().get((int)number - 1);
+                            choices.add(choice);
+                        } else if (row.getCell(cell.getColumnIndex()).getCellTypeEnum() == CellType.BLANK) {
+                            break;
+                        }
+                    }
+                    multipleChoiceAnswer.setChoices(choices);
+                    multipleChoiceAnswer.setQuestion(question);
+                } else if (question instanceof SingleChoiceQuestion){
+                    SingleChoiceAnswer singleChoiceAnswer = new SingleChoiceAnswer();
+                    if (row.getCell(2).getCellTypeEnum() == CellType.NUMERIC) {
+                        double number = row.getCell(2).getNumericCellValue();
+                        singleChoiceAnswer.setChoice(((SingleChoiceQuestion) question).getChoices().get((int)number - 1));
+                    } else if (row.getCell(2).getCellTypeEnum() == CellType.BLANK) {
+                        singleChoiceAnswer.setChoice(null); //tikrai null?
+                    }
+                    singleChoiceAnswer.setQuestion(question);
+                } else if (question instanceof IntervalQuestion){
+                    NumberAnswer numberAnswer = new NumberAnswer();
+                    if (row.getCell(2).getCellTypeEnum() == CellType.NUMERIC) {
+                        double number = row.getCell(2).getNumericCellValue();
+                        numberAnswer.setNumber((int)number);
+                    } else if (row.getCell(2).getCellTypeEnum() == CellType.BLANK) {
+                        numberAnswer.setNumber(null); //
+                    }
+                    numberAnswer.setQuestion(question);
+                }
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        //jei klausimas buvo privalomas pravaliduoti?
         return null;
     }
 }
