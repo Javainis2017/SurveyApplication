@@ -39,67 +39,109 @@ public class XLSXDataImporter implements DataImporter{
                 }
             }
 
+            List<Question> questions = new ArrayList<>();
+
             for (Row row : sheet){
                 System.out.println(row.getRowNum());
                 if (row.getRowNum() == 0) continue; // header avoid reading
 
-                String questionType = row.getCell(2).getStringCellValue(); // Question format
-                String quesstionName = row.getCell(1).getStringCellValue();
-                double quesstionNumber = row.getCell(0).getNumericCellValue();
+                String questionType = row.getCell(3).getStringCellValue();
+                String questionName = row.getCell(2).getStringCellValue();
+                String questionMandatory = row.getCell(1).getStringCellValue();
+                double questionNumber = row.getCell(0).getNumericCellValue(); //id set?
+
 
                 switch (questionType){
                     case "TEXT":
-                    case "TEXT*":
                         FreeTextQuestion freeTextQuestion = new FreeTextQuestion();
-                        if (questionType.contains("*")) freeTextQuestion.setRequired(true);
+                        if (questionMandatory.equals("YES")) freeTextQuestion.setRequired(true);
                         else freeTextQuestion.setRequired(false);
 
-                        freeTextQuestion.setSurvey(survey); //need this?
-                        //survey.setQuestions();
+                        freeTextQuestion.setText(questionName);
+                        freeTextQuestion.setSurvey(survey);
+                        questions.add(freeTextQuestion);
                         System.out.println("TEXT");
                         break;
                     case "CHECKBOX":
-                    case "CHECKBOX*":
                         MultipleChoiceQuestion multipleChoiceQuestion = new MultipleChoiceQuestion();
-                        if (questionType.contains("*")) multipleChoiceQuestion.setRequired(true);
+                        if (questionMandatory.equals("YES")) multipleChoiceQuestion.setRequired(true);
                         else multipleChoiceQuestion.setRequired(false);
 
-                        List<Choice> choiceList = new ArrayList<>();
+                        List<Choice> choiceListMulti = new ArrayList<>();
                         for (Cell cell : row){
-                            if(cell.getColumnIndex() == 0 || cell.getColumnIndex() == 1 || cell.getColumnIndex() == 2) continue;
+                            if(cell.getColumnIndex() == 0 || cell.getColumnIndex() == 1 || cell.getColumnIndex() ==  2 || cell.getColumnIndex() == 3) continue;
                             Choice choice = new Choice();
 
                             if (cell.getCellTypeEnum() == CellType.STRING){
                                 String option = cell.getStringCellValue();
                                 choice.setText(option);
                             }
-                            if (cell.getCellTypeEnum() == CellType.NUMERIC){
+                            else if (cell.getCellTypeEnum() == CellType.NUMERIC){
                                 double optionNumber = cell.getNumericCellValue();
                                 choice.setText(String.valueOf(optionNumber));
-                            } else{
-                                System.out.println("Gali būti kazkoks kitas formatas???");
+                            } else if (cell.getCellTypeEnum() == CellType.BLANK){
+                                break;
+                            } else {
+                                System.out.println("Gali būti kazkoks kitas formatas???"); // ?
                             }
-                            choice.setQuestion(multipleChoiceQuestion); //taip ar ne?
-                            choiceList.add(choice);
+                            choice.setQuestion(multipleChoiceQuestion);
+                            choiceListMulti.add(choice);
                         }
-                        multipleChoiceQuestion.setChoices(choiceList);
-                        multipleChoiceQuestion.setText(quesstionName);
-                        multipleChoiceQuestion.setSurvey(survey); //need this?
-
+                        multipleChoiceQuestion.setChoices(choiceListMulti);
+                        multipleChoiceQuestion.setText(questionName);
+                        multipleChoiceQuestion.setSurvey(survey);
+                        questions.add(multipleChoiceQuestion);
                         System.out.println("CHECKBOX");
                         break;
                     case "MULTIPLECHOICE":
-                    case "MULTIPLECHOICE*":
                         SingleChoiceQuestion singleChoiceQuestion = new SingleChoiceQuestion();
-                        if (questionType.contains("*")) singleChoiceQuestion.setRequired(true);
+                        if (questionMandatory.equals("YES")) singleChoiceQuestion.setRequired(true);
                         else singleChoiceQuestion.setRequired(false);
+
+                        List<Choice> choiceListSingle = new ArrayList<>();
+                        for (Cell cell : row){
+                            if(cell.getColumnIndex() == 0 || cell.getColumnIndex() == 1 || cell.getColumnIndex() ==  2 || cell.getColumnIndex() == 3) continue;
+
+                            Choice choice = new Choice();
+                            if (cell.getCellTypeEnum() == CellType.STRING){
+                                String option = cell.getStringCellValue();
+                                choice.setText(option);
+                            }
+                            else if (cell.getCellTypeEnum() == CellType.NUMERIC){
+                                double optionNumber = cell.getNumericCellValue();
+                                choice.setText(String.valueOf(optionNumber));
+                            } else if (cell.getCellTypeEnum() == CellType.BLANK){
+                                break;
+                            } else {
+                                System.out.println("Gali būti kazkoks kitas formatas??"); // ?
+                                System.out.println(cell.getCellTypeEnum());
+                            }
+
+                            choice.setQuestion(singleChoiceQuestion);
+                            choiceListSingle.add(choice);
+                        }
+                        singleChoiceQuestion.setChoices(choiceListSingle);
+                        singleChoiceQuestion.setText(questionName);
+                        singleChoiceQuestion.setSurvey(survey);
+                        questions.add(singleChoiceQuestion);
                         System.out.println("MULTIPLECHOICE");
                         break;
                     case "SCALE":
-                    case "SCALE*":
                         IntervalQuestion intervalQuestion = new IntervalQuestion();
-                        if (questionType.contains("*")) intervalQuestion.setRequired(true);
+                        if (questionMandatory.equals("YES")) intervalQuestion.setRequired(true);
                         else intervalQuestion.setRequired(false);
+
+                        //try ?
+                        double intervalMin = row.getCell(4).getNumericCellValue();
+                        double intervalMax = row.getCell(5).getNumericCellValue();
+
+                        intervalQuestion.setMin((int) intervalMin);
+                        intervalQuestion.setMax((int) intervalMax);
+
+                        intervalQuestion.setText(questionName);
+                        intervalQuestion.setSurvey(survey);
+                        questions.add(intervalQuestion);
+
                         System.out.println("SCALE");
 
                         break;
@@ -118,14 +160,14 @@ public class XLSXDataImporter implements DataImporter{
                 System.out.println();
             }
 
-            //for (int i = 0; i<)
+            survey.setQuestions(questions);
 
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return survey;
     }
 
     @Override

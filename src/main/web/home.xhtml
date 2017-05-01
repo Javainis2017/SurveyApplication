@@ -21,7 +21,12 @@
     <h:commandLink actionListener="#{userController.logout()}" action="index">Log out</h:commandLink><br/>
     <h:link outcome="change-password">Change password</h:link><br/>
     <h2>Survey creation</h2>
-    <h:link outcome="survey/new">Create new survey</h:link><br/>
+    <h:link outcome="survey/new">Create new survey</h:link>
+
+    <h2>Survey import and export</h2>
+    <h:commandButton value="Import first survey (To TomEE/bin dir)"
+                     action="#{surveyImportController.importSurvey()}">
+    </h:commandButton>
 
     <h2>My surveys</h2>
     <p:fieldset legend="Surveys" toggleable="true" collapsed="true" styleClass="fieldPanel">
