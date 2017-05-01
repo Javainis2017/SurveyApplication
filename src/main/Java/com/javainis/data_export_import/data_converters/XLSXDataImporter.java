@@ -42,7 +42,7 @@ public class XLSXDataImporter implements DataImporter{
             List<Question> questions = new ArrayList<>();
 
             for (Row row : sheet){
-                System.out.println(row.getRowNum());
+                //System.out.println(row.getRowNum());
                 if (row.getRowNum() == 0) continue; // header avoid reading
 
                 String questionType = row.getCell(3).getStringCellValue();
@@ -148,16 +148,12 @@ public class XLSXDataImporter implements DataImporter{
                 }
 
 
-                for (Cell cell : row){
+                /* for (Cell cell : row){
                     System.out.print(cell.getColumnIndex() + ". ");
                     if(cell.getColumnIndex() == 0 || cell.getColumnIndex() == 1 || cell.getColumnIndex() == 2) continue; // only option
-
-
                     if (cell.getCellTypeEnum() == CellType.STRING) System.out.print(cell.getStringCellValue());
                     if (cell.getCellTypeEnum() == CellType.NUMERIC) System.out.print(cell.getNumericCellValue());
-
-                }
-                System.out.println();
+                }*/
             }
 
             survey.setQuestions(questions);
@@ -174,7 +170,7 @@ public class XLSXDataImporter implements DataImporter{
     public List<Answer> importAnswers(File selectedFile, Survey survey) {
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(selectedFile));
-            XSSFSheet sheet = workbook.getSheet("Survey");
+            XSSFSheet sheet = workbook.getSheet("Answer");
             Row headerRow = sheet.getRow(0);
             List<String> headerColumn = new ArrayList<>();
             for (Cell cell : headerRow) {
@@ -183,14 +179,21 @@ public class XLSXDataImporter implements DataImporter{
                 }
             }
 
+            List<Answer> answerList = new ArrayList<>();
+
             for (Row row : sheet) {
                 System.out.println(row.getRowNum());
                 if (row.getRowNum() == 0) continue; // header avoid reading
 
-
-                double questionNumber = row.getCell(1).getNumericCellValue();
-                double answerID = row.getCell(0).getNumericCellValue(); //id set?
-
+                double questionNumber = 0;
+                if (row.getCell(1).getCellTypeEnum() == CellType.STRING){
+                    questionNumber = Double.parseDouble(row.getCell(1).getStringCellValue());
+                } else if (row.getCell(1).getCellTypeEnum() == CellType.NUMERIC){
+                    questionNumber = row.getCell(1).getNumericCellValue();
+                }
+                System.out.print("questionnumber");
+                //double answerID = row.getCell(0).getNumericCellValue(); //id set?
+                //System.out.print("answerid");
 
                 Question question = survey.getQuestions().get((int)questionNumber - 1);
 
@@ -204,7 +207,7 @@ public class XLSXDataImporter implements DataImporter{
                         textAnswer.setText(""); // ar null, jei buvo neprivalomas?
                     }
                     textAnswer.setQuestion(question);
-
+                    answerList.add(textAnswer);
                 } else if (question instanceof MultipleChoiceQuestion){
                     MultipleChoiceAnswer multipleChoiceAnswer = new MultipleChoiceAnswer();
                     List<Choice> choices = new ArrayList<>();
@@ -220,6 +223,7 @@ public class XLSXDataImporter implements DataImporter{
                     }
                     multipleChoiceAnswer.setChoices(choices);
                     multipleChoiceAnswer.setQuestion(question);
+                    answerList.add(multipleChoiceAnswer);
                 } else if (question instanceof SingleChoiceQuestion){
                     SingleChoiceAnswer singleChoiceAnswer = new SingleChoiceAnswer();
                     if (row.getCell(2).getCellTypeEnum() == CellType.NUMERIC) {
@@ -229,6 +233,7 @@ public class XLSXDataImporter implements DataImporter{
                         singleChoiceAnswer.setChoice(null); //tikrai null?
                     }
                     singleChoiceAnswer.setQuestion(question);
+                    answerList.add(singleChoiceAnswer);
                 } else if (question instanceof IntervalQuestion){
                     NumberAnswer numberAnswer = new NumberAnswer();
                     if (row.getCell(2).getCellTypeEnum() == CellType.NUMERIC) {
@@ -238,8 +243,10 @@ public class XLSXDataImporter implements DataImporter{
                         numberAnswer.setNumber(null); //
                     }
                     numberAnswer.setQuestion(question);
+                    answerList.add(numberAnswer);
                 }
             }
+            return answerList;
         }
         catch (IOException e){
             e.printStackTrace();

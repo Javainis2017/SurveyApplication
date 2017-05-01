@@ -7,6 +7,7 @@ import com.javainis.survey.dao.SurveyResultDAO;
 import com.javainis.survey.entities.Answer;
 import com.javainis.survey.entities.Question;
 import com.javainis.survey.entities.Survey;
+import com.javainis.survey.entities.SurveyResult;
 import com.javainis.user_management.controllers.UserController;
 import com.javainis.user_management.entities.User;
 import com.javainis.utility.RandomStringGenerator;
@@ -57,6 +58,9 @@ public class SurveyImportController {
     private Survey selectedSurvey = new Survey();
 
     @Getter
+    private SurveyResult surveyResult= new SurveyResult(); //UML
+
+    @Getter
     private List<Answer> surveyAnswers;
 
     @Transactional
@@ -65,11 +69,12 @@ public class SurveyImportController {
         selectedSurvey = dataImporter.importSurvey(file);
         selectedSurvey.setDescription("This survey is imported from file: survey.xlsx");
         selectedSurvey.setTitle("survey.xlsx");
-        List <Question> questions = selectedSurvey.getQuestions();
+        /*List <Question> questions = selectedSurvey.getQuestions();
         for  (int i = 0; i < selectedSurvey.getQuestions().size(); i++){
             System.out.println(questions.get(i).getText() + " " + i);
-        }
+        }*/
         saveSurvey();
+        importAnswers();
     }
 
     @Transactional
@@ -77,7 +82,9 @@ public class SurveyImportController {
         // You can only import answers with survey
         File file = new File("survey.xlsx");
         List <Answer> answers = dataImporter.importAnswers(file, selectedSurvey);
-
+        surveyResult.setSurvey(selectedSurvey);
+        surveyResult.setAnswers(answers);
+        saveAnswers();
     }
 
     @Transactional
@@ -113,7 +120,12 @@ public class SurveyImportController {
 
     @Transactional
     public void saveAnswers(){
-
+        try{
+            surveyResultDAO.create(surveyResult);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }
