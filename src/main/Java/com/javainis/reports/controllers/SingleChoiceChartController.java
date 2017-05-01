@@ -1,11 +1,10 @@
 package com.javainis.reports.controllers;
 
 import com.javainis.reports.api.SingleChoiceQuestionReport;
-import com.javainis.reports.mybatis.model.SingleChoiceQuestion;
-import com.javainis.reports.mybatis.model.Question;
-import com.javainis.reports.mybatis.model.SingleChoiceAnswer;
+import com.javainis.reports.mybatis.model.*;
 import lombok.Getter;
 import org.apache.deltaspike.core.api.future.Futureable;
+import org.primefaces.model.chart.PieChartModel;
 
 import javax.ejb.AsyncResult;
 import javax.enterprise.context.Dependent;
@@ -14,7 +13,6 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.Future;
-
 @Named
 @Dependent
 @Alternative
@@ -25,6 +23,33 @@ public class SingleChoiceChartController implements SingleChoiceQuestionReport, 
     @Getter
     List<SingleChoiceAnswer> singleChoiceAnswers;
 
+    @Getter
+    private PieChartModel model;
+
+    //@PostConstruct
+    public void init() {
+        createPieModel();
+    }
+
+    private void createPieModel() {
+        model = new PieChartModel();
+
+        for(Choice q: singleChoiceQuestion.getChoices())
+        {
+            int count = 0;
+            for(SingleChoiceAnswer a: singleChoiceAnswers)
+                if(a.toString() == q.getText())
+                    count++;
+
+            model.set(q.toString(), count);
+        }
+
+
+        model.setTitle(singleChoiceQuestion.getText());
+        model.setLegendPosition("w");
+        model.setShowDataLabels(true);
+    }
+
     @Override
     public String getTemplateName() {
         return "single-choice-show.xhtml";
@@ -34,6 +59,7 @@ public class SingleChoiceChartController implements SingleChoiceQuestionReport, 
     public void setQuestion(Question question) {
         if(question instanceof SingleChoiceQuestion) {
             singleChoiceQuestion = (SingleChoiceQuestion) question;
+            //for(Answer a: singleChoiceQuestion.getAnswers())
             singleChoiceAnswers = (List<SingleChoiceAnswer>) (List<?>) singleChoiceQuestion.getAnswers();
         }
         else {
@@ -44,12 +70,7 @@ public class SingleChoiceChartController implements SingleChoiceQuestionReport, 
     @Override
     @Futureable
     public Future<Void> generateReportAsync() {
-        // TODO: REMOVE
-        try{
-            Thread.sleep(3000);
-        }catch (InterruptedException e){
-
-        }
+        init();
         return new AsyncResult<>(null);
     }
 }

@@ -7,12 +7,12 @@
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
         xmlns:f="http://xmlns.jcp.org/jsf/core"
         xmlns:c="http://java.sun.com/jsp/jstl/core">
-    <h:outputText>#{question.text}</h:outputText><br/>
-    <c:if test="#{question.required}">
-        <h:outputText> (Required)</h:outputText>
-        <br/>
-    </c:if>
-    <h:panelGrid columns="2">
-
-    </h:panelGrid>
+    <h:form>
+        <h:panelGroup>
+            <c:forEach items="#{question.choices}" var="choice">
+                <h:outputText #{choice.text} /><br/>
+            </c:forEach>
+        </h:panelGroup>
+        <p:chart type="bar" model="#{controller.questionReports[question].model}" style="width:400px;height:300px" />
+    </h:form>
 </ui:composition>

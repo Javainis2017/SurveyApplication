@@ -1,9 +1,16 @@
 package com.javainis.reports.controllers;
 
 import com.javainis.reports.api.MultiChoiceQuestionReport;
-import com.javainis.reports.mybatis.model.*;
+import com.javainis.reports.mybatis.model.Choice;
+import com.javainis.reports.mybatis.model.MultipleChoiceAnswer;
+import com.javainis.reports.mybatis.model.MultipleChoiceQuestion;
+import com.javainis.reports.mybatis.model.Question;
 import lombok.Getter;
 import org.apache.deltaspike.core.api.future.Futureable;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.HorizontalBarChartModel;
 
 import javax.ejb.AsyncResult;
 import javax.enterprise.context.Dependent;
@@ -21,6 +28,40 @@ public class MultiChoiceChartController implements MultiChoiceQuestionReport, Se
     MultipleChoiceQuestion multipleChoiceQuestion;
     @Getter
     List<MultipleChoiceAnswer> multipleChoiceAnswers;
+    @Getter
+    private HorizontalBarChartModel model;
+
+    public void init() {
+        createBarModel();
+    }
+
+    private void createBarModel() {
+        model = new HorizontalBarChartModel();
+
+        ChartSeries answers = new ChartSeries();
+        answers.setLabel("Answers");
+        for(Choice q: multipleChoiceQuestion.getChoices())
+        {
+            int count = 0;
+            for(MultipleChoiceAnswer a: multipleChoiceAnswers)
+                if(a.toString() == q.getText())
+                    count++;
+
+            answers.set(q.toString(), count);
+        }
+
+        model.addSeries(answers);
+
+        model.setTitle(multipleChoiceQuestion.getText());
+        model.setShowPointLabels(false);
+
+        Axis xAxis = model.getAxis(AxisType.X);
+        xAxis.setLabel("Count");
+        xAxis.setMin(0);
+
+        Axis yAxis = model.getAxis(AxisType.Y);
+        yAxis.setLabel("Choices");
+    }
 
     @Override
     public String getTemplateName() {
@@ -41,12 +82,7 @@ public class MultiChoiceChartController implements MultiChoiceQuestionReport, Se
     @Override
     @Futureable
     public Future<Void> generateReportAsync() {
-        // TODO: REMOVE
-        try{
-            Thread.sleep(3000);
-        }catch (InterruptedException e){
-
-        }
+        init();
         return new AsyncResult<>(null);
     }
 }
