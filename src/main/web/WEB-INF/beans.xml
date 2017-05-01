@@ -8,5 +8,7 @@
     <alternatives>
         <class>com.javainis.reports.controllers.TextTagCloudController</class>
         <class>com.javainis.reports.controllers.IntervalChartController</class>
+        <class>com.javainis.reports.controllers.MultiChoiceChartController</class>
+        <class>com.javainis.reports.controllers.SingleChoiceChartController</class>
     </alternatives>
 </beans>

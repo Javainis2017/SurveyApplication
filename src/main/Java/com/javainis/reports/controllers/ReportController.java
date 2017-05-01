@@ -1,13 +1,8 @@
 package com.javainis.reports.controllers;
 
-import com.javainis.reports.api.IntervalQuestionReport;
-import com.javainis.reports.api.QuestionReport;
-import com.javainis.reports.api.TextQuestionReport;
+import com.javainis.reports.api.*;
 import com.javainis.reports.mybatis.dao.SurveyMapper;
-import com.javainis.reports.mybatis.model.FreeTextQuestion;
-import com.javainis.reports.mybatis.model.IntervalQuestion;
-import com.javainis.reports.mybatis.model.Question;
-import com.javainis.reports.mybatis.model.Survey;
+import com.javainis.reports.mybatis.model.*;
 import com.javainis.user_management.controllers.UserController;
 import com.javainis.user_management.dao.UserTypeDAO;
 import lombok.Getter;
@@ -78,6 +73,18 @@ public class ReportController implements Serializable {
                 questionReports.put(question, report);
             } else if (question instanceof IntervalQuestion) {
                 report = javax.enterprise.inject.spi.CDI.current().select(IntervalQuestionReport.class).get();
+                report.setQuestion(question);
+                future = report.generateReportAsync();
+                reports.put(question, future);
+                questionReports.put(question, report);
+            } else if (question instanceof SingleChoiceQuestion) {
+                report = javax.enterprise.inject.spi.CDI.current().select(SingleChoiceQuestionReport.class).get();
+                report.setQuestion(question);
+                future = report.generateReportAsync();
+                reports.put(question, future);
+                questionReports.put(question, report);
+            } else if (question instanceof MultipleChoiceQuestion) {
+                report = javax.enterprise.inject.spi.CDI.current().select(MultiChoiceQuestionReport.class).get();
                 report.setQuestion(question);
                 future = report.generateReportAsync();
                 reports.put(question, future);
