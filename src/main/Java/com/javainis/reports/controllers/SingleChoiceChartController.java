@@ -38,10 +38,10 @@ public class SingleChoiceChartController implements SingleChoiceQuestionReport, 
         {
             int count = 0;
             for(SingleChoiceAnswer a: singleChoiceAnswers)
-                if(a.toString() == q.getText())
+                if(a.getChoiceId() == q.getId())
                     count++;
 
-            model.set(q.toString(), count);
+            model.set(q.getText(), count);
         }
 
 
@@ -59,7 +59,6 @@ public class SingleChoiceChartController implements SingleChoiceQuestionReport, 
     public void setQuestion(Question question) {
         if(question instanceof SingleChoiceQuestion) {
             singleChoiceQuestion = (SingleChoiceQuestion) question;
-            //for(Answer a: singleChoiceQuestion.getAnswers())
             singleChoiceAnswers = (List<SingleChoiceAnswer>) (List<?>) singleChoiceQuestion.getAnswers();
         }
         else {

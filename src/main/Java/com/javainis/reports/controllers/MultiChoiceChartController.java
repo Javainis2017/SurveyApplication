@@ -44,10 +44,10 @@ public class MultiChoiceChartController implements MultiChoiceQuestionReport, Se
         {
             int count = 0;
             for(MultipleChoiceAnswer a: multipleChoiceAnswers)
-                if(a.toString() == q.getText())
-                    count++;
+                    if(a.getId() == q.getId())
+                        count++;
 
-            answers.set(q.toString(), count);
+            answers.set(q.getText(), count);
         }
 
         model.addSeries(answers);
