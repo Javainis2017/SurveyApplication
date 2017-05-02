@@ -65,5 +65,6 @@
       ac.choice_id
     FROM public.answer a
       LEFT JOIN public.answer_choice ac on ac.answer_id = a.id
+    WHERE a.question_id = #{id,jdbcType=BIGINT}
   </select>
 </mapper>
