@@ -7,6 +7,7 @@
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="url" jdbcType="CHAR" property="url" />
     <result column="user_id" jdbcType="BIGINT" property="authorId" />
+    <result column="result_count" jdbcType="BIGINT" javaType="java.lang.Long" property="surveyResultCount"/>
 
     <collection property="questions" javaType="ArrayList" column="id" ofType="Question" select="com.javainis.reports.mybatis.dao.QuestionMapper.selectBySurveyId"/>
   </resultMap>
@@ -17,8 +18,11 @@
       s.name,
       s.description,
       s.url,
-      s.user_id
+      s.user_id,
+      COUNT(sr) as result_count
     FROM public.survey s
-    WHERE url = #{url,jdbcType=CHAR}
+      LEFT JOIN survey_result sr ON s.id = sr.survey_id
+    WHERE s.url = #{url,jdbcType=CHAR}
+    GROUP BY s.id
   </select>
 </mapper>

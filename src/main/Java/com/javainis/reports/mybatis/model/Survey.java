@@ -16,5 +16,6 @@ public class Survey {
     private Long authorId;
 
     private List<Question> questions;
+    private Long surveyResultCount;
 
 }

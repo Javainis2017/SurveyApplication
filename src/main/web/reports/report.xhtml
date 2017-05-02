@@ -20,6 +20,7 @@
     <c:if test="#{reportController.canAccess}">
         <h1>Survey results</h1>
         <h2>#{reportController.survey.title}</h2>
+        <h3>#{reportController.survey.surveyResultCount} responses</h3>
         <p>#{reportController.survey.description}</p>
 
         <h:panelGroup id="report">
@@ -29,6 +30,11 @@
                     <h:outputText>(Required)</h:outputText>
                     <br/>
                 </c:if>
+                <h:outputText>#{question.answers.size()} responses(</h:outputText>
+                <h:outputText value="#{question.answers.size() / reportController.survey.surveyResultCount * 100}" >
+                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                </h:outputText>
+                <h:outputText>%)</h:outputText><br/>
                 <h:panelGroup>
                     <h:panelGroup rendered="#{reportController.reports[question].done}">
                         <ui:include src="/WEB-INF/reports/#{reportController.questionReports[question].templateName}">
