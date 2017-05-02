@@ -9,6 +9,11 @@
     <!--@elvariable id="question" type="com.javainis.reports.mybatis.model.FreeTextQuestion"-->
     <!--@elvariable id="controller" type="com.javainis.reports.controllers.ReportController"-->
     <h:form>
+        <c:forEach var="item" items="#{question.answers}">
+            <h:outputText>#{item.text}</h:outputText>
+            <br/>
+            <br/>
+        </c:forEach>
         <p:growl id="msgs" showDetail="true" />
         <p:tagCloud model="#{controller.questionReports[question].model}">
             <p:ajax event="select" update="msgs" listener="#{controller.questionReports[question].onSelect}" />
