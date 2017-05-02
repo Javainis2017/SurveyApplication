@@ -44,6 +44,13 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
             System.out.println("IntervalQuestion was not set successfully");
         }
     }
+
+    public void countStatistics() {
+        countAverage();
+        countMode();
+        countMedian();
+    }
+
     public void countAverage(){
         double sum = 0;
         for(NumberAnswer number:numberAnswers)
@@ -102,11 +109,7 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
     @Futureable
     public Future<Void> generateReportAsync() {
         // TODO: REMOVE
-        try{
-            Thread.sleep(3000);
-        }catch (InterruptedException e){
-
-        }
+        countStatistics();
         return new AsyncResult<>(null);
     }
 }
