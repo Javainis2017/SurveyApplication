@@ -23,7 +23,7 @@
         <h3>#{reportController.survey.surveyResultCount} responses</h3>
         <p>#{reportController.survey.description}</p>
 
-        <h:panelGroup id="report">
+        <h:panelGroup id="report" rendered="#{reportController.survey.surveyResultCount > 0}">
             <c:forEach items="#{reportController.survey.questions}" var="question">
                 <h3>#{question.text} </h3>
                 <c:if test="#{question.required}">
@@ -50,61 +50,17 @@
                     </h:panelGroup>
                 </h:panelGroup>
             </c:forEach>
-            <ui:remove>
-                <c:forEach items="#{reportController.survey.questions}" var="question">
-                    <h3>#{question.text} </h3>
-                    <c:if test="#{question.required}">
-                        <h:outputText>(Required)</h:outputText>
-                        <br/>
-                    </c:if>
-                    <h:panelGroup>
-                        <c:if test="#{question['class'].simpleName == 'FreeTextQuestion'}">
-                            <h:panelGroup>
-                                <p>Answers</p>
-                                <c:forEach items="#{question.answers}" var="answer">
-                                    Id: #{answer.id} Qid: #{answer.questionId}; Rid: #{answer.resultId} text: #{answer.text}<br/>
-                                </c:forEach>
-                            </h:panelGroup>
-                        </c:if>
-                        <c:if test="#{question['class'].simpleName == 'IntervalQuestion'}">
-                            <h:panelGroup>
-                                <p>Answers</p>
-                                <c:forEach items="#{question.answers}" var="answer">
-                                    Id: #{answer.id} Qid: #{answer.questionId}; Rid: #{answer.resultId} number: #{answer.number}<br/>
-                                </c:forEach>
-                            </h:panelGroup>
-                        </c:if>
-                        <c:if test="#{question['class'].simpleName == 'SingleChoiceQuestion'}">
-                            <h:panelGroup>
-                                <p>Answers</p>
-                                <c:forEach items="#{question.answers}" var="answer">
-                                    Id: #{answer.id} Qid: #{answer.questionId}; Rid: #{answer.resultId} choice: #{answer.choiceId}<br/>
-                                </c:forEach>
-                            </h:panelGroup>
-                        </c:if>
-                        <c:if test="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
-                            <h:panelGroup>
-                                <p>Answers</p>
-                                <c:forEach items="#{question.answers}" var="answer">
-                                    Id: #{answer.id} Qid: #{answer.questionId}; Rid: #{answer.resultId}<br/>
-                                    Choices:<br/>
-                                    <c:forEach items="#{answer.choiceIds}" var="id">
-                                        #{id}
-                                    </c:forEach>
-                                </c:forEach>
-                            </h:panelGroup>
-                        </c:if>
-                    </h:panelGroup>
-                </c:forEach>
-            </ui:remove>
+            <h:form>
+                <p:poll interval="1" update="report"
+                        listener="#{reportController.checkProgress()}"
+                        autoStart="true"
+                        stop="#{reportController.timeout}"
+                        timeout="10000"/>
+            </h:form>
         </h:panelGroup>
-        <h:form>
-            <p:poll interval="1" update="report"
-                    listener="#{reportController.checkProgress()}"
-                    autoStart="true"
-                    stop="#{reportController.timeout}"
-                    timeout="10000"/>
-        </h:form>
+        <h:panelGroup id="emptyReport" rendered="#{reportController.survey.surveyResultCount == 0}">
+            No results have submitted.
+        </h:panelGroup>
     </c:if>
     <c:if test="#{!reportController.canAccess}">
         <h2>Survey results</h2>
