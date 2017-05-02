@@ -4,15 +4,17 @@ import com.javainis.reports.api.IntervalQuestionReport;
 import com.javainis.reports.mybatis.model.*;
 import lombok.Getter;
 import org.apache.deltaspike.core.api.future.Futureable;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 
 import javax.ejb.AsyncResult;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Future;
 
 @Named
@@ -24,11 +26,19 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
     @Getter
     List<NumberAnswer> numberAnswers;
     @Getter
+    List<Integer> numbers;
+    @Getter
     double average;
     @Getter
     int mode;
     @Getter
     double median;
+    @Getter
+    int percentile25;
+    @Getter
+    int percentile75;
+    @Getter
+    private BarChartModel barModel;
     @Override
     public String getTemplateName() {
         return "interval-show.xhtml";
@@ -46,9 +56,17 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
     }
 
     public void countStatistics() {
+        getSortedNumbers();
         countAverage();
         countMode();
         countMedian();
+        percentile25 = countPercentiles(25);
+        percentile75 = countPercentiles(75);
+    }
+
+    private int countPercentiles(int percent) {
+        double indexValue = (double)(numbers.size()*percent)/100;
+        return numbers.get((int)Math.ceil(indexValue));
     }
 
     public void countAverage(){
@@ -61,7 +79,6 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
     }
 
     public void countMode(){
-        List<Integer> numbers = getSortedNumbers();
         int min = intervalQuestion.getMin();
         int max = intervalQuestion.getMax();
         int difference = max-min;
@@ -86,7 +103,6 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
     }
 
     public void countMedian(){
-        List<Integer> numbers = getSortedNumbers();
         int size = numbers.size();
         int middle = size/2;
         if (size%2 == 1) {
@@ -96,20 +112,46 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
         }
     }
 
-    private List<Integer> getSortedNumbers(){
-        List<Integer> numbers = new ArrayList<>();
+    private void getSortedNumbers(){
+        numbers = new ArrayList<>();
         for(NumberAnswer answer: numberAnswers)
         {
             numbers.add(answer.getNumber());
         }
         Collections.sort(numbers);
-        return numbers;
     }
     @Override
     @Futureable
     public Future<Void> generateReportAsync() {
         // TODO: REMOVE
         countStatistics();
+        fillChart();
         return new AsyncResult<>(null);
+    }
+
+    private void fillChart() {
+        Map<Integer, Integer> valueCount = new TreeMap<>();
+        int max = intervalQuestion.getMax();
+        int min = intervalQuestion.getMin();
+        for(NumberAnswer answer: numberAnswers){
+            valueCount.merge(answer.getNumber(), 1, (a, b) -> a + b);
+        }
+        barModel = new BarChartModel();
+        ChartSeries values = new ChartSeries();
+        values.setLabel("Counts");
+        for(int i=min;i<=max;i++)
+        {
+            if (valueCount.containsKey(i)) {
+                values.set(i, valueCount.get(i));
+            } else {
+                values.set(i, 0);
+            }
+        }
+        barModel.addSeries(values);
+        barModel.setTitle("Interval values Bar Chart");
+        Axis xAxis = barModel.getAxis(AxisType.X);
+        xAxis.setLabel("Values");
+        Axis yAxis = barModel.getAxis(AxisType.Y);
+        yAxis.setLabel("Count");
     }
 }

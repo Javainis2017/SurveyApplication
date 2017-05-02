@@ -11,5 +11,7 @@
     <h:outputText>Average - #{controller.questionReports[question].average}</h:outputText>
     <h:outputText>Mode - #{controller.questionReports[question].mode}</h:outputText>
     <h:outputText>Median - #{controller.questionReports[question].median}</h:outputText>
-
+    <h:outputText>25% percentile - #{controller.questionReports[question].percentile25}</h:outputText>
+    <h:outputText>75% percentile - #{controller.questionReports[question].percentile75}</h:outputText>
+    <p:chart type="bar" model="#{controller.questionReports[question].barModel}" style="height:300px"/>
 </ui:composition>
