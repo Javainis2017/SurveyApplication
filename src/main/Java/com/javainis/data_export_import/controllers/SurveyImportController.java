@@ -15,12 +15,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.ws.rs.GET;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -36,8 +40,11 @@ import org.omnifaces.util.Messages;
  * Created by Ignas on 2017-04-26.
  */
 @Named
-@RequestScoped
-public class SurveyImportController {
+@SessionScoped
+public class SurveyImportController implements Serializable{
+
+    /*@Inject
+    EntityManager entityManager;*/
 
     @Inject
     DataImporter dataImporter;
@@ -58,32 +65,47 @@ public class SurveyImportController {
     private Survey selectedSurvey = new Survey();
 
     @Getter
-    private SurveyResult surveyResult= new SurveyResult(); //UML
+    private List<SurveyResult> surveyResultList= new ArrayList<>(); //UML
 
     @Getter
     private List<Answer> surveyAnswers;
 
     @Transactional
     public void importSurvey(){
+        System.out.println(selectedSurvey.getId() + "FIRST getID");
         File file = new File("survey.xlsx");
         selectedSurvey = dataImporter.importSurvey(file);
+        System.out.println(selectedSurvey.getId() + "SECOND getID");
         selectedSurvey.setDescription("This survey is imported from file: survey.xlsx");
         selectedSurvey.setTitle("survey.xlsx");
         /*List <Question> questions = selectedSurvey.getQuestions();
         for  (int i = 0; i < selectedSurvey.getQuestions().size(); i++){
             System.out.println(questions.get(i).getText() + " " + i);
         }*/
+        System.out.println(selectedSurvey.getId() + "   Before save");
         saveSurvey();
-        importAnswers();
+        System.out.println(selectedSurvey.getId() + "   After import DB");
+        //importAnswers();
     }
 
     @Transactional
     public void importAnswers(){
+        //entityManager.flush();
+        System.out.println(selectedSurvey.getId() + "  Answer import BEFORE");
+        System.out.println(selectedSurvey.getTitle() + "TITLE");
         // You can only import answers with survey
         File file = new File("survey.xlsx");
-        List <Answer> answers = dataImporter.importAnswers(file, selectedSurvey);
-        surveyResult.setSurvey(selectedSurvey);
-        surveyResult.setAnswers(answers);
+        selectedSurvey.setSurveyResults(surveyResultList);
+        surveyResultList = dataImporter.importAnswers(file, selectedSurvey);
+        System.out.println("BEGIN");
+        /*for (SurveyResult result: surveyResultList){
+            result.setSurvey(selectedSurvey);
+            System.out.println(result.getId() + " + " + result.getSurvey().getId() + " ." + result.getSurvey().getTitle());
+            surveyResultDAO.create(result);
+        }*/
+        System.out.println("END");
+        //entityManager.flush();
+        //selectedSurvey.setSurveyResults(surveyResultDAO.getResultsBySurveyId(selectedSurvey.getId()));
         saveAnswers();
     }
 
@@ -119,9 +141,12 @@ public class SurveyImportController {
     }
 
     @Transactional
-    public void saveAnswers(){
+    private void saveAnswers(){
         try{
-            surveyResultDAO.create(surveyResult);
+            for (SurveyResult result : surveyResultList){
+                surveyResultDAO.create(result);
+            }
+
         }
         catch (Exception e){
             e.printStackTrace();

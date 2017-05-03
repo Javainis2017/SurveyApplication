@@ -2,6 +2,7 @@ package com.javainis.data_export_import.interfaces;
 
 import com.javainis.survey.entities.Answer;
 import com.javainis.survey.entities.Survey;
+import com.javainis.survey.entities.SurveyResult;
 
 import java.io.File;
 import java.util.List;
@@ -11,5 +12,5 @@ import java.util.List;
  */
 public interface DataImporter {
     Survey importSurvey(File selectedFile);
-    List<Answer> importAnswers(File selectedFile, Survey survey);
+    List<SurveyResult> importAnswers(File selectedFile, Survey survey);
 }

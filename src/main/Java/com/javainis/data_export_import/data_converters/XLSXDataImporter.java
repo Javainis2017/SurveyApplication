@@ -167,7 +167,8 @@ public class XLSXDataImporter implements DataImporter{
     }
 
     @Override
-    public List<Answer> importAnswers(File selectedFile, Survey survey) {
+    public List<SurveyResult> importAnswers(File selectedFile, Survey survey) {
+        List<SurveyResult> surveyResultList = new ArrayList<>();
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(selectedFile));
             XSSFSheet sheet = workbook.getSheet("Answer");
@@ -179,7 +180,12 @@ public class XLSXDataImporter implements DataImporter{
                 }
             }
 
+
             List<Answer> answerList = new ArrayList<>();
+            SurveyResult surveyResult = new SurveyResult();
+
+            surveyResult.setSurvey(survey);
+            double oldAnswerID = -1;
 
             for (Row row : sheet) {
                 System.out.println(row.getRowNum());
@@ -191,8 +197,23 @@ public class XLSXDataImporter implements DataImporter{
                 } else if (row.getCell(1).getCellTypeEnum() == CellType.NUMERIC){
                     questionNumber = row.getCell(1).getNumericCellValue();
                 }
-                System.out.print("questionnumber");
-                //double answerID = row.getCell(0).getNumericCellValue(); //id set?
+                //More simple
+                double answerID = row.getCell(0).getNumericCellValue();
+                if (answerID != oldAnswerID){ // esme pakeisti survey id
+                    if (oldAnswerID != -1){ //pats pirmas su -1, jo nesaugome
+                        surveyResult.setAnswers(answerList);
+                        surveyResult.setSurvey(survey);
+                        surveyResultList.add(surveyResult);
+                        System.out.println("NAUJAS SURVEYLIST");
+                        System.out.println(surveyResult.getAnswers().size() + "Answers :)");
+                    }
+                    surveyResult.setAnswers(null);
+                    surveyResult = new SurveyResult(); //naujas survey result kitam answer id
+                    surveyResult.setSurvey(survey);
+                    oldAnswerID = answerID;
+                    System.out.println("SurveyResult id: " + surveyResult.getId());
+                } //grazinti ne answer
+
                 //System.out.print("answerid");
 
                 Question question = survey.getQuestions().get((int)questionNumber - 1);
@@ -207,6 +228,7 @@ public class XLSXDataImporter implements DataImporter{
                         textAnswer.setText(""); // ar null, jei buvo neprivalomas?
                     }
                     textAnswer.setQuestion(question);
+                    textAnswer.setResult(surveyResult);
                     answerList.add(textAnswer);
                 } else if (question instanceof MultipleChoiceQuestion){
                     MultipleChoiceAnswer multipleChoiceAnswer = new MultipleChoiceAnswer();
@@ -223,6 +245,7 @@ public class XLSXDataImporter implements DataImporter{
                     }
                     multipleChoiceAnswer.setChoices(choices);
                     multipleChoiceAnswer.setQuestion(question);
+                    multipleChoiceAnswer.setResult(surveyResult);
                     answerList.add(multipleChoiceAnswer);
                 } else if (question instanceof SingleChoiceQuestion){
                     SingleChoiceAnswer singleChoiceAnswer = new SingleChoiceAnswer();
@@ -233,6 +256,7 @@ public class XLSXDataImporter implements DataImporter{
                         singleChoiceAnswer.setChoice(null); //tikrai null?
                     }
                     singleChoiceAnswer.setQuestion(question);
+                    singleChoiceAnswer.setResult(surveyResult);
                     answerList.add(singleChoiceAnswer);
                 } else if (question instanceof IntervalQuestion){
                     NumberAnswer numberAnswer = new NumberAnswer();
@@ -243,15 +267,26 @@ public class XLSXDataImporter implements DataImporter{
                         numberAnswer.setNumber(null); //
                     }
                     numberAnswer.setQuestion(question);
+                    numberAnswer.setResult(surveyResult);
                     answerList.add(numberAnswer);
                 }
+
             }
-            return answerList;
+            surveyResult.setAnswers(answerList);
+            surveyResult.setSurvey(survey);
+            surveyResultList.add(surveyResult);
+            System.out.println(surveyResult.getAnswers().size() + "Answers :(");
+            survey.setSurveyResults(surveyResultList);
+
         }
         catch (IOException e){
             e.printStackTrace();
         }
+        catch (Exception e){
+            e.printStackTrace();
+            System.out.println("Exception");
+        }
         //jei klausimas buvo privalomas pravaliduoti?
-        return null;
+        return surveyResultList;
     }
 }
