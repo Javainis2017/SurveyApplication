@@ -62,7 +62,7 @@
       a.text_answer,
       a.number_answer,
       a.choice_id,
-      ac.choice_id
+      ac.choice_id as choices_choice_id
     FROM public.answer a
       LEFT JOIN public.answer_choice ac on ac.answer_id = a.id
     WHERE a.question_id = #{id,jdbcType=BIGINT}

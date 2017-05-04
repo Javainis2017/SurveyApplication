@@ -23,7 +23,7 @@
     <result column="choice_id" jdbcType="BIGINT" property="choiceId"/>
   </resultMap>
   <resultMap id="MultipleChoiceAnswerResultMap" type="com.javainis.reports.mybatis.model.MultipleChoiceAnswer" extends="AnswerResultMap">
-    <collection property="choiceIds" javaType="ArrayList" ofType="java.lang.Long">
+    <collection property="choiceIds" javaType="ArrayList" ofType="java.lang.Long" columnPrefix="choices_">
       <result column="choice_id"/>
     </collection>
   </resultMap>
