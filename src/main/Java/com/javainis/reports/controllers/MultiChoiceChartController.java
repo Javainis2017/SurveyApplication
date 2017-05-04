@@ -54,6 +54,7 @@ public class MultiChoiceChartController implements MultiChoiceQuestionReport, Se
 
         model.setTitle(multipleChoiceQuestion.getText());
         model.setShowPointLabels(true);
+        model.setShadow(true);
 
         Axis xAxis = model.getAxis(AxisType.X);
         xAxis.setLabel("Count");
