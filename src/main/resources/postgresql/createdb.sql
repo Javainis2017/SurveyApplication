@@ -144,3 +144,6 @@ CREATE TABLE IF NOT EXISTS answer_choice
 ALTER TABLE answer ADD COLUMN IF NOT EXISTS choice_id BIGINT;
 ALTER TABLE answer DROP CONSTRAINT IF EXISTS choice_id_fkey;
 ALTER TABLE answer ADD FOREIGN KEY (choice_id) REFERENCES choice(id);
+
+ALTER TABLE mail_expiration DROP COLUMN IF EXISTS expiration_date;
+ALTER TABLE mail_expiration ADD COLUMN IF NOT EXISTS expiration_date DATE;
