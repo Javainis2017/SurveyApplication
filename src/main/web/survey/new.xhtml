@@ -11,18 +11,17 @@
       xml:lang="en" lang="en">
 <h:head>
     <h:outputStylesheet name="css/style.css" />
-    <title>New survey</title>
+    <title>Edit survey</title>
 </h:head>
 <h:body rendered="#{userController.getUser().getEmail() != null}">
-    <h1>New survey</h1>
-    <h2>Create new survey</h2>
+    <h1>Edit survey</h1>
     <!-- Change survey title and description -->
     <h:form id="survey">
         <p:panelGrid id="infoGrid" styleClass="surveyPanel" columns="2">
             <p:outputLabel for="title" value="Survey title"/>
             <p:column>
                 <p:inputText id="title"
-                             required="#{param['survey:create'] != null}"
+                             required="#{param['survey:save'] != null}"
                              value="#{newSurveyController.survey.title}"
                              maxlength="80"
                              size="80"
@@ -94,9 +93,9 @@
         <br/>
         <p:messages globalOnly="true"/>
         <br/>
-        <p:commandButton id="create"
-                value="Create survey"
-                action="#{newSurveyController.createSurvey}"
+        <p:commandButton id="save"
+                value="Save survey"
+                action="#{newSurveyController.saveSurvey}"
                 ajax="false"/>
 
 

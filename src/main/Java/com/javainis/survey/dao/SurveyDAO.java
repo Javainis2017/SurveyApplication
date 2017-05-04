@@ -17,6 +17,10 @@ public class SurveyDAO {
         manager.persist(survey);
     }
 
+    public void update(Survey survey){
+        manager.merge(survey);
+    }
+
     public List<Survey> getAll(){
         return manager.createNamedQuery("Survey.findAll", Survey.class).getResultList();
     }

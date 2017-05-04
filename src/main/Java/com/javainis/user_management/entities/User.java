@@ -1,6 +1,7 @@
 package com.javainis.user_management.entities;
 
 import com.javainis.utility.HashGenerator;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +23,7 @@ import java.security.MessageDigest;
 })
 @Getter
 @Setter
+@EqualsAndHashCode(of = "email")
 public class User
 {
     @Id

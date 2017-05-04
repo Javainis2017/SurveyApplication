@@ -50,6 +50,14 @@
                     Results
                 </h:outputLink>
             </p:column>
+            <p:column headerText="Edit" style="width:110px;text-align: center">
+                <h:outputLink value="survey/new/#{survey.url}" rendered="#{survey.surveyResults.isEmpty()}">
+                    Edit
+                </h:outputLink>
+                <h:outputText rendered="#{!survey.surveyResults.isEmpty()}">
+                    Cannot edit
+                </h:outputText>
+            </p:column>
         </p:dataTable>
     </p:fieldset>
 

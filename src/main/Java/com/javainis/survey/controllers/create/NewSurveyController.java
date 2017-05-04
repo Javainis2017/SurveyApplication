@@ -8,12 +8,17 @@ import com.javainis.user_management.controllers.UserController;
 import com.javainis.user_management.entities.User;
 import com.javainis.utility.RandomStringGenerator;
 import lombok.Getter;
+import org.omnifaces.cdi.Param;
 import org.omnifaces.util.Messages;
 
+import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.io.Serializable;
 
 @Named
@@ -35,6 +40,10 @@ public class NewSurveyController implements Serializable{
     @Inject
     private RandomStringGenerator randomStringGenerator;
 
+    @Inject
+    @Param(pathIndex = 0)
+    private String surveyUrl;
+
     @Getter
     private Survey survey = new Survey();
 
@@ -47,6 +56,25 @@ public class NewSurveyController implements Serializable{
 
     @Getter
     private Question questionToEdit;
+
+    @Getter
+    private boolean editingSurvey = false;
+
+    @PostConstruct
+    public void init() throws Exception{
+        if(surveyUrl != null){
+            Survey surveyToEdit = surveyDAO.findByUrl(surveyUrl);
+            /* Check if current user is author and survey has no results */
+            if((surveyToEdit != null) && (surveyToEdit.getAuthor().equals(userController.getUser())) && (surveyToEdit.getSurveyResults().isEmpty())){
+                survey = surveyToEdit;
+                editingSurvey = true;
+            }else{
+                /* Error */
+                System.out.println("Error");
+                throw new Exception();
+            }
+        }
+    }
 
     public void createQuestion(String type){
         surveyCreationStep = SURVEY_CREATION_STEP.NEW_QUESTION;
@@ -77,34 +105,34 @@ public class NewSurveyController implements Serializable{
     }
 
     @Transactional
-    public String createSurvey(){
+    public String saveSurvey(){
         /* Check if survey has questions */
         if(survey.getQuestions().isEmpty()){
             Messages.addGlobalInfo("Survey must have at least 1 question.");
             return null;
         }
 
-        /* Generate unique URL*/
-        String url = randomStringGenerator.generateString(32);
-        System.out.println(url);
-        // Check if url is duplicate
-        while(surveyDAO.existsByUrl(url)){
-            url = randomStringGenerator.generateString(32);
-        }
-        survey.setUrl(url);
+        if(!editingSurvey){
+            /* Generate unique URL*/
+            String url = randomStringGenerator.generateString(32);
+            /* Check if URL is duplicate */
+            while(surveyDAO.existsByUrl(url)){
+                url = randomStringGenerator.generateString(32);
+            }
+            survey.setUrl(url);
 
-        User currentUser = userController.getUser();
-        survey.setAuthor(currentUser);
+            User currentUser = userController.getUser();
+            survey.setAuthor(currentUser);
 
-        /* currentUser.getSurveys().add(survey); */
-
-        /* Persist questions/cascade */
-        try {
-            surveyDAO.create(survey);
-
-        }catch (Exception e){
-            e.printStackTrace();
-
+            /* Persist survey */
+            try {
+                surveyDAO.create(survey);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            /* Save edited survey */
+            surveyDAO.update(survey);
         }
         return "/home?faces-redirect=true";
     }
