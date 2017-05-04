@@ -44,8 +44,8 @@ public class MultiChoiceChartController implements MultiChoiceQuestionReport, Se
         {
             int count = 0;
             for(MultipleChoiceAnswer a: multipleChoiceAnswers)
-                    if(a.getId() == q.getId())
-                        count++;
+                if(a.getChoiceIds().contains(q.getId()))
+                    count++;
 
             answers.set(q.getText(), count);
         }
@@ -53,7 +53,7 @@ public class MultiChoiceChartController implements MultiChoiceQuestionReport, Se
         model.addSeries(answers);
 
         model.setTitle(multipleChoiceQuestion.getText());
-        model.setShowPointLabels(false);
+        model.setShowPointLabels(true);
 
         Axis xAxis = model.getAxis(AxisType.X);
         xAxis.setLabel("Count");
