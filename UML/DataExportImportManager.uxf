@@ -90,9 +90,9 @@ layer=-100</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>567</x>
+      <x>558</x>
       <y>45</y>
-      <w>288</w>
+      <w>315</w>
       <h>99</h>
     </coordinates>
     <panel_attributes>XLSXDataImporter
@@ -100,7 +100,7 @@ layer=-100</panel_attributes>
 -file: File
 --
 +importSurvey(File selectedFile): Survey
-+importAnswers(File selectedFile): List&lt;Answer&gt;
++importAnswers(File selectedFile): List&lt;SurveyResult&gt;
 </panel_attributes>
     <additional_attributes/>
   </element>
@@ -156,7 +156,7 @@ DataImporter
 --
 --
 +importSurvey(File selectedFile): Survey
-+importAnswers(File selectedFile): List&lt;Answer&gt;</panel_attributes>
++importAnswers(File selectedFile): List&lt;SurveyResult&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -173,7 +173,7 @@ DataImporter
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>702</x>
+      <x>693</x>
       <y>135</y>
       <w>27</w>
       <h>99</h>
