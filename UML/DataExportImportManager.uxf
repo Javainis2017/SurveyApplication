@@ -7,7 +7,7 @@
       <x>126</x>
       <y>0</y>
       <w>765</w>
-      <h>585</h>
+      <h>549</h>
     </coordinates>
     <panel_attributes>DataExportImportManager
 --
@@ -18,10 +18,10 @@ layer=-100</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>171</x>
-      <y>396</y>
+      <x>162</x>
+      <y>324</y>
       <w>306</w>
-      <h>162</h>
+      <h>207</h>
     </coordinates>
     <panel_attributes>SurveyExportController
 --
@@ -39,17 +39,21 @@ layer=-100</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>549</x>
-      <y>396</y>
+      <x>540</x>
+      <y>324</y>
       <w>306</w>
-      <h>162</h>
+      <h>207</h>
     </coordinates>
     <panel_attributes>SurveyImportController
 --
+-userController: UserController
+-randomStringGenerator: RandomStringGenerator
 -surveyDAO: SurveyDAO
--answerDAO: AnswerDAO
+-surveyResultDAO: SurveyResultDAO
 -selectedSurvey: Survey
--surveyAnswers: List&lt;Answer&gt;
+-surveyResultList: List&lt;SurveyResult&gt; 
+-file: File
+-uploadedFile: IploadedFile
 --
 +importSurvey()
 +importAnswers()
@@ -61,8 +65,8 @@ layer=-100</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>405</x>
-      <y>612</y>
+      <x>396</x>
+      <y>567</y>
       <w>207</w>
       <h>81</h>
     </coordinates>
@@ -75,13 +79,13 @@ layer=-100</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>387</x>
-      <y>549</y>
+      <x>378</x>
+      <y>522</y>
       <w>63</w>
-      <h>81</h>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>48.0;70.0;10.0;10.0</additional_attributes>
+    <additional_attributes>48.0;50.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -103,25 +107,25 @@ layer=-100</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>702</x>
+      <x>693</x>
       <y>288</y>
-      <w>72</w>
-      <h>126</h>
+      <w>81</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=-importer</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+    <additional_attributes>20.0;10.0;10.0;40.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>576</x>
-      <y>549</y>
+      <x>567</x>
+      <y>522</y>
       <w>36</w>
-      <h>99</h>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>18.0;90.0;20.0;10.0</additional_attributes>
+    <additional_attributes>18.0;70.0;20.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -180,14 +184,14 @@ DataImporter
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>297</x>
+      <x>288</x>
       <y>288</y>
-      <w>72</w>
-      <h>126</h>
+      <w>81</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=-exporter</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+    <additional_attributes>20.0;10.0;10.0;40.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
