@@ -17,8 +17,11 @@ public class SurveyDAO {
         manager.persist(survey);
     }
 
-    public void update(Survey survey){
-        manager.merge(survey);
+    public void update(Survey survey){ manager.merge(survey); }
+
+    public void delete(Survey survey) {
+        manager.flush();
+        manager.remove(survey);
     }
 
     public List<Survey> getAll(){
@@ -26,7 +29,7 @@ public class SurveyDAO {
     }
 
     public Survey findById(Long id){
-        return manager.createNamedQuery("Survey.findById", Survey.class).getSingleResult();
+        return manager.createNamedQuery("Survey.findById", Survey.class).setParameter("id", id).getSingleResult();
     }
     public List<Survey> findByAuthorId(Long authorId){
         return manager.createNamedQuery("Survey.findByAuthorId", Survey.class).setParameter("authorId", authorId).getResultList();

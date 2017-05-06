@@ -12,13 +12,10 @@ import org.omnifaces.cdi.Param;
 import org.omnifaces.util.Messages;
 
 import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.io.Serializable;
 
 @Named

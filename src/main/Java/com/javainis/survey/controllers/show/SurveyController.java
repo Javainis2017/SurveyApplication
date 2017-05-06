@@ -1,10 +1,8 @@
 package com.javainis.survey.controllers.show;
 
-import com.javainis.survey.dao.SurveyDAO;
-import com.javainis.survey.dao.SurveyResultDAO;
+import com.javainis.survey.dao.*;
 import com.javainis.survey.entities.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.omnifaces.cdi.Param;
 
 import javax.annotation.PostConstruct;
@@ -28,6 +26,15 @@ public class SurveyController implements Serializable{
 
     @Inject
     private SurveyResultDAO surveyResultDAO;
+
+    @Inject
+    private QuestionDAO questionDAO;
+
+    @Inject
+    private ChoiceDAO choiceDAO;
+
+    @Inject
+    private AnswerDAO answerDAO;
 
     @Inject
     @Param(pathIndex = 0)
@@ -94,5 +101,33 @@ public class SurveyController implements Serializable{
         surveyResultDAO.create(result);
 
         return "/survey/success?faces-redirect=true";
+    }
+
+    @Transactional
+    public String deleteSurvey(Long id){
+        List<Question> questions = questionDAO.findBySurveyId(id);
+
+        survey = surveyDAO.findById(id);
+        try {
+            for (Question q: questions)
+            {
+                Long questionId = q.getId();
+                List<Answer> answers = answerDAO.findByQuestionId(questionId);
+                for (Answer a: answers)
+                    answerDAO.delete(a);
+
+                List<Choice> choices = choiceDAO.findByQuestionId(questionId);
+                for (Choice c: choices)
+                    choiceDAO.delete(c);
+
+                questionDAO.delete(q);
+            }
+
+
+            surveyDAO.delete(survey);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "/home?faces-redirect=true";
     }
 }
