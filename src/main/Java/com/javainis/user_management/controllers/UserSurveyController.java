@@ -43,7 +43,6 @@ public class UserSurveyController {
         return survey.getAuthor() == userController.getUser() || isAdmin() || survey.getIsPublic();
     }
 
-    //kas gali keisti
     private Boolean isAdmin(){
         // 1 - Admin, 2 - User
         return userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN;
