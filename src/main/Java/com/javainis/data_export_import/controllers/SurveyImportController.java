@@ -65,16 +65,13 @@ public class SurveyImportController implements Serializable{
     @Setter
     private UploadedFile uploadedFile;
 
-    @Getter
-    @Setter
-    private Boolean canSubmit = false;
-
     @Transactional
     public void importSurvey(){
         //file = new File("survey.xlsx");
         selectedSurvey = dataImporter.importSurvey(file);;
         selectedSurvey.setDescription("This survey is imported from file: " + file.getName());
         selectedSurvey.setTitle(file.getName()); // koki title?
+        selectedSurvey.setIsPublic(true);
         System.out.println(selectedSurvey.getId() + "   Before save");
         saveSurvey();
         System.out.println(selectedSurvey.getId() + "   After import DB");

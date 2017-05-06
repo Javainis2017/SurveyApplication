@@ -44,6 +44,9 @@ public class Survey {
     @ManyToOne
     private User author;
 
+    @Column(name = "public")
+    private Boolean isPublic;
+
     @Version
     @Column(name = "opt_lock_version")
     private Integer optLockVersion;

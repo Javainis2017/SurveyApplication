@@ -59,6 +59,9 @@
                     Results
                 </h:outputLink>
             </p:column>
+            <p:column headerText="Public or private" style="width:110px;text-align: center">
+                <h:outputText value = "#{userSurveyController.getPublicLabel(survey.isPublic)}"/>
+            </p:column>
             <p:column headerText="Edit" style="width:110px;text-align: center">
                 <h:outputLink value="survey/new/#{survey.url}" rendered="#{survey.surveyResults.isEmpty()}">
                     Edit

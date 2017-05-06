@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS survey
 	description VARCHAR(500),
 	url 			CHAR(32) NOT NULL,
 	user_id 	BIGINT NOT NULL,
+	public	BOOLEAN DEFAULT TRUE,
 	opt_lock_version INTEGER,
 	FOREIGN KEY (user_id) REFERENCES app_user(id)
 );

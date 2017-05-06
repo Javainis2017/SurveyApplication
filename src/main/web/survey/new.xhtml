@@ -30,8 +30,8 @@
                 <p:message for="title"/>
             </p:column>
             <p:column>
-                <p:outputLabel for="description" value="Survey description" />
-            </p:column>
+            <p:outputLabel for="description" value="Survey description" />
+        </p:column>
             <p:column>
                 <p:inputTextarea id="description"
                                  value="#{newSurveyController.survey.description}"
@@ -39,6 +39,14 @@
                                  placeholder="Survey description (Optional)"
                                  styleClass="newSurveyField"/>
                 <p:message for="description"/>
+            </p:column>
+            <p:column>
+                <p:outputLabel for="isPublic" value="Survey results public" />
+            </p:column>
+            <p:column>
+                <p:selectBooleanCheckbox id="isPublic"
+                                 value="#{newSurveyController.survey.isPublic}"/>
+                <p:message for="isPublic"/>
             </p:column>
         </p:panelGrid>
 
