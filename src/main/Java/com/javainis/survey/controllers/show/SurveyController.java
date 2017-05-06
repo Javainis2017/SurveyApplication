@@ -12,6 +12,7 @@ import javax.inject.Named;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -129,5 +130,14 @@ public class SurveyController implements Serializable{
             e.printStackTrace();
         }
         return "/home?faces-redirect=true";
+    }
+
+    public Boolean isExpired(Timestamp timestamp)
+    {
+        Timestamp currTimestamp = new Timestamp(System.currentTimeMillis());
+        if(currTimestamp.before(timestamp))
+            return false;
+
+        return true;
     }
 }

@@ -6,6 +6,7 @@ import com.javainis.survey.entities.Question;
 import com.javainis.survey.entities.Survey;
 import com.javainis.user_management.controllers.UserController;
 import com.javainis.user_management.entities.User;
+import com.javainis.utility.ExpirationChecker;
 import com.javainis.utility.RandomStringGenerator;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +43,9 @@ public class NewSurveyController implements Serializable{
     @Inject
     @Param(pathIndex = 0)
     private String surveyUrl;
+
+    @Inject
+    private ExpirationChecker expirationChecker;
 
     @Getter
     private Survey survey = new Survey();
@@ -131,7 +135,7 @@ public class NewSurveyController implements Serializable{
             return null;
         }
 
-        if(isExpired(timestamp)){
+        if(expirationChecker.isExpired(timestamp)){
             Messages.addGlobalInfo("Wrong expiration time.");
             return null;
         }
@@ -161,14 +165,5 @@ public class NewSurveyController implements Serializable{
             surveyDAO.update(survey);
         }
         return "/home?faces-redirect=true";
-    }
-
-    public Boolean isExpired(Timestamp timestamp)
-    {
-        Timestamp currTimestamp = new Timestamp(System.currentTimeMillis());
-        if(currTimestamp.before(timestamp))
-            return false;
-
-        return true;
     }
 }
