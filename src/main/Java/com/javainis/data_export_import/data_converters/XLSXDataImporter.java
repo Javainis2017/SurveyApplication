@@ -42,7 +42,6 @@ public class XLSXDataImporter implements DataImporter{
             List<Question> questions = new ArrayList<>();
 
             for (Row row : sheet){
-                //System.out.println(row.getRowNum());
                 if (row.getRowNum() == 0) continue; // header avoid reading
 
                 String questionType = row.getCell(3).getStringCellValue();
@@ -146,14 +145,6 @@ public class XLSXDataImporter implements DataImporter{
 
                         break;
                 }
-
-
-                /* for (Cell cell : row){
-                    System.out.print(cell.getColumnIndex() + ". ");
-                    if(cell.getColumnIndex() == 0 || cell.getColumnIndex() == 1 || cell.getColumnIndex() == 2) continue; // only option
-                    if (cell.getCellTypeEnum() == CellType.STRING) System.out.print(cell.getStringCellValue());
-                    if (cell.getCellTypeEnum() == CellType.NUMERIC) System.out.print(cell.getNumericCellValue());
-                }*/
             }
 
             survey.setQuestions(questions);
@@ -197,7 +188,6 @@ public class XLSXDataImporter implements DataImporter{
                 } else if (row.getCell(1).getCellTypeEnum() == CellType.NUMERIC){
                     questionNumber = row.getCell(1).getNumericCellValue();
                 }
-                //More simple
                 double answerID = row.getCell(0).getNumericCellValue();
                 if (answerID != oldAnswerID){ // esme pakeisti survey id
                     if (oldAnswerID != -1){ //pats pirmas su -1, jo nesaugome
@@ -212,9 +202,7 @@ public class XLSXDataImporter implements DataImporter{
                     surveyResult.setSurvey(survey);
                     oldAnswerID = answerID;
                     System.out.println("SurveyResult id: " + surveyResult.getId());
-                } //grazinti ne answer
-
-                //System.out.print("answerid");
+                }
 
                 Question question = survey.getQuestions().get((int)questionNumber - 1);
 
@@ -275,7 +263,6 @@ public class XLSXDataImporter implements DataImporter{
             surveyResult.setAnswers(answerList);
             surveyResult.setSurvey(survey);
             surveyResultList.add(surveyResult);
-            System.out.println(surveyResult.getAnswers().size() + "Answers :(");
             survey.setSurveyResults(surveyResultList);
 
         }
@@ -284,7 +271,6 @@ public class XLSXDataImporter implements DataImporter{
         }
         catch (Exception e){
             e.printStackTrace();
-            System.out.println("Exception");
         }
         //jei klausimas buvo privalomas pravaliduoti?
         return surveyResultList;

@@ -17,18 +17,27 @@
 <h:body rendered="#{userController.getUser().getEmail() != null}">
 <!-- Atvaizduoti kokią vartotojo informaciją bei operacijas-->
 <h1>Welcome, #{userController.getUser().getFirstName()} #{userController.getUser().getLastName()}</h1>
-<h:form>
+<h:form enctype="multipart/form-data">
     <h:commandLink actionListener="#{userController.logout()}" action="index">Log out</h:commandLink><br/>
     <h:link outcome="change-password">Change password</h:link><br/>
     <h2>Survey creation</h2>
     <h:link outcome="survey/new">Create new survey</h:link>
 
     <h2>Survey import and export</h2>
+    <p:growl id="messages" showDetail="true" />
+
+    <p:fileUpload id="upload" value="#{surveyImportController.uploadedFile}" mode="simple" skinSimple="true"/>
+
+    <p:commandButton value="Submit" ajax="false" actionListener="#{surveyImportController.upload()}"
+                     disabled="false" />
+
     <h:commandButton value="Import first survey (To TomEE/bin dir)"
-                     action="#{surveyImportController.importSurvey()}">
+                     action="#{surveyImportController.importSurvey()}"
+                     disabled="#{surveyImportController.uploadedFile == null}">
     </h:commandButton>
     <h:commandButton value="Import first survey answers (To TomEE/bin dir)"
-                     action="#{surveyImportController.importAnswers()}">
+                     action="#{surveyImportController.importAnswers()}"
+                     disabled="#{surveyImportController.uploadedFile == null}">
     </h:commandButton>
 
     <h2>My surveys</h2>

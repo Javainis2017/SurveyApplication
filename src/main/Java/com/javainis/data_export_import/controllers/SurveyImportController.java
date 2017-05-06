@@ -16,35 +16,26 @@ import lombok.Setter;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.servlet.http.Part;
 import javax.transaction.Transactional;
 import javax.ws.rs.GET;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.Serializable;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.util.IOUtils;
 import org.omnifaces.util.Messages;
+import org.primefaces.model.UploadedFile;
 
-/**
- * Created by Ignas on 2017-04-26.
- */
 @Named
 @SessionScoped
 public class SurveyImportController implements Serializable{
-
-    /*@Inject
-    EntityManager entityManager;*/
 
     @Inject
     DataImporter dataImporter;
@@ -65,47 +56,36 @@ public class SurveyImportController implements Serializable{
     private Survey selectedSurvey = new Survey();
 
     @Getter
-    private List<SurveyResult> surveyResultList= new ArrayList<>(); //UML
+    private List<SurveyResult> surveyResultList = new ArrayList<>();
 
     @Getter
-    private List<Answer> surveyAnswers;
+    private File file;
+
+    @Getter
+    @Setter
+    private UploadedFile uploadedFile;
+
+    @Getter
+    @Setter
+    private Boolean canSubmit = false;
 
     @Transactional
     public void importSurvey(){
-        System.out.println(selectedSurvey.getId() + "FIRST getID");
-        File file = new File("survey.xlsx");
-        selectedSurvey = dataImporter.importSurvey(file);
-        System.out.println(selectedSurvey.getId() + "SECOND getID");
-        selectedSurvey.setDescription("This survey is imported from file: survey.xlsx");
-        selectedSurvey.setTitle("survey.xlsx");
-        /*List <Question> questions = selectedSurvey.getQuestions();
-        for  (int i = 0; i < selectedSurvey.getQuestions().size(); i++){
-            System.out.println(questions.get(i).getText() + " " + i);
-        }*/
+        //file = new File("survey.xlsx");
+        selectedSurvey = dataImporter.importSurvey(file);;
+        selectedSurvey.setDescription("This survey is imported from file: " + file.getName());
+        selectedSurvey.setTitle(file.getName()); // koki title?
         System.out.println(selectedSurvey.getId() + "   Before save");
         saveSurvey();
         System.out.println(selectedSurvey.getId() + "   After import DB");
-        //importAnswers();
+        //importAnswers(); // jeigu iškart importuoti ir atsakymus
     }
 
     @Transactional
     public void importAnswers(){
-        //entityManager.flush();
-        System.out.println(selectedSurvey.getId() + "  Answer import BEFORE");
-        System.out.println(selectedSurvey.getTitle() + "TITLE");
         // You can only import answers with survey
-        File file = new File("survey.xlsx");
         selectedSurvey.setSurveyResults(surveyResultList);
         surveyResultList = dataImporter.importAnswers(file, selectedSurvey);
-        System.out.println("BEGIN");
-        /*for (SurveyResult result: surveyResultList){
-            result.setSurvey(selectedSurvey);
-            System.out.println(result.getId() + " + " + result.getSurvey().getId() + " ." + result.getSurvey().getTitle());
-            surveyResultDAO.create(result);
-        }*/
-        System.out.println("END");
-        //entityManager.flush();
-        //selectedSurvey.setSurveyResults(surveyResultDAO.getResultsBySurveyId(selectedSurvey.getId()));
         saveAnswers();
     }
 
@@ -133,6 +113,8 @@ public class SurveyImportController implements Serializable{
         /* Persist questions/cascade */
         try {
             surveyDAO.create(selectedSurvey);
+            FacesMessage message = new FacesMessage("Succesful", selectedSurvey.getTitle() + " has been added to the system.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -146,11 +128,35 @@ public class SurveyImportController implements Serializable{
             for (SurveyResult result : surveyResultList){
                 surveyResultDAO.create(result);
             }
-
+            FacesMessage message = new FacesMessage("Succesful","Survey answers has been added to the system.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
         }
         catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Transactional
+    public void upload() throws IOException{ //taisyti
+        if(uploadedFile != null) {
+            FacesMessage message = new FacesMessage("Succesful", uploadedFile.getFileName() + " is uploaded.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+
+        }
+        System.out.println(uploadedFile.getFileName() + " " + uploadedFile.getContentType());
+        String filename = uploadedFile.getFileName();
+        InputStream input = uploadedFile.getInputstream();
+
+        System.out.println(uploadedFile.getContentType());
+        OutputStream output = new FileOutputStream(new File("/tomee/bin", filename)); //temp folder?
+        try {
+            IOUtils.copy(input, output);
+        } finally {
+            IOUtils.closeQuietly(input);
+            IOUtils.closeQuietly(output);
+        }
+
+        file = new File("/tomee/bin", filename);
     }
 
 }
