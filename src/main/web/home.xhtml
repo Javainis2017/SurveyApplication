@@ -67,6 +67,11 @@
                     Cannot edit
                 </h:outputText>
             </p:column>
+            <p:column headerText="Remove survey" style="width:110px;text-align: center">
+                <p:commandButton value="Remove"
+                                action="#{surveyController.deleteSurvey(survey.id)}"
+                                ajax="false"/>
+            </p:column>
         </p:dataTable>
     </p:fieldset>
 

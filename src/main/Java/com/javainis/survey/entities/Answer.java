@@ -12,6 +12,9 @@ import javax.persistence.*;
 @DiscriminatorColumn(name = "answer_type")
 @Getter
 @Setter
+@NamedQueries({
+        @NamedQuery(name = "Answer.findByQuestionId", query = "SELECT a FROM Answer a WHERE a.question.id = :questionId")
+})
 public abstract class Answer {
 
     @Id

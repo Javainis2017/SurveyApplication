@@ -16,6 +16,11 @@ public class QuestionDAO {
         manager.persist(question);
     }
 
+    public void delete(Question question) {
+        manager.flush();
+        manager.remove(question);
+    }
+
     public List<Question> getAll(){
         return manager.createNamedQuery("Question.findAll", Question.class).getResultList();
     }

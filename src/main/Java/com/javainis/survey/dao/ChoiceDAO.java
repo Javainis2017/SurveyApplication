@@ -1,11 +1,10 @@
 package com.javainis.survey.dao;
 
-import com.javainis.survey.entities.Question;
+import com.javainis.survey.entities.Choice;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.awt.*;
 import java.util.List;
 @ApplicationScoped
 public class ChoiceDAO {
@@ -14,6 +13,11 @@ public class ChoiceDAO {
 
     public void create(Choice choice) {
         manager.persist(choice);
+    }
+
+    public void delete(Choice choice) {
+        manager.flush();
+        manager.remove(choice);
     }
 
     public List<Choice> getAll(){
