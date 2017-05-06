@@ -8,6 +8,7 @@ import com.javainis.user_management.controllers.UserController;
 import com.javainis.user_management.entities.User;
 import com.javainis.utility.RandomStringGenerator;
 import lombok.Getter;
+import lombok.Setter;
 import org.omnifaces.cdi.Param;
 import org.omnifaces.util.Messages;
 
@@ -17,6 +18,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Named
 @ViewScoped
@@ -56,6 +58,16 @@ public class NewSurveyController implements Serializable{
 
     @Getter
     private boolean editingSurvey = false;
+
+    @Getter
+    @Setter
+    private String expirationTimeString;
+
+    private Timestamp convertToExpirationTimestamp(String time)
+    {
+        time = new StringBuilder().append(time).append(":00").toString();
+        return Timestamp.valueOf(time.replace("T"," "));
+    }
 
     @PostConstruct
     public void init() throws Exception{
@@ -108,6 +120,21 @@ public class NewSurveyController implements Serializable{
             Messages.addGlobalInfo("Survey must have at least 1 question.");
             return null;
         }
+        Timestamp timestamp = null;
+        try
+        {
+            timestamp = convertToExpirationTimestamp(expirationTimeString);
+        }
+        catch (Exception e)
+        {
+            Messages.addGlobalInfo("Wrong expiration time.");
+            return null;
+        }
+
+        if(isExpired(timestamp)){
+            Messages.addGlobalInfo("Wrong expiration time.");
+            return null;
+        }
 
         if(!editingSurvey){
             /* Generate unique URL*/
@@ -121,6 +148,8 @@ public class NewSurveyController implements Serializable{
             User currentUser = userController.getUser();
             survey.setAuthor(currentUser);
 
+            survey.setExpirationTime(convertToExpirationTimestamp(expirationTimeString));
+
             /* Persist survey */
             try {
                 surveyDAO.create(survey);
@@ -132,5 +161,14 @@ public class NewSurveyController implements Serializable{
             surveyDAO.update(survey);
         }
         return "/home?faces-redirect=true";
+    }
+
+    public Boolean isExpired(Timestamp timestamp)
+    {
+        Timestamp currTimestamp = new Timestamp(System.currentTimeMillis());
+        if(currTimestamp.before(timestamp))
+            return false;
+
+        return true;
     }
 }

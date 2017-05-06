@@ -63,11 +63,14 @@
                 <h:outputText value = "#{userSurveyController.getPublicLabel(survey.isPublic)}"/>
             </p:column>
             <p:column headerText="Edit" style="width:110px;text-align: center">
-                <h:outputLink value="survey/new/#{survey.url}" rendered="#{survey.surveyResults.isEmpty()}">
+                <h:outputLink value="survey/new/#{survey.url}" rendered="#{survey.surveyResults.isEmpty() and !newSurveyController.isExpired(survey.expirationTime)}">
                     Edit
                 </h:outputLink>
                 <h:outputText rendered="#{!survey.surveyResults.isEmpty()}">
                     Cannot edit
+                </h:outputText>
+                <h:outputText rendered="#{newSurveyController.isExpired(survey.expirationTime)}">
+                    Expired
                 </h:outputText>
             </p:column>
             <p:column headerText="Remove survey" style="width:110px;text-align: center">

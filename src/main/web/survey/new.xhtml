@@ -97,13 +97,20 @@
             </h:panelGroup>
         </c:if>
 
+        <h3>Set expiration time</h3>
+        <h:panelGrid>
+            <p:outputLabel for="expiration_time"/>
+            <p:inputText type="datetime-local" id="expiration_time" value="#{newSurveyController.expirationTimeString}" step="1"/>
+            <p:message for="expiration_time"/>
+        </h:panelGrid>
+
         <!-- Save survey and show url in new page-->
         <br/>
         <p:messages globalOnly="true"/>
         <br/>
         <p:commandButton id="save"
                 value="Save survey"
-                action="#{newSurveyController.saveSurvey}"
+                action="#{newSurveyController.saveSurvey()}"
                 ajax="false"/>
 
 

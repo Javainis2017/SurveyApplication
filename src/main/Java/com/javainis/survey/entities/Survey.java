@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,9 @@ public class Survey {
     @Column(name = "description")
     @Size(max = 500)
     private String description;
+
+    @Column(name = "expiration_time")
+    private Timestamp expirationTime;
 
     @Column(name = "url")
     @Size(max = 32, min = 32)
