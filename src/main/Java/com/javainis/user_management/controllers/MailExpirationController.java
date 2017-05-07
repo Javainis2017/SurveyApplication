@@ -18,6 +18,9 @@ import javax.inject.Named;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.NoResultException;
 import javax.servlet.ServletException;
 import javax.transaction.Transactional;
@@ -65,14 +68,15 @@ public class MailExpirationController {
     private String repeatedPassword;
 
     @Transactional
-    public void doPost() throws ServletException, IOException
-    {
+    public void doPost() throws ServletException, IOException, NamingException {
         if(userDAO.emailIsRegistered(email))
         {
+            Context ctx = new InitialContext();
+            Context env = (Context) ctx.lookup("java:comp/env");
             String subject = "Password reminder";
-            String fromEmail = "javainis2017@gmail.com";
-            String username = "javainis2017@gmail.com";
-            String password = "javainiai";
+            final String fromEmail = (String) env.lookup("FromEmail");
+            final String username = (String) env.lookup("Username");
+            final String password = (String) env.lookup("Password");
 
             setSentEmailProperties();
             String message = "Your password reminder link: http://localhost:8080/user-management/change-password-email/" + mailExpiration.getUrl();
