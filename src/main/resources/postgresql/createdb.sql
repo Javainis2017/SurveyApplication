@@ -33,7 +33,6 @@ CREATE TABLE IF NOT EXISTS survey
 	url 			CHAR(32) NOT NULL,
 	expiration_time TIMESTAMP NOT NULL,
 	user_id 	BIGINT NOT NULL,
-	public	BOOLEAN DEFAULT TRUE,
 	opt_lock_version INTEGER,
 	FOREIGN KEY (user_id) REFERENCES app_user(id)
 );
@@ -150,3 +149,4 @@ ALTER TABLE answer ADD FOREIGN KEY (choice_id) REFERENCES choice(id);
 ALTER TABLE mail_expiration DROP COLUMN IF EXISTS expiration_date;
 ALTER TABLE mail_expiration ADD COLUMN IF NOT EXISTS expiration_date TIMESTAMP;
 ALTER TABLE survey ADD COLUMN if NOT EXISTS expiration_time TIMESTAMP;
+ALTER TABLE survey ADD COLUMN IF NOT EXISTS public	BOOLEAN DEFAULT TRUE;
