@@ -22,13 +22,12 @@ import javax.persistence.NoResultException;
 import javax.servlet.ServletException;
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Properties;
 
 @Named
 @RequestScoped
-public class MailExpirationController implements Serializable {
+public class MailExpirationController {
     @Getter
     private MailExpiration mailExpiration = new MailExpiration();
 
@@ -77,15 +76,21 @@ public class MailExpirationController implements Serializable {
 
             setSentEmailProperties();
             String message = "Your password reminder link: http://localhost:8080/user-management/change-password-email/" + mailExpiration.getUrl();
-            sendEmail(fromEmail, username, password, email, subject, message);
-            findAndRemoveOlderMails(email);
-            mailExpirationDAO.create(mailExpiration);
-            url = mailExpiration.getUrl();
-            Messages.addGlobalInfo("Email was sent successfully");
+            if(true == sendEmail(fromEmail, username, password, email, subject, message))
+            {
+                findAndRemoveOlderMails(email);
+                mailExpirationDAO.create(mailExpiration);
+                url = mailExpiration.getUrl();
+                Messages.addGlobalInfo("Email was sent successfully");
+            }
+            else
+            {
+                Messages.addGlobalInfo("Email was not sent successfully, try again");
+            }
         }
         else
         {
-            Messages.addGlobalInfo("User with specified email does not exist");
+            Messages.addGlobalInfo("Email was sent successfully");
         }
     }
 
@@ -94,7 +99,7 @@ public class MailExpirationController implements Serializable {
         mailExpirationDAO.removeFromMailExpiration(user);
     }
 
-    private void sendEmail(String fromEmail, String username, String password, String toEmail, String subject, String message)
+    private boolean sendEmail(String fromEmail, String username, String password, String toEmail, String subject, String message)
     {
         Properties props = new Properties();
         props.put("mail.smtp.user", fromEmail);
@@ -128,9 +133,11 @@ public class MailExpirationController implements Serializable {
             transport.connect("smtp.gmail.com", Integer.valueOf("465"), username, password);
             transport.sendMessage(msg, msg.getAllRecipients());
             transport.close();
+            return true;
 
         } catch (MessagingException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -141,7 +148,13 @@ public class MailExpirationController implements Serializable {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         mailExpiration.setExpirationDate(timestamp);
         mailExpiration.getExpirationDate().setTime(timestamp.getTime() + duration);
-        mailExpiration.setUrl(randomStringGenerator.generateString(32));
+
+        String genUrl = randomStringGenerator.generateString(32);
+        while(mailExpirationDAO.existsByUrl(genUrl)){
+            genUrl = randomStringGenerator.generateString(32);
+        }
+
+        mailExpiration.setUrl(genUrl);
     }
 
     @Transactional

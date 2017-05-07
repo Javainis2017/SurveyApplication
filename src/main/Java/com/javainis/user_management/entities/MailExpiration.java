@@ -14,6 +14,7 @@ import java.sql.Timestamp;
         @NamedQuery(name = "MailExpiration.findUrl", query = "SELECT u FROM MailExpiration u WHERE u.url = :url"),
         @NamedQuery(name = "MailExpiration.findAll", query = "SELECT u FROM MailExpiration u"),
         @NamedQuery(name = "MailExpiration.remove", query = "DELETE FROM MailExpiration u WHERE u.user = :user"),
+        @NamedQuery(name = "MailExpiration.existsByUrl", query = "SELECT COUNT(s) FROM MailExpiration s WHERE s.url = :url ")
 })
 
 @Getter

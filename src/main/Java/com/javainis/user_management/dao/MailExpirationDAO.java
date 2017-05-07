@@ -45,4 +45,8 @@ public class MailExpirationDAO
     {
         return manager.createNamedQuery("MailExpiration.findAll", MailExpiration.class).getResultList();
     }
+
+    public boolean existsByUrl(String url){
+        return manager.createNamedQuery("MailExpiration.existsByUrl", Long.class).setParameter("url", url).getSingleResult() > 0;
+    }
 }
