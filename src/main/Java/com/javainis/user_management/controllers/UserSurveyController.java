@@ -29,18 +29,42 @@ public class UserSurveyController {
         return surveyDAO.getAll();
     }
 
+    public List<Survey> getAllPublicSurvey(){
+        return surveyDAO.findPublic();
+    }
 
+    // skirtas atrinktas user rodomas survey
+    @Transactional
+    public List<Survey> getMySurveys(){
+        if (isAdmin()) return getAllSurveys();
+        List<Survey> mySurveys = getAllUserSurvey();
+        List<Survey> publicSurveys = getAllPublicSurvey();
+
+        for (Survey s : publicSurveys){
+            if (!mySurveys.contains(s)) mySurveys.add(s);
+        }
+        return mySurveys;
+    }
+
+    @Transactional
+    public Boolean canSeeReport(Survey survey){
+        System.out.println(survey == null);
+        return survey.getAuthor() == userController.getUser() || isAdmin() || survey.getIsPublic();
+    }
+
+    @Transactional
+    public Boolean canRemove(Survey survey){
+        System.out.println(survey == null);
+        return survey.getAuthor() == userController.getUser() || isAdmin();
+    }
+
+    // Useless? Admin can change public/ private with Edit Survey.
     @Transactional
     public Boolean ToggleSurveyPublicStatus(Survey survey){
         if (survey.getIsPublic()) survey.setIsPublic(false);
         else survey.setIsPublic(true);
         surveyDAO.update(survey);
         return true;
-    }
-
-    public Boolean canSeeReport(Survey survey){
-        System.out.println(survey == null);
-        return survey.getAuthor() == userController.getUser() || isAdmin() || survey.getIsPublic();
     }
 
     private Boolean isAdmin(){

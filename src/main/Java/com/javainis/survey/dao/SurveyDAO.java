@@ -38,6 +38,10 @@ public class SurveyDAO {
         return manager.createNamedQuery("Survey.findByUrl", Survey.class).setParameter("url", url).getSingleResult();
     }
 
+    public List<Survey> findPublic(){
+        return manager.createNamedQuery("Survey.findPublic", Survey.class).getResultList();
+    }
+
     public boolean existsByUrl(String url){
         return manager.createNamedQuery("Survey.existsByUrl", Long.class).setParameter("url", url).getSingleResult() > 0;
     }

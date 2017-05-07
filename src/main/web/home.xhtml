@@ -42,7 +42,7 @@
 
     <h2>My surveys</h2>
     <p:fieldset legend="Surveys" toggleable="true" collapsed="true" styleClass="fieldPanel">
-        <p:dataTable id="surveyTable" var="survey" value="#{userSurveyController.allUserSurvey}">
+        <p:dataTable id="surveyTable" var="survey" value="#{userSurveyController.getMySurveys()}">
             <p:column headerText="Title" style="width:110px;text-align: center">
                 <h:outputText value="#{survey.title}" />
             </p:column>
@@ -55,7 +55,7 @@
                 </h:outputLink>
             </p:column>
             <p:column headerText="Results" style="width:110px;text-align: center">
-                <h:outputLink value="reports/report/#{survey.url}">
+                <h:outputLink value="reports/report/#{survey.url}" rendered="#{userSurveyController.canSeeReport(survey)}">
                     Results
                 </h:outputLink>
             </p:column>
@@ -72,8 +72,10 @@
             </p:column>
             <p:column headerText="Remove survey" style="width:110px;text-align: center">
                 <p:commandButton value="Remove"
-                                action="#{surveyController.deleteSurvey(survey.id)}"
-                                ajax="false"/>
+                                 action="#{surveyController.deleteSurvey(survey.id)}"
+                                 ajax="false"
+                                 rendered="#{!userSurveyController.canRemove(survey)}"
+                />
             </p:column>
         </p:dataTable>
     </p:fieldset>
