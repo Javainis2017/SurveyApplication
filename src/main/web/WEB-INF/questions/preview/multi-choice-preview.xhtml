@@ -10,7 +10,7 @@
         <h:outputText>(Required)</h:outputText>
         <br/>
     </h:panelGroup>
-    <p:selectManyCheckbox id="multi-choices" value="#{multipleChoiceQuestionController.answers}" layout="pageDirection" disabled="true">
+    <p:selectManyCheckbox id="multi-choices" layout="pageDirection" disabled="true">
         <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}"/>
     </p:selectManyCheckbox>
     <br/>

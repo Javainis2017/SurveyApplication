@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.omnifaces.util.Messages;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -18,21 +19,34 @@ import java.io.Serializable;
 public class MultipleChoiceQuestionController implements Serializable {
     @Getter
     private MultipleChoiceQuestion question = new MultipleChoiceQuestion();
-    @Getter
+
+    /*@Getter
     @Setter
-    private String[] answers;
+    private String[] answers;*/
+
     @Inject
     private NewSurveyController surveyController;
 
     @Getter
     private Choice choice = new Choice();
 
+    @Getter
+    @Setter
+    private String choiceText;
+
+    @Getter
     private boolean edit = false;
 
     public void editChoice(Choice choice){
-        System.out.println(choice.getText());
         this.choice = choice;
+        choiceText = choice.getText();
         edit = true;
+    }
+
+    public void cancelEdit(){
+        edit = false;
+        choice = new Choice();
+        choiceText = "";
     }
 
     public void addChoice(Choice choice){
@@ -45,23 +59,38 @@ public class MultipleChoiceQuestionController implements Serializable {
 
     public void saveChoice()
     {
+        /* Check for duplicate choice text */
+        int choiceCount = 0;
+        for (Choice choice : question.getChoices()){
+            if(choice.getText().equals(choiceText)){
+                choiceCount++;
+            }
+        }
+        if(choiceCount >= 1){
+            FacesContext.getCurrentInstance().addMessage("multipleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Duplicate choice", "Question cannot have duplicate choices."));
+            return;
+        }
+
         if(!edit) {
+            choice.setText(choiceText);
             choice.setQuestion(question);
             addChoice(choice);
         }
         choice = new Choice();
+        choiceText = "";
         edit = false;
     }
 
     public void saveQuestion(){
         // Validate
         if(question.getChoices().isEmpty()){
+            FacesContext.getCurrentInstance().addMessage("multipleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "No choices", "Question must have at least 1 choice."));
             Messages.addGlobalInfo("Question must have at least 1 choice");
         }else {
             // Save
             surveyController.saveQuestion(question);
             // Destroy this bean
-            FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove("multiChoiceQuestionController");
+            FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove("multipleChoiceQuestionController");
         }
     }
 

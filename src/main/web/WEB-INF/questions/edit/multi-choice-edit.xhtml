@@ -35,10 +35,10 @@
             <br/>
         </ui:repeat>
     </p:panelGrid>
-    <p:panelGrid columns="3">
+    <p:panelGrid columns="4">
         <p:outputLabel for="multiChoice" value="Choice"/>
         <p:inputText id="multiChoice" required="#{param['survey:saveChoice'] != null}"
-                     value="#{multipleChoiceQuestionController.choice.text}"
+                     value="#{multipleChoiceQuestionController.choiceText}"
                      maxlength="200" rows="2" cols="80"
                      placeholder="Choice"/>
         <p:commandButton value="Save choice"
@@ -46,8 +46,15 @@
                          action="#{multipleChoiceQuestionController.saveChoice}"
                          ajax="true"
                          update="survey"/>
+        <p:commandButton value="Cancel"
+                         id="cancelEditSingleChoice"
+                         action="#{multipleChoiceQuestionController.cancelEdit}"
+                         ajax="true"
+                         update="survey"
+                         rendered="#{multipleChoiceQuestionController.edit}"/>
     </p:panelGrid>
     <p:message for="multiChoice"/>
+    <p:messages id="multipleChoiceMessage" redisplay="false"/>
     <p:commandButton value="Save question"
                      id="createMultiChoiceQuestion"
                      action="#{multipleChoiceQuestionController.saveQuestion}"
