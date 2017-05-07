@@ -48,8 +48,7 @@ public class UserSurveyController {
 
     @Transactional
     public Boolean canSeeReport(Survey survey){
-        System.out.println(survey == null);
-        return survey.getAuthor() == userController.getUser() || isAdmin() || survey.getIsPublic();
+        return survey.getAuthor().getUserID() == userController.getUser().getUserID() || isAdmin() || survey.getIsPublic();
     }
 
     @Transactional

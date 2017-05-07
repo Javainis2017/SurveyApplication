@@ -49,6 +49,11 @@
             <p:column headerText="Description" style="width:110px;text-align: center">
                 <h:outputText value="#{survey.description}" />
             </p:column>
+            <p:column headerText="Author" style="width:110px;text-align: center">
+                <h:outputText value="#{survey.author.firstName}" />
+                <h:outputText value="&#160;" />
+                <h:outputText value="#{survey.author.lastName}" />
+            </p:column>
             <p:column headerText="URL" style="width:110px;text-align: center">
                 <h:outputLink value="survey/show/#{survey.url}">
                     Survey
