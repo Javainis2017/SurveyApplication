@@ -3,9 +3,11 @@ package com.javainis.survey.controllers.create;
 import com.javainis.survey.entities.Choice;
 import com.javainis.survey.entities.SingleChoiceQuestion;
 import lombok.Getter;
+import lombok.Setter;
 import org.omnifaces.util.Messages;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -25,10 +27,16 @@ public class SingleChoiceQuestionController implements Serializable{
     @Getter
     private Choice choice = new Choice();
 
+    @Getter
+    @Setter
+    private String choiceText;
+
+    @Getter
     private boolean edit = false;
 
     public void editChoice(Choice choice){
         this.choice = choice;
+        choiceText = choice.getText();
         edit = true;
     }
 
@@ -36,20 +44,40 @@ public class SingleChoiceQuestionController implements Serializable{
         question.getChoices().remove(choice);
     }
 
+    public void cancelEdit(){
+        edit = false;
+        choiceText = "";
+        choice = new Choice();
+    }
+
     public void saveChoice()
     {
+        /* Check for duplicate choice text */
+        int choiceCount = 0;
+        for (Choice choice : question.getChoices()){
+            if(choice.getText().equals(choiceText)){
+                choiceCount++;
+            }
+        }
+        if(choiceCount >= 1){
+            FacesContext.getCurrentInstance().addMessage("singleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Duplicate choice", "Question cannot have duplicate choices."));
+            return;
+        }
+
         if(!edit){
+            choice.setText(choiceText);
             choice.setQuestion(question);
             question.getChoices().add(choice);
         }
         choice = new Choice();
+        choiceText = "";
         edit = false;
     }
 
     public void saveQuestion(){
         // Validate
         if(question.getChoices().isEmpty()){
-            Messages.addGlobalInfo("Question must have at least 1 choice");
+            FacesContext.getCurrentInstance().addMessage("singleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "No choices", "Question must have at least 1 choice"));
         }else {
             // Save
             surveyController.saveQuestion(question);

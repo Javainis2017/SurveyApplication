@@ -36,9 +36,9 @@
             <br/>
         </ui:repeat>
     </p:panelGrid>
-    <p:panelGrid columns="3">
+    <p:panelGrid columns="4">
         <p:outputLabel for="singleChoice" value="Choice"/>
-        <p:inputText id="singleChoice" required="#{param['survey:saveChoice'] != null}" value="#{singleChoiceQuestionController.choice.text}"
+        <p:inputText id="singleChoice" required="#{param['survey:saveChoice'] != null}" value="#{singleChoiceQuestionController.choiceText}"
                          maxlength="200" rows="2" cols="80"
                          placeholder="Choice"/>
         <p:commandButton value="Save choice"
@@ -46,8 +46,15 @@
                          action="#{singleChoiceQuestionController.saveChoice}"
                          ajax="true"
                          update="survey"/>
+        <p:commandButton value="Cancel"
+                         id="cancelEditSingleChoice"
+                         action="#{singleChoiceQuestionController.cancelEdit}"
+                         ajax="true"
+                         update="survey"
+                         rendered="#{singleChoiceQuestionController.edit}"/>
     </p:panelGrid>
     <p:message for="singleChoice"/>
+    <p:messages id="singleChoiceMessage" redisplay="false"/>
     <p:commandButton value="Save question"
                      id="createSingleChoiceQuestion"
                      action="#{singleChoiceQuestionController.saveQuestion}"
