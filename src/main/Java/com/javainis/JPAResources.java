@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.SynchronizationType;
+import javax.transaction.TransactionScoped;
 
 @ApplicationScoped
 public class JPAResources
