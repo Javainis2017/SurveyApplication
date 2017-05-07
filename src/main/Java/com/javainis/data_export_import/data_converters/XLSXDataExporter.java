@@ -4,20 +4,21 @@ import com.javainis.data_export_import.interfaces.DataExporter;
 import com.javainis.survey.dao.SurveyResultDAO;
 import com.javainis.survey.entities.*;
 
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+//import org.hibernate.Hibernate;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestScoped
-public class XLSXDataExporter implements DataExporter{
+@Dependent
+public class XLSXDataExporter implements DataExporter, Serializable{
 
     @Inject
     private SurveyResultDAO surveyResultDAO;
@@ -33,7 +34,7 @@ public class XLSXDataExporter implements DataExporter{
 
     private void exportChoices(XSSFRow row, List<Choice> choices)
     {
-        int cell = 3;
+        int cell = 4;
         for(int i = 0; i < choices.size(); i++)
         {
             Choice c = choices.get(i);
@@ -44,17 +45,18 @@ public class XLSXDataExporter implements DataExporter{
 
     private void exportInterval(XSSFRow row, int min, int max)
     {
-        row.createCell(3).setCellValue(min);
-        row.createCell(4).setCellValue(max);
+        row.createCell(4).setCellValue(min);
+        row.createCell(5).setCellValue(max);
     }
 
     private void createStatusRow(XSSFSheet sheet)
     {
         XSSFRow statusRow = sheet.createRow(0);
         statusRow.createCell(0).setCellValue("$questionNumber");
-        statusRow.createCell(1).setCellValue("$question");
-        statusRow.createCell(2).setCellValue("$questionType");
-        statusRow.createCell(3).setCellValue("$optionsList");
+        statusRow.createCell(1).setCellValue("$mandatory");
+        statusRow.createCell(2).setCellValue("$question");
+        statusRow.createCell(3).setCellValue("$questionType");
+        statusRow.createCell(4).setCellValue("$optionsList");
     }
 
     @Override
@@ -76,6 +78,10 @@ public class XLSXDataExporter implements DataExporter{
         {
             ex.printStackTrace();
         }
+        finally {
+            answerRowNumber = 0;
+        }
+//        return new AsyncResult<>(null);
     }
 
     @Override
@@ -98,8 +104,10 @@ public class XLSXDataExporter implements DataExporter{
 
     private void exportSurveyQuestions(Survey survey, XSSFWorkbook wb)
     {
+
         XSSFSheet surveySheet = wb.createSheet("Survey");
         createStatusRow(surveySheet);
+
         List<Question> surveyQuestions = survey.getQuestions();
         questionNumberMap = new HashMap<>();
         choiceNumberMap = new HashMap<>();
@@ -112,7 +120,16 @@ public class XLSXDataExporter implements DataExporter{
 
             //Question number
             row.createCell(0).setCellValue(i+1);
-            row.createCell(1).setCellValue(question.getText());
+            row.createCell(2).setCellValue(question.getText());
+            XSSFCell requiredCell = row.createCell(1);
+            if (question.getRequired())
+            {
+                requiredCell.setCellValue("YES");
+            }
+            else {
+                requiredCell.setCellValue("NO");
+            }
+
             if (question instanceof MultipleChoiceQuestion)
             {
                 questionType = "CHECKBOX";
@@ -132,8 +149,7 @@ public class XLSXDataExporter implements DataExporter{
             else{
                 questionType = "TEXT";
             }
-            if (question.getRequired()) questionType += "*";
-            row.createCell(2).setCellValue(questionType);
+            row.createCell(3).setCellValue(questionType);
         }
     }
 

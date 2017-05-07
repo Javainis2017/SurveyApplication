@@ -82,6 +82,29 @@
                                  rendered="#{userSurveyController.canRemove(survey)}"
                 />
             </p:column>
+            <p:column headerText="Export survey" id="export" style="width:200px;text-align: center">
+                <p:commandButton id="generateButton" value="Generate Excel file"
+                                 actionListener="#{surveyExportController.exportSurvey(survey)}"
+                                 onclick="PF('exportPoller').start();"
+                                 update="surveyTable"
+                                 ajax="true">
+                </p:commandButton>
+                <br />
+                <p:commandButton id="exportButton"
+                                 value="Download"
+                                 actionListener="#{surveyExportController.downloadToUser()}"
+                                 rendered="#{surveyExportController.timeout and surveyExportController.selectedSurvey.url == survey.url}"
+                                 ajax="false">
+                </p:commandButton>
+                <p:growl id="growl" showDetail="false" sticky="true" />
+                <p:poll interval="2"
+                        update="surveyTable"
+                        widgetVar="exportPoller"
+                        listener="#{surveyExportController.checkProgress()}"
+                        autoStart="true"
+                        stop="#{surveyExportController.timeout}"
+                        timeout="5000"/>
+            </p:column>
         </p:dataTable>
     </p:fieldset>
 

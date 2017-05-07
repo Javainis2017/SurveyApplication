@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
 >
 <h:head>
     <title>Survey Website</title>
@@ -17,10 +18,5 @@
         <h:link outcome="whitelist">Whitelist</h:link><br/>
     </p>
     <h3>Test</h3>
-    <h:form>
-        <h:commandButton value="Download .xlsx of first survey"
-                         action="#{surveyExportController.exportSurvey()}">
-        </h:commandButton>
-    </h:form>
 </h:body>
 </html>
