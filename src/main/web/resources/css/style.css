@@ -38,3 +38,7 @@
 .surveyDesc{
     vertical-align: text-top;
 }
+
+.ui-widget{
+    font-size: 1em;
+}
