@@ -98,10 +98,14 @@
             </h:panelGroup>
         </c:if>
 
-        <h3>Set expiration time</h3>
-        <h:panelGrid>
-            <p:outputLabel for="expiration_time"/>
-            <p:inputText type="datetime-local" id="expiration_time" value="#{newSurveyController.expirationTimeString}" step="1"/>
+        <h3>Set expiration</h3>
+        <h:panelGrid columns="3">
+            <p:outputLabel for="expiration_date" value="Expiration date "/>
+            <p:inputText type="date" id="expiration_date" value="#{newSurveyController.expirationDateString}"/>
+            <p:message for="expiration_date"/>
+
+            <p:outputLabel for="expiration_time" value="Expiration time "/>
+            <p:inputText type="time" id="expiration_time" value="#{newSurveyController.expirationTimeString}"/>
             <p:message for="expiration_time"/>
         </h:panelGrid>
 

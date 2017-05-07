@@ -74,12 +74,26 @@ public class NewSurveyController implements Serializable{
 
     @Getter
     @Setter
+    private String expirationDateString;
+
+    @Getter
+    @Setter
     private String expirationTimeString;
 
-    private Timestamp convertToExpirationTimestamp(String time)
+    private Timestamp convertToExpirationTimestamp(String date, String time)
     {
-        time = time + ":00";
-        return Timestamp.valueOf(time.replace("T"," "));
+        String fullDate;
+
+        if(!time.isEmpty())
+        {
+            fullDate = date + " " + time + ":00";
+        }
+        else
+        {
+            fullDate = date + " 00:00:00";
+        }
+
+        return Timestamp.valueOf(fullDate);
     }
 
     @PostConstruct
@@ -152,10 +166,10 @@ public class NewSurveyController implements Serializable{
             Messages.addGlobalInfo("Survey must have at least 1 question.");
             return null;
         }
-        if(!expirationTimeString.isEmpty()) {
+        if(!expirationDateString.isEmpty()) {
             Timestamp timestamp;
             try {
-                timestamp = convertToExpirationTimestamp(expirationTimeString);
+                timestamp = convertToExpirationTimestamp(expirationDateString, expirationTimeString);
             } catch (Exception e) {
                 Messages.addGlobalInfo("Wrong expiration time.");
                 return null;
@@ -166,6 +180,12 @@ public class NewSurveyController implements Serializable{
                 return null;
             }
         }
+
+        if(!expirationTimeString.isEmpty() && expirationDateString.isEmpty()){
+            Messages.addGlobalInfo("Can not set time without date.");
+            return null;
+        }
+
 
         if(!editingSurvey){
             /* Generate unique URL*/
@@ -179,8 +199,8 @@ public class NewSurveyController implements Serializable{
             User currentUser = userController.getUser();
             survey.setAuthor(currentUser);
 
-            if(!expirationTimeString.isEmpty())
-                survey.setExpirationTime(convertToExpirationTimestamp(expirationTimeString));
+            if(!expirationDateString.isEmpty())
+                survey.setExpirationTime(convertToExpirationTimestamp(expirationDateString, expirationTimeString));
 
             /* Persist survey */
             surveyDAO.create(survey);
