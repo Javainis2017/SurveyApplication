@@ -68,7 +68,10 @@ public class SingleChoiceQuestionController implements Serializable{
             choice.setText(choiceText);
             choice.setQuestion(question);
             question.getChoices().add(choice);
+        }else{
+            choice.setText(choiceText);
         }
+
         choice = new Choice();
         choiceText = "";
         edit = false;

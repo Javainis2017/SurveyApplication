@@ -75,6 +75,8 @@ public class MultipleChoiceQuestionController implements Serializable {
             choice.setText(choiceText);
             choice.setQuestion(question);
             addChoice(choice);
+        }else{
+            choice.setText(choiceText);
         }
         choice = new Choice();
         choiceText = "";
