@@ -53,7 +53,7 @@ public class UserSurveyController {
 
     @Transactional
     public Boolean canRemove(Survey survey){
-        return survey.getAuthor() == userController.getUser() || isAdmin();
+        return survey.getAuthor().getUserID() == userController.getUser().getUserID() || isAdmin();
     }
 
     // Useless? Admin can change public/ private with Edit Survey.

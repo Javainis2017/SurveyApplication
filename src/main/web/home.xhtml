@@ -68,7 +68,7 @@
                 <h:outputText value = "#{userSurveyController.getPublicLabel(survey.isPublic)}"/>
             </p:column>
             <p:column headerText="Edit" style="width:110px;text-align: center">
-                <h:outputLink value="survey/new/#{survey.url}" rendered="#{survey.surveyResults.isEmpty()}">
+                <h:outputLink value="survey/new/#{survey.url}" rendered="#{survey.surveyResults.isEmpty() and userSurveyController.canRemove(survey)}">
                     Edit
                 </h:outputLink>
                 <h:outputText rendered="#{!survey.surveyResults.isEmpty()}">
@@ -79,7 +79,7 @@
                 <p:commandButton value="Remove"
                                  action="#{surveyController.deleteSurvey(survey.id)}"
                                  ajax="false"
-                                 rendered="#{!userSurveyController.canRemove(survey)}"
+                                 rendered="#{userSurveyController.canRemove(survey)}"
                 />
             </p:column>
         </p:dataTable>
