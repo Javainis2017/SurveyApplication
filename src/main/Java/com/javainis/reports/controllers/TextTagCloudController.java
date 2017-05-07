@@ -36,7 +36,7 @@ public class TextTagCloudController implements TextQuestionReport, Serializable 
     int wordCount = 30;
     @Getter
     private TagCloudModel model;
-
+    private Map<String, Integer> nTopWords;
     @Override
     public String getTemplateName() {
         return "text-show.xhtml";
@@ -63,14 +63,24 @@ public class TextTagCloudController implements TextQuestionReport, Serializable 
     //@PostConstruct
     public void init() {
         model = new DefaultTagCloudModel();
-        for(Map.Entry<String, Integer> entry : getNTopWords(wordCount).entrySet())
-        {
-            model.addTag(new DefaultTagCloudItem(entry.getKey(), entry.getValue()));
+        nTopWords = getNTopWords(wordCount);
+        int max = Collections.max(nTopWords.values());
+        if(max>5) {
+            double divisor = (double) max / 5;
+            for(Map.Entry<String, Integer> entry : getNTopWords(wordCount).entrySet())
+            {
+                model.addTag(new DefaultTagCloudItem(entry.getKey(), (int)Math.round(entry.getValue()/divisor)));
+            }
+        }
+        else {
+            for (Map.Entry<String, Integer> entry : getNTopWords(wordCount).entrySet()) {
+                model.addTag(new DefaultTagCloudItem(entry.getKey(), entry.getValue()));
+            }
         }
     }
     public void onSelect(SelectEvent event) {
         TagCloudItem item = (TagCloudItem) event.getObject();
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Word Selected", item.getLabel()+" - " + item.getStrength() + " occurrences");
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Word Selected", item.getLabel()+" - " + nTopWords.get(item.getLabel()) + " occurrences");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     private Map<String, Integer> findSortedWords(List<String> texts)
