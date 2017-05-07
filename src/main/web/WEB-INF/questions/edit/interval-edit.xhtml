@@ -1,9 +1,7 @@
 <ui:composition
         xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:h="http://xmlns.jcp.org/jsf/html"
         xmlns:p="http://primefaces.org/ui"
-        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h3>Interval question</h3>
     <p:panelGrid id="newIntervalQuestionGrid" columns="2">
         <p:outputLabel for="intervalText" value="Question text"/>
@@ -20,6 +18,7 @@
                          value="#{intervalQuestionController.minValue}"
                          max="2147483647"
                          min="-2147483648"
+                         required="true"
                          size="11"
                          type="number"/>
             <p:message for="minimum"/>
@@ -31,6 +30,7 @@
                          value="#{intervalQuestionController.maxValue}"
                          max="2147483647"
                          min="-2147483648"
+                         required="true"
                          size="11"
                          type="number"/>
             <p:message for="maximum"/>
