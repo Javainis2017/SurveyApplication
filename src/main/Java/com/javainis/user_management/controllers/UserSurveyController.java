@@ -53,7 +53,6 @@ public class UserSurveyController {
 
     @Transactional
     public Boolean canRemove(Survey survey){
-        System.out.println(survey == null);
         return survey.getAuthor() == userController.getUser() || isAdmin();
     }
 
