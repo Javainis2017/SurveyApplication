@@ -38,7 +38,7 @@
     </p:panelGrid>
     <p:panelGrid columns="4">
         <p:outputLabel for="singleChoice" value="Choice"/>
-        <p:inputText id="singleChoice" required="#{param['survey:saveChoice'] != null}" value="#{singleChoiceQuestionController.choiceText}"
+        <p:inputText id="singleChoice" required="#{param['survey:saveSingleChoice'] != null}" value="#{singleChoiceQuestionController.choiceText}"
                          maxlength="200" rows="2" cols="80"
                          placeholder="Choice"/>
         <p:commandButton value="Save choice"

@@ -10,8 +10,8 @@
         <h:outputText>(Required)</h:outputText>
         <br/>
     </h:panelGroup>
-    <p:selectOneRadio id="single-choices" value="" layout="pageDirection">
-        <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}" itemDisabled="true"/>
+    <p:selectOneRadio id="single-choices" layout="pageDirection" disabled="true">
+        <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}"/>
     </p:selectOneRadio>
     <br/>
 </ui:composition>
