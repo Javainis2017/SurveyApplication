@@ -41,11 +41,11 @@
             <p:selectBooleanCheckbox id="requiredInterval" value="#{intervalQuestionController.question.required}"/>
             <p:message for="requiredInterval"/>
         </p:column>
-
-        <p:commandButton value="Save question"
-                         id="createIntervalQuestion"
-                         action="#{intervalQuestionController.saveQuestion}"
-                         ajax="true"
-                         update="survey"/>
     </p:panelGrid>
+    <p:messages id="singleChoiceMessage" redisplay="false"/>
+    <p:commandButton value="Save question"
+                     id="createIntervalQuestion"
+                     action="#{intervalQuestionController.saveQuestion}"
+                     ajax="true"
+                     update="survey"/>
 </ui:composition>

@@ -3,10 +3,11 @@ package com.javainis.survey.controllers.create;
 import com.javainis.survey.entities.IntervalQuestion;
 import lombok.Setter;
 import lombok.Getter;
-import org.omnifaces.util.Messages;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -27,30 +28,13 @@ public class IntervalQuestionController {
     @Setter
     private int maxValue;
 
-/*
-    private void setMinimum(int value){
-        if(value<=maximum_value){
-            question.setMin_value(value);
-        }else{
-            Messages.addGlobalInfo("Minimum value must not be higher than maximum");
-        }
-    }
-
-    private void setMaximum(int value){
-        if(value>=minimum_value){
-            question.setMax_value(value);
-        }else{
-            Messages.addGlobalInfo("Maximum value must not be lower than minimum");
-        }
-    }
-*/
     public void saveQuestion(){
         if(minValue <= maxValue){
             question.setMin(minValue);
             question.setMax(maxValue);
             surveyController.saveQuestion(question);
         }else{
-            Messages.addGlobalInfo("Minimum value must not be higher than maximum");
+            FacesContext.getCurrentInstance().addMessage("intervalMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Minimum value cannot be higher than maximum.", "Minimum value cannot be higher than maximum."));
         }
     }
     @PostConstruct
