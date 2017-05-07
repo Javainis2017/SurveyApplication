@@ -15,6 +15,6 @@ import java.util.List;
 @Table(name = "multiple_choice_question")
 public class MultipleChoiceQuestion extends Question{
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Choice> choices = new ArrayList<>();
 }

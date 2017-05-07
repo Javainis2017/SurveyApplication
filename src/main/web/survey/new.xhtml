@@ -111,7 +111,8 @@
         <p:commandButton id="save"
                 value="Save survey"
                 action="#{newSurveyController.saveSurvey()}"
-                ajax="false"/>
+                ajax="false"
+                update="survey"/>
 
 
         <c:if test="#{newSurveyController.surveyCreationStep == 'NEW_QUESTION'}">
@@ -144,6 +145,92 @@
                              action="#{newSurveyController.cancel}"
                              update="survey"/>
         </c:if>
+        <p:dialog modal="true" header="Edit conflict" widgetVar="oleDialog" closable="true" resizable="false" closeOnEscape="true">
+            <p:panelGrid columns="2">
+                <h:panelGroup>
+                    <h3>Current data</h3>
+                    #{newSurveyController.survey.title}<br/>
+                    #{newSurveyController.survey.description}<br/>
+                    Expires #{newSurveyController.survey.expirationTime.toGMTString()}
+                    <h4>Questions</h4>
+                    <ui:repeat value="#{newSurveyController.survey.questions}" var="question">
+                        <h:panelGroup>
+                            <h:panelGroup rendered="#{question['class'].simpleName == 'FreeTextQuestion'}">
+                                <ui:include src="/WEB-INF/questions/preview/text-preview.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{question['class'].simpleName == 'IntervalQuestion'}">
+                                <ui:include src="/WEB-INF/questions/preview/interval-preview.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{question['class'].simpleName == 'SingleChoiceQuestion'}">
+                                <ui:include src="/WEB-INF/questions/preview/single-choice-preview.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
+                                <ui:include src="/WEB-INF/questions/preview/multi-choice-preview.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                            <br/>
+                        </h:panelGroup>
+                    </ui:repeat>
+                </h:panelGroup>
+                <h:panelGroup>
+                    <h3>Conflicting data</h3>
+                    #{newSurveyController.conflictingSurvey.title}<br/>
+                    #{newSurveyController.conflictingSurvey.description}<br/>
+                    Expires #{newSurveyController.conflictingSurvey.expirationTime.toGMTString()}
+                    <h4>Questions</h4>
+                    <ui:repeat value="#{newSurveyController.conflictingSurvey.questions}" var="question">
+                        <h:panelGroup>
+                            <h:panelGroup rendered="#{question['class'].simpleName == 'FreeTextQuestion'}">
+                                <ui:include src="/WEB-INF/questions/preview/text-preview.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{question['class'].simpleName == 'IntervalQuestion'}">
+                                <ui:include src="/WEB-INF/questions/preview/interval-preview.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{question['class'].simpleName == 'SingleChoiceQuestion'}">
+                                <ui:include src="/WEB-INF/questions/preview/single-choice-preview.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
+                                <ui:include src="/WEB-INF/questions/preview/multi-choice-preview.xhtml">
+                                    <ui:param name="question" value="#{question}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                            <br/>
+                        </h:panelGroup>
+                    </ui:repeat>
+                </h:panelGroup>
+            </p:panelGrid>
+
+            <p:commandButton id="overwrite"
+                             value="Overwrite"
+                             action="#{newSurveyController.overwrite()}"
+                             update="survey"
+                             oncomplete="if (args &amp;&amp; !args.validationFailed) PF('oleDialog').hide()"/>
+            <p:commandButton id="refresh"
+                             value="Refresh and edit"
+                             actionListener="#{newSurveyController.refresh()}"
+                             update="survey"
+                             oncomplete="PF('oleDialog').hide()"/>
+
+            <p:commandButton id="cancel"
+                             value="Cancel editing"
+                             action="#{newSurveyController.cancelEdit()}"
+                             update="survey"
+                             ajax="false"/>
+
+        </p:dialog>
     </h:form>
 </h:body>
 <c:if test="#{userController.getUser().getEmail() == null}">

@@ -12,11 +12,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.omnifaces.cdi.Param;
 import org.omnifaces.util.Messages;
+import org.primefaces.context.RequestContext;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -47,8 +50,14 @@ public class NewSurveyController implements Serializable{
     @Inject
     private ExpirationChecker expirationChecker;
 
+    @Inject
+    private EntityManager entityManager;
+
     @Getter
     private Survey survey = new Survey();
+
+    @Getter
+    private Survey conflictingSurvey;
 
     @Getter
     private SURVEY_CREATION_STEP surveyCreationStep = SURVEY_CREATION_STEP.QUESTION_TYPE_CHOICE;
@@ -121,6 +130,21 @@ public class NewSurveyController implements Serializable{
         }
     }
 
+    public String cancelEdit(){
+        return "/home?faces-redirect=true";
+    }
+
+    @Transactional
+    public String overwrite(){
+        survey.setOptLockVersion(conflictingSurvey.getOptLockVersion());
+        saveSurvey();
+        return "/home?faces-redirect=true";
+    }
+
+    public void refresh(){
+        survey = surveyDAO.findByUrl(survey.getUrl());
+    }
+
     @Transactional
     public String saveSurvey(){
         /* Check if survey has questions */
@@ -159,14 +183,18 @@ public class NewSurveyController implements Serializable{
             survey.setExpirationTime(convertToExpirationTimestamp(expirationTimeString));
 
             /* Persist survey */
-            try {
-                surveyDAO.create(survey);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+            surveyDAO.create(survey);
         }else{
             /* Save edited survey */
-            surveyDAO.update(survey);
+            try {
+                surveyDAO.update(survey);
+            }catch (OptimisticLockException ole){
+                conflictingSurvey = surveyDAO.findById(survey.getId());
+                conflictingSurvey.getQuestions().size();
+                RequestContext.getCurrentInstance().addCallbackParam("validationFailed", true);
+                RequestContext.getCurrentInstance().execute("PF('oleDialog').show();");
+                return null;
+            }
         }
         return "/home?faces-redirect=true";
     }
