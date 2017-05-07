@@ -44,12 +44,10 @@
         <p:commandButton value="Save choice"
                          id="saveSingleChoice"
                          action="#{singleChoiceQuestionController.saveChoice}"
-                         ajax="true"
                          update="survey"/>
         <p:commandButton value="Cancel"
                          id="cancelEditSingleChoice"
                          action="#{singleChoiceQuestionController.cancelEdit}"
-                         ajax="true"
                          update="survey"
                          rendered="#{singleChoiceQuestionController.edit}"/>
     </p:panelGrid>

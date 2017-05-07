@@ -69,7 +69,7 @@ public class NewSurveyController implements Serializable{
 
     private Timestamp convertToExpirationTimestamp(String time)
     {
-        time = new StringBuilder().append(time).append(":00").toString();
+        time = time + ":00";
         return Timestamp.valueOf(time.replace("T"," "));
     }
 
@@ -83,7 +83,6 @@ public class NewSurveyController implements Serializable{
                 editingSurvey = true;
             }else{
                 /* Error */
-                System.out.println("Error");
                 throw new Exception();
             }
         }
@@ -109,6 +108,11 @@ public class NewSurveyController implements Serializable{
         questionToEdit = question;
     }
 
+    public void cancel(){
+        surveyCreationStep = SURVEY_CREATION_STEP.QUESTION_TYPE_CHOICE;
+        questionToEdit = null;
+    }
+
     public void removeQuestion(Question question){
         question.setSurvey(null);
         survey.getQuestions().remove(question);
@@ -124,7 +128,7 @@ public class NewSurveyController implements Serializable{
             Messages.addGlobalInfo("Survey must have at least 1 question.");
             return null;
         }
-        Timestamp timestamp = null;
+        Timestamp timestamp;
         try
         {
             timestamp = convertToExpirationTimestamp(expirationTimeString);

@@ -19,11 +19,10 @@
             <p:selectBooleanCheckbox id="requiredText" value="#{textQuestionController.question.required}"/>
             <p:message for="requiredText"/>
         </p:column>
-
-        <p:commandButton value="Save question"
-                         id="createTextQuestion"
-                         action="#{newSurveyController.saveQuestion(textQuestionController.question)}"
-                         ajax="true"
-                         update="survey"/>
     </p:panelGrid>
+    <p:commandButton value="Save question"
+                     id="createTextQuestion"
+                     action="#{newSurveyController.saveQuestion(textQuestionController.question)}"
+                     ajax="true"
+                     update="survey"/>
 </ui:composition>

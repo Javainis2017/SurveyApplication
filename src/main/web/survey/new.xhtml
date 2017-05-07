@@ -117,6 +117,11 @@
         <c:if test="#{newSurveyController.surveyCreationStep == 'NEW_QUESTION'}">
             <!-- Create new question -->
             <ui:include src="/WEB-INF/questions/edit/#{newSurveyController.newQuestionType}-edit.xhtml"/>
+            <br/>
+            <p:commandButton value="Cancel"
+                             id="cancelNew"
+                             action="#{newSurveyController.cancel}"
+                             update="survey"/>
         </c:if>
         <c:if test="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION'}">
             <h:panelGroup>
@@ -133,6 +138,11 @@
                     <ui:include src="/WEB-INF/questions/edit/multi-choice-edit.xhtml"/>
                 </h:panelGroup>
             </h:panelGroup>
+            <br/>
+            <p:commandButton value="Cancel"
+                             id="cancelEdit"
+                             action="#{newSurveyController.cancel}"
+                             update="survey"/>
         </c:if>
     </h:form>
 </h:body>
