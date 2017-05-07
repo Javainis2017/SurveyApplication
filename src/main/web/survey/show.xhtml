@@ -17,11 +17,11 @@
         <h2>Survey does not exist.</h2>
     </c:if>
 
-    <c:if test="#{surveyController.isExpired(surveyController.survey.expirationTime) == true}">
+    <c:if test="#{expirationChecker.isExpired(surveyController.survey.expirationTime) == true}">
         <h1>Survey expired</h1>
     </c:if>
 
-    <c:if test="#{surveyController.survey != null and (surveyController.isExpired(surveyController.survey.expirationTime) == false)}">
+    <c:if test="#{surveyController.survey != null and (expirationChecker.isExpired(surveyController.survey.expirationTime) == false)}">
         <h2>#{surveyController.survey.title}</h2>
         <c:if test="#{surveyController.survey.description != null}">
             <p>#{surveyController.survey.description}</p>

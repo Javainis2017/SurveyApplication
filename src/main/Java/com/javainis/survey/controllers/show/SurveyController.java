@@ -131,13 +131,4 @@ public class SurveyController implements Serializable{
         }
         return "/home?faces-redirect=true";
     }
-
-    public Boolean isExpired(Timestamp timestamp)
-    {
-        Timestamp currTimestamp = new Timestamp(System.currentTimeMillis());
-        if(currTimestamp.before(timestamp))
-            return false;
-
-        return true;
-    }
 }

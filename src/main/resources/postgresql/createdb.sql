@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS survey
 	name 			VARCHAR(80) NOT NULL,
 	description VARCHAR(500),
 	url 			CHAR(32) NOT NULL,
-	expiration_time TIMESTAMP NOT NULL,
+	expiration_time TIMESTAMP,
 	user_id 	BIGINT NOT NULL,
 	opt_lock_version INTEGER,
 	FOREIGN KEY (user_id) REFERENCES app_user(id)

@@ -152,20 +152,19 @@ public class NewSurveyController implements Serializable{
             Messages.addGlobalInfo("Survey must have at least 1 question.");
             return null;
         }
-        Timestamp timestamp;
-        try
-        {
-            timestamp = convertToExpirationTimestamp(expirationTimeString);
-        }
-        catch (Exception e)
-        {
-            Messages.addGlobalInfo("Wrong expiration time.");
-            return null;
-        }
+        if(!expirationTimeString.isEmpty()) {
+            Timestamp timestamp;
+            try {
+                timestamp = convertToExpirationTimestamp(expirationTimeString);
+            } catch (Exception e) {
+                Messages.addGlobalInfo("Wrong expiration time.");
+                return null;
+            }
 
-        if(expirationChecker.isExpired(timestamp)){
-            Messages.addGlobalInfo("Wrong expiration time.");
-            return null;
+            if (expirationChecker.isExpired(timestamp)) {
+                Messages.addGlobalInfo("Wrong expiration time.");
+                return null;
+            }
         }
 
         if(!editingSurvey){
@@ -180,7 +179,8 @@ public class NewSurveyController implements Serializable{
             User currentUser = userController.getUser();
             survey.setAuthor(currentUser);
 
-            survey.setExpirationTime(convertToExpirationTimestamp(expirationTimeString));
+            if(!expirationTimeString.isEmpty())
+                survey.setExpirationTime(convertToExpirationTimestamp(expirationTimeString));
 
             /* Persist survey */
             surveyDAO.create(survey);
