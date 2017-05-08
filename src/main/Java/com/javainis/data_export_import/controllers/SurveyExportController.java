@@ -65,7 +65,7 @@ public class SurveyExportController implements Serializable {
 //        ExternalContext ec = fc.getExternalContext();
         Messages.addGlobalInfo("Generating file, please wait...");
         try {
-            file = new File(selectedSurvey.getUrl() + ".xlsx");
+            file = new File(selectedSurvey.getTitle() + "_" + selectedSurvey.getUrl() + ".xlsx");
             stream = new FileOutputStream(file);
 //            stream = ec.getResponseOutputStream();
 //            export = exporter.exportSurvey(selectedSurvey, stream);
