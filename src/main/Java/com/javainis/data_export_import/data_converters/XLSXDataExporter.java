@@ -13,6 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.io.*;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,12 +152,18 @@ public class XLSXDataExporter implements DataExporter, Serializable{
             }
             row.createCell(3).setCellValue(questionType);
         }
+
+        for(int i = 0; i < Collections.max(choiceNumberMap.values()) + 4;i++)
+        {
+            surveySheet.autoSizeColumn(i);
+
+        }
     }
 
     private void exportAnswers(List<SurveyResult> answers, XSSFWorkbook wb)
     {
-        XSSFSheet surveySheet = wb.createSheet("Answer");
-        XSSFRow statusRow = surveySheet.createRow(answerRowNumber++);
+        XSSFSheet answerSheet = wb.createSheet("Answer");
+        XSSFRow statusRow = answerSheet.createRow(answerRowNumber++);
         statusRow.createCell(0).setCellValue("$answerID");
         statusRow.createCell(1).setCellValue("$questionNumber");
         statusRow.createCell(2).setCellValue("$answer");
@@ -164,8 +171,11 @@ public class XLSXDataExporter implements DataExporter, Serializable{
         int answerId = 1;
         for(SurveyResult result : answers)
         {
-            exportSingleAnswer(result.getAnswers(), answerId++, surveySheet);
+            exportSingleAnswer(result.getAnswers(), answerId++, answerSheet);
         }
+        answerSheet.autoSizeColumn(0);
+        answerSheet.autoSizeColumn(1);
+        answerSheet.autoSizeColumn(2);
     }
 
     private void exportSingleAnswer(List<Answer> answers, int answerId, XSSFSheet sheet)
