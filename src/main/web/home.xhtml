@@ -32,17 +32,6 @@
     <p:commandButton value="Submit" ajax="false" actionListener="#{surveyImportController.upload()}"
                      disabled="false" />
 
-    <p:commandButton value="Import survey"
-                     action="#{surveyImportController.importSurvey()}"
-                     disabled="#{surveyImportController.uploadedFile == null}"
-                     ajax="true">
-    </p:commandButton>
-    <p:commandButton value="Import answers"
-                     action="#{surveyImportController.importAnswers()}"
-                     disabled="#{surveyImportController.uploadedFile == null}"
-                     ajax="true">
-    </p:commandButton>
-
     <h2>My surveys</h2>
     <p:fieldset legend="Surveys" toggleable="true" collapsed="true" styleClass="fieldPanel">
         <p:dataTable id="surveyTable" var="survey" value="#{userSurveyController.getMySurveys()}">

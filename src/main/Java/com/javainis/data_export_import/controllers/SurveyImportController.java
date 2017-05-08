@@ -80,11 +80,6 @@ public class SurveyImportController implements Serializable{
 
     @Transactional
     private void saveSurvey(){
-        /* Check if survey has questions */
-        if(selectedSurvey.getQuestions().isEmpty()){
-            Messages.addGlobalInfo("Imported survey must have at least 1 question.");
-        }
-
         /* Generate unique URL*/
         String url = randomStringGenerator.generateString(32);
         System.out.println(url);
@@ -102,8 +97,6 @@ public class SurveyImportController implements Serializable{
         /* Persist questions/cascade */
         try {
             surveyDAO.create(selectedSurvey);
-            FacesMessage message = new FacesMessage("Succesful", selectedSurvey.getTitle() + " has been added to the system.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -117,8 +110,6 @@ public class SurveyImportController implements Serializable{
             for (SurveyResult result : surveyResultList){
                 surveyResultDAO.create(result);
             }
-            FacesMessage message = new FacesMessage("Succesful","Survey answers has been added to the system.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -134,7 +125,7 @@ public class SurveyImportController implements Serializable{
             return false;
         }
         if(uploadedFile != null) {
-            FacesMessage message = new FacesMessage("Succesful", uploadedFile.getFileName() + " is uploaded.");
+            FacesMessage message = new FacesMessage(uploadedFile.getFileName() + " is uploaded.");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } else return false;
 
@@ -156,7 +147,7 @@ public class SurveyImportController implements Serializable{
         importSurvey();
         if (selectedSurvey == null) return false;
         importAnswers();
-        // nuresetinam
+
         selectedSurvey = null;
         surveyResultList = null;
         setUploadedFile(null);
