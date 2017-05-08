@@ -31,14 +31,16 @@
     <p:commandButton value="Submit" ajax="false" actionListener="#{surveyImportController.upload()}"
                      disabled="false" />
 
-    <h:commandButton value="Import first survey (To TomEE/bin dir)"
+    <p:commandButton value="Import first survey (To TomEE/bin dir)"
                      action="#{surveyImportController.importSurvey()}"
-                     disabled="#{surveyImportController.uploadedFile == null}">
-    </h:commandButton>
-    <h:commandButton value="Import first survey answers (To TomEE/bin dir)"
+                     disabled="#{surveyImportController.uploadedFile == null}"
+                     ajax="true">
+    </p:commandButton>
+    <p:commandButton value="Import first survey answers (To TomEE/bin dir)"
                      action="#{surveyImportController.importAnswers()}"
-                     disabled="#{surveyImportController.uploadedFile == null}">
-    </h:commandButton>
+                     disabled="#{surveyImportController.uploadedFile == null}"
+                     ajax="true">
+    </p:commandButton>
 
     <h2>My surveys</h2>
     <p:fieldset legend="Surveys" toggleable="true" collapsed="true" styleClass="fieldPanel">
@@ -92,8 +94,8 @@
                 <br />
                 <p:commandButton id="exportButton"
                                  value="Download"
-                                 actionListener="#{surveyExportController.downloadToUser()}"
-                                 rendered="#{surveyExportController.timeout and surveyExportController.selectedSurvey.url == survey.url}"
+                                 actionListener="#{surveyExportController.downloadToUser(survey.url)}"
+                                 rendered="#{surveyExportController.timeout and surveyExportController.generatedSurveys.containsKey(survey.url)}"
                                  ajax="false">
                 </p:commandButton>
                 <p:growl id="growl" showDetail="false" sticky="true" />
@@ -151,11 +153,12 @@
                     <h:outputText value="#{user.userType.name}" />
                 </p:column>
                 <p:column headerText="Change block status">
-                    <p:commandButton value = "#{adminBlockController.getBlockedButtonLabel(user.getBlocked())}"
-                                     rendered="#{user.getEmail() != userController.getUser().getEmail()}"
-                                     actionListener="#{adminBlockController.changeUserBlockStatus(user.email)}"
-                                     ajax="true" update="userList"
-                                     styleClass="buttonColumn dynamicButton"/>
+                    <p:commandButton
+                        value = "#{adminBlockController.getBlockedButtonLabel(user.getBlocked())}"
+                        rendered="#{user.getEmail() != userController.getUser().getEmail()}"
+                        actionListener="#{adminBlockController.changeUserBlockStatus(user.email)}"
+                        ajax="true" update="userList"
+                        styleClass="buttonColumn dynamicButton"/>
                 </p:column>
                 <p:column headerText="Change User type">
                     <p:commandButton

@@ -25,7 +25,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 
 @Named
@@ -42,21 +45,15 @@ public class SurveyExportController implements Serializable {
     @Inject
     private SurveyDAO surveyDAO;
 
-//    @Inject
-//    private SurveyResultDAO surveyResultDAO;
-
     @Getter
     @Setter
     private Survey selectedSurvey;
-
-
-    private Future<Void> export;
 
     @Getter
     private boolean timeout = false;
 
     @Getter
-    private boolean generatedFile = false;
+    private Map<String, File> generatedSurveys = new HashMap<>();
 
     @Transactional
     public void exportSurvey(Survey survey)
@@ -66,49 +63,41 @@ public class SurveyExportController implements Serializable {
 //        Pagal http://stackoverflow.com/a/9394237
 //        FacesContext fc = FacesContext.getCurrentInstance();
 //        ExternalContext ec = fc.getExternalContext();
-        Messages.addGlobalWarn("Generating file, please wait...");
+        Messages.addGlobalInfo("Generating file, please wait...");
         try {
             file = new File(selectedSurvey.getUrl() + ".xlsx");
             stream = new FileOutputStream(file);
 //            stream = ec.getResponseOutputStream();
 //            export = exporter.exportSurvey(selectedSurvey, stream);
             exporter.exportSurvey(selectedSurvey, stream);
+            generatedSurveys.put(selectedSurvey.getUrl(), file);
         }
         catch(IOException ex)
         {
             ex.printStackTrace();
+            Messages.addGlobalWarn("Could not generate file, error: " + ex.getMessage());
         }
     }
 
     public void checkProgress() {
-        System.out.println("checking...");
-//        if (export != null && export.isDone())
-//        {
-//            System.out.println("exporting...");
-//            timeout = true;
-//        }
         if(file != null && file.length() > 1)
         {
-            System.out.println("exporting...");
             timeout = true;
         }
     }
 
-    public void downloadToUser()
+    public void downloadToUser(String surveyURL)
     {
-        System.out.println("in downloadToUser...");
-        try {
-            Faces.sendFile(file, true);
-        }
-        catch(IOException ex)
-        {
-            ex.printStackTrace();
-        }
-        finally
-        {
-            file.delete();
-            file = null;
-            selectedSurvey = null;
+        if (generatedSurveys.containsKey(surveyURL)) {
+            file = generatedSurveys.get(surveyURL);
+            try {
+                Faces.sendFile(file, true);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } finally {
+                file = null;
+                selectedSurvey = null;
+            }
         }
     }
 
