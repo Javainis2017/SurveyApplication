@@ -11,6 +11,7 @@ import com.javainis.utility.RandomStringGenerator;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -28,7 +29,7 @@ import org.omnifaces.util.Messages;
 import org.primefaces.model.UploadedFile;
 
 @Named
-@ViewScoped
+@RequestScoped
 public class SurveyImportController implements Serializable{
 
     @Inject
@@ -60,7 +61,7 @@ public class SurveyImportController implements Serializable{
     private UploadedFile uploadedFile;
 
     @Transactional
-    public void importSurvey(){
+    private void importSurvey(){
         selectedSurvey = dataImporter.importSurvey(file);
         if (selectedSurvey == null) return;
         selectedSurvey.setDescription("This survey is imported from file: " + file.getName());
@@ -70,7 +71,7 @@ public class SurveyImportController implements Serializable{
     }
 
     @Transactional
-    public void importAnswers(){
+    private void importAnswers(){
         // You can only import answers with survey
         selectedSurvey.setSurveyResults(surveyResultList);
         surveyResultList = dataImporter.importAnswers(file, selectedSurvey);
