@@ -81,8 +81,9 @@
             <p:column headerText="Remove survey" style="width:110px;text-align: center">
                 <p:commandButton value="Remove"
                                  action="#{surveyController.deleteSurvey(survey.id)}"
-                                 ajax="false"
                                  rendered="#{userSurveyController.canRemove(survey)}"
+                                 update="surveyTable"
+                                 ajax="true"
                 />
             </p:column>
             <p:column headerText="Export survey" id="export" style="width:200px;text-align: center">

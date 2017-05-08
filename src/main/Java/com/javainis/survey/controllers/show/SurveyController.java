@@ -134,6 +134,7 @@ public class SurveyController implements Serializable{
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "/home?faces-redirect=true";
+        return null;
+        //return "/home?faces-redirect=true";
     }
 }
