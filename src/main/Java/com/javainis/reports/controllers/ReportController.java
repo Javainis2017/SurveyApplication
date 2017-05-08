@@ -52,7 +52,13 @@ public class ReportController implements Serializable {
             canAccess = false;
             return;
         }
-        if( (userController.getUser().getUserID() == survey.getAuthorId()) || //author
+        /* Check if user is logged in */
+        if(userController.getUser().getUserID() == null){
+            canAccess = false;
+            return;
+        }
+
+        if( (userController.getUser().getUserID().equals(survey.getAuthorId())) || //author
                 (userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN) || //admin
                 (survey.getIsPublic() && userController.getUser() != null)){ //public survey and logged in user
             canAccess = true;
