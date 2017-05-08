@@ -3,15 +3,20 @@
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:h="http://xmlns.jcp.org/jsf/html"
         xmlns:p="http://primefaces.org/ui"
-        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-        xmlns:f="http://xmlns.jcp.org/jsf/core"
-        xmlns:c="http://java.sun.com/jsp/jstl/core">
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:form>
     <h:outputText>#{question.min} - #{question.max}</h:outputText><br/>
     <h:outputText>Average - #{controller.questionReports[question].average}</h:outputText><br/>
     <h:outputText>Mode - #{controller.questionReports[question].mode}</h:outputText><br/>
     <h:outputText>Median - #{controller.questionReports[question].median}</h:outputText><br/>
     <h:outputText>25% percentile - #{controller.questionReports[question].percentile25}</h:outputText><br/>
     <h:outputText>75% percentile - #{controller.questionReports[question].percentile75}</h:outputText><br/>
-    <p:chart type="bar" model="#{controller.questionReports[question].barModel}" style="height:300px; border: none;"/>
+    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+        <h:outputText value="Logarithmic: " />
+        <p:selectBooleanCheckbox value="#{controller.questionReports[question].logarithmic}">
+            <p:ajax event="change" update="barChart" listener="#{controller.questionReports[question].fillChart()}" />
+        </p:selectBooleanCheckbox>
+    </h:panelGrid>
+    <p:chart id="barChart" type="bar" model="#{controller.questionReports[question].barModel}" style="height:300px"/>
+</h:form>
 </ui:composition>

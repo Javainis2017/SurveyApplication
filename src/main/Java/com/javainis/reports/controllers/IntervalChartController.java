@@ -3,6 +3,7 @@ package com.javainis.reports.controllers;
 import com.javainis.reports.api.IntervalQuestionReport;
 import com.javainis.reports.mybatis.model.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.deltaspike.core.api.future.Futureable;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -37,8 +38,11 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
     int percentile25;
     @Getter
     int percentile75;
+    @Getter @Setter
+    boolean logarithmic;
     @Getter
     private BarChartModel barModel;
+
     @Override
     public String getTemplateName() {
         return "interval-show.xhtml";
@@ -66,7 +70,7 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
 
     private int countPercentiles(int percent) {
         double indexValue = (double)(numbers.size()*percent)/100;
-        return numbers.get((int)Math.ceil(indexValue));
+        return numbers.get((int)Math.ceil(indexValue)-1);
     }
 
     public void countAverage(){
@@ -129,7 +133,7 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
         return new AsyncResult<>(null);
     }
 
-    private void fillChart() {
+    public void fillChart() {
         Map<Integer, Integer> valueCount = new TreeMap<>();
         int max = intervalQuestion.getMax();
         int min = intervalQuestion.getMin();
@@ -151,7 +155,14 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
         barModel.setTitle("Interval values Bar Chart");
         Axis xAxis = barModel.getAxis(AxisType.X);
         xAxis.setLabel("Values");
-        Axis yAxis = barModel.getAxis(AxisType.Y);
-        yAxis.setLabel("Count");
+        if(!logarithmic) {
+            Axis yAxis = barModel.getAxis(AxisType.Y);
+            yAxis.setLabel("Count");
+        }
+        else{
+            Axis yAxis = barModel.getAxis(AxisType.Y);
+            System.out.println(yAxis.getTickInterval());
+            yAxis.setLabel("Count");
+        }
     }
 }
