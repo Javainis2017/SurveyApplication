@@ -5,7 +5,6 @@ import com.javainis.survey.entities.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -14,12 +13,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by Ignas on 2017-04-26.
- */
 @ApplicationScoped
 public class XLSXDataImporter implements DataImporter{
 
@@ -31,6 +26,7 @@ public class XLSXDataImporter implements DataImporter{
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(selectedFile));
             XSSFSheet sheet = workbook.getSheet("Survey");
+            if (workbook.getSheet("Survey") == null) return null;
             Row headerRow = sheet.getRow(0);
             List<String> headerColumn = new ArrayList<>();
             for (Cell cell : headerRow){
@@ -157,6 +153,7 @@ public class XLSXDataImporter implements DataImporter{
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(selectedFile));
             XSSFSheet sheet = workbook.getSheet("Answer");
+            if (workbook.getSheet("Answer") == null) return null;
             Row headerRow = sheet.getRow(0);
             List<String> headerColumn = new ArrayList<>();
             for (Cell cell : headerRow) {

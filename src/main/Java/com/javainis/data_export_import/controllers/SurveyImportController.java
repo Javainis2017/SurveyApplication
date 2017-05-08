@@ -18,6 +18,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,15 +61,12 @@ public class SurveyImportController implements Serializable{
 
     @Transactional
     public void importSurvey(){
-        file = new File("survey.xlsx");
-        selectedSurvey = dataImporter.importSurvey(file);;
+        selectedSurvey = dataImporter.importSurvey(file);
+        if (selectedSurvey == null) return;
         selectedSurvey.setDescription("This survey is imported from file: " + file.getName());
-        selectedSurvey.setTitle(file.getName()); // koki title?
+        selectedSurvey.setTitle(file.getName());
         selectedSurvey.setIsPublic(true);
-        System.out.println(selectedSurvey.getId() + "   Before save");
         saveSurvey();
-        System.out.println(selectedSurvey.getId() + "   After import DB");
-        //importAnswers(); // jeigu iškart importuoti ir atsakymus
     }
 
     @Transactional
@@ -75,6 +74,7 @@ public class SurveyImportController implements Serializable{
         // You can only import answers with survey
         selectedSurvey.setSurveyResults(surveyResultList);
         surveyResultList = dataImporter.importAnswers(file, selectedSurvey);
+        if (surveyResultList == null) return;
         saveAnswers();
     }
 
@@ -127,27 +127,39 @@ public class SurveyImportController implements Serializable{
 
     @Transactional
     public Boolean upload(){
+        String xlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        if (!uploadedFile.getContentType().equals(xlsxContentType)){
+            FacesMessage message = new FacesMessage("Failed", uploadedFile.getFileName() + " is not xlsx format.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return false;
+        }
         if(uploadedFile != null) {
             FacesMessage message = new FacesMessage("Succesful", uploadedFile.getFileName() + " is uploaded.");
             FacesContext.getCurrentInstance().addMessage(null, message);
-        }
-        String xlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-        if (!uploadedFile.getContentType().equals(xlsxContentType)) return false;
+        } else return false;
+
         System.out.println(uploadedFile.getFileName() + "*** " + uploadedFile.getContentType());
         try  {
+            Path path = Files.createTempDirectory("temp");
             String filename = uploadedFile.getFileName();
             InputStream input = uploadedFile.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/tomee/bin", filename)); //temp folder?
+            OutputStream output = new FileOutputStream(new File(path.toString(), filename));
 
             IOUtils.copy(input, output);
             IOUtils.closeQuietly(input);
             IOUtils.closeQuietly(output);
-            File dir = new File("/SurveyApp");
-            dir.mkdir();
-            file = new File("/SurveyApp", filename);
+
+            file = new File(path.toString(), filename);
         }catch (IOException e){
             return false;
         }
+        importSurvey();
+        if (selectedSurvey == null) return false;
+        importAnswers();
+        // nuresetinam
+        selectedSurvey = null;
+        surveyResultList = null;
+        setUploadedFile(null);
         return true;
     }
 }
