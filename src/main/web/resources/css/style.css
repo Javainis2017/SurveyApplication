@@ -42,3 +42,9 @@
 .ui-widget{
     font-size: 1em;
 }
+
+body {
+    margin: 30px 30px 30px 30px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
