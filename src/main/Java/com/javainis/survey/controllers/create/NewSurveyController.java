@@ -186,6 +186,8 @@ public class NewSurveyController implements Serializable{
             return null;
         }
 
+        if(!expirationDateString.isEmpty())
+            survey.setExpirationTime(convertToExpirationTimestamp(expirationDateString, expirationTimeString));
 
         if(!editingSurvey){
             /* Generate unique URL*/
@@ -198,9 +200,6 @@ public class NewSurveyController implements Serializable{
 
             User currentUser = userController.getUser();
             survey.setAuthor(currentUser);
-
-            if(!expirationDateString.isEmpty())
-                survey.setExpirationTime(convertToExpirationTimestamp(expirationDateString, expirationTimeString));
 
             /* Persist survey */
             surveyDAO.create(survey);
