@@ -81,7 +81,7 @@ public class XLSXDataImporter implements DataImporter{
                             } else if (cell.getCellTypeEnum() == CellType.BLANK){
                                 break;
                             } else {
-                                System.out.println("Gali būti kazkoks kitas formatas???"); // ?
+                                break;
                             }
                             choice.setQuestion(multipleChoiceQuestion);
                             choiceListMulti.add(choice);
@@ -100,7 +100,6 @@ public class XLSXDataImporter implements DataImporter{
                         List<Choice> choiceListSingle = new ArrayList<>();
                         for (Cell cell : row){
                             if(cell.getColumnIndex() == 0 || cell.getColumnIndex() == 1 || cell.getColumnIndex() ==  2 || cell.getColumnIndex() == 3) continue;
-
                             Choice choice = new Choice();
                             if (cell.getCellTypeEnum() == CellType.STRING){
                                 String option = cell.getStringCellValue();
@@ -112,10 +111,8 @@ public class XLSXDataImporter implements DataImporter{
                             } else if (cell.getCellTypeEnum() == CellType.BLANK){
                                 break;
                             } else {
-                                System.out.println("Gali būti kazkoks kitas formatas??"); // ?
-                                System.out.println(cell.getCellTypeEnum());
+                                break;
                             }
-
                             choice.setQuestion(singleChoiceQuestion);
                             choiceListSingle.add(choice);
                         }
@@ -146,10 +143,7 @@ public class XLSXDataImporter implements DataImporter{
                         break;
                 }
             }
-
             survey.setQuestions(questions);
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -170,8 +164,6 @@ public class XLSXDataImporter implements DataImporter{
                     headerColumn.add(cell.getStringCellValue());
                 }
             }
-
-
             List<Answer> answerList = new ArrayList<>();
             SurveyResult surveyResult = new SurveyResult();
 
@@ -194,14 +186,11 @@ public class XLSXDataImporter implements DataImporter{
                         surveyResult.setAnswers(answerList);
                         surveyResult.setSurvey(survey);
                         surveyResultList.add(surveyResult);
-                        System.out.println("NAUJAS SURVEYLIST");
-                        System.out.println(surveyResult.getAnswers().size() + "Answers :)");
                     }
                     surveyResult.setAnswers(null);
                     surveyResult = new SurveyResult(); //naujas survey result kitam answer id
                     surveyResult.setSurvey(survey);
                     oldAnswerID = answerID;
-                    System.out.println("SurveyResult id: " + surveyResult.getId());
                 }
 
                 Question question = survey.getQuestions().get((int)questionNumber - 1);
@@ -224,7 +213,7 @@ public class XLSXDataImporter implements DataImporter{
                     for (Cell cell : row) {
                         if (cell.getColumnIndex() == 0 || cell.getColumnIndex() == 1) continue;
                         if (row.getCell(cell.getColumnIndex()).getCellTypeEnum() == CellType.NUMERIC) {
-                            double number = row.getCell(2).getNumericCellValue();
+                            double number = row.getCell(cell.getColumnIndex()).getNumericCellValue();
                             Choice choice = ((MultipleChoiceQuestion) question).getChoices().get((int)number - 1);
                             choices.add(choice);
                         } else if (row.getCell(cell.getColumnIndex()).getCellTypeEnum() == CellType.BLANK) {

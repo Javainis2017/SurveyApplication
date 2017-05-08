@@ -1,11 +1,8 @@
 package com.javainis.data_export_import.controllers;
 
 import com.javainis.data_export_import.interfaces.DataImporter;
-import com.javainis.survey.controllers.create.NewSurveyController;
 import com.javainis.survey.dao.SurveyDAO;
 import com.javainis.survey.dao.SurveyResultDAO;
-import com.javainis.survey.entities.Answer;
-import com.javainis.survey.entities.Question;
 import com.javainis.survey.entities.Survey;
 import com.javainis.survey.entities.SurveyResult;
 import com.javainis.user_management.controllers.UserController;
@@ -14,18 +11,13 @@ import com.javainis.utility.RandomStringGenerator;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.servlet.http.Part;
 import javax.transaction.Transactional;
-import javax.ws.rs.GET;
 import java.io.*;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +26,7 @@ import org.omnifaces.util.Messages;
 import org.primefaces.model.UploadedFile;
 
 @Named
-@SessionScoped
+@ViewScoped
 public class SurveyImportController implements Serializable{
 
     @Inject
@@ -67,7 +59,7 @@ public class SurveyImportController implements Serializable{
 
     @Transactional
     public void importSurvey(){
-        //file = new File("survey.xlsx");
+        file = new File("survey.xlsx");
         selectedSurvey = dataImporter.importSurvey(file);;
         selectedSurvey.setDescription("This survey is imported from file: " + file.getName());
         selectedSurvey.setTitle(file.getName()); // koki title?
@@ -134,26 +126,28 @@ public class SurveyImportController implements Serializable{
     }
 
     @Transactional
-    public void upload() throws IOException{ //taisyti
+    public Boolean upload(){
         if(uploadedFile != null) {
             FacesMessage message = new FacesMessage("Succesful", uploadedFile.getFileName() + " is uploaded.");
             FacesContext.getCurrentInstance().addMessage(null, message);
-
         }
-        System.out.println(uploadedFile.getFileName() + " " + uploadedFile.getContentType());
-        String filename = uploadedFile.getFileName();
-        InputStream input = uploadedFile.getInputstream();
+        String xlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        if (!uploadedFile.getContentType().equals(xlsxContentType)) return false;
+        System.out.println(uploadedFile.getFileName() + "*** " + uploadedFile.getContentType());
+        try  {
+            String filename = uploadedFile.getFileName();
+            InputStream input = uploadedFile.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/tomee/bin", filename)); //temp folder?
 
-        System.out.println(uploadedFile.getContentType());
-        OutputStream output = new FileOutputStream(new File("/tomee/bin", filename)); //temp folder?
-        try {
             IOUtils.copy(input, output);
-        } finally {
             IOUtils.closeQuietly(input);
             IOUtils.closeQuietly(output);
+            File dir = new File("/SurveyApp");
+            dir.mkdir();
+            file = new File("/SurveyApp", filename);
+        }catch (IOException e){
+            return false;
         }
-
-        file = new File("/tomee/bin", filename);
+        return true;
     }
-
 }
