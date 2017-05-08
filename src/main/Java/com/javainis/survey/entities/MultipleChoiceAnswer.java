@@ -18,4 +18,9 @@ public class MultipleChoiceAnswer extends Answer{
             @JoinColumn(name = "choice_id", referencedColumnName = "id")})
     @ManyToMany
     private List<Choice> choices = new ArrayList<>();
+
+    @Override
+    public boolean hasAnswer() {
+        return !choices.isEmpty();
+    }
 }

@@ -15,4 +15,9 @@ public class NumberAnswer extends Answer{
     
     @Column(name = "number_answer")
     private Integer number;
+
+    @Override
+    public boolean hasAnswer() {
+        return number != null;
+    }
 }

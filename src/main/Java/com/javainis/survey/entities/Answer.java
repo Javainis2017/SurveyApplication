@@ -33,4 +33,6 @@ public abstract class Answer {
     @Version
     @Column(name = "opt_lock_version")
     private Integer optLockVersion;
+
+    public abstract boolean hasAnswer();
 }

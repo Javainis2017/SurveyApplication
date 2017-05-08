@@ -93,9 +93,14 @@ public class SurveyController implements Serializable{
         // Validation?
 
         List<Answer> answerList = new ArrayList<>(answers.values());
+        List<Answer> emptyAnswers = new ArrayList<>();
         for(Answer answer : answerList){
+            if(!answer.hasAnswer()){
+                emptyAnswers.add(answer);
+            }
             answer.setResult(result);
         }
+        answerList.removeAll(emptyAnswers);
         result.setAnswers(answerList);
 
         // Save answers to DB

@@ -35,7 +35,7 @@
                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
                 </h:outputText>
                 <h:outputText>%)</h:outputText><br/>
-                <h:panelGroup>
+                <c:if test="#{question.answers.size() > 0}">
                     <h:panelGroup rendered="#{reportController.reports[question].done}">
                         <ui:include src="/WEB-INF/reports/#{reportController.questionReports[question].templateName}">
                             <ui:param name="question" value="#{question}"/>
@@ -48,7 +48,7 @@
                     <h:panelGroup rendered="#{not reportController.reports[question].done and reportController.timeout}">
                         <h:outputText>Report timeout</h:outputText>
                     </h:panelGroup>
-                </h:panelGroup>
+                </c:if>
             </c:forEach>
             <h:form>
                 <p:poll interval="1" update="report"

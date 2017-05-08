@@ -9,4 +9,5 @@ import javax.persistence.Table;
 @DiscriminatorValue("1")
 public class FreeTextQuestion extends Question{
 
+
 }

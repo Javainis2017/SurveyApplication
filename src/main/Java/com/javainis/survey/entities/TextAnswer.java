@@ -15,4 +15,9 @@ public class TextAnswer extends Answer{
 
     @Column(name = "text_answer")
     private String text;
+
+    @Override
+    public boolean hasAnswer() {
+        return !text.isEmpty();
+    }
 }

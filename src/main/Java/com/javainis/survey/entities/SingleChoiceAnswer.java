@@ -14,5 +14,10 @@ public class SingleChoiceAnswer extends Answer{
     @JoinColumn(name = "choice_id", referencedColumnName = "id")
     @ManyToOne()
     private Choice choice;
+
+    @Override
+    public boolean hasAnswer() {
+        return choice != null;
+    }
 }
 
