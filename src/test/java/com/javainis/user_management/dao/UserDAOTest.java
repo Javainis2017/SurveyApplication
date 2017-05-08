@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class UserDAOTest {
 
-    int userId = 100;
+    Long userId = 100l;
 
     @Mock
     DataSource mockDataSource;

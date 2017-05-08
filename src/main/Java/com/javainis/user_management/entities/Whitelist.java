@@ -18,7 +18,7 @@ public class Whitelist
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Size(max = 50)
     private String email;

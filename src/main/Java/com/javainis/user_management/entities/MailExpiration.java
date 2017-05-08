@@ -23,7 +23,7 @@ public class MailExpiration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long mailID;
+    private Long mailID;
 
     @Size(max = 64)
     @NotNull

@@ -29,7 +29,7 @@ public class User
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long userID;
+    private Long userID;
 
     @Size(max = 50)
     @NotNull
