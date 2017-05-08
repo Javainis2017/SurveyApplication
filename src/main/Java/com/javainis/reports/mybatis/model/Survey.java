@@ -14,6 +14,7 @@ public class Survey {
     private String description;
     private String url;
     private Long authorId;
+    private Boolean isPublic;
 
     private List<Question> questions;
     private Long surveyResultCount;

@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS survey
 	url 			CHAR(32) NOT NULL,
 	expiration_time TIMESTAMP,
 	user_id 	BIGINT NOT NULL,
+	public 		BOOLEAN,
 	opt_lock_version INTEGER,
 	FOREIGN KEY (user_id) REFERENCES app_user(id)
 );

@@ -52,10 +52,9 @@ public class ReportController implements Serializable {
             canAccess = false;
             return;
         }
-        /*if(userController.getUser().getUserID() == survey.getAuthorId() || userController.getUser().getUserTypeID() == USER_TYPE_ADMIN || !survey.isPrivate()){
-            userCanAccess = true;
-        }*/
-        if (userController.getUser().getUserID() == survey.getAuthorId() || userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN) {
+        if( (userController.getUser().getUserID() == survey.getAuthorId()) || //author
+                (userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN) || //admin
+                (survey.getIsPublic() && userController.getUser() != null)){ //public survey and logged in user
             canAccess = true;
         }
 
@@ -85,11 +84,9 @@ public class ReportController implements Serializable {
 
     public void checkProgress() {
         timeout = true;
-        System.out.println("polling");
         refreshCount++;
         if(refreshCount >= TIMEOUT_LIMIT){
             timeout = true;
-            System.out.println("timeout");
             return;
         }
         for (Future future : reports.values()) {
