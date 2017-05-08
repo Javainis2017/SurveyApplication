@@ -98,28 +98,6 @@
             </h:panelGroup>
         </c:if>
 
-        <h3>Set expiration</h3>
-        <h:panelGrid columns="3">
-            <p:outputLabel for="expiration_date" value="Expiration date "/>
-            <p:inputText type="date" id="expiration_date" value="#{newSurveyController.expirationDateString}"/>
-            <p:message for="expiration_date"/>
-
-            <p:outputLabel for="expiration_time" value="Expiration time "/>
-            <p:inputText type="time" id="expiration_time" value="#{newSurveyController.expirationTimeString}"/>
-            <p:message for="expiration_time"/>
-        </h:panelGrid>
-
-        <!-- Save survey and show url in new page-->
-        <br/>
-        <p:messages globalOnly="true"/>
-        <br/>
-        <p:commandButton id="save"
-                value="Save survey"
-                action="#{newSurveyController.saveSurvey()}"
-                ajax="false"
-                update="survey"/>
-
-
         <c:if test="#{newSurveyController.surveyCreationStep == 'NEW_QUESTION'}">
             <!-- Create new question -->
             <ui:include src="/WEB-INF/questions/edit/#{newSurveyController.newQuestionType}-edit.xhtml"/>
@@ -236,6 +214,28 @@
                              ajax="false"/>
 
         </p:dialog>
+
+        <h3>Set expiration</h3>
+        <h:panelGrid columns="3">
+            <p:outputLabel for="expiration_date" value="Expiration date "/>
+            <p:inputText type="date" id="expiration_date" value="#{newSurveyController.expirationDateString}"/>
+            <p:message for="expiration_date"/>
+
+            <p:outputLabel for="expiration_time" value="Expiration time "/>
+            <p:inputText type="time" id="expiration_time" value="#{newSurveyController.expirationTimeString}"/>
+            <p:message for="expiration_time"/>
+        </h:panelGrid>
+
+        <!-- Save survey and show url in new page-->
+        <br/>
+        <p:messages globalOnly="true"/>
+        <br/>
+        <p:commandButton id="save"
+                         value="Save survey"
+                         action="#{newSurveyController.saveSurvey()}"
+                         ajax="false"
+                         update="survey"/>
+
     </h:form>
 </h:body>
 <c:if test="#{userController.getUser().getEmail() == null}">

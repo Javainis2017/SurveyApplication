@@ -104,6 +104,8 @@ public class NewSurveyController implements Serializable{
             if((surveyToEdit != null) && (surveyToEdit.getAuthor().equals(userController.getUser())) && (surveyToEdit.getSurveyResults().isEmpty())){
                 survey = surveyToEdit;
                 editingSurvey = true;
+                if(survey.getExpirationTime() != null)
+                    setDateAndTimeFromDB(survey);
             }else{
                 /* Error */
                 throw new Exception();
@@ -216,5 +218,11 @@ public class NewSurveyController implements Serializable{
             }
         }
         return "/home?faces-redirect=true";
+    }
+
+    private void setDateAndTimeFromDB(Survey survey) {
+        String[] splitList = survey.getExpirationTime().toString().split(" ");
+        expirationDateString = splitList[0];
+        expirationTimeString = splitList[1].substring(0, splitList[1].length() - 5);
     }
 }
