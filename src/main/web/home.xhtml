@@ -28,6 +28,7 @@
     <p:growl id="messages" showDetail="true" />
 
     <p:fileUpload id="upload" value="#{surveyImportController.uploadedFile}" mode="simple" skinSimple="true"/>
+    <h:outputText value="&#160;" />
 
     <p:commandButton value="Submit" ajax="false" actionListener="#{surveyImportController.upload()}"
                      disabled="false" />
