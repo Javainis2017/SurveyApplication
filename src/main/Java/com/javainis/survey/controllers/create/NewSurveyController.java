@@ -168,6 +168,7 @@ public class NewSurveyController implements Serializable{
             Messages.addGlobalInfo("Survey must have at least 1 question.");
             return null;
         }
+
         if(!expirationDateString.isEmpty()) {
             Timestamp timestamp;
             try {
@@ -181,6 +182,8 @@ public class NewSurveyController implements Serializable{
                 Messages.addGlobalInfo("Wrong expiration time.");
                 return null;
             }
+
+            survey.setExpirationTime(timestamp);
         }
 
         if(!expirationTimeString.isEmpty() && expirationDateString.isEmpty()){
@@ -188,8 +191,9 @@ public class NewSurveyController implements Serializable{
             return null;
         }
 
-        if(!expirationDateString.isEmpty())
-            survey.setExpirationTime(convertToExpirationTimestamp(expirationDateString, expirationTimeString));
+        if(expirationTimeString.isEmpty() && expirationDateString.isEmpty()){
+           survey.setExpirationTime(null);
+        }
 
         if(!editingSurvey){
             /* Generate unique URL*/
