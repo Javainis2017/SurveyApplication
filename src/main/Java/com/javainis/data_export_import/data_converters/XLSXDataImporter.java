@@ -41,6 +41,14 @@ public class XLSXDataImporter implements DataImporter{
             for (Row row : sheet){
                 if (row.getRowNum() == 0) continue; // header avoid reading
 
+                if (row.getCell(column.get("$questionNumber")).getCellTypeEnum()== CellType.BLANK) break;
+                if (row.getCell(column.get("$questionNumber")).getCellTypeEnum()== CellType.STRING){
+                    if (row.getCell(column.get("$questionNumber")).getStringCellValue().trim().equals("")) break;
+                }
+
+                if (row.getCell(column.get("$questionType")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$question")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$mandatory")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$questionNumber")).getCellTypeEnum()!= CellType.NUMERIC){
+                    return null;
+                }
                 String questionType = row.getCell(column.get("$questionType")).getStringCellValue();
                 String questionName = row.getCell(column.get("$question")).getStringCellValue();
                 String questionMandatory = row.getCell(column.get("$mandatory")).getStringCellValue();
@@ -56,7 +64,6 @@ public class XLSXDataImporter implements DataImporter{
                         freeTextQuestion.setText(questionName);
                         freeTextQuestion.setSurvey(survey);
                         questions.add(freeTextQuestion);
-                        //System.out.println("TEXT");
                         break;
                     case "CHECKBOX":
                         MultipleChoiceQuestion multipleChoiceQuestion = new MultipleChoiceQuestion();
@@ -87,7 +94,6 @@ public class XLSXDataImporter implements DataImporter{
                         multipleChoiceQuestion.setText(questionName);
                         multipleChoiceQuestion.setSurvey(survey);
                         questions.add(multipleChoiceQuestion);
-                        //System.out.println("CHECKBOX");
                         break;
                     case "MULTIPLECHOICE":
                         SingleChoiceQuestion singleChoiceQuestion = new SingleChoiceQuestion();
@@ -116,24 +122,33 @@ public class XLSXDataImporter implements DataImporter{
                         singleChoiceQuestion.setText(questionName);
                         singleChoiceQuestion.setSurvey(survey);
                         questions.add(singleChoiceQuestion);
-                        //System.out.println("MULTIPLECHOICE");
                         break;
                     case "SCALE":
                         IntervalQuestion intervalQuestion = new IntervalQuestion();
                         if (questionMandatory.equals("YES")) intervalQuestion.setRequired(true);
                         else intervalQuestion.setRequired(false);
 
-                        //try ?
-                        double intervalMin = row.getCell(4).getNumericCellValue();
-                        double intervalMax = row.getCell(5).getNumericCellValue();
+                        try {
+                            double intervalMin = row.getCell(4).getNumericCellValue();
+                            double intervalMax = row.getCell(5).getNumericCellValue();
 
-                        intervalQuestion.setMin((int) intervalMin);
-                        intervalQuestion.setMax((int) intervalMax);
+
+                            if (intervalMin > intervalMax) {
+                                double temp = intervalMin;
+                                intervalMin = intervalMax;
+                                intervalMax = temp;
+                            }
+
+
+                            intervalQuestion.setMin((int) intervalMin);
+                            intervalQuestion.setMax((int) intervalMax);
+                        } catch (Exception e) {
+                            return null;
+                        }
 
                         intervalQuestion.setText(questionName);
                         intervalQuestion.setSurvey(survey);
                         questions.add(intervalQuestion);
-                        //System.out.println("SCALE");
                         break;
                 }
             }
@@ -142,7 +157,31 @@ public class XLSXDataImporter implements DataImporter{
             e.printStackTrace();
         }
 
-        return survey;
+        if (validateSurvey(survey)) return survey;
+        else return null;
+    }
+
+    private Boolean validateSurvey(Survey survey){
+
+        if (survey == null) return false;
+
+        for (Question q : survey.getQuestions()){
+            if (q.getText().equals("")) return false;
+
+            if (q instanceof FreeTextQuestion){
+
+            } else if (q instanceof SingleChoiceQuestion){
+                if (((SingleChoiceQuestion) q).getChoices().isEmpty()) return false;
+            } else if (q instanceof MultipleChoiceQuestion){
+                if (((MultipleChoiceQuestion) q).getChoices().isEmpty()) return false;
+            } else if (q instanceof IntervalQuestion){
+                if (((IntervalQuestion) q).getMin() > ((IntervalQuestion) q).getMax()) return false;
+            }
+
+
+        }
+
+        return true;
     }
 
     @Override
@@ -168,13 +207,20 @@ public class XLSXDataImporter implements DataImporter{
             double oldAnswerID = -1;
 
             for (Row row : sheet) {
-                System.out.println(row.getRowNum());
                 if (row.getRowNum() == 0) continue; // header avoid reading
+                if (row.getCell(column.get("$answerID")).getCellTypeEnum()== CellType.BLANK) break;
+                if (row.getCell(column.get("$answerID")).getCellTypeEnum()== CellType.STRING){
+                    if (row.getCell(column.get("$answerID")).getStringCellValue().trim().equals("")) break;
+                }
+
+                if (row.getCell(column.get("$answerID")).getCellTypeEnum() != CellType.NUMERIC && row.getCell(column.get("$questionNumber")).getCellTypeEnum() != CellType.NUMERIC){
+                    return null;
+                }
 
                 double questionNumber = 0;
-                if (row.getCell(1).getCellTypeEnum() == CellType.STRING){
+                if (row.getCell(column.get("$questionNumber")).getCellTypeEnum() == CellType.STRING){
                     questionNumber = Double.parseDouble(row.getCell(column.get("$questionNumber")).getStringCellValue());
-                } else if (row.getCell(1).getCellTypeEnum() == CellType.NUMERIC){
+                } else if (row.getCell(column.get("$questionNumber")).getCellTypeEnum() == CellType.NUMERIC){
                     questionNumber = row.getCell(column.get("$questionNumber")).getNumericCellValue();
                 }
                 double answerID = row.getCell(column.get("$answerID")).getNumericCellValue();
@@ -200,6 +246,7 @@ public class XLSXDataImporter implements DataImporter{
                         textAnswer.setText(String.valueOf(row.getCell(column.get("$answer")).getNumericCellValue()));
                     } else if (row.getCell(column.get("$answer")).getCellTypeEnum() == CellType.BLANK) {
                         textAnswer.setText("");
+                        if (question.getRequired()) return null;
                     }
                     textAnswer.setQuestion(question);
                     textAnswer.setResult(surveyResult);
@@ -211,8 +258,10 @@ public class XLSXDataImporter implements DataImporter{
                         if (cell.getColumnIndex() == column.get("$answerID") || cell.getColumnIndex() == column.get("$questionNumber")) continue;
                         if (row.getCell(cell.getColumnIndex()).getCellTypeEnum() == CellType.NUMERIC) {
                             double number = row.getCell(cell.getColumnIndex()).getNumericCellValue();
+                            if (number < 0 || number > ((MultipleChoiceQuestion) question).getChoices().size()) return null;
                             Choice choice = ((MultipleChoiceQuestion) question).getChoices().get((int)number - 1);
                             choices.add(choice);
+
                         } else if (row.getCell(cell.getColumnIndex()).getCellTypeEnum() == CellType.BLANK) {
                             break;
                         }
@@ -225,6 +274,7 @@ public class XLSXDataImporter implements DataImporter{
                     SingleChoiceAnswer singleChoiceAnswer = new SingleChoiceAnswer();
                     if (row.getCell(column.get("$answer")).getCellTypeEnum() == CellType.NUMERIC) {
                         double number = row.getCell(column.get("$answer")).getNumericCellValue();
+                        if (number < 0 || number > ((SingleChoiceQuestion) question).getChoices().size()) return null;
                         singleChoiceAnswer.setChoice(((SingleChoiceQuestion) question).getChoices().get((int)number - 1));
                     } else if (row.getCell(column.get("$answer")).getCellTypeEnum() == CellType.BLANK) {
                         singleChoiceAnswer.setChoice(null); //tikrai null?
@@ -237,6 +287,9 @@ public class XLSXDataImporter implements DataImporter{
                     if (row.getCell(column.get("$answer")).getCellTypeEnum() == CellType.NUMERIC) {
                         double number = row.getCell(column.get("$answer")).getNumericCellValue();
                         numberAnswer.setNumber((int)number);
+
+                        if  (number > ((IntervalQuestion) question).getMax() || number < ((IntervalQuestion) question).getMin()) return null;
+
                     } else if (row.getCell(column.get("$answer")).getCellTypeEnum() == CellType.BLANK) {
                         numberAnswer.setNumber(null);
                     }
@@ -253,11 +306,38 @@ public class XLSXDataImporter implements DataImporter{
 
         }
         catch (IOException e){
-            e.printStackTrace();
+            return null;
         }
         catch (Exception e){
-            e.printStackTrace();
+            return null;
         }
-        return surveyResultList;
+
+        if (validateSurveyAnswers(surveyResultList)) return surveyResultList;
+        else return null;
+    }
+
+    private Boolean validateSurveyAnswers(List<SurveyResult> surveyResults){
+
+        if (surveyResults == null) return false;
+
+        /*
+        for (SurveyResult sr : surveyResults){
+            System.out.println(sr.getAnswers() + " da?");
+            for (Answer a : sr.getAnswers()){
+                if (a instanceof TextAnswer){
+                    System.out.println(a.getQuestion() + "*");
+                    System.out.println(a.getResult() + "***");
+                    if (a.getQuestion().getRequired() && a.getResult() == null) return false;
+                } /*else if (a instanceof SingleChoiceAnswer) {
+                    if (a.getQuestion().getRequired() && a.getResult() == null) return false;
+                } else if (a instanceof MultipleChoiceAnswer) {
+                    if (a.getQuestion().getRequired() && a.getResult() == null) return false;
+                } else if (a instanceof NumberAnswer){
+                    if (a.getQuestion().getRequired() && a.getResult() == null) return false;
+                }
+            }
+        }
+        */
+        return true;
     }
 }

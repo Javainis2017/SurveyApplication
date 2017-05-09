@@ -73,9 +73,9 @@ public class SurveyImportController implements Serializable{
     @Transactional
     private void importAnswers(){
         // You can only import answers with survey
-        selectedSurvey.setSurveyResults(surveyResultList);
         surveyResultList = dataImporter.importAnswers(file, selectedSurvey);
         if (surveyResultList == null) return;
+        selectedSurvey.setSurveyResults(surveyResultList);
         saveAnswers();
     }
 
@@ -83,7 +83,6 @@ public class SurveyImportController implements Serializable{
     private void saveSurvey(){
         /* Generate unique URL*/
         String url = randomStringGenerator.generateString(32);
-        System.out.println(url);
         // Check if url is duplicate
         while(surveyDAO.existsByUrl(url)){
             url = randomStringGenerator.generateString(32);
