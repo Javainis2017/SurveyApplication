@@ -38,8 +38,6 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
     int percentile25;
     @Getter
     int percentile75;
-    @Getter @Setter
-    boolean logarithmic;
     @Getter
     private BarChartModel barModel;
 
@@ -85,7 +83,7 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
     public void countMode(){
         int min = intervalQuestion.getMin();
         int max = intervalQuestion.getMax();
-        int difference = max-min;
+        int difference = max-min+1;
         int occurrences[] = new int[difference];
         int maxValue = Integer.MIN_VALUE;
         int maxCount = 0;
@@ -135,6 +133,7 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
 
     public void fillChart() {
         Map<Integer, Integer> valueCount = new TreeMap<>();
+        int groupFrom = 20;
         int max = intervalQuestion.getMax();
         int min = intervalQuestion.getMin();
         for(NumberAnswer answer: numberAnswers){
@@ -143,26 +142,44 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
         barModel = new BarChartModel();
         ChartSeries values = new ChartSeries();
         values.setLabel("Counts");
-        for(int i=min;i<=max;i++)
+        if(max-min>groupFrom)
         {
-            if (valueCount.containsKey(i)) {
-                values.set(i, valueCount.get(i));
-            } else {
-                values.set(i, 0);
+            int counter = -1;
+            int from = min;
+            int to;
+            int sum = 0;
+            for (int i = min; i <= max; i++) {
+                if(counter == (max-min)/10){
+                    to = i-1;
+                    values.set(from+" - "+to,sum);
+                    counter = 0;
+                    from = i;
+                    sum = 0;
+                }
+                if (valueCount.containsKey(i)) {
+                    sum+=valueCount.get(i);
+                }
+                counter++;
+            }
+            if(counter!=0){
+                to = max;
+                values.set(from+" - "+to, sum);
+            }
+        }
+        else {
+            for (int i = min; i <= max; i++) {
+                if (valueCount.containsKey(i)) {
+                    values.set(i, valueCount.get(i));
+                } else {
+                    values.set(i, 0);
+                }
             }
         }
         barModel.addSeries(values);
         barModel.setTitle("Interval values Bar Chart");
         Axis xAxis = barModel.getAxis(AxisType.X);
         xAxis.setLabel("Values");
-        if(!logarithmic) {
-            Axis yAxis = barModel.getAxis(AxisType.Y);
-            yAxis.setLabel("Count");
-        }
-        else{
-            Axis yAxis = barModel.getAxis(AxisType.Y);
-            System.out.println(yAxis.getTickInterval());
-            yAxis.setLabel("Count");
-        }
+        Axis yAxis = barModel.getAxis(AxisType.Y);
+        yAxis.setLabel("Count");
     }
 }
