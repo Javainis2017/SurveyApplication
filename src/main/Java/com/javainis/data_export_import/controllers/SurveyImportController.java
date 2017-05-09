@@ -73,6 +73,7 @@ public class SurveyImportController implements Serializable{
     @Transactional
     private void importAnswers(){
         // You can only import answers with survey
+        if (file == null || selectedSurvey == null) return;
         surveyResultList = dataImporter.importAnswers(file, selectedSurvey);
         if (surveyResultList == null) return;
         selectedSurvey.setSurveyResults(surveyResultList);
@@ -124,12 +125,11 @@ public class SurveyImportController implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, message);
             return false;
         }
-        if(uploadedFile != null) {
+        /* if(uploadedFile != null) {
             FacesMessage message = new FacesMessage(uploadedFile.getFileName() + " is uploaded.");
             FacesContext.getCurrentInstance().addMessage(null, message);
-        } else return false;
+        } else return false; */
 
-        System.out.println(uploadedFile.getFileName() + "*** " + uploadedFile.getContentType());
         try  {
             Path path = Files.createTempDirectory("temp");
             String filename = uploadedFile.getFileName();

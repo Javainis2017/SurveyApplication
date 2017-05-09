@@ -38,17 +38,19 @@ public class XLSXDataImporter implements DataImporter{
 
             List<Question> questions = new ArrayList<>();
 
-            for (Row row : sheet){
+            for (int i = 1; i <= sheet.getLastRowNum();i++){
+            //for (Row row : sheet){
+                Row row = sheet.getRow(i);
+                if (row == null) break;
                 if (row.getRowNum() == 0) continue; // header avoid reading
-
                 if (row.getCell(column.get("$questionNumber")).getCellTypeEnum()== CellType.BLANK) break;
                 if (row.getCell(column.get("$questionNumber")).getCellTypeEnum()== CellType.STRING){
                     if (row.getCell(column.get("$questionNumber")).getStringCellValue().trim().equals("")) break;
                 }
 
-                if (row.getCell(column.get("$questionType")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$question")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$mandatory")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$questionNumber")).getCellTypeEnum()!= CellType.NUMERIC){
+                /*if (row.getCell(column.get("$questionType")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$question")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$mandatory")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$questionNumber")).getCellTypeEnum()!= CellType.NUMERIC){
                     return null;
-                }
+                }*/
                 String questionType = row.getCell(column.get("$questionType")).getStringCellValue();
                 String questionName = row.getCell(column.get("$question")).getStringCellValue();
                 String questionMandatory = row.getCell(column.get("$mandatory")).getStringCellValue();
@@ -64,6 +66,7 @@ public class XLSXDataImporter implements DataImporter{
                         freeTextQuestion.setText(questionName);
                         freeTextQuestion.setSurvey(survey);
                         questions.add(freeTextQuestion);
+                        //System.out.println("TEXT");
                         break;
                     case "CHECKBOX":
                         MultipleChoiceQuestion multipleChoiceQuestion = new MultipleChoiceQuestion();
@@ -94,6 +97,7 @@ public class XLSXDataImporter implements DataImporter{
                         multipleChoiceQuestion.setText(questionName);
                         multipleChoiceQuestion.setSurvey(survey);
                         questions.add(multipleChoiceQuestion);
+                        //System.out.println("SINGLE");
                         break;
                     case "MULTIPLECHOICE":
                         SingleChoiceQuestion singleChoiceQuestion = new SingleChoiceQuestion();
@@ -122,6 +126,7 @@ public class XLSXDataImporter implements DataImporter{
                         singleChoiceQuestion.setText(questionName);
                         singleChoiceQuestion.setSurvey(survey);
                         questions.add(singleChoiceQuestion);
+                        //System.out.println("MULTI");
                         break;
                     case "SCALE":
                         IntervalQuestion intervalQuestion = new IntervalQuestion();
@@ -149,14 +154,18 @@ public class XLSXDataImporter implements DataImporter{
                         intervalQuestion.setText(questionName);
                         intervalQuestion.setSurvey(survey);
                         questions.add(intervalQuestion);
+                        //System.out.println("SCALE");
+                        break;
+                    default:
+
                         break;
                 }
             }
+            System.out.print("WTF?");
             survey.setQuestions(questions);
         } catch (IOException e) {
-            e.printStackTrace();
+            return null;
         }
-
         if (validateSurvey(survey)) return survey;
         else return null;
     }
@@ -206,7 +215,10 @@ public class XLSXDataImporter implements DataImporter{
             surveyResult.setSurvey(survey);
             double oldAnswerID = -1;
 
-            for (Row row : sheet) {
+            for (int i = 1; i <= sheet.getLastRowNum();i++){
+            //for (Row row : sheet) {
+                Row row = sheet.getRow(i);
+                if (row == null) break;
                 if (row.getRowNum() == 0) continue; // header avoid reading
                 if (row.getCell(column.get("$answerID")).getCellTypeEnum()== CellType.BLANK) break;
                 if (row.getCell(column.get("$answerID")).getCellTypeEnum()== CellType.STRING){
@@ -328,7 +340,7 @@ public class XLSXDataImporter implements DataImporter{
                     System.out.println(a.getQuestion() + "*");
                     System.out.println(a.getResult() + "***");
                     if (a.getQuestion().getRequired() && a.getResult() == null) return false;
-                } /*else if (a instanceof SingleChoiceAnswer) {
+                } else if (a instanceof SingleChoiceAnswer) {
                     if (a.getQuestion().getRequired() && a.getResult() == null) return false;
                 } else if (a instanceof MultipleChoiceAnswer) {
                     if (a.getQuestion().getRequired() && a.getResult() == null) return false;
