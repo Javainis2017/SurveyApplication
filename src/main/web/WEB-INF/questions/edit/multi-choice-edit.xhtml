@@ -41,7 +41,7 @@
                      value="#{multipleChoiceQuestionController.choiceText}"
                      maxlength="200" rows="2" cols="80"
                      placeholder="Choice"/>
-        <p:commandButton value="Save choice"
+        <p:commandButton value="#{multipleChoiceQuestionController.getSaveButtonName()}"
                          id="saveMultiChoice"
                          action="#{multipleChoiceQuestionController.saveChoice}"
                          ajax="true"

@@ -41,7 +41,7 @@
         <p:inputText id="singleChoice" required="#{param['survey:saveSingleChoice'] != null}" value="#{singleChoiceQuestionController.choiceText}"
                          maxlength="200" rows="2" cols="80"
                          placeholder="Choice"/>
-        <p:commandButton value="Save choice"
+        <p:commandButton value="#{singleChoiceQuestionController.getSaveButtonName()}"
                          id="saveSingleChoice"
                          action="#{singleChoiceQuestionController.saveChoice}"
                          update="survey"/>

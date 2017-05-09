@@ -32,6 +32,13 @@ public class MultipleChoiceQuestionController implements Serializable {
     @Getter
     private boolean edit = false;
 
+    public String getSaveButtonName(){
+        if(edit){
+            return "Save changes";
+        }
+        return "Save choice";
+    }
+
     public void editChoice(Choice choice){
         this.choice = choice;
         choiceText = choice.getText();
