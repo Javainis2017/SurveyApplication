@@ -4,7 +4,6 @@ import com.javainis.survey.entities.Choice;
 import com.javainis.survey.entities.MultipleChoiceQuestion;
 import lombok.Getter;
 import lombok.Setter;
-import org.omnifaces.util.Messages;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -19,10 +18,6 @@ import java.io.Serializable;
 public class MultipleChoiceQuestionController implements Serializable {
     @Getter
     private MultipleChoiceQuestion question = new MultipleChoiceQuestion();
-
-    /*@Getter
-    @Setter
-    private String[] answers;*/
 
     @Inject
     private NewSurveyController surveyController;
@@ -67,7 +62,7 @@ public class MultipleChoiceQuestionController implements Serializable {
             }
         }
         if(choiceCount >= 1){
-            FacesContext.getCurrentInstance().addMessage("multipleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Duplicate choice", "Question cannot have duplicate choices."));
+            FacesContext.getCurrentInstance().addMessage("multipleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Question cannot have duplicate choices.", "Question cannot have duplicate choices."));
             return;
         }
 
@@ -86,8 +81,7 @@ public class MultipleChoiceQuestionController implements Serializable {
     public void saveQuestion(){
         // Validate
         if(question.getChoices().isEmpty()){
-            FacesContext.getCurrentInstance().addMessage("multipleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "No choices", "Question must have at least 1 choice."));
-            Messages.addGlobalInfo("Question must have at least 1 choice");
+            FacesContext.getCurrentInstance().addMessage("multipleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_INFO, "Question must have at least 1 choice.", "Question must have at least 1 choice."));
         }else {
             // Save
             surveyController.saveQuestion(question);
