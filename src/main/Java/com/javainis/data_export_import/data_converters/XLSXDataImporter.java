@@ -225,7 +225,6 @@ public class XLSXDataImporter implements DataImporter{
             }
 
             for (int i = 1; i <= sheet.getLastRowNum();i++){
-                System.out.println(i + ". ");
                 Row row = sheet.getRow(i);
                 if (row == null) break;
                 if (row.getRowNum() == 0) continue; // header avoid reading
@@ -255,6 +254,7 @@ public class XLSXDataImporter implements DataImporter{
                     surveyResult.setAnswers(answerList);
                     surveyResultMap.put(answerID, surveyResult);
                 }
+                if (survey == null) return null;
                 Question question = survey.getQuestions().get((int)questionNumber - 1);
 
                 if (question instanceof FreeTextQuestion){
