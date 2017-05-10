@@ -1,5 +1,6 @@
 package com.javainis.data_export_import.controllers;
 
+import ch.qos.logback.core.util.FileUtil;
 import com.javainis.data_export_import.interfaces.DataImporter;
 import com.javainis.survey.dao.SurveyDAO;
 import com.javainis.survey.dao.SurveyResultDAO;
@@ -125,25 +126,30 @@ public class SurveyImportController implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, message);
             return false;
         }
-
+        Path path;
         try  {
-            Path path = Files.createTempDirectory("temp");
+            path = Files.createTempDirectory("temp");
             String filename = uploadedFile.getFileName();
             InputStream input = uploadedFile.getInputstream();
             OutputStream output = new FileOutputStream(new File(path.toString(), filename));
             IOUtils.copy(input, output);
             IOUtils.closeQuietly(input);
             IOUtils.closeQuietly(output);
-
             file = new File(path.toString(), filename);
         }catch (IOException e){
             return false;
-        }finally {
-            file.deleteOnExit();
         }
         importSurvey();
         if (selectedSurvey == null) return false;
         importAnswers();
+
+
+        try{
+            file.delete();
+            Files.delete(path);
+        } catch (IOException e){
+            e.printStackTrace(); // i loggus?
+        }
 
         selectedSurvey = null;
         surveyResultList = null;
