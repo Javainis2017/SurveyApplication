@@ -161,7 +161,6 @@ public class XLSXDataImporter implements DataImporter{
                         break;
                 }
             }
-            System.out.print("WTF?");
             survey.setQuestions(questions);
         } catch (IOException e) {
             return null;
@@ -186,16 +185,15 @@ public class XLSXDataImporter implements DataImporter{
             } else if (q instanceof IntervalQuestion){
                 if (((IntervalQuestion) q).getMin() > ((IntervalQuestion) q).getMax()) return false;
             }
-
-
         }
-
         return true;
     }
 
     @Override
     public List<SurveyResult> importAnswers(File selectedFile, Survey survey) {
-        List<SurveyResult> surveyResultList = new ArrayList<>();
+        List<SurveyResult> surveyResultList;
+        List<Answer> answerList = new ArrayList<>();
+        Map<Double, SurveyResult> surveyResultMap = new HashMap<>();
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(selectedFile));
             XSSFSheet sheet = workbook.getSheet("Answer");
@@ -209,14 +207,8 @@ public class XLSXDataImporter implements DataImporter{
                     iterator++;
                 }
             }
-            List<Answer> answerList = new ArrayList<>();
-            SurveyResult surveyResult = new SurveyResult();
-
-            surveyResult.setSurvey(survey);
-            double oldAnswerID = -1;
 
             for (int i = 1; i <= sheet.getLastRowNum();i++){
-            //for (Row row : sheet) {
                 Row row = sheet.getRow(i);
                 if (row == null) break;
                 if (row.getRowNum() == 0) continue; // header avoid reading
@@ -235,19 +227,18 @@ public class XLSXDataImporter implements DataImporter{
                 } else if (row.getCell(column.get("$questionNumber")).getCellTypeEnum() == CellType.NUMERIC){
                     questionNumber = row.getCell(column.get("$questionNumber")).getNumericCellValue();
                 }
-                double answerID = row.getCell(column.get("$answerID")).getNumericCellValue();
-                if (answerID != oldAnswerID){
-                    if (oldAnswerID != -1){
-                        surveyResult.setAnswers(answerList);
-                        surveyResult.setSurvey(survey);
-                        surveyResultList.add(surveyResult);
-                    }
-                    surveyResult.setAnswers(null);
-                    surveyResult = new SurveyResult(); //naujas survey result kitam answer id
-                    surveyResult.setSurvey(survey);
-                    oldAnswerID = answerID;
-                }
 
+                double answerID = row.getCell(column.get("$answerID")).getNumericCellValue();
+                SurveyResult surveyResult;
+
+                if (surveyResultMap.containsKey(answerID)) surveyResult = surveyResultMap.get(answerID);
+                else{
+                    surveyResult = new SurveyResult();
+                    surveyResult.setSurvey(survey);
+                    answerList = new ArrayList<>();
+                    surveyResult.setAnswers(answerList);
+                    surveyResultMap.put(answerID, surveyResult);
+                }
                 Question question = survey.getQuestions().get((int)questionNumber - 1);
 
                 if (question instanceof FreeTextQuestion){
@@ -271,6 +262,7 @@ public class XLSXDataImporter implements DataImporter{
                         if (row.getCell(cell.getColumnIndex()).getCellTypeEnum() == CellType.NUMERIC) {
                             double number = row.getCell(cell.getColumnIndex()).getNumericCellValue();
                             if (number < 0 || number > ((MultipleChoiceQuestion) question).getChoices().size()) return null;
+                            if (choices.contains(((MultipleChoiceQuestion) question).getChoices().get((int)number - 1))) return null;
                             Choice choice = ((MultipleChoiceQuestion) question).getChoices().get((int)number - 1);
                             choices.add(choice);
 
@@ -311,9 +303,7 @@ public class XLSXDataImporter implements DataImporter{
                 }
 
             }
-            surveyResult.setAnswers(answerList);
-            surveyResult.setSurvey(survey);
-            surveyResultList.add(surveyResult);
+            surveyResultList = new ArrayList<SurveyResult>(surveyResultMap.values());
             survey.setSurveyResults(surveyResultList);
 
         }
@@ -332,24 +322,34 @@ public class XLSXDataImporter implements DataImporter{
 
         if (surveyResults == null) return false;
 
-        /*
+        int countMandatoryQuestions = 0;
+        for (Question q : surveyResults.get(0).getSurvey().getQuestions()){
+            if (q.getRequired()) countMandatoryQuestions++;
+        }
+
         for (SurveyResult sr : surveyResults){
-            System.out.println(sr.getAnswers() + " da?");
+            int countMandatoryAnswers = 0;
             for (Answer a : sr.getAnswers()){
+
+                if(a.getQuestion().getRequired()){
+                    countMandatoryAnswers++;
+                }
+
+                if (a.getQuestion().getRequired() && a.getResult() == null) return false;
                 if (a instanceof TextAnswer){
-                    System.out.println(a.getQuestion() + "*");
-                    System.out.println(a.getResult() + "***");
-                    if (a.getQuestion().getRequired() && a.getResult() == null) return false;
+                    if (a.getQuestion().getRequired() && (((TextAnswer) a).getText().trim().equals(""))) return false;
                 } else if (a instanceof SingleChoiceAnswer) {
-                    if (a.getQuestion().getRequired() && a.getResult() == null) return false;
+                    if (a.getQuestion().getRequired() && ((SingleChoiceAnswer) a).getChoice() == null) return false;
                 } else if (a instanceof MultipleChoiceAnswer) {
-                    if (a.getQuestion().getRequired() && a.getResult() == null) return false;
+                    if (a.getQuestion().getRequired() && ((MultipleChoiceAnswer) a).getChoices() == null) return false;
                 } else if (a instanceof NumberAnswer){
-                    if (a.getQuestion().getRequired() && a.getResult() == null) return false;
+                    if (a.getQuestion().getRequired() && (((NumberAnswer) a).getNumber() == null)) return false;
                 }
             }
+            if (countMandatoryQuestions != countMandatoryAnswers){
+                return false;
+            }
         }
-        */
         return true;
     }
 }

@@ -125,10 +125,6 @@ public class SurveyImportController implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, message);
             return false;
         }
-        /* if(uploadedFile != null) {
-            FacesMessage message = new FacesMessage(uploadedFile.getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        } else return false; */
 
         try  {
             Path path = Files.createTempDirectory("temp");
