@@ -180,8 +180,24 @@ public class XLSXDataImporter implements DataImporter{
 
             } else if (q instanceof SingleChoiceQuestion){
                 if (((SingleChoiceQuestion) q).getChoices().isEmpty()) return false;
+                List<Choice> choiceList = ((SingleChoiceQuestion) q).getChoices();
+                for (Choice c : choiceList){
+                    int countSameChoices = 0;
+                    for (Choice  otherChoice: choiceList){
+                        if (c.getText().equals(otherChoice.getText())) countSameChoices++;
+                    }
+                    if (countSameChoices > 1) return false;
+                }
             } else if (q instanceof MultipleChoiceQuestion){
                 if (((MultipleChoiceQuestion) q).getChoices().isEmpty()) return false;
+                List<Choice> choiceList = ((MultipleChoiceQuestion) q).getChoices();
+                for (Choice c : choiceList){
+                    int countSameChoices = 0;
+                    for (Choice  otherChoice: choiceList){
+                        if (c.getText().equals(otherChoice.getText())) countSameChoices++;
+                    }
+                    if (countSameChoices > 1) return false;
+                }
             } else if (q instanceof IntervalQuestion){
                 if (((IntervalQuestion) q).getMin() > ((IntervalQuestion) q).getMax()) return false;
             }
