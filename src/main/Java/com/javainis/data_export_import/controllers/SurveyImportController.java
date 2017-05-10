@@ -140,20 +140,37 @@ public class SurveyImportController implements Serializable{
             return false;
         }
         importSurvey();
-        if (selectedSurvey == null) return false;
-        importAnswers();
-
-
-        try{
-            file.delete();
-            Files.delete(path);
-        } catch (IOException e){
-            e.printStackTrace(); // i loggus?
+        if (selectedSurvey == null){
+            FacesMessage message = new FacesMessage("Failed to import Survey questions.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            cleanTempFolder(path);
+            return false;
         }
+        importAnswers();
+        if (surveyResultList == null) {
+            FacesMessage message = new FacesMessage("Failed to import Survey answers.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            cleanTempFolder(path);
+            return false;
+        }
+
+        FacesMessage message = new FacesMessage("Survey has been imported.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+
+        cleanTempFolder(path);
 
         selectedSurvey = null;
         surveyResultList = null;
         setUploadedFile(null);
         return true;
+    }
+
+    private void cleanTempFolder(Path path){
+        try{
+            file.delete();
+            Files.delete(path);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

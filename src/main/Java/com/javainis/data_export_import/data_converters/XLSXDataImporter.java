@@ -45,7 +45,7 @@ public class XLSXDataImporter implements DataImporter{
                 if (row.getRowNum() == 0) continue; // header avoid reading
                 if (row.getCell(column.get("$questionNumber")).getCellTypeEnum()== CellType.BLANK) break;
                 if (row.getCell(column.get("$questionNumber")).getCellTypeEnum()== CellType.STRING){
-                    if (row.getCell(column.get("$questionNumber")).getStringCellValue().trim().equals("")) break;
+                    if (row.getCell(column.get("$questionNumber")).getStringCellValue().trim().isEmpty()) break;
                 }
 
                 /*if (row.getCell(column.get("$questionType")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$question")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$mandatory")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$questionNumber")).getCellTypeEnum()!= CellType.NUMERIC){
@@ -174,26 +174,26 @@ public class XLSXDataImporter implements DataImporter{
         if (survey == null) return false;
 
         for (Question q : survey.getQuestions()){
-            if (q.getText().equals("")) return false;
+            if (q.getText().isEmpty()) return false;
 
             if (q instanceof FreeTextQuestion){
 
             } else if (q instanceof SingleChoiceQuestion){
                 if (((SingleChoiceQuestion) q).getChoices().isEmpty()) return false;
-                List<Choice> choiceList = ((SingleChoiceQuestion) q).getChoices();
-                for (Choice c : choiceList){
+                List<Choice> choiceListSingle = ((SingleChoiceQuestion) q).getChoices();
+                for (Choice c : choiceListSingle){
                     int countSameChoices = 0;
-                    for (Choice  otherChoice: choiceList){
+                    for (Choice  otherChoice: choiceListSingle){
                         if (c.getText().equals(otherChoice.getText())) countSameChoices++;
                     }
                     if (countSameChoices > 1) return false;
                 }
             } else if (q instanceof MultipleChoiceQuestion){
                 if (((MultipleChoiceQuestion) q).getChoices().isEmpty()) return false;
-                List<Choice> choiceList = ((MultipleChoiceQuestion) q).getChoices();
-                for (Choice c : choiceList){
+                List<Choice> choiceListMulti = ((MultipleChoiceQuestion) q).getChoices();
+                for (Choice c : choiceListMulti){
                     int countSameChoices = 0;
-                    for (Choice  otherChoice: choiceList){
+                    for (Choice  otherChoice: choiceListMulti){
                         if (c.getText().equals(otherChoice.getText())) countSameChoices++;
                     }
                     if (countSameChoices > 1) return false;
@@ -225,12 +225,13 @@ public class XLSXDataImporter implements DataImporter{
             }
 
             for (int i = 1; i <= sheet.getLastRowNum();i++){
+                System.out.println(i + ". ");
                 Row row = sheet.getRow(i);
                 if (row == null) break;
                 if (row.getRowNum() == 0) continue; // header avoid reading
                 if (row.getCell(column.get("$answerID")).getCellTypeEnum()== CellType.BLANK) break;
                 if (row.getCell(column.get("$answerID")).getCellTypeEnum()== CellType.STRING){
-                    if (row.getCell(column.get("$answerID")).getStringCellValue().trim().equals("")) break;
+                    if (row.getCell(column.get("$answerID")).getStringCellValue().trim().isEmpty()) break;
                 }
 
                 if (row.getCell(column.get("$answerID")).getCellTypeEnum() != CellType.NUMERIC && row.getCell(column.get("$questionNumber")).getCellTypeEnum() != CellType.NUMERIC){
@@ -246,7 +247,6 @@ public class XLSXDataImporter implements DataImporter{
 
                 double answerID = row.getCell(column.get("$answerID")).getNumericCellValue();
                 SurveyResult surveyResult;
-
                 if (surveyResultMap.containsKey(answerID)) surveyResult = surveyResultMap.get(answerID);
                 else{
                     surveyResult = new SurveyResult();
@@ -312,6 +312,8 @@ public class XLSXDataImporter implements DataImporter{
 
                     } else if (row.getCell(column.get("$answer")).getCellTypeEnum() == CellType.BLANK) {
                         numberAnswer.setNumber(null);
+                    } else {
+                        return null;
                     }
                     numberAnswer.setQuestion(question);
                     numberAnswer.setResult(surveyResult);
@@ -321,7 +323,6 @@ public class XLSXDataImporter implements DataImporter{
             }
             surveyResultList = new ArrayList<SurveyResult>(surveyResultMap.values());
             survey.setSurveyResults(surveyResultList);
-
         }
         catch (IOException e){
             return null;
@@ -329,20 +330,17 @@ public class XLSXDataImporter implements DataImporter{
         catch (Exception e){
             return null;
         }
-
         if (validateSurveyAnswers(surveyResultList)) return surveyResultList;
         else return null;
     }
 
     private Boolean validateSurveyAnswers(List<SurveyResult> surveyResults){
 
-        if (surveyResults == null) return false;
-
+        if (surveyResults == null || surveyResults.isEmpty()) return false;
         int countMandatoryQuestions = 0;
         for (Question q : surveyResults.get(0).getSurvey().getQuestions()){
             if (q.getRequired()) countMandatoryQuestions++;
         }
-
         for (SurveyResult sr : surveyResults){
             int countMandatoryAnswers = 0;
             for (Answer a : sr.getAnswers()){
@@ -353,7 +351,7 @@ public class XLSXDataImporter implements DataImporter{
 
                 if (a.getQuestion().getRequired() && a.getResult() == null) return false;
                 if (a instanceof TextAnswer){
-                    if (a.getQuestion().getRequired() && (((TextAnswer) a).getText().trim().equals(""))) return false;
+                    if (a.getQuestion().getRequired() && (((TextAnswer) a).getText().trim().isEmpty())) return false;
                 } else if (a instanceof SingleChoiceAnswer) {
                     if (a.getQuestion().getRequired() && ((SingleChoiceAnswer) a).getChoice() == null) return false;
                 } else if (a instanceof MultipleChoiceAnswer) {
