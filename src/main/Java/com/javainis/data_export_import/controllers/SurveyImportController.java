@@ -131,7 +131,6 @@ public class SurveyImportController implements Serializable{
             String filename = uploadedFile.getFileName();
             InputStream input = uploadedFile.getInputstream();
             OutputStream output = new FileOutputStream(new File(path.toString(), filename));
-
             IOUtils.copy(input, output);
             IOUtils.closeQuietly(input);
             IOUtils.closeQuietly(output);
@@ -139,6 +138,8 @@ public class SurveyImportController implements Serializable{
             file = new File(path.toString(), filename);
         }catch (IOException e){
             return false;
+        }finally {
+            file.deleteOnExit();
         }
         importSurvey();
         if (selectedSurvey == null) return false;
