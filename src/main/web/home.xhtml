@@ -101,7 +101,7 @@
                 listener="#{surveyExportController.checkProgress()}"
                 autoStart="false"
                 stop="#{surveyExportController.timeout}"
-                timeout="10" />
+                timeout="10000" />
     </p:fieldset>
 
     <h:panelGroup rendered="#{userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN}">
