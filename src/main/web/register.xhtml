@@ -5,42 +5,37 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xml:lang="en" lang="en">
+      xml:lang="en" lang="en">
 <h:head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <h:outputStylesheet name="css/style.css" />
     <title>User Registration</title>
 </h:head>
-<h:body>
-    <h1>User Registration</h1>
-    <h2>Create New User</h2>
-    <h:form>
-        <table>
-            <tr>
-                <td>
-                    <h:panelGrid columns="3">
-                        <p:outputLabel for="email" value="E-mail"/>
-                        <p:inputText type="email" id="email" value="#{userRegistrationController.user.email}"/>
-                        <p:message for="email"/>
+<h:body styleClass="responsiveColor" >
+    <div class="fill center narrow" >
+        <h1>Survey Application</h1>
+        <h2>Registration</h2>
+        <p>You can only register if your email address is in whitelist</p>
+        <h:form>
+            <h:panelGrid columns="2" styleClass="center responsiveElement">
+                <p:inputText type="email" placeholder="Email" id="email" value="#{userRegistrationController.user.email}"/>
+                <p:message for="email"/>
 
-                        <p:outputLabel for="firstName" value="First name"/>
-                        <p:inputText id="firstName" value="#{userRegistrationController.user.firstName}"/>
-                        <p:message for="firstName"/>
+                <p:inputText id="firstName" placeholder="First name" value="#{userRegistrationController.user.firstName}"/>
+                <p:message for="firstName"/>
 
-                        <p:outputLabel for="lastName" value="Last name"/>
-                        <p:inputText id="lastName" value="#{userRegistrationController.user.lastName}"/>
-                        <p:message for="lastName"/>
+                <p:inputText id="lastName" placeholder="Last name" value="#{userRegistrationController.user.lastName}"/>
+                <p:message for="lastName"/>
 
-                        <p:outputLabel for="password" value="Password"/>
-                        <p:inputText type="password" id="password" value="#{userRegistrationController.passwordHash}"/>
-                        <p:message for="password"/>
-                    </h:panelGrid>
-                </td>
-            </tr>
-        </table>
-        <p:commandButton value="Create new user"
-                         action="#{userRegistrationController.register()}"
-                         ajax="false"/>
-        <p:messages globalOnly="true"/>
-    </h:form>
+                <p:inputText type="password" placeholder="Password" id="password" value="#{userRegistrationController.passwordHash}"/>
+                <p:message for="password"/>
+            </h:panelGrid>
+            <p:messages globalOnly="true"/>
+            <p:commandButton value="Register"
+                             action="#{userRegistrationController.register()}"
+                             ajax="false"
+                             styleClass="responsiveElement"/>
+        </h:form>
+    </div>
 </h:body>
 </html>

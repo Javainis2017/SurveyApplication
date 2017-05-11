@@ -56,7 +56,7 @@ public class UserRegistrationController {
         //Ar email yra whitelist sarase
         else if (!whitelistDAO.findEmail(user.getEmail()))
         {
-            Messages.addGlobalWarn("This email is not included in whitelist");
+            Messages.addGlobalWarn("This email is not included in whitelist.");
             return null;
         }
         else

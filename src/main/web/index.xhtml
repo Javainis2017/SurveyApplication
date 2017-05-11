@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
->
+      xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui">
 <h:head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <h:outputStylesheet name="css/style.css" />
     <title>Survey Website</title>
 </h:head>
 
-<h:body>
-    <h1>Survey Application</h1>
-    <br/>
-    <p>
-        <p:button outcome="login" value="Login" />
+<h:body styleClass="responsiveColor">
+    <div class="fill center narrow" >
+        <h1>Survey Application</h1>
         <br/>
-        <p:button outcome="register" value="Register" />
-    </p>
+        <p>
+            <h:form>
+                <h:panelGrid columns="2" styleClass="center responsiveElement" cellpadding="1">
+                    <p:inputText type="email" id="email" placeholder="Email" value="#{userController.user.email}"/>
+                    <p:message for="email"/>
+
+                    <p:inputText type="password" placeholder="Password" id="password" value="#{userController.passwordHash}"/>
+                    <p:message for="password"/>
+                </h:panelGrid>
+                <p:commandButton value="Log in"
+                                 action="#{userController.login()}"
+                                 ajax="false" styleClass="responsiveElement"/>
+                <p:messages globalOnly="true"/>
+            </h:form>
+            <br/>
+            <br/>
+            <br/>
+            <p:button outcome="register" value="Register" styleClass="responsiveElement smallButton"/>
+            <p:button outcome="forgot-password" value="Recover account" alt="If you forgot your password" styleClass="responsiveElement smallButton"/>
+        </p>
+    </div>
 </h:body>
 </html>
