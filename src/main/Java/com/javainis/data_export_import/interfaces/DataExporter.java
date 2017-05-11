@@ -11,7 +11,6 @@ import java.util.concurrent.Future;
 
 public interface DataExporter {
 
-    void exportSurvey(Survey survey, OutputStream destination);
-    void exportAnswers(List<SurveyResult> answers, OutputStream destination);
+    Future<Void> exportSurvey(Survey survey, OutputStream destination);
 
 }

@@ -1,28 +1,42 @@
 package com.javainis.data_export_import.data_converters;
 
+import com.javainis.Async;
 import com.javainis.data_export_import.interfaces.DataExporter;
 import com.javainis.survey.dao.SurveyResultDAO;
 import com.javainis.survey.entities.*;
 
+import org.apache.deltaspike.core.api.future.Futureable;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-//import org.hibernate.Hibernate;
+import org.hibernate.Hibernate;
 
+import javax.ejb.AsyncResult;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.io.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
-@Dependent
+import static javax.transaction.Transactional.TxType.REQUIRES_NEW;
+
+@ApplicationScoped
 public class XLSXDataExporter implements DataExporter, Serializable{
 
     @Inject
-    private SurveyResultDAO surveyResultDAO;
+//    @Async
+    private EntityManager manager;
+
+//    @Inject
+//    private SurveyResultDAO surveyResultDAO;
 
     //Isimena kurioj Excel dokumento eiluteje dabar yra
     private int answerRowNumber = 0;
@@ -33,8 +47,10 @@ public class XLSXDataExporter implements DataExporter, Serializable{
     //Reikia kad isimintu koks answer choice numeris (Single ir multi choice klausimams)
     private Map<Choice, Integer> choiceNumberMap;
 
+    @Transactional
     private void exportChoices(XSSFRow row, List<Choice> choices)
     {
+        Hibernate.initialize(choices);
         int cell = 4;
         for(int i = 0; i < choices.size(); i++)
         {
@@ -61,12 +77,18 @@ public class XLSXDataExporter implements DataExporter, Serializable{
     }
 
     @Override
-    public void exportSurvey(Survey survey, OutputStream destination)
+//    @Futureable
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public Future<Void> exportSurvey(Survey survey, OutputStream destination)
     {
         System.out.println("Exporting survey");
         XSSFWorkbook wb = new XSSFWorkbook();
         exportSurveyQuestions(survey, wb);
-        List<SurveyResult> results = surveyResultDAO.getResultsBySurveyId(survey.getId());
+        List<SurveyResult> results = manager
+                .createNamedQuery("SurveyResult.findBySurveyId", SurveyResult.class)
+                .setParameter("surveyId", survey.getId())
+                .getResultList();
+        Hibernate.initialize(results);
         if (results != null && results.size() != 0)
         {
             exportAnswers(results, wb);
@@ -78,14 +100,12 @@ public class XLSXDataExporter implements DataExporter, Serializable{
         catch (IOException ex)
         {
             ex.printStackTrace();
-        }
-        finally {
+        } finally {
             answerRowNumber = 0;
         }
-//        return new AsyncResult<>(null);
+        return new AsyncResult<>(null);
     }
 
-    @Override
     public void exportAnswers(List<SurveyResult> answers, OutputStream destination)
     {
         if (questionNumberMap == null && choiceNumberMap == null)
@@ -103,12 +123,14 @@ public class XLSXDataExporter implements DataExporter, Serializable{
         }
     }
 
+    @Transactional
     private void exportSurveyQuestions(Survey survey, XSSFWorkbook wb)
     {
 
         XSSFSheet surveySheet = wb.createSheet("Survey");
         createStatusRow(surveySheet);
 
+        //Hibernate.initialize(survey.getQuestions());
         List<Question> surveyQuestions = survey.getQuestions();
         questionNumberMap = new HashMap<>();
         choiceNumberMap = new HashMap<>();
@@ -116,6 +138,7 @@ public class XLSXDataExporter implements DataExporter, Serializable{
         {
             String questionType;
             Question question = surveyQuestions.get(i);
+            Hibernate.initialize(question);
             questionNumberMap.put(question, i+1);
             XSSFRow row = surveySheet.createRow(i+1);
 
@@ -152,16 +175,22 @@ public class XLSXDataExporter implements DataExporter, Serializable{
             }
             row.createCell(3).setCellValue(questionType);
         }
-
-        for(int i = 0; i < Collections.max(choiceNumberMap.values()) + 4;i++)
+        int choiceCount = 0;
+        if (!choiceNumberMap.isEmpty())
+        {
+            choiceCount = Collections.max(choiceNumberMap.values());
+        }
+        for(int i = 0; i < choiceCount + 4;i++)
         {
             surveySheet.autoSizeColumn(i);
 
         }
     }
 
+    @Transactional
     private void exportAnswers(List<SurveyResult> answers, XSSFWorkbook wb)
     {
+        Hibernate.initialize(answers);
         XSSFSheet answerSheet = wb.createSheet("Answer");
         XSSFRow statusRow = answerSheet.createRow(answerRowNumber++);
         statusRow.createCell(0).setCellValue("$answerID");
@@ -178,8 +207,10 @@ public class XLSXDataExporter implements DataExporter, Serializable{
         answerSheet.autoSizeColumn(2);
     }
 
+    @Transactional
     private void exportSingleAnswer(List<Answer> answers, int answerId, XSSFSheet sheet)
     {
+        Hibernate.initialize(answers);
         int question = 1;
         for(Answer answer: answers)
         {

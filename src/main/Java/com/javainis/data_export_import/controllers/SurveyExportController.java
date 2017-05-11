@@ -7,6 +7,7 @@ import com.javainis.survey.entities.Answer;
 import com.javainis.survey.entities.Survey;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 import org.primefaces.context.PrimeFacesContext;
@@ -53,23 +54,26 @@ public class SurveyExportController implements Serializable {
     private boolean timeout = false;
 
     @Getter
+    private Future<Void> export;
+    @Getter
     private Map<String, File> generatedSurveys = new HashMap<>();
 
-    @Transactional
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void exportSurvey(Survey survey)
     {
         selectedSurvey = survey;
-
-//        Pagal http://stackoverflow.com/a/9394237
-//        FacesContext fc = FacesContext.getCurrentInstance();
-//        ExternalContext ec = fc.getExternalContext();
+        if(generatedSurveys.containsKey(selectedSurvey.getUrl()))
+        {
+            generatedSurveys.remove(selectedSurvey.getUrl());
+        }
         Messages.addGlobalInfo("Generating file, please wait...");
         try {
             file = new File(selectedSurvey.getTitle() + "_" + selectedSurvey.getUrl() + ".xlsx");
             stream = new FileOutputStream(file);
-//            stream = ec.getResponseOutputStream();
-//            export = exporter.exportSurvey(selectedSurvey, stream);
-            exporter.exportSurvey(selectedSurvey, stream);
+            Hibernate.initialize(selectedSurvey);
+            Hibernate.initialize(selectedSurvey.getQuestions());
+            export = exporter.exportSurvey(selectedSurvey, stream);
+
             generatedSurveys.put(selectedSurvey.getUrl(), file);
         }
         catch(IOException ex)
@@ -80,10 +84,15 @@ public class SurveyExportController implements Serializable {
     }
 
     public void checkProgress() {
-        if(file != null && file.length() > 1)
+        System.out.println("Checking");
+        if(export != null && export.isDone())
         {
             timeout = true;
         }
+//        if(file != null && file.length() > 1)
+//        {
+//            timeout = true;
+//        }
     }
 
     public void downloadToUser(String surveyURL)
@@ -91,6 +100,7 @@ public class SurveyExportController implements Serializable {
         if (generatedSurveys.containsKey(surveyURL)) {
             file = generatedSurveys.get(surveyURL);
             try {
+//              Pagal http://stackoverflow.com/a/9394237
                 Faces.sendFile(file, true);
             } catch (IOException ex) {
                 ex.printStackTrace();
