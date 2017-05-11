@@ -37,10 +37,11 @@ public class SingleChoiceChartController implements SingleChoiceQuestionReport, 
         for(Choice q: singleChoiceQuestion.getChoices())
         {
             int count = 0;
-            for(SingleChoiceAnswer a: singleChoiceAnswers)
-                if(a.getChoiceId() == q.getId())
+            for(SingleChoiceAnswer a: singleChoiceAnswers){
+                if(a.getChoiceId().equals(q.getId()) ){
                     count++;
-
+                }
+            }
             model.set(q.getText(), count);
         }
 
