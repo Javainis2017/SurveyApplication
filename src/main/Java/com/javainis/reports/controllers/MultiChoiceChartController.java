@@ -17,6 +17,7 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -40,14 +41,22 @@ public class MultiChoiceChartController implements MultiChoiceQuestionReport, Se
 
         ChartSeries answers = new ChartSeries();
         answers.setLabel("Answers");
+        double percent = 0;
+        String percentToPrint = "0";
         for(Choice q: multipleChoiceQuestion.getChoices())
         {
+            int answerCount = 0;
             int count = 0;
-            for(MultipleChoiceAnswer a: multipleChoiceAnswers)
-                if(a.getChoiceIds().contains(q.getId()))
+            for(MultipleChoiceAnswer a: multipleChoiceAnswers) {
+                List<Long> choices = a.getChoiceIds();
+                answerCount += choices.toArray().length;
+                if (choices.contains(q.getId()))
                     count++;
+            }
 
-            answers.set(q.getText(), count);
+            percent = (((double) count) / answerCount) * 100;
+            percentToPrint = (new DecimalFormat("##.##").format(percent)).toString();
+            answers.set(q.getText() + "(" + percentToPrint + "%" + ")", count);
         }
 
         model.addSeries(answers);
