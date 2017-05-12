@@ -56,15 +56,13 @@ public class UserRegistrationController {
         //Ar email yra whitelist sarase
         else if (!whitelistDAO.findEmail(user.getEmail()))
         {
-            Messages.addGlobalWarn("This email is not included in whitelist.");
+            Messages.addGlobalWarn("This email is not in whitelist.");
             return null;
         }
         else
         {
             user.setPasswordHash(hashGenerator.generatePasswordHash(passwordHash));
             userDAO.create(user);
-            //whitelistDAO.removeFromWhitelist(user.getEmail()); // Registered user email is removed from whitelist
-            Messages.addGlobalInfo("Success");
             return "login?faces-redirect=true";
         }
     }

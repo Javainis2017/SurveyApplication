@@ -52,9 +52,9 @@
 }
 
 .fill{
-    border: 1px solid lavender;
+    /*border: 1px solid lavender;*/
     border-radius: 10px;
-    background-color: lavender;
+    background: rgba(255, 255, 255, 0.2);
 }
 .responsiveElement{
     font-size: 18px;
@@ -65,13 +65,21 @@
     margin: 2px 2px 2px 2px;
 }
 
+.responsive-background{
+    background-size: auto;
+    background: url("#{resource['images/blue-sky.jpg']}") repeat;
+
+}
+
 @media all and (min-width: 900px) {
     .narrow{
         width: 30%;
     }
+    .responsive-background {
+        background-size: 100% ;
+    }
+
 }
-
-
 
 body {
     margin: 30px 30px 30px 30px;
@@ -90,17 +98,11 @@ textarea{
         width: 90%;
     }
     .fill{
-        border: 0;
-        border-radius: 0;
-        background-color: inherit;
-    }
-
-    .responsiveColor{
-        background-color: lavender;
+        border-radius: 5px;
     }
 
     .responsiveElement{
-        font-size: 24px;
+        font-size: 22px;
     }
 
     .smallButton{
