@@ -13,9 +13,9 @@
 </h:head>
 <h:body styleClass="responsive-background" >
     <div class="fill center narrow" >
-        <h1>Survey Application</h1>
-        <h2>Registration</h2>
-        <p>You can only register if your email address is in whitelist</p>
+        <h1 class="main-header">Survey Application</h1>
+        <h2 style="color:darkslategrey;">Registration</h2>
+        <p style="color:darkslategrey;">You can only register if your email address is in whitelist</p>
         <h:form>
             <h:panelGrid columns="2" styleClass="center responsiveElement">
                 <p:inputText type="email" placeholder="Email" id="email" value="#{userRegistrationController.user.email}"/>
