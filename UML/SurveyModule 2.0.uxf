@@ -4,56 +4,6 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>408</x>
-      <y>832</y>
-      <w>216</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>TextQuestionController
---
--question: TextQuestion
-group=3</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>672</x>
-      <y>824</y>
-      <w>240</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>IntervalQuestionController
---
--question: IntervalQuestion
--minValue: Integer
--maxvalue: Integer
---
-+saveQuestion()
-group=3</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>352</x>
-      <y>624</y>
-      <w>168</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
-SURVEY_CREATION_STEP
---
-QUESTION_TYPE_CHOICE
-NEW_QUESTION
-EDIT_QUESTION
-
-group=3</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
       <x>0</x>
       <y>688</y>
       <w>216</w>
@@ -65,75 +15,6 @@ group=3</panel_attributes>
 -chars: String
 --
 +generateString(length: Integer) : String</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>392</x>
-      <y>400</y>
-      <w>224</w>
-      <h>136</h>
-    </coordinates>
-    <panel_attributes>MultipleChoiceQuestionController
---
--question: MultipleChoiceQuestion
--choice: Choice
--edit: Boolean
---
-+editChoice(choice: Choice)
-+addChoice(choice: Choice)
-+removeChoice(choice: Choice)
-+saveChoice()
-+saveQuestion()
-group=3</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>640</x>
-      <y>408</y>
-      <w>216</w>
-      <h>128</h>
-    </coordinates>
-    <panel_attributes>SingleChoiceQuestionController
---
--question: SingleChoiceQuestion
--choice: Choice
--edit: Boolean
---
-+editChoice(choice: Choice)
-+removeChoice(choice: Choice)
-+saveChoice()
-+saveQuestion()
-group=3</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>568</x>
-      <y>592</y>
-      <w>312</w>
-      <h>184</h>
-    </coordinates>
-    <panel_attributes>NewSurveyController
---
--surveyDAO: SurveyDAO
--questionDAO: QuestionDAO
--newQuestionType: String
--questionToEdit: Question
---
-+createQuestion(type: String)
-+saveQuestion(question: Question)
-+editQuestion(question: Question)
-+removeQuestion(question: Question)
-+createSurvey(): String
-+createPage()
-+removePage(page: SurveyPage)
-+moveQuestion(question: Question, direction: DIRECTION)
-group=3</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -307,18 +188,6 @@ Survey
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>512</x>
-      <y>656</y>
-      <w>72</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-group=3</panel_attributes>
-    <additional_attributes>10.0;10.0;70.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
       <x>208</x>
       <y>712</y>
       <w>376</w>
@@ -465,30 +334,6 @@ m2=questions</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>336</x>
-      <y>352</y>
-      <w>624</w>
-      <h>584</h>
-    </coordinates>
-    <panel_attributes>create
-group=3</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLPackage</id>
-    <coordinates>
-      <x>296</x>
-      <y>312</y>
-      <w>688</w>
-      <h>640</h>
-    </coordinates>
-    <panel_attributes>controllers
-group=3</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLPackage</id>
-    <coordinates>
       <x>1008</x>
       <y>720</y>
       <w>576</w>
@@ -519,54 +364,6 @@ group=1</panel_attributes>
     </coordinates>
     <panel_attributes>survey</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>512</x>
-      <y>528</y>
-      <w>96</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
-group=3</panel_attributes>
-    <additional_attributes>10.0;10.0;100.0;80.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>736</x>
-      <y>528</y>
-      <w>32</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-group=3</panel_attributes>
-    <additional_attributes>10.0;80.0;20.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>504</x>
-      <y>768</y>
-      <w>112</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
-group=3</panel_attributes>
-    <additional_attributes>10.0;80.0;120.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>752</x>
-      <y>768</y>
-      <w>32</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
-group=3</panel_attributes>
-    <additional_attributes>20.0;70.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -621,30 +418,204 @@ m2=questions</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>360</x>
-      <y>728</y>
-      <w>144</w>
-      <h>72</h>
+      <x>408</x>
+      <y>832</y>
+      <w>216</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>TextQuestionController
+--
+-question: TextQuestion
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>672</x>
+      <y>824</y>
+      <w>240</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>IntervalQuestionController
+--
+-question: IntervalQuestion
+-minValue: Integer
+-maxvalue: Integer
+--
++saveQuestion()
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>352</x>
+      <y>624</y>
+      <w>168</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>&lt;&lt;enumeration&gt;&gt;
-DIRECTION
+SURVEY_CREATION_STEP
 --
-DOWN
-UP
+QUESTION_TYPE_CHOICE
+NEW_QUESTION
+EDIT_QUESTION
 
-group=3</panel_attributes>
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>392</x>
+      <y>400</y>
+      <w>224</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>MultipleChoiceQuestionController
+--
+-question: MultipleChoiceQuestion
+-choice: Choice
+-edit: Boolean
+--
++editChoice(choice: Choice)
++addChoice(choice: Choice)
++removeChoice(choice: Choice)
++saveChoice()
++saveQuestion()
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>640</x>
+      <y>408</y>
+      <w>216</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>SingleChoiceQuestionController
+--
+-question: SingleChoiceQuestion
+-choice: Choice
+-edit: Boolean
+--
++editChoice(choice: Choice)
++removeChoice(choice: Choice)
++saveChoice()
++saveQuestion()
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>568</x>
+      <y>592</y>
+      <w>312</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>NewSurveyController
+--
+-surveyDAO: SurveyDAO
+-questionDAO: QuestionDAO
+-newQuestionType: String
+-questionToEdit: Question
+--
++createQuestion(type: String)
++saveQuestion(question: Question)
++editQuestion(question: Question)
++removeQuestion(question: Question)
++createSurvey(): String
++createPage()
++removePage(page: SurveyPage)
++moveQuestion(question: Question, direction: String)
+group=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>496</x>
-      <y>728</y>
-      <w>88</w>
-      <h>40</h>
+      <x>512</x>
+      <y>656</y>
+      <w>72</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-group=3</panel_attributes>
-    <additional_attributes>10.0;30.0;90.0;10.0</additional_attributes>
+group=2</panel_attributes>
+    <additional_attributes>10.0;10.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>336</x>
+      <y>352</y>
+      <w>624</w>
+      <h>584</h>
+    </coordinates>
+    <panel_attributes>create
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>296</x>
+      <y>312</y>
+      <w>688</w>
+      <h>640</h>
+    </coordinates>
+    <panel_attributes>controllers
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>512</x>
+      <y>528</y>
+      <w>96</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+group=2</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>736</x>
+      <y>528</y>
+      <w>32</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+group=2</panel_attributes>
+    <additional_attributes>10.0;80.0;20.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>504</x>
+      <y>768</y>
+      <w>112</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+group=2</panel_attributes>
+    <additional_attributes>10.0;80.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>752</x>
+      <y>768</y>
+      <w>32</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+group=2</panel_attributes>
+    <additional_attributes>20.0;70.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
