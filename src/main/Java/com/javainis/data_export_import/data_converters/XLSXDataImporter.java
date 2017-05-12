@@ -22,6 +22,12 @@ public class XLSXDataImporter implements DataImporter{
     @Override
     public Survey importSurvey(File selectedFile) {
         Survey survey = new Survey();
+        SurveyPage surveyPage = new SurveyPage();
+        surveyPage.setNumber(1); // always on first page
+        surveyPage.setSurvey(survey);
+        List<SurveyPage> surveyPages = new ArrayList<>();
+        surveyPages.add(surveyPage);
+        survey.setPages(surveyPages);
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(selectedFile));
             XSSFSheet sheet = workbook.getSheet("Survey");
@@ -55,7 +61,7 @@ public class XLSXDataImporter implements DataImporter{
                 String questionName = row.getCell(column.get("$question")).getStringCellValue();
                 String questionMandatory = row.getCell(column.get("$mandatory")).getStringCellValue();
                 double questionNumber = row.getCell(column.get("$questionNumber")).getNumericCellValue();
-
+                if (questionNumber < 1 ) return null;
 
                 switch (questionType){
                     case "TEXT":
@@ -64,6 +70,8 @@ public class XLSXDataImporter implements DataImporter{
                         else freeTextQuestion.setRequired(false);
 
                         freeTextQuestion.setText(questionName);
+                        freeTextQuestion.setPosition((int)questionNumber);
+                        freeTextQuestion.setPage(surveyPage);
                         freeTextQuestion.setSurvey(survey);
                         questions.add(freeTextQuestion);
                         //System.out.println("TEXT");
@@ -94,6 +102,8 @@ public class XLSXDataImporter implements DataImporter{
                             choiceListMulti.add(choice);
                         }
                         multipleChoiceQuestion.setChoices(choiceListMulti);
+                        multipleChoiceQuestion.setPosition((int)questionNumber);
+                        multipleChoiceQuestion.setPage(surveyPage);
                         multipleChoiceQuestion.setText(questionName);
                         multipleChoiceQuestion.setSurvey(survey);
                         questions.add(multipleChoiceQuestion);
@@ -123,6 +133,8 @@ public class XLSXDataImporter implements DataImporter{
                             choiceListSingle.add(choice);
                         }
                         singleChoiceQuestion.setChoices(choiceListSingle);
+                        singleChoiceQuestion.setPosition((int)questionNumber);
+                        singleChoiceQuestion.setPage(surveyPage);
                         singleChoiceQuestion.setText(questionName);
                         singleChoiceQuestion.setSurvey(survey);
                         questions.add(singleChoiceQuestion);
@@ -152,6 +164,8 @@ public class XLSXDataImporter implements DataImporter{
                         }
 
                         intervalQuestion.setText(questionName);
+                        intervalQuestion.setPosition((int)questionNumber);
+                        intervalQuestion.setPage(surveyPage);
                         intervalQuestion.setSurvey(survey);
                         questions.add(intervalQuestion);
                         //System.out.println("SCALE");

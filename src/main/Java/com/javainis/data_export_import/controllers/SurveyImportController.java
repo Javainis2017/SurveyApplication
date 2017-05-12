@@ -5,6 +5,7 @@ import com.javainis.data_export_import.interfaces.DataImporter;
 import com.javainis.survey.dao.SurveyDAO;
 import com.javainis.survey.dao.SurveyResultDAO;
 import com.javainis.survey.entities.Survey;
+import com.javainis.survey.entities.SurveyPage;
 import com.javainis.survey.entities.SurveyResult;
 import com.javainis.user_management.controllers.UserController;
 import com.javainis.user_management.entities.User;
@@ -65,6 +66,8 @@ public class SurveyImportController implements Serializable{
     private void importSurvey(){
         selectedSurvey = dataImporter.importSurvey(file);
         if (selectedSurvey == null) return;
+
+
         selectedSurvey.setDescription("This survey is imported from file: " + file.getName());
         selectedSurvey.setTitle(file.getName());
         selectedSurvey.setIsPublic(true);
