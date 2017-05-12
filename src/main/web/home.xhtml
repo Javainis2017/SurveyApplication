@@ -28,72 +28,71 @@
     <p:growl id="messages" showDetail="true" />
 
     <p:fileUpload id="upload" value="#{surveyImportController.uploadedFile}" mode="simple" skinSimple="true"/>
+    <br/>
     <h:outputText value="&#160;" />
 
     <p:commandButton value="Submit" ajax="false" actionListener="#{surveyImportController.upload()}"
                      disabled="false" />
 
     <h2>My surveys</h2>
-    <p:fieldset legend="Surveys" toggleable="true" collapsed="true" styleClass="fieldPanel">
-        <p:dataTable id="surveyTable" var="survey" value="#{userSurveyController.getMySurveys()}">
-            <p:column headerText="Title" style="width:110px;text-align: center">
+    <p:fieldset legend="Surveys" toggleable="true" collapsed="false" styleClass="fieldPanel">
+        <p:dataTable id="surveyTable" var="survey" value="#{userSurveyController.getMySurveys()}"
+                     selectionMode="single"
+                     selection="#{userSurveyController.selectedSurvey}"
+                     rowKey="#{survey.id}">
+            <p:ajax event="rowSelect" update="surveyTable" />
+            <p:column headerText="Title" style="width:25%;text-align: center">
                 <h:outputText value="#{survey.title}" />
             </p:column>
-            <p:column headerText="Description" style="width:140px;text-align: center">
-                <h:outputText value="#{survey.description}" />
-            </p:column>
-            <p:column headerText="Author" style="width:110px;text-align: center">
+            <p:column headerText="Author" styleClass="nameColumn" priority="4">
                 <h:outputText value="#{survey.author.firstName}" />
                 <h:outputText value="&#160;" />
                 <h:outputText value="#{survey.author.lastName}" />
             </p:column>
-            <p:column headerText="URL" style="width:70px;text-align: center">
+            <p:column headerText="URL" style="width:9%;text-align: center" priority="1">
                 <h:outputLink value="survey/show/#{survey.url}">
                     Survey
                 </h:outputLink>
             </p:column>
-            <p:column headerText="Results" style="width:70px;text-align: center">
+            <p:column headerText="Results" style="width:9%;text-align: center" priority="1">
                 <h:outputLink value="reports/report/#{survey.url}" rendered="#{userSurveyController.canSeeReport(survey)}">
                     Results
                 </h:outputLink>
             </p:column>
-            <p:column headerText="Visibility" style="width:70px;text-align: center">
+            <p:column headerText="Visibility" style="width:10%;text-align: center" priority="4">
                 <h:outputText value = "#{userSurveyController.getPublicLabel(survey.isPublic)}"/>
             </p:column>
-            <p:column headerText="Edit" style="width:90px;text-align: center">
+            <p:column headerText="Edit" style="width:10%;text-align: center" priority="3">
                 <h:outputLink value="survey/new/#{survey.url}" rendered="#{survey.surveyResults.isEmpty() and userSurveyController.canRemove(survey)}">
                     Edit
                 </h:outputLink>
-                <h:outputText rendered="#{!survey.surveyResults.isEmpty()}">
-                    Cannot edit
-                </h:outputText>
             </p:column>
-            <p:column headerText="Remove survey" style="width:110px;text-align: center">
-                <p:commandButton value="Remove"
-                                 action="#{surveyController.deleteSurvey(survey.id)}"
-                                 rendered="#{userSurveyController.canRemove(survey)}"
-                                 update="surveyTable"
-                                 ajax="true"
-                />
-            </p:column>
-            <p:column headerText="Export survey" id="export" style="width:200px;text-align: center">
-                <p:commandButton id="generateButton" value="Generate Excel file"
-                                 actionListener="#{surveyExportController.exportSurvey(survey)}"
-                                 onclick="PF('exportPoller').start();"
-                                 update="surveyTable"
-                                 ajax="true">
-                </p:commandButton>
-                <br />
-                <p:commandButton id="exportButton"
-                                 widgetVar="button#{survey.id}"
-                                 value="Download"
-                                 actionListener="#{surveyExportController.downloadToUser(survey.url)}"
-                                 rendered="#{surveyExportController.timeout and surveyExportController.generatedSurveys.containsKey(survey.url)}"
-                                 ajax="false">
-                </p:commandButton>
+            <f:facet name="footer" id="footer">
                 <p:growl id="growl" showDetail="false" sticky="true" />
+                <c:if test="#{userSurveyController.selectedSurvey != null}">
+                    <c:if test="#{userSurveyController.canRemove(userSurveyController.selectedSurvey)}">
+                        <p:commandButton process="surveyTable"
+                                         update="surveyTable"
+                                         value="Remove"
+                                         actionListener="#{surveyController.deleteSurvey(userSurveyController.selectedSurvey.id)}"
+                                         ajax="true"/>
+                    </c:if>
+                    <p:commandButton id="generateButton" value="Generate file"
+                                     actionListener="#{surveyExportController.exportSurvey(userSurveyController.selectedSurvey)}"
+                                     onclick="PF('exportPoller').start();"
+                                     update="surveyTable"
+                                     ajax="true">
+                    </p:commandButton>
+                    <c:if test="#{surveyExportController.timeout and surveyExportController.generatedSurveys.containsKey(userSurveyController.selectedSurvey.url)}">
+                        <p:commandButton id="exportButton"
+                                         value="Download .xlsx"
+                                         actionListener="#{surveyExportController.downloadToUser(userSurveyController.selectedSurvey.url)}"
+                                         ajax="false">
+                        </p:commandButton>
+                    </c:if>
 
-            </p:column>
+                </c:if>
+            </f:facet>
         </p:dataTable>
         <p:poll interval="2"
                 update="surveyTable"
@@ -136,7 +135,7 @@
                 <p:column headerText="Email" styleClass="emailColumn" sortable="true" sortBy="#{user.email}">
                     <h:outputText value="#{user.email}" />
                 </p:column>
-                <p:column headerText="Name">
+                <p:column headerText="Name" styleClass="nameColumn">
                     <h:outputText value="#{user.firstName} " />
                     <h:outputText value="#{user.lastName}" />
                 </p:column>

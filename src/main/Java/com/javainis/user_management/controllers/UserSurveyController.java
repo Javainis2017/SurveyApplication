@@ -3,6 +3,8 @@ package com.javainis.user_management.controllers;
 import com.javainis.survey.dao.SurveyDAO;
 import com.javainis.survey.entities.Survey;
 import com.javainis.user_management.dao.UserTypeDAO;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -19,6 +21,10 @@ public class UserSurveyController {
 
     @Inject
     private SurveyDAO surveyDAO;
+
+    @Getter
+    @Setter
+    private Survey selectedSurvey;
 
     public List<Survey> getAllUserSurvey(){
         return surveyDAO.findByAuthorId(userController.getUser().getUserID());
@@ -53,6 +59,10 @@ public class UserSurveyController {
 
     @Transactional
     public Boolean canRemove(Survey survey){
+        if (survey == null)
+        {
+            return false;
+        }
         return survey.getAuthor().getUserID() == userController.getUser().getUserID() || isAdmin();
     }
 

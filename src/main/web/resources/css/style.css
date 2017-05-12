@@ -1,5 +1,13 @@
+.ui-datatable-footer {
+    text-align: left !important;
+}
+
 .blockColumn, .typeColumn{
     width: 12%;
+}
+
+.nameColumn{
+    width: 19%;
 }
 
 .emailColumn{
@@ -8,7 +16,7 @@
 
 .fieldPanel{
     margin: 10px 10px 10px 10px;
-    width: 65%;
+    width: 70%;
 }
 
 .buttonColumn{
@@ -71,6 +79,11 @@
 
 }
 
+.main-header{
+    /*text-shadow: 2px 2px 6px black;*/
+    font-size: 36px;
+}
+
 @media all and (min-width: 900px) {
     .narrow{
         width: 30%;
@@ -107,5 +120,8 @@ textarea{
 
     .smallButton{
         font-size: 18px;
+    }
+    .fieldPanel{
+        width: 98%;
     }
 }

@@ -89,10 +89,6 @@ public class SurveyExportController implements Serializable {
         {
             timeout = true;
         }
-//        if(file != null && file.length() > 1)
-//        {
-//            timeout = true;
-//        }
     }
 
     public void downloadToUser(String surveyURL)
