@@ -133,15 +133,17 @@ lt=&lt;.</panel_attributes>
       <x>544</x>
       <y>440</y>
       <w>224</w>
-      <h>96</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>SurveyController
 --
 -surveyUrl: String
 -survey: Survey
 -answers: Map&lt;Question, Answer&gt;
+-currentPage: SurveyPage
 --
 +init() : void
++goToPage(number : Integer)
 +submitAnswers():void
 </panel_attributes>
     <additional_attributes/>
@@ -288,12 +290,12 @@ MultipleChoiceAnswer
     <id>Relation</id>
     <coordinates>
       <x>552</x>
-      <y>528</y>
+      <y>552</y>
       <w>24</w>
-      <h>112</h>
+      <h>88</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLPackage</id>
@@ -368,12 +370,12 @@ bg=orange</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>704</x>
-      <y>528</y>
+      <y>552</y>
       <w>24</w>
-      <h>112</h>
+      <h>88</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
