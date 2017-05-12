@@ -128,8 +128,6 @@ public class SurveyController implements Serializable{
 
                 questionDAO.delete(q);
             }
-
-
             surveyDAO.delete(survey);
         }catch (Exception e){
             e.printStackTrace();

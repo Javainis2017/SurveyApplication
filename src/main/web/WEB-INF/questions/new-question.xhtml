@@ -4,22 +4,19 @@
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-    <h3>New question</h3>
-    <p:commandButton action="#{newSurveyController.createQuestion('text')}"
-                     value="Create text question"
-                     ajax="true"
+    <!--@elvariable id="page" type="com.javainis.survey.entities.SurveyPage"-->
+    <h4>New question</h4>
+    <p:commandButton action="#{newSurveyController.createQuestion('text', page)}"
+                     value="New text question"
                      update="survey"/>
-    <p:commandButton action="#{newSurveyController.createQuestion('interval')}"
-                     value="Create interval question"
-                     ajax="true"
+    <p:commandButton action="#{newSurveyController.createQuestion('interval', page)}"
+                     value="New interval question"
                      update="survey"/>
-    <p:commandButton action="#{newSurveyController.createQuestion('single-choice')}"
-                     value="Create single choice question"
-                     ajax="true"
+    <p:commandButton action="#{newSurveyController.createQuestion('single-choice', page)}"
+                     value="New single choice question"
                      update="survey"/>
-    <p:commandButton action="#{newSurveyController.createQuestion('multi-choice')}"
-                     value="Create multi choice question"
-                     ajax="true"
+    <p:commandButton action="#{newSurveyController.createQuestion('multi-choice', page)}"
+                     value="New multi choice question"
                      update="survey"/>
     <br/>
 </ui:composition>

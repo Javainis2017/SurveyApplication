@@ -1,5 +1,6 @@
 package com.javainis.survey.entities;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,28 +9,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "survey_result")
-@NamedQueries({
-        @NamedQuery(name = "SurveyResult.findBySurveyId", query = "SELECT sr FROM SurveyResult sr WHERE sr.survey.id = :surveyId")
-})
+@Table(name = "survey_page")
 @Getter
 @Setter
-public class SurveyResult {
-
+@EqualsAndHashCode(of = {"number", "survey"})
+public class SurveyPage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "number")
+    private Integer number;
+
     @Version
     @Column(name = "opt_lock_version")
     private Integer optLockVersion;
 
-    @ManyToOne()
     @JoinColumn(name = "survey_id", referencedColumnName = "id")
+    @ManyToOne
     private Survey survey;
 
-    @OneToMany(mappedBy = "result", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Answer> answers = new ArrayList<>();
-
+    @OneToMany(mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("position ASC")
+    private List<Question> questions = new ArrayList<>();
 }

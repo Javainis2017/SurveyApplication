@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
         @NamedQuery(name = "Question.findAll", query = "SELECT q FROM Question q"),
         @NamedQuery(name = "Question.findById", query = "SELECT q FROM Question q WHERE q.id = :id"),
-        @NamedQuery(name = "Question.findBySurveyId", query = "SELECT q FROM Question q WHERE q.survey.id = :surveyId")
+        @NamedQuery(name = "Question.findBySurveyId", query = "SELECT q FROM Question q WHERE q.survey.id = :surveyId ORDER BY q.position")
 })
 @DiscriminatorColumn(name="question_type_id", discriminatorType = DiscriminatorType.INTEGER)
 @EqualsAndHashCode(of = "text")
@@ -32,6 +32,9 @@ public abstract class Question {
     @Column(name = "required")
     private Boolean required;
 
+    @Column(name = "position")
+    private Integer position;
+
     @Version
     @Column(name = "opt_lock_version")
     private Integer optLockVersion;
@@ -39,5 +42,9 @@ public abstract class Question {
     @JoinColumn(name = "survey_id", referencedColumnName = "id")
     @ManyToOne
     private Survey survey;
+
+    @JoinColumn(name = "page_id", referencedColumnName = "id")
+    @ManyToOne
+    private SurveyPage page;
 
 }

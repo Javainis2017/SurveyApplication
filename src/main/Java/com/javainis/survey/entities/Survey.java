@@ -14,11 +14,11 @@ import java.util.List;
 @Entity
 @Table(name = "survey")
 @NamedQueries({
-    @NamedQuery(name = "Survey.findAll", query = "SELECT s FROM Survey s"),
+    @NamedQuery(name = "Survey.findAll", query = "SELECT s FROM Survey s ORDER BY s.title"),
     @NamedQuery(name = "Survey.findById", query = "SELECT s FROM Survey s WHERE s.id = :id"),
     @NamedQuery(name = "Survey.findByUrl", query = "SELECT s FROM Survey s WHERE s.url = :url"),
-    @NamedQuery(name = "Survey.findByAuthorId", query = "SELECT s FROM Survey s WHERE s.author.userID = :authorId"),
-    @NamedQuery(name = "Survey.findPublic", query = "SELECT s FROM Survey s WHERE s.isPublic = true"),
+    @NamedQuery(name = "Survey.findByAuthorId", query = "SELECT s FROM Survey s WHERE s.author.userID = :authorId ORDER BY s.title"),
+    @NamedQuery(name = "Survey.findPublic", query = "SELECT s FROM Survey s WHERE s.isPublic = true ORDER BY s.title"),
     @NamedQuery(name = "Survey.existsByUrl", query = "SELECT COUNT(s) FROM Survey s WHERE s.url = :url ")
 })
 @Getter
@@ -56,9 +56,14 @@ public class Survey {
     @Column(name = "opt_lock_version")
     private Integer optLockVersion;
 
+
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SurveyResult> surveyResults = new ArrayList<>();
+
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("number ASC")
+    private List<SurveyPage> pages = new ArrayList<>();
+
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();
-
-    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL)
-    private List<SurveyResult> surveyResults = new ArrayList<>();
 }

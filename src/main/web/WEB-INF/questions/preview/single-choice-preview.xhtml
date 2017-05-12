@@ -5,11 +5,7 @@
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
         xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:outputText><b>#{question.text}</b></h:outputText><br/>
-    <h:panelGroup rendered="#{question.required}">
-        <h:outputText>(Required)</h:outputText>
-        <br/>
-    </h:panelGroup>
+    <!--@elvariable id="question" type="com.javainis.survey.entities.SingleChoiceQuestion"-->
     <p:selectOneRadio id="single-choices" layout="pageDirection" disabled="true">
         <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}"/>
     </p:selectOneRadio>

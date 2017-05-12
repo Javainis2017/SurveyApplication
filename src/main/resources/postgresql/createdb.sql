@@ -38,18 +38,28 @@ CREATE TABLE IF NOT EXISTS survey
 	FOREIGN KEY (user_id) REFERENCES app_user(id)
 );
 
+CREATE TABLE IF NOT EXISTS survey_page
+(
+	id					BIGSERIAL PRIMARY KEY,
+	number			INTEGER NOT NULL,
+	survey_id		BIGINT NOT NULL,
+	opt_lock_version INTEGER,
+	FOREIGN KEY (survey_id) REFERENCES survey(id)
+);
 
 CREATE TABLE IF NOT EXISTS question
 (
 	id 					BIGSERIAL PRIMARY KEY,
 	text 				VARCHAR(300) NOT NULL,
 	required 		BOOLEAN DEFAULT TRUE,
+	position		INTEGER NOT NULL,
 	survey_id 	BIGINT NOT NULL,
+	page_id 		BIGINT NOT NULL,
 	question_type_id BIGINT NOT NULL,
 	opt_lock_version INTEGER,
-	FOREIGN KEY (survey_id) REFERENCES survey(id)
+	FOREIGN KEY (survey_id) REFERENCES survey(id),
+	FOREIGN KEY (page_id) REFERENCES survey_page(id)
 );
-
 
 CREATE TABLE IF NOT EXISTS choice
 (
@@ -149,5 +159,5 @@ ALTER TABLE answer ADD FOREIGN KEY (choice_id) REFERENCES choice(id);
 
 ALTER TABLE mail_expiration DROP COLUMN IF EXISTS expiration_date;
 ALTER TABLE mail_expiration ADD COLUMN IF NOT EXISTS expiration_date TIMESTAMP;
-ALTER TABLE survey ADD COLUMN if NOT EXISTS expiration_time TIMESTAMP;
+ALTER TABLE survey ADD COLUMN IF NOT EXISTS expiration_time TIMESTAMP;
 ALTER TABLE survey ADD COLUMN IF NOT EXISTS public	BOOLEAN DEFAULT TRUE;
