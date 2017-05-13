@@ -1,5 +1,9 @@
-.ui-datatable-footer {
+.ui-datatable-footer, .ui-datatable-header {
     text-align: left !important;
+}
+
+.ui-state-highlight a, .ui-widget-content .ui-state-highlight a, .ui-widget-header .ui-state-highlight a {
+    color: white;
 }
 
 .blockColumn, .typeColumn{
@@ -76,12 +80,17 @@
 .responsive-background{
     background-size: auto;
     background: url("#{resource['images/blue-sky.jpg']}") repeat;
+}
 
+.home-background{
+    background-color: lightblue;
+    background-size: 10px;
 }
 
 .main-header{
-    /*text-shadow: 2px 2px 6px black;*/
+    text-shadow: 2px 2px 10px teal;
     font-size: 36px;
+    color: white;
 }
 
 @media all and (min-width: 900px) {
@@ -95,7 +104,7 @@
 }
 
 body {
-    margin: 30px 30px 30px 30px;
+    margin: 15px 15px 15px 15px;
     font-family: Arial, Helvetica, sans-serif;
 }
 

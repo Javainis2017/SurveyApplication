@@ -6,7 +6,6 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:o="http://omnifaces.org/ui"
       xml:lang="en" lang="en">
@@ -15,157 +14,166 @@
     <h:outputStylesheet name="css/style.css" />
     <title>Home</title>
 </h:head>
-<h:body rendered="#{userController.getUser().getEmail() != null}">
+<h:body rendered="#{userController.getUser().getEmail() != null}" styleClass="home-background">
 <!-- Atvaizduoti kokią vartotojo informaciją bei operacijas-->
-<h1>Welcome, #{userController.getUser().getFirstName()} #{userController.getUser().getLastName()}</h1>
-<h:form enctype="multipart/form-data">
-    <h:commandLink actionListener="#{userController.logout()}" action="index">Log out</h:commandLink><br/>
-    <h:link outcome="change-password">Change password</h:link><br/>
-    <h2>Survey creation</h2>
-    <h:link outcome="survey/new">Create new survey</h:link>
+    <div>
+        <h1>Welcome, #{userController.getUser().getFirstName()} #{userController.getUser().getLastName()}</h1>
+        <p>(#{userController.getUser().getEmail()}) #{userController.getUser().userType.name}</p>
+    </div>
+    <h:form enctype="multipart/form-data">
+        <h:commandLink actionListener="#{userController.logout()}" action="index">Log out</h:commandLink><br/>
+        <h:link outcome="change-password">Change password</h:link><br/>
+        <p:tabView>
+            <p:tab title="Surveys">
+                <h2>Surveys</h2>
+                    <p:dataTable id="surveyTable" var="survey" value="#{userSurveyController.getMySurveys()}"
+                                 selectionMode="single"
+                                 selection="#{userSurveyController.selectedSurvey}"
+                                 rowKey="#{survey.id}"
+                                 styleClass="fieldPanel">
+                        <p:ajax event="rowSelect" update="surveyTable" />
+                        <f:facet name="header">
+                            <p:button outcome="survey/new" value="New survey" icon="fa fa-plus"/>
+                        </f:facet>
+                        <p:column headerText="Title" style="width:25%;text-align: center">
+                            <h:outputText value="#{survey.title}" />
+                        </p:column>
+                        <p:column headerText="Author" styleClass="nameColumn" priority="4">
+                            <h:outputText value="#{survey.author.firstName}" />
+                            <h:outputText value="&#160;" />
+                            <h:outputText value="#{survey.author.lastName}" />
+                        </p:column>
+                        <p:column headerText="URL" style="width:9%;text-align: center" priority="1">
+                            <h:outputLink value="survey/show/#{survey.url}">
+                                Survey
+                            </h:outputLink>
+                        </p:column>
+                        <p:column headerText="Results" style="width:9%;text-align: center" priority="1">
+                            <h:outputLink value="reports/report/#{survey.url}" rendered="#{userSurveyController.canSeeReport(survey)}">
+                                Results
+                            </h:outputLink>
+                        </p:column>
+                        <p:column headerText="Visibility" style="width:10%;text-align: center" priority="4">
+                            <h:outputText value = "#{userSurveyController.getPublicLabel(survey.isPublic)}"/>
+                        </p:column>
+                        <p:column headerText="Edit" style="width:10%;text-align: center" priority="3">
+                            <h:outputLink value="survey/new/#{survey.url}" rendered="#{survey.surveyResults.isEmpty() and userSurveyController.canRemove(survey)}">
+                                Edit
+                            </h:outputLink>
+                        </p:column>
+                        <f:facet name="footer" id="footer">
+                            <p:growl id="growl" showDetail="false" sticky="true" />
+                            <c:if test="#{userSurveyController.selectedSurvey != null}">
+                                <c:if test="#{userSurveyController.canRemove(userSurveyController.selectedSurvey)}">
+                                    <p:commandButton process="surveyTable"
+                                                     update="surveyTable"
+                                                     value="Remove"
+                                                     actionListener="#{surveyController.deleteSurvey(userSurveyController.selectedSurvey.id)}"
+                                                     ajax="true"
+                                                     icon="fa fa-fw fa-remove"/>
+                                </c:if>
+                                <p:commandButton id="generateButton" value="Generate file"
+                                                 actionListener="#{surveyExportController.exportSurvey(userSurveyController.selectedSurvey)}"
+                                                 onclick="PF('exportPoller').start();"
+                                                 update="surveyTable"
+                                                 ajax="true"
+                                                 icon="fa fa-cogs">
+                                </p:commandButton>
+                                <c:if test="#{surveyExportController.timeout and surveyExportController.generatedSurveys.containsKey(userSurveyController.selectedSurvey.url)}">
+                                    <p:commandButton id="exportButton"
+                                                     value="Download .xlsx"
+                                                     actionListener="#{surveyExportController.downloadToUser(userSurveyController.selectedSurvey.url)}"
+                                                     ajax="false"
+                                                     icon="fa fa-fw fa-download">
+                                    </p:commandButton>
+                                </c:if>
 
-    <h2>Survey import and export</h2>
-    <p:growl id="messages" showDetail="true" />
+                            </c:if>
+                        </f:facet>
+                    </p:dataTable>
+                    <p:poll interval="2"
+                            update="surveyTable"
+                            widgetVar="exportPoller"
+                            listener="#{surveyExportController.checkProgress()}"
+                            autoStart="false"
+                            stop="#{surveyExportController.timeout}"
+                            timeout="10000" />
+                <h2>Import from .xlsx</h2>
+                <p:growl id="messages" showDetail="true" />
 
-    <p:fileUpload id="upload" value="#{surveyImportController.uploadedFile}" mode="simple" skinSimple="true"/>
-    <br/>
-    <h:outputText value="&#160;" />
-
-    <p:commandButton value="Submit" ajax="false" actionListener="#{surveyImportController.upload()}"
-                     disabled="false" />
-
-    <h2>My surveys</h2>
-    <p:fieldset legend="Surveys" toggleable="true" collapsed="false" styleClass="fieldPanel">
-        <p:dataTable id="surveyTable" var="survey" value="#{userSurveyController.getMySurveys()}"
-                     selectionMode="single"
-                     selection="#{userSurveyController.selectedSurvey}"
-                     rowKey="#{survey.id}">
-            <p:ajax event="rowSelect" update="surveyTable" />
-            <p:column headerText="Title" style="width:25%;text-align: center">
-                <h:outputText value="#{survey.title}" />
-            </p:column>
-            <p:column headerText="Author" styleClass="nameColumn" priority="4">
-                <h:outputText value="#{survey.author.firstName}" />
+                <p:fileUpload id="upload" value="#{surveyImportController.uploadedFile}" mode="simple" skinSimple="true"/>
+                <br/>
                 <h:outputText value="&#160;" />
-                <h:outputText value="#{survey.author.lastName}" />
-            </p:column>
-            <p:column headerText="URL" style="width:9%;text-align: center" priority="1">
-                <h:outputLink value="survey/show/#{survey.url}">
-                    Survey
-                </h:outputLink>
-            </p:column>
-            <p:column headerText="Results" style="width:9%;text-align: center" priority="1">
-                <h:outputLink value="reports/report/#{survey.url}" rendered="#{userSurveyController.canSeeReport(survey)}">
-                    Results
-                </h:outputLink>
-            </p:column>
-            <p:column headerText="Visibility" style="width:10%;text-align: center" priority="4">
-                <h:outputText value = "#{userSurveyController.getPublicLabel(survey.isPublic)}"/>
-            </p:column>
-            <p:column headerText="Edit" style="width:10%;text-align: center" priority="3">
-                <h:outputLink value="survey/new/#{survey.url}" rendered="#{survey.surveyResults.isEmpty() and userSurveyController.canRemove(survey)}">
-                    Edit
-                </h:outputLink>
-            </p:column>
-            <f:facet name="footer" id="footer">
-                <p:growl id="growl" showDetail="false" sticky="true" />
-                <c:if test="#{userSurveyController.selectedSurvey != null}">
-                    <c:if test="#{userSurveyController.canRemove(userSurveyController.selectedSurvey)}">
-                        <p:commandButton process="surveyTable"
-                                         update="surveyTable"
-                                         value="Remove"
-                                         actionListener="#{surveyController.deleteSurvey(userSurveyController.selectedSurvey.id)}"
-                                         ajax="true"/>
-                    </c:if>
-                    <p:commandButton id="generateButton" value="Generate file"
-                                     actionListener="#{surveyExportController.exportSurvey(userSurveyController.selectedSurvey)}"
-                                     onclick="PF('exportPoller').start();"
-                                     update="surveyTable"
-                                     ajax="true">
-                    </p:commandButton>
-                    <c:if test="#{surveyExportController.timeout and surveyExportController.generatedSurveys.containsKey(userSurveyController.selectedSurvey.url)}">
-                        <p:commandButton id="exportButton"
-                                         value="Download .xlsx"
-                                         actionListener="#{surveyExportController.downloadToUser(userSurveyController.selectedSurvey.url)}"
-                                         ajax="false">
-                        </p:commandButton>
-                    </c:if>
 
-                </c:if>
-            </f:facet>
-        </p:dataTable>
-        <p:poll interval="2"
-                update="surveyTable"
-                widgetVar="exportPoller"
-                listener="#{surveyExportController.checkProgress()}"
-                autoStart="false"
-                stop="#{surveyExportController.timeout}"
-                timeout="10000" />
-    </p:fieldset>
+                <p:commandButton value="Submit" ajax="false" actionListener="#{surveyImportController.upload()}"
+                                 disabled="false" />
 
-    <h:panelGroup rendered="#{userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN}">
-        <h2>User administration</h2>
-        <p:fieldset id="whitelist" legend="Whitelist" toggleable="true" collapsed="true" styleClass="fieldPanel">
-            <p:dataTable id="whitelistTable" var="whitelist" value="#{adminWhitelistController.getAllWhitelist()}">
-                <p:column headerText="Email">
-                    <h:outputText value="#{whitelist.email}" />
-                </p:column>
-                <p:column style="width:110px;text-align: center">
-                    <p:commandButton value="Remove"
-                                     rendered="#{adminWhitelistController.whitelistDAO.findEmail(whitelist.email) != userController.userDAO.emailIsRegistered(whitelist.email)}"
-                                     actionListener="#{adminWhitelistController.removeFromWhitelist(whitelist.email)}"
-                                     ajax="true" update="whitelistTable" >
-                    </p:commandButton>
-                </p:column>
-            </p:dataTable>
-            <p>Whitelist new email</p>
-            <h:panelGrid columns="4">
-                <p:outputLabel for="email" value="E-mail"/>
-                <p:inputText type="email" maxlength="50" id="email" value="#{adminWhitelistController.whitelist.email}"/>
-                <p:message for="email" autoUpdate="true"/>
-                <p:commandButton value="Add to whitelist"
-                                 actionListener="#{adminWhitelistController.whitelistEmail()}"
-                                 ajax="true" update="whitelist"/>
-            </h:panelGrid>
-            <p:messages globalOnly="true" autoUpdate="true"/>
-        </p:fieldset>
+            </p:tab>
+            <p:tab title="Administration" rendered="#{userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN}">
+                <h:panelGroup rendered="#{userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN}">
+                    <p:fieldset id="whitelist" legend="Whitelist" toggleable="true" collapsed="true" styleClass="fieldPanel">
+                        <p:dataTable id="whitelistTable" var="whitelist" value="#{adminWhitelistController.getAllWhitelist()}">
+                            <p:column headerText="Email">
+                                <h:outputText value="#{whitelist.email}" />
+                            </p:column>
+                            <p:column style="width:110px;text-align: center">
+                                <p:commandButton value="Remove"
+                                                 rendered="#{adminWhitelistController.whitelistDAO.findEmail(whitelist.email) != userController.userDAO.emailIsRegistered(whitelist.email)}"
+                                                 actionListener="#{adminWhitelistController.removeFromWhitelist(whitelist.email)}"
+                                                 ajax="true" update="whitelistTable" >
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                        <p>Whitelist new email</p>
+                        <h:panelGrid columns="4">
+                            <p:outputLabel for="email" value="E-mail"/>
+                            <p:inputText type="email" maxlength="50" id="email" value="#{adminWhitelistController.whitelist.email}"/>
+                            <p:message for="email" autoUpdate="true"/>
+                            <p:commandButton value="Add to whitelist"
+                                             actionListener="#{adminWhitelistController.whitelistEmail()}"
+                                             ajax="true" update="whitelist"/>
+                        </h:panelGrid>
+                        <p:messages globalOnly="true" autoUpdate="true"/>
+                    </p:fieldset>
 
-        <p:fieldset legend="User List" toggleable="true" collapsed="true" styleClass="fieldPanel">
-            <p:dataTable id="userList" value="#{adminBlockController.allUser}" var="user">
-                <p:column headerText="Email" styleClass="emailColumn" sortable="true" sortBy="#{user.email}">
-                    <h:outputText value="#{user.email}" />
-                </p:column>
-                <p:column headerText="Name" styleClass="nameColumn">
-                    <h:outputText value="#{user.firstName} " />
-                    <h:outputText value="#{user.lastName}" />
-                </p:column>
-                <p:column headerText="Blocked" styleClass="blockColumn">
-                    <h:outputText value="Yes" rendered="#{user.getBlocked() == true}"/>
-                </p:column>
-                <p:column headerText="Type" styleClass="typeColumn">
-                    <h:outputText value="#{user.userType.name}" />
-                </p:column>
-                <p:column headerText="Change block status">
-                    <p:commandButton
-                        value = "#{adminBlockController.getBlockedButtonLabel(user.getBlocked())}"
-                        rendered="#{user.getEmail() != userController.getUser().getEmail()}"
-                        actionListener="#{adminBlockController.changeUserBlockStatus(user.email)}"
-                        ajax="true" update="userList"
-                        styleClass="buttonColumn dynamicButton"/>
-                </p:column>
-                <p:column headerText="Change User type">
-                    <p:commandButton
-                        value="#{adminTypeController.getTypeButtonLabel(user.userType.id)}"
-                        rendered="#{user.getEmail() != userController.getUser().getEmail()}"
-                        actionListener="#{adminTypeController.toggleUserType(user.email)}"
-                        ajax="true" update="userList"
-                        styleClass="buttonColumn"/>
-                </p:column>
-            </p:dataTable>
-            <p:messages globalOnly="true"/>
-        </p:fieldset>
-    </h:panelGroup>
-</h:form>
+                    <p:fieldset legend="User List" toggleable="true" collapsed="true" styleClass="fieldPanel">
+                        <p:dataTable id="userList" value="#{adminBlockController.allUser}" var="user">
+                            <p:column headerText="Email" styleClass="emailColumn" sortable="true" sortBy="#{user.email}">
+                                <h:outputText value="#{user.email}" />
+                            </p:column>
+                            <p:column headerText="Name" styleClass="nameColumn">
+                                <h:outputText value="#{user.firstName} " />
+                                <h:outputText value="#{user.lastName}" />
+                            </p:column>
+                            <p:column headerText="Blocked" styleClass="blockColumn">
+                                <h:outputText value="Yes" rendered="#{user.getBlocked() == true}"/>
+                            </p:column>
+                            <p:column headerText="Type" styleClass="typeColumn">
+                                <h:outputText value="#{user.userType.name}" />
+                            </p:column>
+                            <p:column headerText="Change block status">
+                                <p:commandButton
+                                    value = "#{adminBlockController.getBlockedButtonLabel(user.getBlocked())}"
+                                    rendered="#{user.getEmail() != userController.getUser().getEmail()}"
+                                    actionListener="#{adminBlockController.changeUserBlockStatus(user.email)}"
+                                    ajax="true" update="userList"
+                                    styleClass="buttonColumn dynamicButton"/>
+                            </p:column>
+                            <p:column headerText="Change User type">
+                                <p:commandButton
+                                    value="#{adminTypeController.getTypeButtonLabel(user.userType.id)}"
+                                    rendered="#{user.getEmail() != userController.getUser().getEmail()}"
+                                    actionListener="#{adminTypeController.toggleUserType(user.email)}"
+                                    ajax="true" update="userList"
+                                    styleClass="buttonColumn"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:messages globalOnly="true"/>
+                    </p:fieldset>
+                </h:panelGroup>
+            </p:tab>
+        </p:tabView>
+    </h:form>
 </h:body>
 <c:if test="#{userController.getUser().getEmail() == null}">
     <body>

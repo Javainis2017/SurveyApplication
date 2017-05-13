@@ -3,36 +3,12 @@
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
 <h:head>
     <h:outputStylesheet name="css/style.css" />
-    <title>User Login</title>
+    <title>DELETE THIS PAGE</title>
 </h:head>
 <h:body styleClass="center">
-    <h1>User Login</h1>
-    <h2>Login existing user</h2>
-    <h:form>
-        <table>
-            <tr>
-                <td>
-                    <h:panelGrid columns="3">
-                        <p:outputLabel for="email" value="E-mail"/>
-                        <p:inputText type="email" id="email" value="#{userController.user.email}"/>
-                        <p:message for="email"/>
-
-                        <p:outputLabel for="password" value="Password"/>
-                        <p:inputText type="password" id="password" value="#{userController.passwordHash}"/>
-                        <p:message for="password"/>
-                    </h:panelGrid>
-                </td>
-            </tr>
-        </table>
-        <p:commandButton value="Log in"
-                         action="#{userController.login()}"
-                         ajax="false"/>
-        <p:messages globalOnly="true"/>
-        <h:link outcome="forgot-password">Forgot your password?</h:link><br/>
-    </h:form>
+        <h1>DELETE THIS PAGE</h1>
 </h:body>
 </html>
