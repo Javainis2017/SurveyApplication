@@ -6,7 +6,8 @@
     <p:panelGrid id="newIntervalQuestionGrid" columns="2">
         <p:outputLabel for="intervalText" value="Question text"/>
         <p:column>
-            <p:inputTextarea id="intervalText" required="#{param['survey:createIntervalQuestion'] != null}" value="#{intervalQuestionController.question.text}"
+            <p:inputTextarea id="intervalText" required="#{param['survey:createIntervalQuestion'] != null}"
+                             value="#{intervalQuestionController.text}"
                              maxlength="300" rows="4" cols="80"
                              placeholder="Question text"/>
             <p:message for="intervalText"/>
@@ -38,7 +39,7 @@
 
         <p:outputLabel for="requiredInterval" value="Required"/>
         <p:column>
-            <p:selectBooleanCheckbox id="requiredInterval" value="#{intervalQuestionController.question.required}"/>
+            <p:selectBooleanCheckbox id="requiredInterval" value="#{intervalQuestionController.required}"/>
             <p:message for="requiredInterval"/>
         </p:column>
     </p:panelGrid>
@@ -46,6 +47,5 @@
     <p:commandButton value="Save question"
                      id="createIntervalQuestion"
                      action="#{intervalQuestionController.saveQuestion}"
-                     ajax="true"
                      update="survey"/>
 </ui:composition>

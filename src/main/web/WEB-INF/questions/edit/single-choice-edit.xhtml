@@ -8,7 +8,8 @@
     <p:panelGrid id="newSingleChoiceQuestionGrid" columns="2">
         <p:outputLabel for="singleText" value="Question text"/>
         <p:column>
-            <p:inputTextarea id="singleText" required="#{param['survey:createSingleChoiceQuestion'] != null}" value="#{singleChoiceQuestionController.question.text}"
+            <p:inputTextarea id="singleText" required="#{param['survey:createSingleChoiceQuestion'] != null}"
+                             value="#{singleChoiceQuestionController.text}"
                              maxlength="300" rows="4" cols="80"
                              placeholder="Question text"/>
             <p:message for="singleText"/>
@@ -16,22 +17,21 @@
 
         <p:outputLabel for="requiredSingle" value="Required"/>
         <p:column>
-            <p:selectBooleanCheckbox id="requiredSingle" value="#{singleChoiceQuestionController.question.required}"/>
+            <p:selectBooleanCheckbox id="requiredSingle"
+                                     value="#{singleChoiceQuestionController.required}"/>
             <p:message for="requiredSingle"/>
         </p:column>
     </p:panelGrid>
-    <p:panelGrid columns="1" rendered="#{not empty singleChoiceQuestionController.question.choices}">
-        <ui:repeat value="#{singleChoiceQuestionController.question.choices}" var="choice">
+    <p:panelGrid columns="1" rendered="#{not empty singleChoiceQuestionController.choices}">
+        <ui:repeat value="#{singleChoiceQuestionController.choices}" var="choice">
             <h:outputText>#{choice.text}</h:outputText>
             <br/>
             <p:commandButton actionListener="#{singleChoiceQuestionController.removeChoice(choice)}"
                              value="Remove choice"
                              immediate="true"
-                             ajax="true"
                              update="survey"/>
             <p:commandButton actionListener="#{singleChoiceQuestionController.editChoice(choice)}"
                              value="Edit choice"
-                             ajax="true"
                              update="survey"/>
             <br/>
         </ui:repeat>

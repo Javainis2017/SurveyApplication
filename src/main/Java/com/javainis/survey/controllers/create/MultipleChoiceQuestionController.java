@@ -12,6 +12,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Named
 @ViewScoped
@@ -21,6 +23,18 @@ public class MultipleChoiceQuestionController implements Serializable {
 
     @Inject
     private NewSurveyController surveyController;
+
+    @Getter
+    @Setter
+    private String text;
+
+    @Getter
+    @Setter
+    private Boolean required;
+
+    @Getter
+    @Setter
+    private List<Choice> choices = new ArrayList<>();
 
     @Getter
     private Choice choice = new Choice();
@@ -45,25 +59,21 @@ public class MultipleChoiceQuestionController implements Serializable {
         edit = true;
     }
 
+    public void removeChoice(Choice choice){
+        choices.remove(choice);
+    }
+
     public void cancelEdit(){
         edit = false;
-        choice = new Choice();
         choiceText = "";
-    }
-
-    public void addChoice(Choice choice){
-        question.getChoices().add(choice);
-    }
-
-    public void removeChoice(Choice choice){
-        question.getChoices().remove(choice);
+        choice = new Choice();
     }
 
     public void saveChoice()
     {
         /* Check for duplicate choice text */
         int choiceCount = 0;
-        for (Choice choice : question.getChoices()){
+        for (Choice choice : choices){
             if(choice.getText().equals(choiceText)){
                 choiceCount++;
             }
@@ -76,7 +86,7 @@ public class MultipleChoiceQuestionController implements Serializable {
         if(!edit) {
             choice.setText(choiceText);
             choice.setQuestion(question);
-            addChoice(choice);
+            choices.add(choice);
         }else{
             choice.setText(choiceText);
         }
@@ -87,10 +97,13 @@ public class MultipleChoiceQuestionController implements Serializable {
 
     public void saveQuestion(){
         // Validate
-        if(question.getChoices().isEmpty()){
+        if(choices.isEmpty()){
             FacesContext.getCurrentInstance().addMessage("multipleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_INFO, "Question must have at least 1 choice.", "Question must have at least 1 choice."));
         }else {
             // Save
+            question.setText(text);
+            question.setRequired(required);
+            question.setChoices(choices);
             surveyController.saveQuestion(question);
             // Destroy this bean
             FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove("multipleChoiceQuestionController");
@@ -102,9 +115,18 @@ public class MultipleChoiceQuestionController implements Serializable {
         // Check if edit question
         if(surveyController.getSurveyCreationStep() == NewSurveyController.SURVEY_CREATION_STEP.EDIT_QUESTION){
             question = (MultipleChoiceQuestion) surveyController.getQuestionToEdit();
-        }else if(surveyController.getSurveyCreationStep() == NewSurveyController.SURVEY_CREATION_STEP.NEW_QUESTION){
-            question = new MultipleChoiceQuestion();
-            choice = new Choice();
+            text = question.getText();
+            required = question.getRequired();
+            choices = new ArrayList<>();
+            // Copy choices
+            for(Choice choice : question.getChoices()){
+                Choice choiceCopy = new Choice();
+                choiceCopy.setText(choice.getText());
+                choiceCopy.setId(choice.getId());
+                choiceCopy.setOptLockVersion(choice.getOptLockVersion());
+                choiceCopy.setQuestion(question);
+                choices.add(choiceCopy);
+            }
         }
     }
 }

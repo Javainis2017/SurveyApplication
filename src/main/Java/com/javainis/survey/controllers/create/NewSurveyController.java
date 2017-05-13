@@ -17,6 +17,7 @@ import org.omnifaces.util.Messages;
 import org.primefaces.context.RequestContext;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -177,6 +178,8 @@ public class NewSurveyController implements Serializable{
     public void cancel(){
         surveyCreationStep = SURVEY_CREATION_STEP.QUESTION_TYPE_CHOICE;
         questionToEdit = null;
+        FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove("singleChoiceQuestionController");
+        FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove("multipleChoiceQuestionController");
     }
 
     public void removeQuestion(Question question){

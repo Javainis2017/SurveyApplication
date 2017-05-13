@@ -8,29 +8,28 @@
     <p:panelGrid id="newMultiChoiceQuestionGrid" columns="2">
         <p:outputLabel for="multiText" value="Question text"/>
         <p:column>
-            <p:inputTextarea id="multiText" required="#{param['survey:createMultiChoiceQuestion'] != null}" value="#{multipleChoiceQuestionController.question.text}"
+            <p:inputTextarea id="multiText" required="#{param['survey:createMultiChoiceQuestion'] != null}"
+                             value="#{multipleChoiceQuestionController.text}"
                              maxlength="300" rows="4" cols="80"
                              placeholder="Question text"/>
             <p:message for="multiText"/>
         </p:column>
         <p:outputLabel for="requiredMulti" value="Required"/>
         <p:column>
-            <p:selectBooleanCheckbox id="requiredMulti" value="#{multipleChoiceQuestionController.question.required}"/>
+            <p:selectBooleanCheckbox id="requiredMulti" value="#{multipleChoiceQuestionController.required}"/>
             <p:message for="requiredMulti"/>
         </p:column>
     </p:panelGrid>
-    <p:panelGrid columns="1" rendered="#{not empty multipleChoiceQuestionController.question.choices}">
-        <ui:repeat id="choiceRender"  value="#{multipleChoiceQuestionController.question.choices}" var="choice">
+    <p:panelGrid columns="1" rendered="#{not empty multipleChoiceQuestionController.choices}">
+        <ui:repeat id="choiceRender"  value="#{multipleChoiceQuestionController.choices}" var="choice">
             <h:outputText>#{choice.text}</h:outputText>
             <br/>
             <p:commandButton actionListener="#{multipleChoiceQuestionController.removeChoice(choice)}"
                              value="Remove choice"
                              immediate="true"
-                             ajax="true"
                              update="survey"/>
             <p:commandButton actionListener="#{multipleChoiceQuestionController.editChoice(choice)}"
                              value="Edit choice"
-                             ajax="true"
                              update="survey"/>
             <br/>
         </ui:repeat>
@@ -44,12 +43,10 @@
         <p:commandButton value="#{multipleChoiceQuestionController.getSaveButtonName()}"
                          id="saveMultiChoice"
                          action="#{multipleChoiceQuestionController.saveChoice}"
-                         ajax="true"
                          update="survey"/>
         <p:commandButton value="Cancel"
                          id="cancelEditMultiChoice"
                          action="#{multipleChoiceQuestionController.cancelEdit}"
-                         ajax="true"
                          update="survey"
                          rendered="#{multipleChoiceQuestionController.edit}"/>
     </p:panelGrid>
@@ -58,6 +55,5 @@
     <p:commandButton value="Save question"
                      id="createMultiChoiceQuestion"
                      action="#{multipleChoiceQuestionController.saveQuestion}"
-                     ajax="true"
                      update="survey"/>
 </ui:composition>

@@ -22,6 +22,14 @@ public class IntervalQuestionController {
 
     @Getter
     @Setter
+    private String text;
+
+    @Getter
+    @Setter
+    private Boolean required;
+
+    @Getter
+    @Setter
     private int minValue;
 
     @Getter
@@ -30,6 +38,8 @@ public class IntervalQuestionController {
 
     public void saveQuestion(){
         if(minValue <= maxValue){
+            question.setText(text);
+            question.setRequired(required);
             question.setMin(minValue);
             question.setMax(maxValue);
             surveyController.saveQuestion(question);
@@ -42,6 +52,8 @@ public class IntervalQuestionController {
         // Check if edit question
         if(surveyController.getSurveyCreationStep() == NewSurveyController.SURVEY_CREATION_STEP.EDIT_QUESTION){
             question = (IntervalQuestion) surveyController.getQuestionToEdit();
+            text = question.getText();
+            required = question.getRequired();
             minValue = question.getMin();
             maxValue = question.getMax();
         }

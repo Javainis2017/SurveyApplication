@@ -8,7 +8,8 @@
     <p:panelGrid id="newTextQuestionGrid" columns="2">
         <p:outputLabel for="text" value="Question text"/>
         <p:column>
-            <p:inputTextarea id="text" required="#{param['survey:createTextQuestion'] != null}" value="#{textQuestionController.question.text}"
+            <p:inputTextarea id="text" required="#{param['survey:createTextQuestion'] != null}"
+                             value="#{textQuestionController.text}"
                              maxlength="300" rows="4" cols="80"
                              placeholder="Question text"/>
             <p:message for="text"/>
@@ -16,12 +17,12 @@
 
         <p:outputLabel for="requiredText" value="Required"/>
         <p:column>
-            <p:selectBooleanCheckbox id="requiredText" value="#{textQuestionController.question.required}"/>
+            <p:selectBooleanCheckbox id="requiredText" value="#{textQuestionController.required}"/>
             <p:message for="requiredText"/>
         </p:column>
     </p:panelGrid>
     <p:commandButton value="Save question"
                      id="createTextQuestion"
-                     action="#{newSurveyController.saveQuestion(textQuestionController.question)}"
+                     action="#{textQuestionController.saveQuestion()}"
                      update="survey"/>
 </ui:composition>
