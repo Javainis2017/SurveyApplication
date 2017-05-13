@@ -41,9 +41,6 @@ public class XLSXDataExporter implements DataExporter, Serializable{
     //Isimena kurioj Excel dokumento eiluteje dabar yra
     private int answerRowNumber = 0;
 
-    //Reikia kad isimintu koks answer questionNumber
-    private Map<Question, Integer> questionNumberMap;
-
     //Reikia kad isimintu koks answer choice numeris (Single ir multi choice klausimams)
     private Map<Choice, Integer> choiceNumberMap;
 
@@ -106,23 +103,6 @@ public class XLSXDataExporter implements DataExporter, Serializable{
         return new AsyncResult<>(null);
     }
 
-    public void exportAnswers(List<SurveyResult> answers, OutputStream destination)
-    {
-        if (questionNumberMap == null && choiceNumberMap == null)
-        {
-            return;
-        }
-        XSSFWorkbook wb = new XSSFWorkbook();
-        exportAnswers(answers, wb);
-        try {
-            wb.write(destination);
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-        }
-    }
-
     @Transactional
     private void exportSurveyQuestions(Survey survey, XSSFWorkbook wb)
     {
@@ -132,15 +112,13 @@ public class XLSXDataExporter implements DataExporter, Serializable{
 
         //Hibernate.initialize(survey.getQuestions());
         List<Question> surveyQuestions = survey.getQuestions();
-        questionNumberMap = new HashMap<>();
         choiceNumberMap = new HashMap<>();
         for(int i = 0; i < surveyQuestions.size(); i++)
         {
             String questionType;
             Question question = surveyQuestions.get(i);
             Hibernate.initialize(question);
-            questionNumberMap.put(question, i+1);
-            XSSFRow row = surveySheet.createRow(i+1);
+            XSSFRow row = surveySheet.createRow(question.getPosition());
 
             //Question number
             row.createCell(0).setCellValue(i+1);
@@ -220,7 +198,7 @@ public class XLSXDataExporter implements DataExporter, Serializable{
             answerRow.createCell(0).setCellValue(answerId);
 
             //questionNumber
-            answerRow.createCell(1).setCellValue(questionNumberMap.get(answer.getQuestion()));
+            answerRow.createCell(1).setCellValue(answer.getQuestion().getPosition());
             if (answer instanceof TextAnswer)
             {
                 String text = ((TextAnswer) answer).getText();
