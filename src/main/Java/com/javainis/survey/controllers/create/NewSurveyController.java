@@ -8,6 +8,7 @@ import com.javainis.survey.entities.SurveyPage;
 import com.javainis.user_management.controllers.UserController;
 import com.javainis.user_management.entities.User;
 import com.javainis.utility.ExpirationChecker;
+import com.javainis.utility.Logs.Logged;
 import com.javainis.utility.RandomStringGenerator;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.*;
 
+
 @Named
 @ViewScoped
 public class NewSurveyController implements Serializable{
@@ -41,6 +43,7 @@ public class NewSurveyController implements Serializable{
     private QuestionDAO questionDAO;
 
     @Inject
+    @Getter
     private UserController userController;
 
     @Inject
@@ -292,6 +295,7 @@ public class NewSurveyController implements Serializable{
     }
 
     @Transactional
+    @Logged
     public String saveSurvey(){
         /* Check if survey has questions */
         if(survey.getQuestions().isEmpty()){

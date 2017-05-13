@@ -11,4 +11,7 @@
         <class>com.javainis.reports.controllers.MultiChoiceChartController</class>
         <class>com.javainis.reports.controllers.SingleChoiceChartController</class>
     </alternatives>
+    <interceptors>
+        <class>com.javainis.utility.Logs.LoggedInterceptor</class>
+    </interceptors>
 </beans>
