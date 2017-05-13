@@ -12,7 +12,6 @@ import javax.inject.Named;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +44,9 @@ public class SurveyController implements Serializable{
     private Survey survey;
 
     @Getter
+    private SurveyPage currentPage;
+
+    @Getter
     private Map<Question, Answer> answers = new HashMap<>();
 
     @PostConstruct
@@ -61,7 +63,7 @@ public class SurveyController implements Serializable{
             return;
         }
 
-        //Init answer objects
+        // Init answer objects
         for(Question question : survey.getQuestions()){
             if(question.getClass().getSimpleName().equals("FreeTextQuestion")){
                 Answer answer = new TextAnswer();
@@ -72,7 +74,6 @@ public class SurveyController implements Serializable{
                 answer.setQuestion(question);
                 answers.put(question, answer);
             }else if(question.getClass().getSimpleName().equals("SingleChoiceQuestion")){
-
                 Answer answer = new SingleChoiceAnswer();
                 answer.setQuestion(question);
                 answers.put(question, answer);
@@ -82,6 +83,14 @@ public class SurveyController implements Serializable{
                 answers.put(question, answer);
             }
         }
+        currentPage = survey.getPages().get(0);
+    }
+
+    public void goToPage(int number){
+        if(number < 1 || number > survey.getPages().size()){
+            return;
+        }
+        currentPage = survey.getPages().get(number - 1);
     }
 
     @Transactional
@@ -90,8 +99,7 @@ public class SurveyController implements Serializable{
         SurveyResult result = new SurveyResult();
         result.setSurvey(survey);
 
-        // Validation?
-
+        // Validation
         List<Answer> answerList = new ArrayList<>(answers.values());
         List<Answer> emptyAnswers = new ArrayList<>();
         for(Answer answer : answerList){
@@ -115,16 +123,17 @@ public class SurveyController implements Serializable{
 
         survey = surveyDAO.findById(id);
         try {
-            for (Question q: questions)
-            {
+            for (Question q: questions){
                 Long questionId = q.getId();
                 List<Answer> answers = answerDAO.findByQuestionId(questionId);
-                for (Answer a: answers)
+                for (Answer a: answers){
                     answerDAO.delete(a);
+                }
 
                 List<Choice> choices = choiceDAO.findByQuestionId(questionId);
-                for (Choice c: choices)
+                for (Choice c: choices){
                     choiceDAO.delete(c);
+                }
 
                 questionDAO.delete(q);
             }
@@ -133,6 +142,5 @@ public class SurveyController implements Serializable{
             e.printStackTrace();
         }
         return null;
-        //return "/home?faces-redirect=true";
     }
 }

@@ -6,16 +6,12 @@
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
         xmlns:c="http://java.sun.com/jsp/jstl/core"
         xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:outputText>#{question.text}</h:outputText>
-    <c:if test="#{question.required}">
-        <h:outputText> (Required)</h:outputText>
-        <br/>
-    </c:if>
+    <!--@elvariable id="question" type="com.javainis.survey.entities.SingleChoiceQuestion"-->
     <h:panelGrid columns="2">
         <h:selectOneRadio id="q#{question.id}"
                           value="#{surveyController.answers[question].choice}"
                           layout="pageDirection"
-                          required="#{question.required}"
+                          required="#{question.required and (param['survey:submit'] != null or param['survey:next'] != null)}"
                           requiredMessage="This question is required."
                           converter="omnifaces.SelectItemsConverter">
             <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}" itemValue="#{choice}"/>
