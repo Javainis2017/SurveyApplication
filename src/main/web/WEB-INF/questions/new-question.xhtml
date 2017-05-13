@@ -5,18 +5,25 @@
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <!--@elvariable id="page" type="com.javainis.survey.entities.SurveyPage"-->
-    <h4>New question</h4>
-    <p:commandButton action="#{newSurveyController.createQuestion('text', page)}"
-                     value="New text question"
-                     update="survey"/>
-    <p:commandButton action="#{newSurveyController.createQuestion('interval', page)}"
-                     value="New interval question"
-                     update="survey"/>
-    <p:commandButton action="#{newSurveyController.createQuestion('single-choice', page)}"
-                     value="New single choice question"
-                     update="survey"/>
-    <p:commandButton action="#{newSurveyController.createQuestion('multi-choice', page)}"
-                     value="New multi choice question"
-                     update="survey"/>
+    <br/>
+    <p:commandButton id="newQ#{page.number}" value="New question" type="button" icon="ui-icon-extlink"/>
+    <p:menu overlay="true" trigger="newQ#{page.number}" my="left top" at="left bottom">
+            <p:menuitem value="Free text"
+                        action="#{newSurveyController.createQuestion('text', page)}"
+                        update="survey"
+                        icon="fa fa-fw fa-edit" />
+            <p:menuitem value="Interval"
+                        action="#{newSurveyController.createQuestion('interval', page)}"
+                        update="survey"
+                        icon="fa fa-fw  fa-tasks" />
+            <p:menuitem value="Single choice"
+                        action="#{newSurveyController.createQuestion('single-choice', page)}"
+                        update="survey"
+                        icon="fa fa-fw fa-dot-circle-o" />
+            <p:menuitem value="Multi choice"
+                        action="#{newSurveyController.createQuestion('multi-choice', page)}"
+                        update="survey"
+                        icon="fa fa-fw fa-check-square-o" />
+    </p:menu>
     <br/>
 </ui:composition>
