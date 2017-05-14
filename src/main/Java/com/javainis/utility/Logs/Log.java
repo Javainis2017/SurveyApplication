@@ -15,8 +15,7 @@ import java.sql.Timestamp;
 @Table(name = "logs")
 @Getter
 @Setter
-//@EqualsAndHashCode(of = "")
-public class Logs
+public class Log
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +29,10 @@ public class Logs
     @Size(max = 80)
     @Column(name = "survey_name")
     private String surveyName;
+
+    @JoinColumn(name = "survey_id", referencedColumnName = "id")
+    @ManyToOne
+    private Survey survey;
 
     @Size(max = 10)
     @Column(name = "rights")

@@ -671,9 +671,9 @@ group=3</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>560</x>
+      <x>552</x>
       <y>32</y>
-      <w>688</w>
+      <w>696</w>
       <h>232</h>
     </coordinates>
     <panel_attributes>api
@@ -742,5 +742,32 @@ m2=-choices</panel_attributes>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m2=-choices</panel_attributes>
     <additional_attributes>70.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>384</x>
+      <y>432</y>
+      <w>176</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>TextSimpleController
+--
+--
++getTemplateName(): String
++setQuestion(Question: question)
++generateReportAsync(): Future</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>392</x>
+      <y>200</y>
+      <w>192</w>
+      <h>248</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>220.0;10.0;10.0;10.0;10.0;290.0</additional_attributes>
   </element>
 </diagram>

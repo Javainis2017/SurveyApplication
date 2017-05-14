@@ -5,12 +5,12 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 @ApplicationScoped
-public class LogsDAO {
+public class LogDAO {
 
     @Inject
     private EntityManager manager;
 
-    public void createLog(Logs log){
+    public void createLog(Log log){
         manager.persist(log);
     }
 }
