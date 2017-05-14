@@ -61,6 +61,11 @@
                                 Edit
                             </h:outputLink>
                         </p:column>
+                        <p:column headerText="Edit" style="width:10%;text-align: center" priority="3">
+                            <h:outputLink value="survey/new/#{survey.url}" rendered="#{survey.surveyResults.isEmpty() and userSurveyController.canRemove(survey)}">
+                                Edit
+                            </h:outputLink>
+                        </p:column>
                         <f:facet name="footer" id="footer">
                             <p:growl id="growl" showDetail="false" sticky="true" />
                             <c:if test="#{userSurveyController.selectedSurvey != null}">
@@ -87,7 +92,14 @@
                                                      icon="fa fa-fw fa-download">
                                     </p:commandButton>
                                 </c:if>
-
+                                <p:commandButton id="sendButton"
+                                                 value="Send survey url"
+                                                 actionListener="#{mailExpirationController.doPost('Survey url', 'Survey url', 'survey/show/', userSurveyController.selectedSurvey.url)}"
+                                                 ajax="true"
+                                                 icon="fa fa-cogs">
+                                </p:commandButton>
+                                <p:inputText id="sendToEmail" placeholder="Email" value="#{mailExpirationController.email}"/>
+                                <p:message for="sendToEmail"/>
                             </c:if>
                         </f:facet>
                     </p:dataTable>

@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @NamedQueries({
         @NamedQuery(name = "MailExpiration.findUrl", query = "SELECT u FROM MailExpiration u WHERE u.url = :url"),
         @NamedQuery(name = "MailExpiration.findAll", query = "SELECT u FROM MailExpiration u"),
-        @NamedQuery(name = "MailExpiration.remove", query = "DELETE FROM MailExpiration u WHERE u.user = :user"),
+        @NamedQuery(name = "MailExpiration.remove", query = "DELETE FROM MailExpiration u WHERE u.user = :user AND u.mailType = :mailType"),
         @NamedQuery(name = "MailExpiration.existsByUrl", query = "SELECT COUNT(s) FROM MailExpiration s WHERE s.url = :url ")
 })
 
@@ -30,8 +30,11 @@ public class MailExpiration {
     private String url;
 
     @Column(name = "expiration_date")
-    @NotNull
     private Timestamp expirationDate;
+
+    @Column(name = "mail_type")
+    @NotNull
+    private int mailType;
 
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne

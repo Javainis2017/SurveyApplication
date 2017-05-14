@@ -19,10 +19,11 @@ public class MailExpirationDAO
         manager.persist(mailExpiration);
     }
 
-    public int removeFromMailExpiration(User user)
+    public int removeFromMailExpiration(User user, int mailType)
     {
         return manager.createNamedQuery("MailExpiration.remove")
                 .setParameter("user", user)
+                .setParameter("mailType", mailType)
                 .executeUpdate();
     }
 

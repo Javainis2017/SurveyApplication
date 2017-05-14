@@ -105,7 +105,8 @@ CREATE TABLE IF NOT EXISTS answer
 CREATE TABLE IF NOT EXISTS mail_expiration
 (
 	id											BIGSERIAL PRIMARY KEY,
-	user_id									BIGINT NOT NULL,
+	user_id									BIGINT,
+	mail_type								INTEGER NOT NULL,
 	url										  CHAR(32) NOT NULL,
 	expiration_date					TIMESTAMP,
 	opt_lock_version 				INTEGER,
@@ -159,6 +160,12 @@ ALTER TABLE answer ADD FOREIGN KEY (choice_id) REFERENCES choice(id);
 
 ALTER TABLE mail_expiration DROP COLUMN IF EXISTS expiration_date;
 ALTER TABLE mail_expiration ADD COLUMN IF NOT EXISTS expiration_date TIMESTAMP;
+
+ALTER TABLE mail_expiration DROP COLUMN IF EXISTS user_id;
+ALTER TABLE mail_expiration ADD COLUMN IF NOT EXISTS user_id BIGINT;
+
+ALTER TABLE mail_expiration ADD COLUMN IF NOT EXISTS mail_type INTEGER;
+
 ALTER TABLE survey ADD COLUMN IF NOT EXISTS expiration_time TIMESTAMP;
 ALTER TABLE survey ADD COLUMN IF NOT EXISTS public	BOOLEAN DEFAULT TRUE;
 
