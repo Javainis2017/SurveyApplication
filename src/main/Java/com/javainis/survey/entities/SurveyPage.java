@@ -30,7 +30,7 @@ public class SurveyPage {
     @ManyToOne
     private Survey survey;
 
-    @OneToMany(mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "page", fetch = FetchType.EAGER)
     @OrderBy("position ASC")
     private List<Question> questions = new ArrayList<>();
 }
