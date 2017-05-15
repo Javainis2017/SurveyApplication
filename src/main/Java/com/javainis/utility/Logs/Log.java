@@ -30,9 +30,9 @@ public class Log
     @Column(name = "survey_name")
     private String surveyName;
 
-    @JoinColumn(name = "survey_id", referencedColumnName = "id")
-    @ManyToOne
-    private Survey survey;
+    @Size(max = 50)
+    @Column(name = "user_email")
+    private String userEmail;
 
     @Size(max = 10)
     @Column(name = "rights")
