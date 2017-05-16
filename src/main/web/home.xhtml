@@ -14,18 +14,21 @@
     <h:outputStylesheet name="css/style.css" />
     <title>Home</title>
 </h:head>
-<h:body rendered="#{userController.getUser().getEmail() != null}" styleClass="home-background">
+<h:body rendered="#{userController.getUser().getEmail() != null}" styleClass="large-page home-body">
 <!-- Atvaizduoti kokią vartotojo informaciją bei operacijas-->
-    <div>
-        <h1>Welcome, #{userController.getUser().getFirstName()} #{userController.getUser().getLastName()}</h1>
-        <p>(#{userController.getUser().getEmail()}) #{userController.getUser().userType.name}</p>
-    </div>
     <h:form enctype="multipart/form-data">
-        <h:commandLink actionListener="#{userController.logout()}" action="index">Log out</h:commandLink><br/>
-        <h:link outcome="change-password">Change password</h:link><br/>
-        <p:tabView>
-            <p:tab title="Surveys">
-                <h2>Surveys</h2>
+    <div class="fill right">
+        <h1 class="main-header center large">Survey Application</h1>
+        <h2 class="main-header">Welcome, #{userController.getUser().getFirstName()} #{userController.getUser().getLastName()}</h2>
+        <p class="main-header">(#{userController.getUser().getEmail()}) #{userController.getUser().userType.name}</p>
+        <p:commandButton actionListener="#{userController.logout()}" value="Log out" action="index" />
+        <p:button outcome="change-password" value="Change password" />
+    </div>
+        <br/>
+        <br/>
+        <p:tabView style="background: transparent;">
+            <p:tab title="Surveys" >
+                <h3>Surveys</h3>
                     <p:dataTable id="surveyTable" var="survey" value="#{userSurveyController.getMySurveys()}"
                                  selectionMode="single"
                                  selection="#{userSurveyController.selectedSurvey}"
@@ -55,11 +58,6 @@
                         </p:column>
                         <p:column headerText="Visibility" style="width:10%;text-align: center" priority="4">
                             <h:outputText value = "#{userSurveyController.getPublicLabel(survey.isPublic)}"/>
-                        </p:column>
-                        <p:column headerText="Edit" style="width:10%;text-align: center" priority="3">
-                            <h:outputLink value="survey/new/#{survey.url}" rendered="#{survey.surveyResults.isEmpty() and userSurveyController.canRemove(survey)}">
-                                Edit
-                            </h:outputLink>
                         </p:column>
                         <p:column headerText="Edit" style="width:10%;text-align: center" priority="3">
                             <h:outputLink value="survey/new/#{survey.url}" rendered="#{survey.surveyResults.isEmpty() and userSurveyController.canRemove(survey)}">
@@ -96,7 +94,7 @@
                                                  value="Send survey url"
                                                  actionListener="#{mailExpirationController.doPost('Survey url', 'Survey url', 'survey/show/', userSurveyController.selectedSurvey.url)}"
                                                  ajax="true"
-                                                 icon="fa fa-cogs">
+                                                 icon="fa fa-mail-forward">
                                 </p:commandButton>
                                 <p:inputText id="sendToEmail" placeholder="Email" value="#{mailExpirationController.email}"/>
                                 <p:message for="sendToEmail"/>
@@ -110,7 +108,7 @@
                             autoStart="false"
                             stop="#{surveyExportController.timeout}"
                             timeout="10000" />
-                <h2>Import from .xlsx</h2>
+                <h3>Import from .xlsx</h3>
                 <p:growl id="messages" showDetail="true" />
 
                 <p:fileUpload id="upload" value="#{surveyImportController.uploadedFile}" mode="simple" skinSimple="true"/>
@@ -121,68 +119,63 @@
                                  disabled="false" />
 
             </p:tab>
-            <p:tab title="Administration" rendered="#{userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN}">
-                <h:panelGroup rendered="#{userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN}">
-                    <p:fieldset id="whitelist" legend="Whitelist" toggleable="true" collapsed="true" styleClass="fieldPanel">
-                        <p:dataTable id="whitelistTable" var="whitelist" value="#{adminWhitelistController.getAllWhitelist()}">
-                            <p:column headerText="Email">
-                                <h:outputText value="#{whitelist.email}" />
-                            </p:column>
-                            <p:column style="width:110px;text-align: center">
-                                <p:commandButton value="Remove"
-                                                 rendered="#{adminWhitelistController.whitelistDAO.findEmail(whitelist.email) != userController.userDAO.emailIsRegistered(whitelist.email)}"
-                                                 actionListener="#{adminWhitelistController.removeFromWhitelist(whitelist.email)}"
-                                                 ajax="true" update="whitelistTable" >
-                                </p:commandButton>
-                            </p:column>
-                        </p:dataTable>
-                        <p>Whitelist new email</p>
-                        <h:panelGrid columns="4">
-                            <p:outputLabel for="email" value="E-mail"/>
-                            <p:inputText type="email" maxlength="50" id="email" value="#{adminWhitelistController.whitelist.email}"/>
-                            <p:message for="email" autoUpdate="true"/>
-                            <p:commandButton value="Add to whitelist"
-                                             actionListener="#{adminWhitelistController.whitelistEmail()}"
-                                             ajax="true" update="whitelist"/>
-                        </h:panelGrid>
-                        <p:messages globalOnly="true" autoUpdate="true"/>
-                    </p:fieldset>
-
-                    <p:fieldset legend="User List" toggleable="true" collapsed="true" styleClass="fieldPanel">
-                        <p:dataTable id="userList" value="#{adminBlockController.allUser}" var="user">
-                            <p:column headerText="Email" styleClass="emailColumn" sortable="true" sortBy="#{user.email}">
-                                <h:outputText value="#{user.email}" />
-                            </p:column>
-                            <p:column headerText="Name" styleClass="nameColumn">
-                                <h:outputText value="#{user.firstName} " />
-                                <h:outputText value="#{user.lastName}" />
-                            </p:column>
-                            <p:column headerText="Blocked" styleClass="blockColumn">
-                                <h:outputText value="Yes" rendered="#{user.getBlocked() == true}"/>
-                            </p:column>
-                            <p:column headerText="Type" styleClass="typeColumn">
-                                <h:outputText value="#{user.userType.name}" />
-                            </p:column>
-                            <p:column headerText="Change block status">
-                                <p:commandButton
-                                    value = "#{adminBlockController.getBlockedButtonLabel(user.getBlocked())}"
-                                    rendered="#{user.getEmail() != userController.getUser().getEmail()}"
-                                    actionListener="#{adminBlockController.changeUserBlockStatus(user.email)}"
-                                    ajax="true" update="userList"
-                                    styleClass="buttonColumn dynamicButton"/>
-                            </p:column>
-                            <p:column headerText="Change User type">
-                                <p:commandButton
-                                    value="#{adminTypeController.getTypeButtonLabel(user.userType.id)}"
-                                    rendered="#{user.getEmail() != userController.getUser().getEmail()}"
-                                    actionListener="#{adminTypeController.toggleUserType(user.email)}"
-                                    ajax="true" update="userList"
-                                    styleClass="buttonColumn"/>
-                            </p:column>
-                        </p:dataTable>
-                        <p:messages globalOnly="true"/>
-                    </p:fieldset>
-                </h:panelGroup>
+            <p:tab title="Users" rendered="#{userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN}">
+                <h3>User list</h3>
+                <p:dataTable styleClass="fieldPanel" id="userList" value="#{adminBlockController.allUser}" var="user">
+                    <p:column headerText="Email" styleClass="emailColumn" sortable="true" sortBy="#{user.email}">
+                        <h:outputText value="#{user.email}" />
+                    </p:column>
+                    <p:column headerText="Name" styleClass="nameColumn">
+                        <h:outputText value="#{user.firstName} " />
+                        <h:outputText value="#{user.lastName}" />
+                    </p:column>
+                    <p:column headerText="Blocked" styleClass="blockColumn">
+                        <h:outputText value="Yes" rendered="#{user.getBlocked() == true}"/>
+                    </p:column>
+                    <p:column headerText="Type" styleClass="typeColumn">
+                        <h:outputText value="#{user.userType.name}" />
+                    </p:column>
+                    <p:column headerText="Change block status">
+                        <p:commandButton
+                                value = "#{adminBlockController.getBlockedButtonLabel(user.getBlocked())}"
+                                rendered="#{user.getEmail() != userController.getUser().getEmail()}"
+                                actionListener="#{adminBlockController.changeUserBlockStatus(user.email)}"
+                                ajax="true" update="userList"
+                                styleClass="buttonColumn dynamicButton"/>
+                    </p:column>
+                    <p:column headerText="Change User type">
+                        <p:commandButton
+                                value="#{adminTypeController.getTypeButtonLabel(user.userType.id)}"
+                                rendered="#{user.getEmail() != userController.getUser().getEmail()}"
+                                actionListener="#{adminTypeController.toggleUserType(user.email)}"
+                                ajax="true" update="userList"
+                                styleClass="buttonColumn"/>
+                    </p:column>
+                </p:dataTable>
+                <p:messages globalOnly="true"/>
+            </p:tab>
+            <p:tab title="Whitelist" rendered="#{userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN}">
+                    <p:dataTable styleClass="fieldPanel" id="whitelistTable" var="whitelist" value="#{adminWhitelistController.getAllWhitelist()}">
+                        <p:column headerText="Email">
+                            <h:outputText value="#{whitelist.email}" />
+                        </p:column>
+                        <p:column style="width:110px;text-align: center">
+                            <p:commandButton value="Remove"
+                                             rendered="#{adminWhitelistController.whitelistDAO.findEmail(whitelist.email) != userController.userDAO.emailIsRegistered(whitelist.email)}"
+                                             actionListener="#{adminWhitelistController.removeFromWhitelist(whitelist.email)}"
+                                             ajax="true" update="whitelistTable" >
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                    <p:messages globalOnly="true" autoUpdate="true"/>
+                    <p>Whitelist new email</p>
+                    <h:panelGrid columns="4">
+                        <p:inputText type="email" placeholder="Email" maxlength="50" id="email" value="#{adminWhitelistController.whitelist.email}"/>
+                        <p:message for="email" autoUpdate="true"/>
+                        <p:commandButton value="Add"
+                                         actionListener="#{adminWhitelistController.whitelistEmail()}"
+                                         ajax="true" update="whitelistTable"/>
+                    </h:panelGrid>
             </p:tab>
         </p:tabView>
     </h:form>

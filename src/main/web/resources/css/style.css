@@ -6,6 +6,11 @@
     color: white;
 }
 
+.ui-tabs-panel {
+    background: white !important;
+    border-radius: 3px;
+}
+
 .blockColumn, .typeColumn{
     width: 12%;
 }
@@ -68,6 +73,9 @@
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.2);
 }
+.right{
+    padding: 2px 20px 10px 20px;
+}
 .responsiveElement{
     font-size: 18px;
 }
@@ -82,14 +90,18 @@
     background: url("#{resource['images/blue-sky.jpg']}") repeat;
 }
 
-.home-background{
-    background-color: white;
-    background-size: 10px;
+.large-page{
+    background-size: auto;
+    background: url("#{resource['images/blue-top.jpg']}");
+    margin: 20px 5% 15px 5%;
+}
+
+large{
+    font-size: 36px;
 }
 
 .main-header{
     text-shadow: 2px 2px 10px teal;
-    font-size: 36px;
     color: white;
 }
 
@@ -113,6 +125,12 @@ textarea{
 }
 
 @media all and (max-width: 500px) {
+    .large-page, body {
+        margin: 15px 10px 15px 10px;
+    }
+    h1 {
+        text-align: center;
+    }
     textarea{
         width:99%;
     }

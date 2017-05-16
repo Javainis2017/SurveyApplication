@@ -63,7 +63,7 @@ public class UserRegistrationController {
         {
             user.setPasswordHash(hashGenerator.generatePasswordHash(passwordHash));
             userDAO.create(user);
-            return "login?faces-redirect=true";
+            return "index?faces-redirect=true";
         }
     }
 
