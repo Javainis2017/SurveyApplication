@@ -65,7 +65,7 @@
                             </h:outputLink>
                         </p:column>
                         <f:facet name="footer" id="footer">
-                            <p:growl id="growl" showDetail="false" sticky="true" />
+                            <!--<p:growl id="growl" showDetail="false" sticky="true" />-->
                             <c:if test="#{userSurveyController.selectedSurvey != null}">
                                 <c:if test="#{userSurveyController.canRemove(userSurveyController.selectedSurvey)}">
                                     <p:commandButton process="surveyTable"
@@ -94,14 +94,16 @@
                                                  value="Send survey url"
                                                  actionListener="#{mailExpirationController.doPost('Survey url', 'Survey url', 'survey/show/', userSurveyController.selectedSurvey.url)}"
                                                  ajax="true"
-                                                 icon="fa fa-mail-forward">
+                                                 icon="fa fa-mail-forward"
+                                                 update="surveyTable">
                                 </p:commandButton>
                                 <p:inputText id="sendToEmail" placeholder="Email" value="#{mailExpirationController.email}"/>
-                                <p:message for="sendToEmail"/>
+                                <p:messages autoUpdate="true" globalOnly="true"/>
                             </c:if>
                         </f:facet>
                     </p:dataTable>
-                    <p:poll interval="2"
+
+                <p:poll interval="2"
                             update="surveyTable"
                             widgetVar="exportPoller"
                             listener="#{surveyExportController.checkProgress()}"
@@ -111,7 +113,11 @@
                 <h3>Import from .xlsx</h3>
                 <p:growl id="messages" showDetail="true" />
 
-                <p:fileUpload id="upload" value="#{surveyImportController.uploadedFile}" mode="simple" skinSimple="true"/>
+                <p:fileUpload id="upload"
+                              value="#{surveyImportController.uploadedFile}"
+                              allowTypes='/(\.|\/)(doc|docx|xls|xlsx)$/'
+                              mode="simple"
+                              skinSimple="true"/>
                 <br/>
                 <h:outputText value="&#160;" />
 

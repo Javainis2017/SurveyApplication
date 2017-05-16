@@ -111,6 +111,7 @@ public class MailExpirationController {
         {
             Messages.addGlobalInfo("Email was sent successfully");
         }
+        email = "";
     }
 
     private void findAndRemoveOlderMails(String email) {
