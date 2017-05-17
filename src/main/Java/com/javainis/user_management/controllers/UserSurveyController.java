@@ -26,6 +26,10 @@ public class UserSurveyController {
     @Setter
     private Survey selectedSurvey;
 
+    @Getter
+    @Setter
+    private List<Survey> filteredSurveys;
+
     public List<Survey> getAllUserSurvey(){
         return surveyDAO.findByAuthorId(userController.getUser().getUserID());
     }

@@ -7,16 +7,20 @@
 }
 
 .ui-tabs-panel {
+    border-width: 1px 1px 1px 1px !important;
     background: white !important;
     border-radius: 3px;
 }
 
 .blockColumn, .typeColumn{
-    width: 12%;
+    width: 9%;
 }
+.blockButton, .typeButton{
+     width: 17%;
+ }
 
 .nameColumn{
-    width: 19%;
+    width: 20%;
 }
 
 .emailColumn{
@@ -24,17 +28,18 @@
 }
 
 .fieldPanel{
-    margin: 10px 10px 10px 10px;
-    width: 70%;
+    width: 95%;
+    margin: auto;
 }
 
 .buttonColumn{
-    margin:auto;
+    margin:auto !important;
     display:block !important;
+
 }
 
 .dynamicButton{
-    width: 80%;
+    /*width: 98%;*/
 }
 
 .previewPanel{
@@ -69,10 +74,13 @@
 }
 
 .fill{
-    /*border: 1px solid lavender;*/
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.3);
 }
+.large-page .fill{
+    /*background: url("#{resource['images/blue-top.jpg']}");*/
+}
+
 .right{
     padding: 2px 20px 10px 20px;
 }
@@ -92,17 +100,56 @@
 
 .large-page{
     background-size: auto;
-    background: url("#{resource['images/blue-top.jpg']}");
-    margin: 20px 5% 15px 5%;
+    /*background: royalblue;*/
+    margin: 2em 5%;
 }
 
 .large{
-    font-size: 36px;
+    font-size: 2.3em;
+}
+
+.home-body{
+    background: url("#{resource['images/blue-top.jpg']}") no-repeat;
 }
 
 .main-header{
+    text-shadow: 2px 2px 10px black;
+    color: white;
+}
+
+.front-header{
     text-shadow: 2px 2px 10px teal;
     color: white;
+}
+
+.survey-page{
+    padding: 1em 1em 1em 1em;
+    width: 60%;
+    margin: 2em 5%;
+    box-shadow: 3px 3px 3px grey;
+    background-color: #f4f4f4 !important;
+}
+
+.survey-page button, .survey-page button.ui-button.ui-state-default, .survey-page.ui-button.ui-state-default {
+    background-color: white;
+    color:black;
+    border-color: grey;
+}
+
+.page-number{
+    text-align: right;
+    margin: -15px -10px 0 0;
+    font-size: 48px;
+    color: lightgray;
+    z-index: -1;
+}
+.remove-page-button{
+    background-color: #f4f4f4 !important;
+    border: none !important;
+    color: gray !important;
+    top: -3.5em;
+    left: -1em;
+    z-index: 1;
 }
 
 @media all and (min-width: 900px) {
@@ -111,6 +158,9 @@
     }
     .responsive-background {
         background-size: 100% ;
+    }
+    .large-page{
+        margin: 2em 17%;
     }
 
 }
@@ -124,9 +174,18 @@ textarea{
     width:70%;
 }
 
-@media all and (max-width: 500px) {
-    .large-page, body {
-        margin: 15px 10px 15px 10px;
+@media all and (max-width: 550px) {
+    body{
+        font-size: larger;
+    }
+    .tab-view.ui-tabs .ui-tabs-panel{
+        padding: 0 0 0 0;
+    }
+    .home-body{
+        margin: 10px 0 10px 0;
+    }
+    .large{
+        font-size: 2em;
     }
     h1 {
         text-align: center;
@@ -141,14 +200,21 @@ textarea{
         border-radius: 5px;
     }
 
+    .buttonColumn{
+        display: inline !important;
+    }
+
     .responsiveElement{
-        font-size: 22px;
+        font-size: 1.3em;
     }
 
     .smallButton{
-        font-size: 18px;
+        font-size: 1em;
     }
     .fieldPanel{
-        width: 98%;
+        width: 100%;
+    }
+    .survey-page{
+        width:95%;
     }
 }

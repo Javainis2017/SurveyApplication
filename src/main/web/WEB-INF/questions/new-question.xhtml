@@ -6,7 +6,7 @@
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <!--@elvariable id="page" type="com.javainis.survey.entities.SurveyPage"-->
     <br/>
-    <p:commandButton id="newQ#{page.number}" value="New question" type="button" icon="ui-icon-extlink"/>
+    <p:commandButton id="newQ#{page.number}" value="New question" type="button" icon="fa fa-external-link"/>
     <p:menu overlay="true" trigger="newQ#{page.number}" my="left top" at="left bottom">
             <p:menuitem value="Free text"
                         action="#{newSurveyController.createQuestion('text', page)}"

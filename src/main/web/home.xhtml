@@ -11,6 +11,7 @@
       xml:lang="en" lang="en">
 <o:importConstants type="com.javainis.user_management.dao.UserTypeDAO"/>
 <h:head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <h:outputStylesheet name="css/style.css" />
     <title>Home</title>
 </h:head>
@@ -24,47 +25,51 @@
         <p:commandButton actionListener="#{userController.logout()}" value="Log out" action="index" />
         <p:button outcome="change-password" value="Change password" />
     </div>
-        <br/>
-        <br/>
-        <p:tabView style="background: transparent;">
-            <p:tab title="Surveys" >
-                <h3>Surveys</h3>
+        <p:tabView styleClass="tab-view"
+                   style="background: transparent;">
+            <p:tab title="Surveys" id="surveys">
                     <p:dataTable id="surveyTable" var="survey" value="#{userSurveyController.getMySurveys()}"
                                  selectionMode="single"
                                  selection="#{userSurveyController.selectedSurvey}"
                                  rowKey="#{survey.id}"
-                                 styleClass="fieldPanel">
+                                 styleClass="fieldPanel"
+                                 filteredValue="#{userSurveyController.filteredSurveys}"
+                    >
                         <p:ajax event="rowSelect" update="surveyTable" />
                         <f:facet name="header">
+                            <div style="text-align: center">Surveys</div>
                             <p:button outcome="survey/new" value="New survey" icon="fa fa-plus"/>
                         </f:facet>
-                        <p:column headerText="Title" style="width:25%;text-align: center">
+                        <p:column headerText="Title"
+                                  filterBy="#{survey.title}"
+                                  filterMatchMode="contains"
+                                  style="width:25%;text-align: center">
                             <h:outputText value="#{survey.title}" />
                         </p:column>
-                        <p:column headerText="Author" styleClass="nameColumn" priority="4">
+                        <p:column headerText="Author"
+                                  styleClass="nameColumn"
+                                  priority="4"
+                                  filterBy="#{survey.author.firstName} #{survey.author.lastName}"
+                                  filterMatchMode="contains">
                             <h:outputText value="#{survey.author.firstName}" />
                             <h:outputText value="&#160;" />
                             <h:outputText value="#{survey.author.lastName}" />
                         </p:column>
-                        <p:column headerText="URL" style="width:9%;text-align: center" priority="1">
+                        <p:column headerText="URL" style="width:8%;text-align: center" priority="1">
                             <h:outputLink value="survey/show/#{survey.url}">
-                                Survey
+                                Open
                             </h:outputLink>
                         </p:column>
-                        <p:column headerText="Results" style="width:9%;text-align: center" priority="1">
-                            <h:outputLink value="reports/report/#{survey.url}" rendered="#{userSurveyController.canSeeReport(survey)}">
-                                Results
+                        <p:column headerText="Results" style="width:8%;text-align: center" priority="1">
+                            <h:outputLink value="reports/report/#{survey.url}"
+                                          rendered="#{userSurveyController.canSeeReport(survey)}">
+                                Show
                             </h:outputLink>
                         </p:column>
                         <p:column headerText="Visibility" style="width:10%;text-align: center" priority="4">
                             <h:outputText value = "#{userSurveyController.getPublicLabel(survey.isPublic)}"/>
                         </p:column>
-                        <p:column headerText="Edit" style="width:10%;text-align: center" priority="3">
-                            <h:outputLink value="survey/new/#{survey.url}" rendered="#{survey.surveyResults.isEmpty() and userSurveyController.canRemove(survey)}">
-                                Edit
-                            </h:outputLink>
-                        </p:column>
-                        <f:facet name="footer" id="footer">
+                        <f:facet name="footer">
                             <!--<p:growl id="growl" showDetail="false" sticky="true" />-->
                             <c:if test="#{userSurveyController.selectedSurvey != null}">
                                 <c:if test="#{userSurveyController.canRemove(userSurveyController.selectedSurvey)}">
@@ -75,6 +80,11 @@
                                                      ajax="true"
                                                      icon="fa fa-fw fa-remove"/>
                                 </c:if>
+                                <c:if test="#{userSurveyController.selectedSurvey.surveyResults.isEmpty() and userSurveyController.canRemove(userSurveyController.selectedSurvey)}">
+                                    <p:button value="Edit"
+                                              href="survey/new/#{userSurveyController.selectedSurvey.url}"
+                                              icon="fa fa-fw fa-edit"/>
+                                </c:if>
                                 <p:commandButton id="generateButton" value="Generate file"
                                                  actionListener="#{surveyExportController.exportSurvey(userSurveyController.selectedSurvey)}"
                                                  onclick="PF('exportPoller').start();"
@@ -84,7 +94,7 @@
                                 </p:commandButton>
                                 <c:if test="#{surveyExportController.timeout and surveyExportController.generatedSurveys.containsKey(userSurveyController.selectedSurvey.url)}">
                                     <p:commandButton id="exportButton"
-                                                     value="Download .xlsx"
+                                                     value="Download"
                                                      actionListener="#{surveyExportController.downloadToUser(userSurveyController.selectedSurvey.url)}"
                                                      ajax="false"
                                                      icon="fa fa-fw fa-download">
@@ -110,25 +120,32 @@
                             autoStart="false"
                             stop="#{surveyExportController.timeout}"
                             timeout="10000" />
-                <h3>Import from .xlsx</h3>
-                <p:growl id="messages" showDetail="true" />
 
-                <p:fileUpload id="upload"
-                              value="#{surveyImportController.uploadedFile}"
-                              allowTypes='/(\.|\/)(doc|docx|xls|xlsx)$/'
-                              mode="simple"
-                              skinSimple="true"/>
-                <br/>
-                <h:outputText value="&#160;" />
+                <div style="margin: 1em !important;">
+                    <h3>Import from .xlsx</h3>
+                    <p:growl id="messages" showDetail="true" />
+                    <p:fileUpload id="upload"
+                                  value="#{surveyImportController.uploadedFile}"
+                                  allowTypes='/(\.|\/)(xlsx)$/'
+                                  mode="simple"
+                                  skinSimple="true"/>
+                    <br/>
+                    <h:outputText value="&#160;" />
 
-                <p:commandButton value="Submit" ajax="false" actionListener="#{surveyImportController.upload()}"
-                                 disabled="false" />
-
+                    <p:commandButton value="Submit" ajax="false" actionListener="#{surveyImportController.upload()}"
+                                     disabled="false" />
+                </div>
             </p:tab>
             <p:tab title="Users" rendered="#{userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN}">
-                <h3>User list</h3>
-                <p:dataTable styleClass="fieldPanel" id="userList" value="#{adminBlockController.allUser}" var="user">
-                    <p:column headerText="Email" styleClass="emailColumn" sortable="true" sortBy="#{user.email}">
+                <p:dataTable styleClass="fieldPanel"
+                             id="userList"
+                             value="#{adminBlockController.allUser}"
+                             var="user"
+                             reflow="true">
+                    <f:facet name="header">
+                        <div style="text-align: center">User list</div>
+                    </f:facet>
+                    <p:column headerText="Email" styleClass="emailColumn">
                         <h:outputText value="#{user.email}" />
                     </p:column>
                     <p:column headerText="Name" styleClass="nameColumn">
@@ -141,15 +158,15 @@
                     <p:column headerText="Type" styleClass="typeColumn">
                         <h:outputText value="#{user.userType.name}" />
                     </p:column>
-                    <p:column headerText="Change block status">
+                    <p:column headerText="Change block status" styleClass="blockButton">
                         <p:commandButton
                                 value = "#{adminBlockController.getBlockedButtonLabel(user.getBlocked())}"
                                 rendered="#{user.getEmail() != userController.getUser().getEmail()}"
                                 actionListener="#{adminBlockController.changeUserBlockStatus(user.email)}"
                                 ajax="true" update="userList"
-                                styleClass="buttonColumn dynamicButton"/>
+                                styleClass="buttonColumn"/>
                     </p:column>
-                    <p:column headerText="Change User type">
+                    <p:column headerText="Change User type" styleClass="typeButton">
                         <p:commandButton
                                 value="#{adminTypeController.getTypeButtonLabel(user.userType.id)}"
                                 rendered="#{user.getEmail() != userController.getUser().getEmail()}"
@@ -160,12 +177,20 @@
                 </p:dataTable>
                 <p:messages globalOnly="true"/>
             </p:tab>
-            <p:tab title="Whitelist" rendered="#{userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN}">
-                    <p:dataTable styleClass="fieldPanel" id="whitelistTable" var="whitelist" value="#{adminWhitelistController.getAllWhitelist()}">
+            <p:tab title="Whitelist"
+                   rendered="#{userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN}">
+                    <p:dataTable
+                            styleClass="fieldPanel"
+                            id="whitelistTable"
+                            var="whitelist"
+                            value="#{adminWhitelistController.getAllWhitelist()}">
+                        <f:facet name="header">
+                            <div style="text-align: center">Whitelist</div>
+                        </f:facet>
                         <p:column headerText="Email">
                             <h:outputText value="#{whitelist.email}" />
                         </p:column>
-                        <p:column style="width:110px;text-align: center">
+                        <p:column style="width:100px;text-align: center">
                             <p:commandButton value="Remove"
                                              rendered="#{adminWhitelistController.whitelistDAO.findEmail(whitelist.email) != userController.userDAO.emailIsRegistered(whitelist.email)}"
                                              actionListener="#{adminWhitelistController.removeFromWhitelist(whitelist.email)}"
