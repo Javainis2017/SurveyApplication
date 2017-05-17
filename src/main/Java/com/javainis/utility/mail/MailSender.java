@@ -1,6 +1,9 @@
 package com.javainis.utility.mail;
 
+import org.apache.deltaspike.core.api.future.Futureable;
+
 import javax.annotation.PostConstruct;
+import javax.ejb.AsyncResult;
 import javax.enterprise.context.ApplicationScoped;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -9,6 +12,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.util.Properties;
+import java.util.concurrent.Future;
 
 @ApplicationScoped
 public class MailSender {
@@ -30,7 +34,8 @@ public class MailSender {
         }
     }
 
-    public boolean sendEmail(String toEmail, String subject, String message){
+    @Futureable
+    public Future<Boolean> sendEmail(String toEmail, String subject, String message){
         Properties props = new Properties();
         props.put("mail.smtp.user", fromEmail);
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -63,10 +68,17 @@ public class MailSender {
             transport.connect("smtp.gmail.com", Integer.valueOf("465"), username, password);
             transport.sendMessage(msg, msg.getAllRecipients());
             transport.close();
-            return true;
+            return new AsyncResult<>(true);
         } catch (MessagingException e) {
             e.printStackTrace();
-            return false;
+            return new AsyncResult<>(false);
         }
+    }
+    @Futureable
+    public Future<Boolean> sendEmail(String[] emails, String subject, String message){
+        for(String email: emails){
+            sendEmail(email, subject, message);
+        }
+        return new AsyncResult<>(true);
     }
 }

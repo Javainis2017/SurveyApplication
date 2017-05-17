@@ -94,20 +94,15 @@ public class MailExpirationController {
                 mailExpiration.setMailType(1);
             }
 
-            if(mailSender.sendEmail(email, subject, message)){
-                if(mailExpiration.getMailType() == 1)
-                    findAndRemoveOlderMails(email);
+            mailSender.sendEmail(email, subject, message);
 
-                mailExpirationDAO.create(mailExpiration);
-                url = mailExpiration.getUrl();
-                Messages.addGlobalInfo("Email was sent successfully");
+            if(mailExpiration.getMailType() == 1) {
+                findAndRemoveOlderMails(email);
             }
-            else{
-                Messages.addGlobalInfo("Email was not sent successfully, try again");
-            }
-        }else{
-            Messages.addGlobalInfo("Email was sent successfully");
+            mailExpirationDAO.create(mailExpiration);
+            url = mailExpiration.getUrl();
         }
+        Messages.addGlobalInfo("Email was sent successfully");
         email = "";
     }
 
