@@ -191,6 +191,7 @@ public class MailExpirationController {
 
             if(!newPassword.contentEquals(repeatedPassword)) {
                 Messages.addGlobalWarn("New and repeated password are not equal");
+                return;
             }
 
             newPassword = hashGenerator.generatePasswordHash(newPassword);
@@ -204,8 +205,7 @@ public class MailExpirationController {
         }
     }
 
-    private void resetPasswordFields()
-    {
+    private void resetPasswordFields(){
         newPassword = "";
         repeatedPassword = "";
     }
@@ -232,6 +232,5 @@ public class MailExpirationController {
             if(timestamp.before(mailExpiration.getExpirationDate()))
                 user = mailExpiration.getUser();
         }
-
     }
 }
