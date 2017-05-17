@@ -6,6 +6,7 @@ import com.javainis.user_management.entities.MailExpiration;
 import com.javainis.user_management.entities.User;
 import com.javainis.utility.HashGenerator;
 import com.javainis.utility.RandomStringGenerator;
+import com.javainis.utility.mail.MailSender;
 import lombok.Getter;
 import lombok.Setter;
 import org.omnifaces.cdi.Param;
@@ -15,9 +16,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -26,7 +24,6 @@ import javax.servlet.ServletException;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 @Named
 @RequestScoped
@@ -55,6 +52,9 @@ public class MailExpirationController {
     private RandomStringGenerator randomStringGenerator;
 
     @Inject
+    private MailSender mailSender;
+
+    @Inject
     @Param(pathIndex = 0)
     @Getter
     private String url;
@@ -67,16 +67,21 @@ public class MailExpirationController {
     @Setter
     private String repeatedPassword;
 
+    @Getter
+    private Boolean success = false;
+
     @Transactional
-    public void doPost(String messagePart, String subject, String path, String existingUrl) throws ServletException, IOException, NamingException {
+    public void doPost() throws ServletException, IOException, NamingException {
+        String messagePart = "Your password reminder link";
+        String subject = "Password reminder";
+        String path = "user-management/change-password-email/";
+        String existingUrl = ""; // perkelti kitur
+
         boolean isRegistered = userDAO.emailIsRegistered(email);
         if(isRegistered || !existingUrl.isEmpty() && !email.isEmpty())
         {
             Context ctx = new InitialContext();
             Context env = (Context) ctx.lookup("java:comp/env");
-            final String fromEmail = (String) env.lookup("FromEmail");
-            final String username = (String) env.lookup("Username");
-            final String password = (String) env.lookup("Password");
             final String host = (String) env.lookup("Host");
 
             String message;
@@ -93,7 +98,7 @@ public class MailExpirationController {
                 mailExpiration.setMailType(1);
             }
 
-            if(sendEmail(fromEmail, username, password, email, subject, message))
+            if(mailSender.sendEmail(email, subject, message))
             {
                 if(mailExpiration.getMailType() == 1)
                     findAndRemoveOlderMails(email);
@@ -119,53 +124,11 @@ public class MailExpirationController {
         mailExpirationDAO.removeFromMailExpiration(user, 1);
     }
 
-    private boolean sendEmail(String fromEmail, String username, String password, String toEmail, String subject, String message)
-    {
-        Properties props = new Properties();
-        props.put("mail.smtp.user", fromEmail);
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "465");
-        props.put("mail.smtp.starttls.enable","true");
-        props.put("mail.smtp.debug", "true");
-        props.put("mail.smtps.auth", "true");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.socketFactory.fallback", "false");
-        props.put("mail.smtps.ssl.enable", "true");
-
-        Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(fromEmail, password);
-                    }
-                });
-
-        session.setDebug(true);
-
-        MimeMessage msg = new MimeMessage(session);
-        try {
-            msg.setSubject(subject);
-            msg.setFrom(new InternetAddress(fromEmail));
-            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
-            msg.setText(message);
-
-            Transport transport = session.getTransport("smtps");
-            transport.connect("smtp.gmail.com", Integer.valueOf("465"), username, password);
-            transport.sendMessage(msg, msg.getAllRecipients());
-            transport.close();
-            return true;
-
-        } catch (MessagingException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     private void setSentEmailProperties(boolean isRegistered, boolean setExpiration)
     {
-        if(isRegistered)
+        if(isRegistered){
             mailExpiration.setUser(userDAO.getUserByEmail(email));
-
+        }
 
         if(setExpiration) {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -199,6 +162,7 @@ public class MailExpirationController {
             user.setPasswordHash(newPassword);
             Messages.addGlobalInfo("Password was successfully changed");
             resetPasswordFields();
+            success = true;
         }
         catch(Exception ex){
             Messages.addGlobalWarn("FATAL ERROR: User password change failed");
