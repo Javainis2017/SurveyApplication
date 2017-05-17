@@ -28,22 +28,11 @@ import java.sql.Timestamp;
 @Named
 @RequestScoped
 public class MailExpirationController {
-    @Getter
-    private MailExpiration mailExpiration = new MailExpiration();
-
-    @Getter
-    @Setter
-    private String email;
-
     @Inject
     private MailExpirationDAO mailExpirationDAO;
 
     @Inject
-    @Getter
     private UserDAO userDAO;
-
-    @Getter
-    private User user;
 
     @Inject
     private HashGenerator hashGenerator;
@@ -60,12 +49,22 @@ public class MailExpirationController {
     private String url;
 
     @Getter
+    private User user;
+
+    @Getter
+    @Setter
+    private String email;
+
+    @Getter
     @Setter
     private String newPassword;
 
     @Getter
     @Setter
     private String repeatedPassword;
+
+    @Getter
+    private MailExpiration mailExpiration = new MailExpiration();
 
     @Getter
     private Boolean success = false;
@@ -78,8 +77,7 @@ public class MailExpirationController {
         String existingUrl = ""; // perkelti kitur
 
         boolean isRegistered = userDAO.emailIsRegistered(email);
-        if(isRegistered || !existingUrl.isEmpty() && !email.isEmpty())
-        {
+        if(isRegistered || !existingUrl.isEmpty() && !email.isEmpty()){
             Context ctx = new InitialContext();
             Context env = (Context) ctx.lookup("java:comp/env");
             final String host = (String) env.lookup("Host");
@@ -90,16 +88,13 @@ public class MailExpirationController {
                 message = messagePart + ": " + host + path + existingUrl;
                 mailExpiration.setUrl(existingUrl);
                 mailExpiration.setMailType(2);
-            }
-            else
-            {
+            }else{
                 setSentEmailProperties(isRegistered, true);
                 message = messagePart + ": " + host + path + mailExpiration.getUrl();
                 mailExpiration.setMailType(1);
             }
 
-            if(mailSender.sendEmail(email, subject, message))
-            {
+            if(mailSender.sendEmail(email, subject, message)){
                 if(mailExpiration.getMailType() == 1)
                     findAndRemoveOlderMails(email);
 
@@ -107,13 +102,10 @@ public class MailExpirationController {
                 url = mailExpiration.getUrl();
                 Messages.addGlobalInfo("Email was sent successfully");
             }
-            else
-            {
+            else{
                 Messages.addGlobalInfo("Email was not sent successfully, try again");
             }
-        }
-        else
-        {
+        }else{
             Messages.addGlobalInfo("Email was sent successfully");
         }
         email = "";
@@ -130,7 +122,7 @@ public class MailExpirationController {
             mailExpiration.setUser(userDAO.getUserByEmail(email));
         }
 
-        if(setExpiration) {
+        if(setExpiration){
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             mailExpiration.setExpirationDate(timestamp);
             long duration = 48 * 60 * 60 * 1000;
@@ -149,8 +141,9 @@ public class MailExpirationController {
     public void changePassword(){
         try{
             user = mailExpirationDAO.findMailExpiration(url).getUser();
-            if(user == null)
+            if(user == null){
                 throw new Exception("Stop hacking");
+            }
 
             if(!newPassword.contentEquals(repeatedPassword)) {
                 Messages.addGlobalWarn("New and repeated password are not equal");
@@ -160,12 +153,13 @@ public class MailExpirationController {
             newPassword = hashGenerator.generatePasswordHash(newPassword);
             userDAO.changeUserPassword(user.getEmail(), newPassword);
             user.setPasswordHash(newPassword);
+            mailExpirationDAO.removeFromMailExpiration(user, 1);
             Messages.addGlobalInfo("Password was successfully changed");
             resetPasswordFields();
             success = true;
         }
         catch(Exception ex){
-            Messages.addGlobalWarn("FATAL ERROR: User password change failed");
+            Messages.addGlobalWarn("User password change failed");
         }
     }
 
@@ -186,12 +180,9 @@ public class MailExpirationController {
             return;
         }
 
-        if(mailExpiration == null)
-        {
+        if(mailExpiration == null){
             url = null;
-        }
-        else
-        {
+        }else{
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             if(timestamp.before(mailExpiration.getExpirationDate()))
                 user = mailExpiration.getUser();
