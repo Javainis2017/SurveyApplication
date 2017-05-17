@@ -9,15 +9,14 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xml:lang="en" lang="en">
 <h:head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <h:outputStylesheet name="css/style.css" />
-    <title>Edit survey</title>
+    <title>Survey Editing</title>
 </h:head>
-<h:body rendered="#{userController.getUser().getEmail() != null}">
-    <h1>Edit survey</h1>
+<h:body rendered="#{userController.getUser().getEmail() != null}" styleClass="home-body survey-body">
     <!-- Change survey title and description -->
     <h:form id="survey">
-        <p:panelGrid id="infoGrid" styleClass="surveyPanel" columns="2">
-            <p:outputLabel for="title" value="Title"/>
+        <p:panelGrid id="infoGrid" styleClass="surveyPanel" columns="1" layout="grid">
             <p:column>
                 <p:inputText id="title"
                              required="#{param['survey:save'] != null}"
@@ -25,52 +24,56 @@
                              maxlength="80"
                              size="80"
                              placeholder="Survey title"
-                             styleClass="newSurveyField"/>
+                             styleClass="newSurveyField survey-title"/>
                 <p:message for="title"/>
             </p:column>
-            <p:column>
-                <p:outputLabel for="description" value="Description" />
-            </p:column>
+
             <p:column>
                 <p:inputTextarea id="description"
                                  value="#{newSurveyController.survey.description}"
-                                 rows="6" cols="80"
+                                 rows="4" cols="80"
                                  placeholder="Survey description (Optional)"
                                  styleClass="newSurveyField"/>
                 <p:message for="description"/>
             </p:column>
-            <p:column>
-                <p:outputLabel for="isPublic" value="Public results" />
-            </p:column>
-            <p:column>
+
+            <p:column style="border-style:hidden;">
                 <p:selectBooleanCheckbox id="isPublic"
-                                 value="#{newSurveyController.survey.isPublic}"/>
+                                         value="#{newSurveyController.survey.isPublic}" label="Public results1"/>
+                <p:outputLabel for="isPublic" value=" Public results" />
                 <p:message for="isPublic"/>
             </p:column>
             <p:column>
                 <p:outputLabel for="expiration_date" value="Expiration date "/>
             </p:column>
-            <p:column>
-                <p:inputText type="date" id="expiration_date" value="#{newSurveyController.expirationDateString}"/>
+            <p:row>
+                <p:inputText
+                        type="date"
+                        id="expiration_date"
+                        value="#{newSurveyController.expirationDateString}"
+                        style="display: inline-block; float:left; margin-right: 0.3em;"/>
                 <p:message for="expiration_date"/>
-            </p:column>
-            <p:column>
-                <p:outputLabel for="expiration_time" value="Expiration time "/>
-            </p:column>
-            <p:column>
                 <p:inputText type="time" id="expiration_time" value="#{newSurveyController.expirationTimeString}"/>
                 <p:message for="expiration_time"/>
-            </p:column>
+            </p:row>
+            <p:row>
+                <p:commandButton id="save"
+                                 value="Save survey"
+                                 action="#{newSurveyController.saveSurvey()}"
+                                 ajax="false"
+                                 update="survey" style="display: inline-block;float:right;"/>
+            </p:row>
         </p:panelGrid>
+        <p:messages globalOnly="true"/>
 
-        <h3>Questions</h3>
+        <h3 style="text-align: center;">Questions</h3>
         <h:panelGroup id="questions">
             <c:forEach items="#{newSurveyController.survey.pages}" var="page" >
-                <h:panelGroup>
-                    <h:outputText>#{page.number} page </h:outputText>
-                    <p:commandButton value="Remove page"
+                <div class="survey-page">
+                    <p class="page-number">Page #{page.number} </p>
+                    <p:commandButton title="Remove page" icon="fa fa-remove"
                                      actionListener="#{newSurveyController.removePage(page)}"
-                                     update="survey"
+                                     update="survey" styleClass="remove-page-button"
                                     disabled="#{newSurveyController.survey.pages.size() == 1}">
                         <p:confirm disabled="#{empty page.questions}" header="Confirmation" message="Are you sure you want to delete this page?" icon="ui-icon-alert"/>
                     </p:commandButton>
@@ -105,23 +108,23 @@
                                             <ui:param name="question" value="#{question}"/>
                                         </ui:include>
                                     </h:panelGroup>
-                                    <c:if test="#{newSurveyController.surveyCreationStep == 'QUESTION_TYPE_CHOICE'}">
-                                        <p:commandButton value="Edit question" immediate="true"
-                                                         actionListener="#{newSurveyController.editQuestion(question)}"
-                                                         update="survey"
-                                                         styleClass="previewPanel"/>
-                                    </c:if>
-                                    <p:commandButton value="Remove question" immediate="true"
-                                                     actionListener="#{newSurveyController.removeQuestion(question)}"
-                                                     update="survey"/>
-                                    <p:commandButton value="Move up"
-                                                    actionListener="#{newSurveyController.moveQuestion(question, 'up')}"
-                                                    update="survey"
-                                                    disabled="#{question.position == 1 and question.page.number == 1}"/>
-                                    <p:commandButton value="Move down"
+                                    <p:commandButton title="Move up" icon="fa fa-arrow-up"
+                                                     actionListener="#{newSurveyController.moveQuestion(question, 'up')}"
+                                                     update="survey" styleClass="previewPanel"
+                                                     disabled="#{question.position == 1 and question.page.number == 1}"/>
+                                    <p:commandButton title="Move down" icon="fa fa-arrow-down"
                                                      actionListener="#{newSurveyController.moveQuestion(question, 'down')}"
                                                      update="survey"
                                                      disabled="#{question.position == newSurveyController.survey.questions.size() and question.page.number == newSurveyController.survey.pages.size()}"/>
+                                    <c:if test="#{newSurveyController.surveyCreationStep == 'QUESTION_TYPE_CHOICE'}">
+                                        <p:commandButton value="Edit" immediate="true" icon="fa fa-fw fa-edit"
+                                        actionListener="#{newSurveyController.editQuestion(question)}"
+                                        update="survey"
+                                        styleClass="previewPanel"/>
+                                    </c:if>
+                                    <p:commandButton value="Remove" immediate="true" icon="fa fa-remove"
+                                    actionListener="#{newSurveyController.removeQuestion(question)}"
+                                    update="survey"/>
                                     <br/>
                                 </h:panelGroup>
                             </ui:repeat>
@@ -134,24 +137,22 @@
                             <ui:param name="page" value="#{page}"/>
                         </ui:include>
                     </c:if>
-                </h:panelGroup>
+                    <c:if test="#{newSurveyController.surveyCreationStep == 'NEW_QUESTION' and newSurveyController.currentPage.number == page.number}">
+                        <!-- Create new question -->
+                        <ui:include src="/WEB-INF/questions/edit/#{newSurveyController.newQuestionType}-edit.xhtml"/>
+                        <p:commandButton value="Cancel"
+                                         action="#{newSurveyController.cancel}"
+                                         update="survey"/>
+                    </c:if>
+                </div>
+                <br/>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                 </p:confirmDialog>
-                <p:separator/>
             </c:forEach>
         </h:panelGroup>
 
-        <c:if test="#{newSurveyController.surveyCreationStep == 'NEW_QUESTION'}">
-            <!-- Create new question -->
-            <ui:include src="/WEB-INF/questions/edit/#{newSurveyController.newQuestionType}-edit.xhtml"/>
-            <p:commandButton value="Cancel"
-                             id="cancelNew"
-                             action="#{newSurveyController.cancel}"
-                             update="survey"/>
-            <p:separator/>
-        </c:if>
         <c:if test="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION'}">
             <h:panelGroup>
                 <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'FreeTextQuestion'}">
@@ -172,7 +173,6 @@
                              id="cancelEdit"
                              action="#{newSurveyController.cancel}"
                              update="survey"/>
-            <p:separator/>
         </c:if>
         <p:dialog modal="true" header="Edit conflict" widgetVar="oleDialog" closable="true" resizable="false" closeOnEscape="true">
             <p:panelGrid columns="2">
@@ -260,18 +260,15 @@
                              ajax="false"/>
 
         </p:dialog>
-
-        <p:commandButton value="Add new page"
-                         actionListener="#{newSurveyController.createPage()}"
-                         update="survey"/>
-        <p:separator/>
+        <div class="survey-page">
+            <p:commandButton value="Add page"
+                             icon="fa fa-plus"
+                             actionListener="#{newSurveyController.createPage()}"
+                             update="survey"/>
+        </div>
+        <br/>
         <!-- Save survey -->
-        <p:messages globalOnly="true"/>
-        <p:commandButton id="save"
-                         value="Save survey"
-                         action="#{newSurveyController.saveSurvey()}"
-                         ajax="false"
-                         update="survey"/>
+
 
     </h:form>
 </h:body>

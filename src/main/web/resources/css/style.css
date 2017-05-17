@@ -1,3 +1,13 @@
+body {
+    margin: 15px 15px 15px 15px;
+    font-family: "latoregular","Trebuchet MS",Arial,Helvetica,sans-serif;
+
+}
+
+textarea{
+    width:70%;
+}
+
 .ui-datatable-footer, .ui-datatable-header {
     text-align: left !important;
 }
@@ -47,18 +57,6 @@
     margin-left:3%;
     margin-bottom:10px;
 
-}
-
-.surveyPanel{
-    margin-left:3%
-}
-
-.newSurveyField{
-    width: 99%;
-}
-
-.surveyDesc{
-    vertical-align: text-top;
 }
 
 .ui-widget{
@@ -122,12 +120,36 @@
     color: white;
 }
 
+.survey-body{
+    margin: 2em auto;
+    width: 80%;
+}
+
+.surveyPanel{
+    margin:auto;
+    border-style:hidden;
+}
+
+.newSurveyField{
+    width: 99%;
+}
+
+.survey-title{
+    border: none !important;
+    font-size: 1.7em !important;
+}
+
+.surveyDesc{
+    vertical-align: text-top;
+}
 .survey-page{
     padding: 1em 1em 1em 1em;
-    width: 60%;
-    margin: 2em 5%;
+    width: 80%;
+    margin:auto;
+    display:block;
     box-shadow: 3px 3px 3px grey;
     background-color: #f4f4f4 !important;
+    z-index: 1;
 }
 
 .survey-page button, .survey-page button.ui-button.ui-state-default, .survey-page.ui-button.ui-state-default {
@@ -138,13 +160,13 @@
 
 .page-number{
     text-align: right;
-    margin: -15px -10px 0 0;
-    font-size: 48px;
+    margin: -15px -8px 0 0;
+    font-size: 3em;
     color: lightgray;
     z-index: -1;
 }
 .remove-page-button{
-    background-color: #f4f4f4 !important;
+    background-color: transparent !important;
     border: none !important;
     color: gray !important;
     top: -3.5em;
@@ -162,17 +184,13 @@
     .large-page{
         margin: 2em 17%;
     }
-
+    .survey-body{
+        margin: 2em auto;
+        width: 60%;
+    }
 }
 
-body {
-    margin: 15px 15px 15px 15px;
-    font-family: Arial, Helvetica, sans-serif;
-}
 
-textarea{
-    width:70%;
-}
 
 @media all and (max-width: 550px) {
     body{
@@ -214,7 +232,20 @@ textarea{
     .fieldPanel{
         width: 100%;
     }
+    .surveyPanel{
+        width: 100%;
+        margin:inherit;
+        overflow-x: hidden;
+    }
+    .survey-body{
+        margin: 1em 0;
+        display: initial;
+    }
     .survey-page{
-        width:95%;
+        width:90%;
+        margin: inherit;
+    }
+    .survey-title{
+        font-size: 1em !important;
     }
 }
