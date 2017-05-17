@@ -74,31 +74,21 @@ public class MailExpirationController {
         String messagePart = "Your password reminder link";
         String subject = "Password reminder";
         String path = "user-management/change-password-email/";
-        String existingUrl = ""; // perkelti kitur
 
         boolean isRegistered = userDAO.emailIsRegistered(email);
-        if(isRegistered || !existingUrl.isEmpty() && !email.isEmpty()){
+        if(isRegistered){
             Context ctx = new InitialContext();
             Context env = (Context) ctx.lookup("java:comp/env");
             final String host = (String) env.lookup("Host");
 
-            String message;
-            if(!existingUrl.isEmpty()){
-                setSentEmailProperties(isRegistered,false);
-                message = messagePart + ": " + host + path + existingUrl;
-                mailExpiration.setUrl(existingUrl);
-                mailExpiration.setMailType(2);
-            }else{
-                setSentEmailProperties(isRegistered, true);
-                message = messagePart + ": " + host + path + mailExpiration.getUrl();
-                mailExpiration.setMailType(1);
-            }
+            setSentEmailProperties();
+            String message = messagePart + ": " + host + path + mailExpiration.getUrl();
+
 
             mailSender.sendEmail(email, subject, message);
 
-            if(mailExpiration.getMailType() == 1) {
-                findAndRemoveOlderMails(email);
-            }
+            findAndRemoveOlderMails(email);
+
             mailExpirationDAO.create(mailExpiration);
             url = mailExpiration.getUrl();
         }
@@ -108,28 +98,23 @@ public class MailExpirationController {
 
     private void findAndRemoveOlderMails(String email) {
         User user = userDAO.getUserByEmail(email);
-        mailExpirationDAO.removeFromMailExpiration(user, 1);
+        mailExpirationDAO.removeFromMailExpiration(user);
     }
 
-    private void setSentEmailProperties(boolean isRegistered, boolean setExpiration)
+    private void setSentEmailProperties()
     {
-        if(isRegistered){
-            mailExpiration.setUser(userDAO.getUserByEmail(email));
+        mailExpiration.setUser(userDAO.getUserByEmail(email));
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        mailExpiration.setExpirationDate(timestamp);
+        long duration = 48 * 60 * 60 * 1000;
+        mailExpiration.getExpirationDate().setTime(timestamp.getTime() + duration);
+
+        String genUrl = randomStringGenerator.generateString(32);
+        while (mailExpirationDAO.existsByUrl(genUrl)) {
+            genUrl = randomStringGenerator.generateString(32);
         }
-
-        if(setExpiration){
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            mailExpiration.setExpirationDate(timestamp);
-            long duration = 48 * 60 * 60 * 1000;
-            mailExpiration.getExpirationDate().setTime(timestamp.getTime() + duration);
-
-            String genUrl = randomStringGenerator.generateString(32);
-            while (mailExpirationDAO.existsByUrl(genUrl)) {
-                genUrl = randomStringGenerator.generateString(32);
-            }
-
-            mailExpiration.setUrl(genUrl);
-        }
+        mailExpiration.setUrl(genUrl);
     }
 
     @Transactional
@@ -148,7 +133,7 @@ public class MailExpirationController {
             newPassword = hashGenerator.generatePasswordHash(newPassword);
             userDAO.changeUserPassword(user.getEmail(), newPassword);
             user.setPasswordHash(newPassword);
-            mailExpirationDAO.removeFromMailExpiration(user, 1);
+            mailExpirationDAO.removeFromMailExpiration(user);
             Messages.addGlobalInfo("Password was successfully changed");
             resetPasswordFields();
             success = true;

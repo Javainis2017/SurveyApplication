@@ -143,4 +143,10 @@ public class SurveyController implements Serializable{
         }
         return null;
     }
+
+    /* Save incomplete survey to email */
+    @Transactional
+    public void saveSurveyToEmail(){
+
+    }
 }
