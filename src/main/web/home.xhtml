@@ -77,7 +77,6 @@
                                                      update="surveyTable"
                                                      value="Remove"
                                                      actionListener="#{surveyController.deleteSurvey(userSurveyController.selectedSurvey.id)}"
-                                                     ajax="true"
                                                      icon="fa fa-fw fa-remove"/>
                                 </c:if>
                                 <c:if test="#{userSurveyController.selectedSurvey.surveyResults.isEmpty() and userSurveyController.canRemove(userSurveyController.selectedSurvey)}">
@@ -89,25 +88,19 @@
                                                  actionListener="#{surveyExportController.exportSurvey(userSurveyController.selectedSurvey)}"
                                                  onclick="PF('exportPoller').start();"
                                                  update="surveyTable"
-                                                 ajax="true"
-                                                 icon="fa fa-cogs">
-                                </p:commandButton>
+                                                 icon="fa fa-cogs"/>
                                 <c:if test="#{surveyExportController.timeout and surveyExportController.generatedSurveys.containsKey(userSurveyController.selectedSurvey.url)}">
                                     <p:commandButton id="exportButton"
                                                      value="Download"
                                                      actionListener="#{surveyExportController.downloadToUser(userSurveyController.selectedSurvey.url)}"
                                                      ajax="false"
-                                                     icon="fa fa-fw fa-download">
-                                    </p:commandButton>
+                                                     icon="fa fa-fw fa-download"/>
                                 </c:if>
-                                <p:commandButton id="sendButton"
-                                                 value="Send survey url"
-                                                 actionListener="#{mailExpirationController.doPost('Survey url', 'Survey url', 'survey/show/', userSurveyController.selectedSurvey.url)}"
-                                                 ajax="true"
-                                                 icon="fa fa-mail-forward"
-                                                 update="surveyTable">
-                                </p:commandButton>
-                                <p:inputText id="sendToEmail" placeholder="Email" value="#{mailExpirationController.email}"/>
+                                <p:button outcome="/survey/share"
+                                          value="Send survey"
+                                          icon="fa fa-mail-forward">
+                                    <f:param value="#{userSurveyController.selectedSurvey.url}" name="url"/>
+                                </p:button>
                                 <p:messages autoUpdate="true" globalOnly="true"/>
                             </c:if>
                         </f:facet>
@@ -200,7 +193,7 @@
                     </p:dataTable>
                     <p:messages globalOnly="true" autoUpdate="true"/>
                     <p>Whitelist new email</p>
-                    <h:panelGrid columns="4">
+                    <h:panelGrid columns="3">
                         <p:inputText type="email" placeholder="Email" maxlength="50" id="email" value="#{adminWhitelistController.whitelist.email}"/>
                         <p:message for="email" autoUpdate="true"/>
                         <p:commandButton value="Add"

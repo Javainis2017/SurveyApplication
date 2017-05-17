@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xml:lang="en" lang="en">
+<h:head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <h:outputStylesheet name="css/style.css" />
+    <title>Send survey to email</title>
+</h:head>
+<h:body styleClass="responsive-background" >
+    <div class="fill center" >
+        <h1 class="main-header large">Survey Application</h1>
+        <h2 class="main-header">Send survey</h2>
+
+        <h:form id="emailForm" rendered="#{surveyShareController.survey != null}">
+            <h:panelGroup rendered="#{not surveyShareController.success}">
+                <h:panelGrid columns="2" styleClass="center responsiveElement">
+                    <p:inputTextarea placeholder="Emails" id="email" value="#{surveyShareController.input}" cols="80" rows="10"/>
+                    <p:message for="email"/>
+                </h:panelGrid>
+                <h:outputText>Put each email in new line.</h:outputText>
+            </h:panelGroup>
+            <p:messages globalOnly="true"/>
+            <p:button outcome="/home?faces-redirect=true" value="Go to main page" rendered="#{surveyShareController.success}"/>
+            <p:commandButton value="Send"
+                             actionListener="#{surveyShareController.send()}"
+                             update="emailForm"
+                             styleClass="responsiveElement"
+                             rendered="#{not surveyShareController.success}"/>
+        </h:form>
+        <h:outputText rendered="#{surveyShareController.survey == null}">
+            Survey does not exist.
+        </h:outputText>
+    </div>
+</h:body>
+</html>
