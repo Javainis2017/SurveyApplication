@@ -144,6 +144,25 @@
                                          action="#{newSurveyController.cancel}"
                                          update="survey"/>
                     </c:if>
+                    <c:if test="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION'and newSurveyController.questionToEdit.page.equals(page)}">
+                            <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'FreeTextQuestion'}">
+                                <ui:include src="/WEB-INF/questions/edit/text-edit.xhtml"/>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'IntervalQuestion'}">
+                                <ui:include src="/WEB-INF/questions/edit/interval-edit.xhtml"/>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'SingleChoiceQuestion'}">
+                                <ui:include src="/WEB-INF/questions/edit/single-choice-edit.xhtml"/>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'MultipleChoiceQuestion'}">
+                                <ui:include src="/WEB-INF/questions/edit/multi-choice-edit.xhtml"/>
+                            </h:panelGroup>
+                        <br/>
+                        <p:commandButton value="Cancel"
+                                         id="cancelEdit"
+                                         action="#{newSurveyController.cancel}"
+                                         update="survey"/>
+                    </c:if>
                 </div>
                 <br/>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -153,27 +172,6 @@
             </c:forEach>
         </h:panelGroup>
 
-        <c:if test="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION'}">
-            <h:panelGroup>
-                <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'FreeTextQuestion'}">
-                    <ui:include src="/WEB-INF/questions/edit/text-edit.xhtml"/>
-                </h:panelGroup>
-                <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'IntervalQuestion'}">
-                    <ui:include src="/WEB-INF/questions/edit/interval-edit.xhtml"/>
-                </h:panelGroup>
-                <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'SingleChoiceQuestion'}">
-                    <ui:include src="/WEB-INF/questions/edit/single-choice-edit.xhtml"/>
-                </h:panelGroup>
-                <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'MultipleChoiceQuestion'}">
-                    <ui:include src="/WEB-INF/questions/edit/multi-choice-edit.xhtml"/>
-                </h:panelGroup>
-            </h:panelGroup>
-            <br/>
-            <p:commandButton value="Cancel"
-                             id="cancelEdit"
-                             action="#{newSurveyController.cancel}"
-                             update="survey"/>
-        </c:if>
         <p:dialog modal="true" header="Edit conflict" widgetVar="oleDialog" closable="true" resizable="false" closeOnEscape="true">
             <p:panelGrid columns="2">
                 <h:panelGroup>
