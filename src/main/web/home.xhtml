@@ -77,7 +77,9 @@
                                                      update="surveyTable"
                                                      value="Remove"
                                                      actionListener="#{surveyController.deleteSurvey(userSurveyController.selectedSurvey.id)}"
-                                                     icon="fa fa-fw fa-remove"/>
+                                                     icon="fa fa-fw fa-remove">
+                                        <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+                                    </p:commandButton>
                                 </c:if>
                                 <c:if test="#{userSurveyController.selectedSurvey.surveyResults.isEmpty() and userSurveyController.canRemove(userSurveyController.selectedSurvey)}">
                                     <p:button value="Edit"
@@ -105,6 +107,10 @@
                             </c:if>
                         </f:facet>
                     </p:dataTable>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
 
                 <p:poll interval="2"
                             update="surveyTable"
