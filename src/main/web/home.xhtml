@@ -23,7 +23,6 @@
         <h2 class="main-header">Welcome, #{userController.getUser().getFirstName()} #{userController.getUser().getLastName()}</h2>
         <p class="main-header">(#{userController.getUser().getEmail()}) #{userController.getUser().userType.name}</p>
         <p:commandButton actionListener="#{userController.logout()}" value="Log out" action="index" />
-        <p:button outcome="change-password" value="Change password" />
     </div>
         <p:tabView styleClass="tab-view"
                    style="background: transparent;">
@@ -33,7 +32,8 @@
                                  selection="#{userSurveyController.selectedSurvey}"
                                  rowKey="#{survey.id}"
                                  styleClass="fieldPanel"
-                                 filteredValue="#{userSurveyController.filteredSurveys}">
+                                 filteredValue="#{userSurveyController.filteredSurveys}"
+                                 paginator="true" rows="10">
                         <p:ajax event="rowSelect" update="surveyTable" />
                         <f:facet name="header">
                             <div style="text-align: center">Surveys</div>
@@ -192,6 +192,26 @@
                                          actionListener="#{adminWhitelistController.whitelistEmail()}"
                                          update="whitelistTable"/>
                     </h:panelGrid>
+            </p:tab>
+            <p:tab title="User Settings">
+                <div class="fill narrow" >
+                    <p>Change password</p>
+                        <h:panelGrid columns="2" styleClass="responsiveElement">
+                            <p:inputText type="password" placeholder="Current password" id="current_password" value="#{userController.currentPassword}"/>
+                            <p:message for="current_password"/>
+
+                            <p:inputText type="password" placeholder="New password" id="new_password" value="#{userController.newPassword}"/>
+                            <p:message for="new_password"/>
+
+                            <p:inputText type="password" placeholder="Repeated password" id="repeated_password" value="#{userController.repeatedPassword}"/>
+                            <p:message for="repeated_password"/>
+                        </h:panelGrid>
+                        <p:commandButton value="Change password"
+                                         action="#{userController.changePassword()}"
+                                         ajax="false"
+                                         styleClass="responsiveElement"/>
+                        <p:messages globalOnly="true"/>
+                </div>
             </p:tab>
         </p:tabView>
     </h:form>
