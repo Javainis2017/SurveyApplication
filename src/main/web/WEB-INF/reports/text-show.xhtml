@@ -5,15 +5,20 @@
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-        xmlns:c="http://java.sun.com/jsp/jstl/core">
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:f="http://xmlns.jcp.org/jsf/core">
     <!--@elvariable id="question" type="com.javainis.reports.mybatis.model.FreeTextQuestion"-->
     <!--@elvariable id="controller" type="com.javainis.reports.controllers.ReportController"-->
     <h:form>
-        <c:forEach var="item" items="#{question.answers}">
-            <h:outputText>#{item.text}</h:outputText>
-            <br/>
-            <br/>
-        </c:forEach>
+        <p:panelGrid id="infoGrid" columns="1" style="width:100%;">
+            <f:facet name="header">
+                <p:column>Answer</p:column>
+            </f:facet>
+            <c:forEach var="item" items="#{question.answers}">
+                <h:outputText>#{item.text}</h:outputText>
+            </c:forEach>
+        </p:panelGrid>
+        <br/>
         <p:growl id="msgs" showDetail="true" />
         <p:tagCloud model="#{controller.questionReports[question].model}">
             <p:ajax event="select" update="msgs" listener="#{controller.questionReports[question].onSelect}" />

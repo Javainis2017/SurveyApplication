@@ -46,7 +46,7 @@ public class SingleChoiceChartController implements SingleChoiceQuestionReport, 
         }
 
 
-        model.setTitle(singleChoiceQuestion.getText());
+//        model.setTitle(singleChoiceQuestion.getText());
         model.setLegendPosition("w");
         model.setShowDataLabels(true);
         model.setShadow(true);

@@ -176,7 +176,7 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
             }
         }
         barModel.addSeries(values);
-        barModel.setTitle("Interval values Bar Chart");
+//        barModel.setTitle("Interval values Bar Chart");
         Axis xAxis = barModel.getAxis(AxisType.X);
         xAxis.setLabel("Values");
         Axis yAxis = barModel.getAxis(AxisType.Y);

@@ -5,33 +5,51 @@
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:form>
-    <h:outputText value="#{question.min}">
-        <f:convertNumber maxFractionDigits="2" />
-    </h:outputText>
-    <h:outputText> - </h:outputText>
-    <h:outputText value="#{question.max}">
-        <f:convertNumber maxFractionDigits="2" />
-    </h:outputText><br/>
-    <h:outputText>Average - </h:outputText>
-    <h:outputText value="#{controller.questionReports[question].average}">
-        <f:convertNumber maxFractionDigits="2" />
-    </h:outputText><br/>
-    <h:outputText>Mode - </h:outputText>
-    <h:outputText value="#{controller.questionReports[question].mode}">
-        <f:convertNumber maxFractionDigits="2" />
-    </h:outputText><br/>
-    <h:outputText>Median - </h:outputText>
-    <h:outputText value="#{controller.questionReports[question].median}">
-        <f:convertNumber maxFractionDigits="2" />
-    </h:outputText><br/>
-    <h:outputText>25% percentile - </h:outputText>
-    <h:outputText value="#{controller.questionReports[question].percentile25}">
-        <f:convertNumber maxFractionDigits="2" />
-    </h:outputText><br/>
-    <h:outputText>75% percentile - </h:outputText>
-    <h:outputText value="#{controller.questionReports[question].percentile75}">
-        <f:convertNumber maxFractionDigits="2" />
-    </h:outputText><br/>
-    <p:chart id="barChart" type="bar" model="#{controller.questionReports[question].barModel}" style="height:300px"/>
+    <p:panelGrid id="infoGrid" columns="2"  styleClass="interval-show-grid">
+        <h:outputLabel><b>Interval</b></h:outputLabel>
+
+        <p:column style="width: 30%;">
+            <h:outputText value="#{question.min}" />
+             -
+            <h:outputText value="#{question.max}" />
+        </p:column>
+
+        <h:outputLabel><b>Average</b></h:outputLabel>
+        <p:column>
+            <h:outputLabel value="#{controller.questionReports[question].average}">
+                <f:convertNumber maxFractionDigits="2" />
+            </h:outputLabel>
+        </p:column>
+
+        <h:outputLabel><b>Mode</b></h:outputLabel>
+        <p:column>
+            <h:outputText value="#{controller.questionReports[question].mode}">
+                <f:convertNumber maxFractionDigits="2" />
+            </h:outputText><br/>
+        </p:column>
+
+        <h:outputLabel><b>Median</b></h:outputLabel>
+        <p:column>
+        <h:outputText value="#{controller.questionReports[question].median}">
+            <f:convertNumber maxFractionDigits="2" />
+        </h:outputText><br/>
+        </p:column>
+
+        <h:outputLabel><b>25% percentile</b></h:outputLabel>
+        <p:column>
+        <h:outputText value="#{controller.questionReports[question].percentile25}">
+            <f:convertNumber maxFractionDigits="2" />
+        </h:outputText><br/>
+        </p:column>
+
+        <h:outputLabel><b>75% percentile</b></h:outputLabel>
+        <p:column>
+        <h:outputText value="#{controller.questionReports[question].percentile75}">
+            <f:convertNumber maxFractionDigits="2" />
+        </h:outputText><br/>
+        </p:column>
+    </p:panelGrid>
+    <br/>
+    <p:chart id="barChart" type="bar" model="#{controller.questionReports[question].barModel}" style="height:300px;width:100%;"/>
 </h:form>
 </ui:composition>

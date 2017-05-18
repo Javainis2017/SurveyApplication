@@ -179,7 +179,14 @@ textarea{
     margin: 2em 17%;
 }
 .report-question{
-    margin: 1em 2em;
+    margin: 1em 4em;
+}
+.report-table{
+    width:100%;
+    border:1px solid grey;
+    border-collapse: collapse;
+    background: white;
+    border-radius:5px;
 }
 .interval-show-grid{
     width: 40%;
@@ -260,9 +267,9 @@ textarea{
         font-size: 1em !important;
     }
     .report-body{
-        width:98%;
+        width:100%;
         margin:1em 5px;
-        display:initial;
+        display:table-cell;
     }
     .report-question{
         margin: 1em 5px;

@@ -4,11 +4,12 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xml:lang="en" lang="en">
 <h:head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <h:outputStylesheet name="css/style.css" />
     <c:if test="#{reportController.canAccess}">
         <title>#{reportController.survey.title} results</title>
     </c:if>
@@ -16,39 +17,49 @@
         <title>Access denied</title>
     </c:if>
 </h:head>
-<h:body>
+<h:body styleClass="report-body home-body">
     <c:if test="#{reportController.canAccess}">
-        <h1>Survey results</h1>
+        <h1 class="center large">Survey results</h1>
         <h2>#{reportController.survey.title}</h2>
-        <h3>#{reportController.survey.surveyResultCount} responses</h3>
         <p>#{reportController.survey.description}</p>
+        <br/>
+        <h2>#{reportController.survey.surveyResultCount} responses</h2>
 
         <h:panelGroup id="report" rendered="#{reportController.survey.surveyResultCount > 0}">
+            <table class="report-table">
             <c:forEach items="#{reportController.survey.questions}" var="question">
-                <h3>#{question.text} </h3>
-                <c:if test="#{question.required}">
-                    <h:outputText>(Required)</h:outputText>
-                    <br/>
-                </c:if>
-                <h:outputText>#{question.answers.size()} responses(</h:outputText>
-                <h:outputText value="#{question.answers.size() / reportController.survey.surveyResultCount * 100}" >
-                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
-                </h:outputText>
-                <h:outputText>%)</h:outputText><br/>
-                <c:if test="#{question.answers.size() > 0}">
-                    <h:panelGroup rendered="#{reportController.reports[question].done}">
-                        <ui:include src="/WEB-INF/reports/#{reportController.questionReports[question].templateName}">
-                            <ui:param name="question" value="#{question}"/>
-                            <ui:param name="controller" value="#{reportController}"/>
-                        </ui:include>
-                    </h:panelGroup>
-                    <h:panelGroup rendered="#{not reportController.reports[question].done and not reportController.timeout}">
-                        <h:outputText>Report loading...</h:outputText>
-                    </h:panelGroup>
-                    <h:panelGroup rendered="#{not reportController.reports[question].done and reportController.timeout}">
-                        <h:outputText>Report timeout</h:outputText>
-                    </h:panelGroup>
-                </c:if>
+                <tr>
+                    <td style="border:1px solid;padding:1em;">
+                        <h3 style="margin-bottom: 0;">#{question.text} </h3>
+                        <c:if test="#{question.required}">
+                            <p style="margin-top:0;color:grey;">Required</p>
+                        </c:if>
+                        <br/>
+                        <div class="report-question">
+                            <b><h:outputText>#{question.answers.size()} responses (</h:outputText>
+                                <h:outputText value="#{question.answers.size() / reportController.survey.surveyResultCount * 100}" >
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                                </h:outputText>%)
+                            </b>
+                            <br/>
+                            <br/>
+                            <c:if test="#{question.answers.size() > 0}">
+                                <h:panelGroup rendered="#{reportController.reports[question].done}">
+                                    <ui:include src="/WEB-INF/reports/#{reportController.questionReports[question].templateName}">
+                                        <ui:param name="question" value="#{question}"/>
+                                        <ui:param name="controller" value="#{reportController}"/>
+                                    </ui:include>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{not reportController.reports[question].done and not reportController.timeout}">
+                                    <h:outputText>Report loading...</h:outputText>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{not reportController.reports[question].done and reportController.timeout}">
+                                    <h:outputText>Report timeout</h:outputText>
+                                </h:panelGroup>
+                            </c:if>
+                        </div>
+                    </td>
+                </tr>
             </c:forEach>
             <h:form>
                 <p:poll interval="1" update="report"
@@ -57,13 +68,14 @@
                         stop="#{reportController.timeout}"
                         timeout="10000"/>
             </h:form>
+            </table>
         </h:panelGroup>
         <h:panelGroup id="emptyReport" rendered="#{reportController.survey.surveyResultCount == 0}">
             No results have submitted.
         </h:panelGroup>
     </c:if>
     <c:if test="#{!reportController.canAccess}">
-        <h2>Survey results</h2>
+        <h1>Survey results</h1>
         <h3>Survey not found or no permission to view results.</h3>
     </c:if>
 </h:body>

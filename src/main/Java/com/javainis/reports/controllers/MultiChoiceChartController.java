@@ -61,7 +61,7 @@ public class MultiChoiceChartController implements MultiChoiceQuestionReport, Se
 
         model.addSeries(answers);
 
-        model.setTitle(multipleChoiceQuestion.getText());
+//        model.setTitle(multipleChoiceQuestion.getText());
         model.setShowPointLabels(true);
         model.setShadow(true);
 
