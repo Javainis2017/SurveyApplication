@@ -2,33 +2,19 @@ package com.javainis.data_export_import.controllers;
 
 import com.javainis.data_export_import.interfaces.DataExporter;
 import com.javainis.survey.dao.SurveyDAO;
-import com.javainis.survey.dao.SurveyResultDAO;
-import com.javainis.survey.entities.Answer;
 import com.javainis.survey.entities.Survey;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
-import org.primefaces.context.PrimeFacesContext;
-import org.primefaces.context.RequestContext;
 
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.ServletResponse;
 import javax.transaction.Transactional;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -79,12 +65,11 @@ public class SurveyExportController implements Serializable {
         catch(IOException ex)
         {
             ex.printStackTrace();
-            Messages.addGlobalWarn("Could not generate file, error: " + ex.getMessage());
+            Messages.addGlobalWarn("ERROR: Failed to generate file");
         }
     }
 
     public void checkProgress() {
-        System.out.println("Checking");
         if(export != null && export.isDone())
         {
             timeout = true;
