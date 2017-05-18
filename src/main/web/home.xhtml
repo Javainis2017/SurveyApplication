@@ -33,12 +33,12 @@
                                  selection="#{userSurveyController.selectedSurvey}"
                                  rowKey="#{survey.id}"
                                  styleClass="fieldPanel"
-                                 filteredValue="#{userSurveyController.filteredSurveys}"
-                    >
+                                 filteredValue="#{userSurveyController.filteredSurveys}">
                         <p:ajax event="rowSelect" update="surveyTable" />
                         <f:facet name="header">
                             <div style="text-align: center">Surveys</div>
                             <p:button outcome="survey/new" value="New survey" icon="fa fa-plus"/>
+                            <p:button outcome="survey/import" value="Import survey" icon="fa fa-plus"/>
                         </f:facet>
                         <p:column headerText="Title"
                                   filterBy="#{survey.title}"
@@ -119,21 +119,6 @@
                             autoStart="false"
                             stop="#{surveyExportController.timeout}"
                             timeout="10000" />
-
-                <div style="margin: 1em !important;">
-                    <h3>Import from .xlsx</h3>
-                    <p:growl id="messages" showDetail="true" />
-                    <p:fileUpload id="upload"
-                                  value="#{surveyImportController.uploadedFile}"
-                                  allowTypes='/(\.|\/)(xlsx)$/'
-                                  mode="simple"
-                                  skinSimple="true"/>
-                    <br/>
-                    <h:outputText value="&#160;" />
-
-                    <p:commandButton value="Submit" ajax="false" actionListener="#{surveyImportController.upload()}"
-                                     disabled="false" />
-                </div>
             </p:tab>
             <p:tab title="Users" rendered="#{userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN}">
                 <p:dataTable styleClass="fieldPanel"
@@ -193,7 +178,7 @@
                             <p:commandButton value="Remove"
                                              rendered="#{adminWhitelistController.whitelistDAO.findEmail(whitelist.email) != userController.userDAO.emailIsRegistered(whitelist.email)}"
                                              actionListener="#{adminWhitelistController.removeFromWhitelist(whitelist.email)}"
-                                             ajax="true" update="whitelistTable" >
+                                             update="whitelistTable" >
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
@@ -204,7 +189,7 @@
                         <p:message for="email" autoUpdate="true"/>
                         <p:commandButton value="Add"
                                          actionListener="#{adminWhitelistController.whitelistEmail()}"
-                                         ajax="true" update="whitelistTable"/>
+                                         update="whitelistTable"/>
                     </h:panelGrid>
             </p:tab>
         </p:tabView>

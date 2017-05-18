@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xml:lang="en" lang="en">
+<h:head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <h:outputStylesheet name="css/style.css" />
+    <title>Survey import</title>
+</h:head>
+<h:body rendered="#{userController.getUser().getEmail() != null}" styleClass="home-body survey-body">
+    <h1>Survey import</h1>
+    <!-- Change survey title and description -->
+    <h:form id="survey">
+        <p:panelGrid id="infoGrid" styleClass="surveyPanel" columns="1" layout="grid">
+            <p:column>
+                <p:inputText id="title"
+                             required="#{param['survey:save'] != null}"
+                             value="#{surveyImportController.survey.title}"
+                             maxlength="80"
+                             size="80"
+                             placeholder="Survey title"
+                             styleClass="newSurveyField survey-title"/>
+                <p:message for="title"/>
+            </p:column>
+            <p:column>
+                <p:inputTextarea id="description"
+                                 value="#{surveyImportController.survey.description}"
+                                 rows="4" cols="80"
+                                 placeholder="Survey description (Optional)"
+                                 styleClass="newSurveyField"/>
+                <p:message for="description"/>
+            </p:column>
+
+            <p:column style="border-style:hidden;">
+                <p:selectBooleanCheckbox id="isPublic"
+                                         value="#{surveyImportController.survey.isPublic}" label="Public results1"/>
+                <p:outputLabel for="isPublic" value=" Public results" />
+                <p:message for="isPublic"/>
+            </p:column>
+            <p:column>
+                <p:outputLabel for="expiration_date" value="Expiration date "/>
+            </p:column>
+            <p:row>
+                <p:inputText
+                        type="date"
+                        id="expiration_date"
+                        value="#{surveyImportController.expirationDateString}"
+                        style="display: inline-block; float:left; margin-right: 0.3em;"/>
+                <p:message for="expiration_date"/>
+                <p:inputText type="time" id="expiration_time" value="#{surveyImportController.expirationTimeString}"/>
+                <p:message for="expiration_time"/>
+            </p:row>
+            <p:row>
+                <div style="margin: 1em !important;">
+                    <h3>Import from .xlsx</h3>
+                    <p:growl id="messages" showDetail="true" />
+                    <p:fileUpload id="upload"
+                                  value="#{surveyImportController.uploadedFile}"
+                                  allowTypes='/(\.|\/)(xlsx)$/'
+                                  mode="simple"
+                                  skinSimple="true"/>
+                    <br/>
+                    <h:outputText value="&#160;" />
+
+                    <p:commandButton value="Submit" ajax="false" actionListener="#{surveyImportController.upload()}"
+                                     disabled="false" />
+                </div>
+            </p:row>
+        </p:panelGrid>
+   </h:form>
+</h:body>
+<c:if test="#{userController.getUser().getEmail() == null}">
+    <body>
+    <h1>ERROR 401: Unauthorized</h1>
+    </body>
+</c:if>
+</html>
