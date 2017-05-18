@@ -81,8 +81,10 @@ CREATE TABLE IF NOT EXISTS interval_question
 
 CREATE TABLE IF NOT EXISTS survey_result
 (
-	id 					BIGSERIAL PRIMARY KEY,
-	survey_id		BIGINT NOT NULL,
+	id 								BIGSERIAL PRIMARY KEY,
+	survey_id					BIGINT NOT NULL,
+	url								CHAR(32) NOT NULL,
+	complete					BOOLEAN DEFAULT FALSE,
 	opt_lock_version INTEGER,
 	FOREIGN KEY (survey_id) REFERENCES survey(id)
 );
@@ -165,6 +167,9 @@ ALTER TABLE mail_expiration ADD COLUMN IF NOT EXISTS user_id BIGINT;
 
 ALTER TABLE survey ADD COLUMN IF NOT EXISTS expiration_time TIMESTAMP;
 ALTER TABLE survey ADD COLUMN IF NOT EXISTS public	BOOLEAN DEFAULT TRUE;
+
+ALTER TABLE survey_result ADD COLUMN IF NOT EXISTS url CHAR(32);
+ALTER TABLE survey_result ADD COLUMN IF NOT EXISTS complete BOOLEAN;
 
 CREATE TABLE IF NOT EXISTS logs
 (
