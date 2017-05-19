@@ -94,13 +94,12 @@
 
             <h3>Send partly answered survey to your email</h3>
             <h:panelGrid columns="2">
-                <p:inputText type="email" placeholder="Email" id="email" value="#{userController.currentPassword}"/>
+                <p:inputText type="email" placeholder="Email" id="email" value="#{surveyController.email}"/>
 
                 <p:messages globalOnly="true"/>
                 <p:button id="Send"
                           value="Send to email"
                           action="#{surveyController.submitAnswers}"
-                          rendered="#{surveyController.currentPage.number == surveyController.survey.pages.size()}"
                           ajax="false"/>
             </h:panelGrid>
 

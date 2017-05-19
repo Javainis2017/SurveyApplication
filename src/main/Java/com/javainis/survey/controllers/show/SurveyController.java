@@ -3,6 +3,7 @@ package com.javainis.survey.controllers.show;
 import com.javainis.survey.dao.*;
 import com.javainis.survey.entities.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.omnifaces.cdi.Param;
 
 import javax.annotation.PostConstruct;
@@ -48,6 +49,10 @@ public class SurveyController implements Serializable{
 
     @Getter
     private Map<Question, Answer> answers = new HashMap<>();
+
+    @Getter
+    @Setter
+    private String email;
 
     @PostConstruct
     public void init(){
