@@ -81,8 +81,8 @@ CREATE TABLE IF NOT EXISTS survey_result
 (
 	id 								BIGSERIAL PRIMARY KEY,
 	survey_id					BIGINT NOT NULL,
-	url								CHAR(32) NOT NULL,
-	complete					BOOLEAN DEFAULT FALSE,
+	url								CHAR(32),
+	complete					BOOLEAN DEFAULT TRUE,
 	opt_lock_version INTEGER,
 	FOREIGN KEY (survey_id) REFERENCES survey(id)
 );
