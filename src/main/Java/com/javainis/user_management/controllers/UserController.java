@@ -70,7 +70,9 @@ public class UserController implements Serializable
     }
 
     public void setPasswordHash(String password) {
-        passwordHash = hashGenerator.generatePasswordHash(password);
+        if(!password.isEmpty()){
+            passwordHash = hashGenerator.generatePasswordHash(password);
+        }
     }
 
     private void resetPasswordFields() {
