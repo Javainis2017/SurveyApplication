@@ -145,8 +145,9 @@ CREATE TABLE IF NOT EXISTS logs
 	id BIGSERIAL PRIMARY KEY,
 	user_name		VARCHAR(80) NOT NULL,
 	user_email VARCHAR(50),
-	survey_name  VARCHAR(80) NOT NULL,
 	rights	VARCHAR(10),
 	time TIMESTAMP,
-	class_method VARCHAR(100)
+	class_name VARCHAR(100),
+	method_name VARCHAR(100)
+
 );
