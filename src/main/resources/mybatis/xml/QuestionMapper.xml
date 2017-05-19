@@ -3,6 +3,7 @@
 <mapper namespace="com.javainis.reports.mybatis.dao.QuestionMapper">
   <resultMap id="QuestionResultMap" type="com.javainis.reports.mybatis.model.Question">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="position" jdbcType="INTEGER" property="position"/>
     <result column="text" jdbcType="VARCHAR" property="text" />
     <result column="required" jdbcType="BIT" property="required" />
 
@@ -40,6 +41,7 @@
   <select id="selectBySurveyId" parameterType="java.lang.Long" resultMap="QuestionResultMap">
     SELECT
       q.id,
+      q.position,
       q.text,
       q.required,
       q.question_type_id,
@@ -51,6 +53,7 @@
       LEFT JOIN public.choice c on c.question_id = q.id
       LEFT JOIN public.interval_question iq on iq.id = q.id
     WHERE q.survey_id = #{id,jdbcType=BIGINT}
+    ORDER BY q.position
   </select>
 
   <select id="selectAnswersForQuestion" parameterType="java.lang.Long" resultMap="com.javainis.reports.mybatis.dao.AnswerMapper.AnswerResultMap">

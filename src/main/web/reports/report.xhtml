@@ -30,7 +30,7 @@
             <c:forEach items="#{reportController.survey.questions}" var="question">
                 <tr>
                     <td style="border:1px solid;padding:1em;">
-                        <h3 style="margin-bottom: 0;">#{question.text} </h3>
+                        <h3 style="margin-bottom: 0;">#{question.position}. #{question.text} </h3>
                         <c:if test="#{question.required}">
                             <p style="margin-top:0;color:grey;">Required</p>
                         </c:if>

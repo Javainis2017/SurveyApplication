@@ -10,6 +10,7 @@ import java.util.List;
 public abstract class Question {
 
     private Long id;
+    private Integer position;
     private String text;
     private Boolean required;
     private Long surveyId;
