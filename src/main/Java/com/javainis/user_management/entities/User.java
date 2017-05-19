@@ -1,31 +1,25 @@
 package com.javainis.user_management.entities;
 
-import com.javainis.utility.HashGenerator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.inject.Inject;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.security.MessageDigest;
 
-/**
- * User entity
- */
 @Entity
 @Table(name = "app_user")
 @NamedQueries({
+        @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.userID = :id"),
         @NamedQuery(name = "User.findUser", query = "SELECT u FROM User u WHERE u.email = :email AND u.passwordHash = :passwordHash"),
         @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-        @NamedQuery(name = "User.findEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
+        @NamedQuery(name = "User.findEmail", query = "SELECT u FROM User u WHERE u.email = :email")
 })
 @Getter
 @Setter
 @EqualsAndHashCode(of = "email")
-public class User
-{
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -54,6 +48,10 @@ public class User
     @ManyToOne
     @NotNull
     private UserType userType;
+
+    @Version
+    @Column(name = "opt_lock_version")
+    private Integer optLockVersion;
 
     private Boolean blocked = false;
 }

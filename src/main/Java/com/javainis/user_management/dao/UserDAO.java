@@ -10,8 +10,7 @@ import javax.persistence.NoResultException;
 import java.util.List;
 
 @ApplicationScoped
-public class UserDAO
-{
+public class UserDAO{
     @Inject
     private EntityManager manager;
 
@@ -19,16 +18,14 @@ public class UserDAO
         manager.persist(user);
     }
 
-    public User login(String email, String pwHash)
-    {
+    public User login(String email, String pwHash) {
         return manager.createNamedQuery("User.findUser", User.class)
                     .setParameter("email", email)
                     .setParameter("passwordHash", pwHash)
                     .getSingleResult();
     }
 
-    public List<User> getAllUsers()
-    {
+    public List<User> getAllUsers() {
         return manager.createNamedQuery("User.findAll", User.class).getResultList();
     }
 
@@ -36,8 +33,7 @@ public class UserDAO
         return manager.createNamedQuery("User.findEmail", User.class).setParameter("email", email).getSingleResult();
     }
 
-    public Boolean changeUserType(String email, long typeID)
-    {
+    public Boolean changeUserType(String email, long typeID) {
         try{
             User user = manager.createNamedQuery("User.findEmail", User.class)
                     .setParameter("email", email)
@@ -49,8 +45,7 @@ public class UserDAO
             user.setUserType(userType);
             manager.persist(user); //nereikia?
             return true;
-        }
-        catch (NoResultException ex){ //kokie exception?
+        } catch (NoResultException ex){ //kokie exception?
             return false;
         }
     }
@@ -64,8 +59,7 @@ public class UserDAO
             user.setBlocked(blocked);
             manager.persist(user); //nereikia?
             return true;
-        }
-        catch (NoResultException ex){
+        } catch (NoResultException ex){
             return false;
         }
     }
@@ -76,40 +70,43 @@ public class UserDAO
                     .setParameter("email", email)
                     .getSingleResult();
             //Jeigu neuzblokuotas - uzblokuoti, jegu uzblokuotas - atblokuoti
-            if (user.getBlocked() == null)
-            {
+            if (user.getBlocked() == null) {
                 user.setBlocked(true);
             }
             else {
                 user.setBlocked(!user.getBlocked());
             }
             return true;
-        }
-        catch (NoResultException ex){
+        } catch (NoResultException ex){
             return false;
         }
     }
 
-    public Boolean emailIsRegistered(String email)
-    {
+    public Boolean emailIsRegistered(String email){
         try {
             User result = manager.createNamedQuery("User.findEmail", User.class)
                     .setParameter("email", email)
                     .getSingleResult();
             return result != null;
-        }
-        catch (NoResultException ex)
-        {
+        } catch (NoResultException ex) {
             return false;
         }
     }
 
-    public void changeUserPassword(String email, String newPasswordHash)
-    {
+    public void changeUserPassword(String email, String newPasswordHash) {
         User user = manager.createNamedQuery("User.findEmail", User.class)
                     .setParameter("email", email)
                     .getSingleResult();
 
         user.setPasswordHash(newPasswordHash);
+    }
+
+    public void update(User user){
+        manager.merge(user);
+        manager.flush();
+    }
+
+    public User findById(Long id){
+        return manager.find(User.class, id);
     }
 }

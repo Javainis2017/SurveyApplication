@@ -16,8 +16,8 @@
     <title>Home</title>
 </h:head>
 <h:body rendered="#{userController.getUser().getEmail() != null}" styleClass="large-page home-body">
-<!-- Atvaizduoti kokią vartotojo informaciją bei operacijas-->
-    <h:form enctype="multipart/form-data">
+    <!-- Atvaizduoti kokią vartotojo informaciją bei operacijas-->
+    <h:form id="form" enctype="multipart/form-data">
     <div class="fill right">
         <h1 class="main-header center large">Survey Application</h1>
         <h2 class="main-header">Welcome, #{userController.getUser().getFirstName()} #{userController.getUser().getLastName()}</h2>
@@ -184,7 +184,7 @@
                         </p:column>
                     </p:dataTable>
                     <p:messages globalOnly="true" autoUpdate="true"/>
-                    <p>Whitelist new email</p>
+                    <h3>Whitelist new email</h3>
                     <h:panelGrid columns="3">
                         <p:inputText type="email" placeholder="Email" maxlength="50" id="email" value="#{adminWhitelistController.whitelist.email}"/>
                         <p:message for="email" autoUpdate="true"/>
@@ -194,23 +194,64 @@
                     </h:panelGrid>
             </p:tab>
             <p:tab title="User Settings">
-                <div class="fill narrow" >
-                    <p>Change password</p>
-                        <h:panelGrid columns="2" styleClass="responsiveElement">
-                            <p:inputText type="password" placeholder="Current password" id="current_password" value="#{userController.currentPassword}"/>
-                            <p:message for="current_password"/>
+                <div class="fill" >
+                    <h3>User profile</h3>
+                    <h:panelGrid columns="3" styleClass="responsiveElement">
+                        <p:outputLabel for="first_name" value="First name:"/>
+                        <p:inputText type="text" placeholder="First name" id="first_name" value="#{userProfileController.firstName}"/>
+                        <p:message for="first_name"/>
 
-                            <p:inputText type="password" placeholder="New password" id="new_password" value="#{userController.newPassword}"/>
-                            <p:message for="new_password"/>
+                        <p:outputLabel for="last_name" value="Last name:"/>
+                        <p:inputText type="text" placeholder="Last name" id="last_name" value="#{userProfileController.lastName}"/>
+                        <p:message for="last_name"/>
+                    </h:panelGrid>
 
-                            <p:inputText type="password" placeholder="Repeated password" id="repeated_password" value="#{userController.repeatedPassword}"/>
-                            <p:message for="repeated_password"/>
-                        </h:panelGrid>
-                        <p:commandButton value="Change password"
-                                         action="#{userController.changePassword()}"
-                                         ajax="false"
-                                         styleClass="responsiveElement"/>
-                        <p:messages globalOnly="true"/>
+                    <p:messages id="profileMessage" redisplay="false" showDetail="true"/>
+                    <p:commandButton value="Save changes"
+                                     action="#{userProfileController.saveProfile()}"
+                                     ajax="false"
+                                     update="form"
+                                     styleClass="responsiveElement"
+                                     rendered="#{empty userProfileController.conflictingUser}"/>
+                    <h:panelGroup rendered="#{not empty userProfileController.conflictingUser}">
+                        <h4>Conflicting user data</h4>
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="First name:"/>
+                            <h:outputText value="#{userProfileController.conflictingUser.firstName}"/>
+
+                            <p:outputLabel value="Last name:"/>
+                            <h:outputText value="#{userProfileController.conflictingUser.lastName}"/>
+
+                            <p:commandButton value="Overwrite"
+                                             action="#{userProfileController.overwrite()}"
+                                             styleClass="responsiveElement"
+                                             update="form"/>
+                            <p:commandButton value="Refresh"
+                                             action="#{userProfileController.refresh()}"
+                                             styleClass="responsiveElement"
+                                             update="form"/>
+                        </p:panelGrid>
+                    </h:panelGroup>
+
+                    <h3>Change password</h3>
+                    <h:panelGrid columns="3" styleClass="responsiveElement">
+                        <p:outputLabel for="current_password" value="Current password:"/>
+                        <p:inputText type="password" placeholder="Current password" id="current_password" value="#{userProfileController.currentPassword}"/>
+                        <p:message for="current_password"/>
+
+                        <p:outputLabel for="new_password" value="New password:"/>
+                        <p:inputText type="password" placeholder="New password" id="new_password" value="#{userProfileController.newPassword}"/>
+                        <p:message for="new_password"/>
+
+                        <p:outputLabel for="repeated_password" value="Confirm new password:"/>
+                        <p:inputText type="password" placeholder="Repeated password" id="repeated_password" value="#{userProfileController.repeatedPassword}"/>
+                        <p:message for="repeated_password"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Change password"
+                                     action="#{userProfileController.changePassword()}"
+                                     styleClass="responsiveElement"
+                                     update="form"/>
+                    <p:messages globalOnly="true"/>
                 </div>
             </p:tab>
         </p:tabView>
