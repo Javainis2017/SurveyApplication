@@ -16,12 +16,12 @@
 <h:body rendered="#{userController.getUser().getEmail() != null}" styleClass="home-body survey-body">
     <h1>Survey import</h1>
     <!-- Change survey title and description -->
-    <h:form id="survey">
+    <h:form id="survey" enctype="multipart/form-data">
         <p:panelGrid id="infoGrid" styleClass="surveyPanel" columns="1" layout="grid">
             <p:column>
                 <p:inputText id="title"
                              required="#{param['survey:save'] != null}"
-                             value="#{surveyImportController.survey.title}"
+                             value="#{surveyImportController.selectedSurvey.title}"
                              maxlength="80"
                              size="80"
                              placeholder="Survey title"
@@ -30,7 +30,7 @@
             </p:column>
             <p:column>
                 <p:inputTextarea id="description"
-                                 value="#{surveyImportController.survey.description}"
+                                 value="#{surveyImportController.selectedSurvey.description}"
                                  rows="4" cols="80"
                                  placeholder="Survey description (Optional)"
                                  styleClass="newSurveyField"/>
@@ -39,7 +39,7 @@
 
             <p:column style="border-style:hidden;">
                 <p:selectBooleanCheckbox id="isPublic"
-                                         value="#{surveyImportController.survey.isPublic}" label="Public results1"/>
+                                         value="#{surveyImportController.selectedSurvey.isPublic}" label="Public results1"/>
                 <p:outputLabel for="isPublic" value=" Public results" />
                 <p:message for="isPublic"/>
             </p:column>

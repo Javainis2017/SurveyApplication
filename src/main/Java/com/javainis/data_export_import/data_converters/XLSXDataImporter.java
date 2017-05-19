@@ -2,26 +2,31 @@ package com.javainis.data_export_import.data_converters;
 
 import com.javainis.data_export_import.interfaces.DataImporter;
 import com.javainis.survey.entities.*;
+import org.apache.deltaspike.core.api.future.Futureable;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.ejb.AsyncResult;
 import javax.enterprise.context.Dependent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @Dependent
 public class XLSXDataImporter implements DataImporter{
 
     private File file;
 
+
     @Override
-    public Survey importSurvey(File selectedFile) {
-        Survey survey = new Survey();
+    @Futureable
+    public Future<Survey> importSurvey(File selectedFile, Survey survey) {
         SurveyPage surveyPage = new SurveyPage();
         surveyPage.setNumber(1); // always on first page
         surveyPage.setSurvey(survey);
@@ -31,7 +36,7 @@ public class XLSXDataImporter implements DataImporter{
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(selectedFile));
             XSSFSheet sheet = workbook.getSheet("Survey");
-            if (workbook.getSheet("Survey") == null) return null;
+            if (workbook.getSheet("Survey") == null) return new AsyncResult<>(null);
             Row headerRow = sheet.getRow(0);
             Map<String, Integer> column = new HashMap<String, Integer>();
             int iterator = 0;
@@ -45,7 +50,6 @@ public class XLSXDataImporter implements DataImporter{
             List<Question> questions = new ArrayList<>();
 
             for (int i = 1; i <= sheet.getLastRowNum();i++){
-            //for (Row row : sheet){
                 Row row = sheet.getRow(i);
                 if (row == null) break;
                 if (row.getRowNum() == 0) continue; // header avoid reading
@@ -74,7 +78,6 @@ public class XLSXDataImporter implements DataImporter{
                         freeTextQuestion.setPage(surveyPage);
                         freeTextQuestion.setSurvey(survey);
                         questions.add(freeTextQuestion);
-                        //System.out.println("TEXT");
                         break;
                     case "CHECKBOX":
                         MultipleChoiceQuestion multipleChoiceQuestion = new MultipleChoiceQuestion();
@@ -107,7 +110,6 @@ public class XLSXDataImporter implements DataImporter{
                         multipleChoiceQuestion.setText(questionName);
                         multipleChoiceQuestion.setSurvey(survey);
                         questions.add(multipleChoiceQuestion);
-                        //System.out.println("SINGLE");
                         break;
                     case "MULTIPLECHOICE":
                         SingleChoiceQuestion singleChoiceQuestion = new SingleChoiceQuestion();
@@ -138,7 +140,6 @@ public class XLSXDataImporter implements DataImporter{
                         singleChoiceQuestion.setText(questionName);
                         singleChoiceQuestion.setSurvey(survey);
                         questions.add(singleChoiceQuestion);
-                        //System.out.println("MULTI");
                         break;
                     case "SCALE":
                         IntervalQuestion intervalQuestion = new IntervalQuestion();
@@ -168,7 +169,6 @@ public class XLSXDataImporter implements DataImporter{
                         intervalQuestion.setPage(surveyPage);
                         intervalQuestion.setSurvey(survey);
                         questions.add(intervalQuestion);
-                        //System.out.println("SCALE");
                         break;
                     default:
 
@@ -177,9 +177,9 @@ public class XLSXDataImporter implements DataImporter{
             }
             survey.setQuestions(questions);
         } catch (IOException e) {
-            return null;
+            return new AsyncResult<>(null);
         }
-        if (validateSurvey(survey)) return survey;
+        if (validateSurvey(survey)) return new AsyncResult<>(survey);
         else return null;
     }
 
@@ -220,14 +220,14 @@ public class XLSXDataImporter implements DataImporter{
     }
 
     @Override
-    public List<SurveyResult> importAnswers(File selectedFile, Survey survey) {
-        List<SurveyResult> surveyResultList;
+    @Futureable
+    public Future<List<SurveyResult>> importAnswers(File selectedFile, Survey survey, List<SurveyResult> surveyResultList) {
         List<Answer> answerList = new ArrayList<>();
         Map<Double, SurveyResult> surveyResultMap = new HashMap<>();
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(selectedFile));
             XSSFSheet sheet = workbook.getSheet("Answer");
-            if (workbook.getSheet("Answer") == null) return null;
+            if (workbook.getSheet("Answer") == null) return new AsyncResult<>(null);
             Row headerRow = sheet.getRow(0);
             Map<String, Integer> column = new HashMap<String, Integer>();
             int iterator = 0;
@@ -248,7 +248,7 @@ public class XLSXDataImporter implements DataImporter{
                 }
 
                 if (row.getCell(column.get("$answerID")).getCellTypeEnum() != CellType.NUMERIC && row.getCell(column.get("$questionNumber")).getCellTypeEnum() != CellType.NUMERIC){
-                    return null;
+                    return new AsyncResult<>(null);
                 }
 
                 double questionNumber = 0;
@@ -344,7 +344,7 @@ public class XLSXDataImporter implements DataImporter{
         catch (Exception e){
             return null;
         }
-        if (validateSurveyAnswers(surveyResultList)) return surveyResultList;
+        if (validateSurveyAnswers(surveyResultList)) return new AsyncResult<>(surveyResultList);
         else return null;
     }
 

@@ -26,17 +26,14 @@ public class LoggedInterceptor implements Serializable {
         try{
             context = invocationContext.proceed();
         } finally {
-            if (invocationContext.getTarget() instanceof NewSurveyController){
-                NewSurveyController controller = (NewSurveyController) invocationContext.getTarget();
-                Log log = new Log();
-                log.setTime(new Timestamp(System.currentTimeMillis()));
-                log.setClass_method("class: " + invocationContext.getMethod().getDeclaringClass().getSimpleName() + " method: " + invocationContext.getMethod().getName());
-                log.setSurveyName(controller.getSurvey(). getTitle());
-                log.setUserName(userController.getUser().getFirstName() + " " + userController.getUser().getLastName());
-                log.setRights(userController.getUser().getUserType().getName());
-                log.setUserEmail(userController.getUser().getEmail());
-                logToDB.saveLog(log);
-            }
+            Log log = new Log();
+            log.setTime(new Timestamp(System.currentTimeMillis()));
+            log.setUserName(userController.getUser().getFirstName() + " " + userController.getUser().getLastName());
+            log.setClass_name(invocationContext.getMethod().getDeclaringClass().getSimpleName());
+            log.setMethod_name(invocationContext.getMethod().getName());
+            log.setRights(userController.getUser().getUserType().getName());
+            log.setUserEmail(userController.getUser().getEmail());
+            logToDB.saveLog(log);
         }
         return context;
     }

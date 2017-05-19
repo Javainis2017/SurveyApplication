@@ -26,10 +26,6 @@ public class Log
     @Column(name = "user_name")
     private String userName;
 
-    @Size(max = 80)
-    @Column(name = "survey_name")
-    private String surveyName;
-
     @Size(max = 50)
     @Column(name = "user_email")
     private String userEmail;
@@ -42,6 +38,10 @@ public class Log
     private Timestamp time;
 
     @Size(max = 100)
-    @Column(name = "class_method")
-    private String class_method;
+    @Column(name = "class_name")
+    private String class_name;
+
+    @Size(max = 100)
+    @Column(name = "method_name")
+    private String method_name;
 }

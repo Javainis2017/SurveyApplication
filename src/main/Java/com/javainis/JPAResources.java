@@ -2,6 +2,7 @@ package com.javainis;
 
 import javax.ejb.Asynchronous;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Disposes;
@@ -11,6 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.SynchronizationType;
 import javax.transaction.TransactionScoped;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 
 @ApplicationScoped
@@ -29,7 +31,8 @@ public class JPAResources implements Serializable
 
     @Produces
     @Async
-    @TransactionScoped
+    //@Dependent
+    @Transactional
     private EntityManager createJTATransactionalEM()
     {
         return factory.createEntityManager(SynchronizationType.SYNCHRONIZED);
