@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS interval_question
 (
 	id 					BIGSERIAL PRIMARY KEY,
 	min_value 	INTEGER,
-	max_value		INTEGER,
+	max_value		INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS survey_result
