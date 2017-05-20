@@ -233,8 +233,8 @@ public class SurveyImportController implements Serializable{
 
         cleanTempFolder(path);
 
-        selectedSurvey = null;
-        surveyResultList = null;
+        selectedSurvey = new Survey();
+        surveyResultList = new ArrayList<>();
         setUploadedFile(null);
         return false;
     }
