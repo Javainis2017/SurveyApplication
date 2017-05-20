@@ -2,14 +2,19 @@ package com.javainis.survey.controllers.show;
 
 import com.javainis.survey.dao.*;
 import com.javainis.survey.entities.*;
+import com.javainis.utility.mail.MailSender;
 import lombok.Getter;
 import lombok.Setter;
 import org.omnifaces.cdi.Param;
+import org.omnifaces.util.Messages;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.io.Serializable;
@@ -41,6 +46,9 @@ public class SurveyController implements Serializable{
     @Param(pathIndex = 0)
     private String surveyUrl;
 
+    @Inject
+    private MailSender mailSender;
+
     @Getter
     private Survey survey;
 
@@ -53,6 +61,9 @@ public class SurveyController implements Serializable{
     @Getter
     @Setter
     private String email;
+
+    @Getter
+    private Boolean success = false;
 
     @PostConstruct
     public void init(){
@@ -193,6 +204,24 @@ public class SurveyController implements Serializable{
     /* Save incomplete survey to email */
     @Transactional
     public void saveSurveyToEmail(){
+        if(!email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
+            Messages.addGlobalWarn("Invalid email.");
+            return;
+        }
 
+        try {
+            Context ctx = new InitialContext();
+            Context env = (Context) ctx.lookup("java:comp/env");
+            final String host = (String) env.lookup("Host");
+
+            String path = "survey/show/";
+            String message = "Fallow this link to fully answer survey: " + host + path + survey.getUrl();
+            mailSender.sendEmail(email, "Partly finished survey \"" + survey.getTitle() + "\"", message);
+
+            Messages.addGlobalInfo("Emails sent successfully.");
+            success = true;
+        }catch (NamingException ne){
+            Messages.addGlobalWarn("Error sending emails.");
+        }
     }
 }

@@ -93,15 +93,17 @@
                              rendered="#{surveyController.currentPage.number == surveyController.survey.pages.size()}"
                              ajax="false"/>
 
+            <!--Send partly answered survey to specified email-->
             <h3>Send partly answered survey to your email</h3>
             <h:panelGrid columns="2">
                 <p:inputText type="email" placeholder="Email" id="email" value="#{surveyController.email}"/>
 
                 <p:messages globalOnly="true"/>
-                <p:button id="Send"
-                          value="Send to email"
-                          action="#{surveyController.submitAnswers}"
-                          ajax="false"/>
+                <p:button outcome="/home?faces-redirect=true" value="Go to main page" rendered="#{surveyController.success}"/>
+                <p:commandButton value="Send"
+                                 actionListener="#{surveyController.saveSurveyToEmail()}"
+                                 styleClass="responsiveElement"
+                                 rendered="#{not surveyController.success}"/>
             </h:panelGrid>
 
             <!-- Progress -->
