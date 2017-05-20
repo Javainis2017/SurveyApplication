@@ -42,10 +42,6 @@ public class TextTagCloudController implements TextQuestionReport, Serializable 
         // 1. Convert Map to List of Map
         List<Map.Entry<String, Integer>> list =
                 new LinkedList<>(unsortMap.entrySet());
-        for(Map.Entry<String, Integer> entry : unsortMap.entrySet())
-        {
-            System.out.println("> "+entry.getKey() + " -> "+entry.getValue());
-        }
         // 2. Sort list with Collections.sort(), provide a custom Comparator
         //    Try switch the o1 o2 position for a different order
         Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
@@ -59,11 +55,6 @@ public class TextTagCloudController implements TextQuestionReport, Serializable 
         Map<String, Integer> sortedMap = new LinkedHashMap<>();
         for (Map.Entry<String, Integer> entry : list) {
             sortedMap.put(entry.getKey(), entry.getValue());
-        }
-        System.out.println("a " + sortedMap.get('a'));
-        for(Map.Entry<String, Integer> entry : sortedMap.entrySet())
-        {
-            System.out.println("< "+entry.getKey() + " -> "+entry.getValue());
         }
         return sortedMap;
     }
