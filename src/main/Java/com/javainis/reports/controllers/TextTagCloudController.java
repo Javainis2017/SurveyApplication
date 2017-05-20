@@ -13,7 +13,6 @@ import org.primefaces.model.tagcloud.DefaultTagCloudModel;
 import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.AsyncResult;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Alternative;
@@ -37,6 +36,38 @@ public class TextTagCloudController implements TextQuestionReport, Serializable 
     @Getter
     private TagCloudModel model;
     private Map<String, Integer> nTopWords;
+
+    private static Map<String, Integer> sortByValue(Map<String, Integer> unsortMap) {
+
+        // 1. Convert Map to List of Map
+        List<Map.Entry<String, Integer>> list =
+                new LinkedList<>(unsortMap.entrySet());
+        for(Map.Entry<String, Integer> entry : unsortMap.entrySet())
+        {
+            System.out.println("> "+entry.getKey() + " -> "+entry.getValue());
+        }
+        // 2. Sort list with Collections.sort(), provide a custom Comparator
+        //    Try switch the o1 o2 position for a different order
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> o1,
+                               Map.Entry<String, Integer> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+
+        // 3. Loop the sorted list and put it into a new insertion order Map LinkedHashMap
+        Map<String, Integer> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        System.out.println("a " + sortedMap.get('a'));
+        for(Map.Entry<String, Integer> entry : sortedMap.entrySet())
+        {
+            System.out.println("< "+entry.getKey() + " -> "+entry.getValue());
+        }
+        return sortedMap;
+    }
+
     @Override
     public String getTemplateName() {
         return "text-show.xhtml";
@@ -67,22 +98,24 @@ public class TextTagCloudController implements TextQuestionReport, Serializable 
         int max = Collections.max(nTopWords.values());
         if(max>5) {
             double divisor = (double) max / 5;
-            for(Map.Entry<String, Integer> entry : getNTopWords(wordCount).entrySet())
+            for(Map.Entry<String, Integer> entry : nTopWords.entrySet())
             {
                 model.addTag(new DefaultTagCloudItem(entry.getKey(), (int)Math.round(entry.getValue()/divisor)));
             }
         }
         else {
-            for (Map.Entry<String, Integer> entry : getNTopWords(wordCount).entrySet()) {
+            for (Map.Entry<String, Integer> entry : nTopWords.entrySet()) {
                 model.addTag(new DefaultTagCloudItem(entry.getKey(), entry.getValue()));
             }
         }
     }
+
     public void onSelect(SelectEvent event) {
         TagCloudItem item = (TagCloudItem) event.getObject();
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Word Selected", item.getLabel()+" - " + nTopWords.get(item.getLabel()) + " occurrences");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+
     private Map<String, Integer> findSortedWords(List<String> texts)
     {
         Map<String, Integer> resultMap = new HashMap<>();
@@ -92,7 +125,7 @@ public class TextTagCloudController implements TextQuestionReport, Serializable 
             string.append(text).append(" ");
         }
         string = new StringBuilder(string.toString().toLowerCase());
-        List<String> words =  Arrays.asList(string.toString().split("[^a-zA-Z0-9']+"));
+        List<String> words =  Arrays.asList(string.toString().split("[^a-zA-Z0-9ąčęėįšųūž']+"));
         for(String word: words)
         {
             resultMap.merge(word, 1, (a, b) -> a + b);
@@ -100,13 +133,14 @@ public class TextTagCloudController implements TextQuestionReport, Serializable 
         resultMap = sortByValue(resultMap);
         return resultMap;
     }
+
     private Map<String, Integer> getNTopWords(int n)
     {
         List<String> strings = new ArrayList<>();
-        for(TextAnswer answer:textAnswers)
-        {
+        for(TextAnswer answer:textAnswers){
             strings.add(answer.getText());
         }
+
         Map<String, Integer> words = findSortedWords(strings);
         Map<String, Integer> result = new HashMap<>();
         int count = 0;
@@ -120,28 +154,5 @@ public class TextTagCloudController implements TextQuestionReport, Serializable 
             count++;
         }
         return result;
-    }
-    private static Map<String, Integer> sortByValue(Map<String, Integer> unsortMap) {
-
-        // 1. Convert Map to List of Map
-        List<Map.Entry<String, Integer>> list =
-                new LinkedList<>(unsortMap.entrySet());
-
-        // 2. Sort list with Collections.sort(), provide a custom Comparator
-        //    Try switch the o1 o2 position for a different order
-        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-            public int compare(Map.Entry<String, Integer> o1,
-                               Map.Entry<String, Integer> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
-            }
-        });
-
-        // 3. Loop the sorted list and put it into a new insertion order Map LinkedHashMap
-        Map<String, Integer> sortedMap = new LinkedHashMap<>();
-        for (Map.Entry<String, Integer> entry : list) {
-            sortedMap.put(entry.getKey(), entry.getValue());
-        }
-
-        return sortedMap;
     }
 }
