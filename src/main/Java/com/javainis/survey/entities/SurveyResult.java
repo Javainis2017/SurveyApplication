@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,13 @@ public class SurveyResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "complete")
+    private boolean complete;
+
+    @Column(name = "url")
+    @Size(max = 32, min = 32)
+    private String url;
 
     @Version
     @Column(name = "opt_lock_version")

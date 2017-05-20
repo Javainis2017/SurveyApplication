@@ -2,6 +2,7 @@ package com.javainis.survey.controllers.show;
 
 import com.javainis.survey.dao.*;
 import com.javainis.survey.entities.*;
+import com.javainis.utility.RandomStringGenerator;
 import com.javainis.utility.mail.MailSender;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,6 +49,9 @@ public class SurveyController implements Serializable{
 
     @Inject
     private MailSender mailSender;
+
+    @Inject
+    private RandomStringGenerator randomStringGenerator;
 
     @Getter
     private Survey survey;
@@ -215,11 +219,27 @@ public class SurveyController implements Serializable{
             final String host = (String) env.lookup("Host");
 
             String path = "survey/show/";
+
             String message = "Fallow this link to fully answer survey: " + host + path + survey.getUrl();
             mailSender.sendEmail(email, "Partly finished survey \"" + survey.getTitle() + "\"", message);
 
             Messages.addGlobalInfo("Emails sent successfully.");
             success = true;
+
+            // Create SurveyResult object
+            SurveyResult result = new SurveyResult();
+            result.setSurvey(survey);
+            result.setComplete(false);
+
+            String genUrl = randomStringGenerator.generateString(32);
+            while (surveyDAO.existsByUrl(genUrl)) {
+                genUrl = randomStringGenerator.generateString(32);
+            }
+            result.setUrl(genUrl);
+
+            // Save answers to DB
+            surveyResultDAO.create(result);
+
         }catch (NamingException ne){
             Messages.addGlobalWarn("Error sending emails.");
         }
