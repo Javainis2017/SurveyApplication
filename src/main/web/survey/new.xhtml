@@ -111,21 +111,50 @@
                                     <p:commandButton title="Move up" icon="fa fa-arrow-up"
                                                      actionListener="#{newSurveyController.moveQuestion(question, 'up')}"
                                                      update="survey" styleClass="previewPanel"
-                                                     disabled="#{question.position == 1 and question.page.number == 1}"/>
+                                                     disabled="#{question.position == 1 and question.page.number == 1}">
+                                    <p:confirm disabled="#{newSurveyController.checkConditionsMoving(question, -1)}" header="Confirmation" message="Moving this question will delete some conditions. Are you sure?" icon="ui-icon-alert"/>
+                                </p:commandButton>
                                     <p:commandButton title="Move down" icon="fa fa-arrow-down"
                                                      actionListener="#{newSurveyController.moveQuestion(question, 'down')}"
                                                      update="survey"
-                                                     disabled="#{question.position == newSurveyController.survey.questions.size() and question.page.number == newSurveyController.survey.pages.size()}"/>
+                                                     disabled="#{question.position == newSurveyController.survey.questions.size() and question.page.number == newSurveyController.survey.pages.size()}">
+                                        <p:confirm disabled="#{newSurveyController.checkConditionsMoving(question, 1)}" header="Confirmation" message="Moving this question will delete some conditions. Are you sure?" icon="ui-icon-alert"/>
+                                    </p:commandButton>
                                     <c:if test="#{newSurveyController.surveyCreationStep == 'QUESTION_TYPE_CHOICE'}">
                                         <p:commandButton value="Edit" immediate="true" icon="fa fa-fw fa-edit"
                                         actionListener="#{newSurveyController.editQuestion(question)}"
                                         update="survey"
                                         styleClass="previewPanel"/>
+                                        <p:commandButton value="Add condition" immediate="true"
+                                                         actionListener="#{newSurveyController.addCondition(question)}"
+                                                         oncomplete="PF('cond').show()"
+                                                         update="survey"/>
                                     </c:if>
                                     <p:commandButton value="Remove" immediate="true" icon="fa fa-remove"
                                     actionListener="#{newSurveyController.removeQuestion(question)}"
                                     update="survey"/>
                                     <br/>
+                                    <p:panelGrid rendered="#{question.conditions.size() > 0}">
+                                        <h:outputText>Conditions</h:outputText>
+                                        <br/>
+                                        <ui:repeat value="#{question.conditions}" var="condition">
+                                            <h:panelGroup>
+                                                <ui:include src="/WEB-INF/questions/conditions/condition-preview.xhtml">
+                                                    <ui:param name="condition" value="#{condition}"/>
+                                                </ui:include>
+                                            </h:panelGroup>
+                                            <c:if test="#{newSurveyController.surveyCreationStep == 'QUESTION_TYPE_CHOICE'}">
+                                                <p:commandButton value="Edit condition" immediate="false"
+                                                                 actionListener="#{newSurveyController.editCondition(condition)}"
+                                                                 oncomplete="PF('cond').show()"
+                                                                 update=":survey:dialogPanel survey"
+                                                                 styleClass="previewPanel"/>
+                                            </c:if>
+                                            <p:commandButton value="Remove condition" immediate="true"
+                                                             actionListener="#{newSurveyController.removeCondition(condition)}"
+                                                             update="survey"/>
+                                        </ui:repeat>
+                                    </p:panelGrid>
                                 </h:panelGroup>
                             </ui:repeat>
                         </h:panelGroup>
@@ -137,40 +166,49 @@
                             <ui:param name="page" value="#{page}"/>
                         </ui:include>
                     </c:if>
-                    <c:if test="#{newSurveyController.surveyCreationStep == 'NEW_QUESTION' and newSurveyController.currentPage.number == page.number}">
-                        <!-- Create new question -->
-                        <ui:include src="/WEB-INF/questions/edit/#{newSurveyController.newQuestionType}-edit.xhtml"/>
-                        <p:commandButton value="Cancel"
-                                         action="#{newSurveyController.cancel}"
-                                         update="survey"/>
-                    </c:if>
-                    <c:if test="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION'and newSurveyController.questionToEdit.page.equals(page)}">
-                            <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'FreeTextQuestion'}">
-                                <ui:include src="/WEB-INF/questions/edit/text-edit.xhtml"/>
-                            </h:panelGroup>
-                            <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'IntervalQuestion'}">
-                                <ui:include src="/WEB-INF/questions/edit/interval-edit.xhtml"/>
-                            </h:panelGroup>
-                            <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'SingleChoiceQuestion'}">
-                                <ui:include src="/WEB-INF/questions/edit/single-choice-edit.xhtml"/>
-                            </h:panelGroup>
-                            <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'MultipleChoiceQuestion'}">
-                                <ui:include src="/WEB-INF/questions/edit/multi-choice-edit.xhtml"/>
-                            </h:panelGroup>
-                        <br/>
-                        <p:commandButton value="Cancel"
-                                         id="cancelEdit"
-                                         action="#{newSurveyController.cancel}"
-                                         update="survey"/>
-                    </c:if>
-                </div>
+            <c:if test="#{newSurveyController.surveyCreationStep == 'NEW_QUESTION' and newSurveyController.currentPage.number == page.number}">
+                <!-- Create new question -->
+                <ui:include src="/WEB-INF/questions/edit/#{newSurveyController.newQuestionType}-edit.xhtml"/>
+                <p:commandButton value="Cancel"
+                                 action="#{newSurveyController.cancel}"
+                                 update="survey"/>
+            </c:if>
+            <c:if test="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION'and newSurveyController.questionToEdit.page.equals(page)}">
+                <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'FreeTextQuestion'}">
+                    <ui:include src="/WEB-INF/questions/edit/text-edit.xhtml"/>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'IntervalQuestion'}">
+                    <ui:include src="/WEB-INF/questions/edit/interval-edit.xhtml"/>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'SingleChoiceQuestion'}">
+                    <ui:include src="/WEB-INF/questions/edit/single-choice-edit.xhtml"/>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'MultipleChoiceQuestion'}">
+                    <ui:include src="/WEB-INF/questions/edit/multi-choice-edit.xhtml"/>
+                </h:panelGroup>
                 <br/>
+                <p:commandButton value="Cancel"
+                                 id="cancelEdit"
+                                 action="#{newSurveyController.cancel}"
+                                 update="survey"/>
+            </c:if>
+                </div>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                 </p:confirmDialog>
+                <p:separator/>
             </c:forEach>
         </h:panelGroup>
+
+        <p:dialog header="Create/edit condition" widgetVar="cond" minHeight="40">
+            <p:ajax event="close" update="survey" listener="#{newSurveyController.closeConditionDialog()}"/>
+            <h:panelGroup id="condBody">
+                <ui:include src="/WEB-INF/questions/conditions/condition-edit.xhtml">
+                    <ui:param name="question" value="#{question}"/>
+                </ui:include>
+            </h:panelGroup>
+        </p:dialog>
 
         <p:dialog modal="true" header="Edit conflict" widgetVar="oleDialog" closable="true" resizable="false" closeOnEscape="true">
             <p:panelGrid columns="2">

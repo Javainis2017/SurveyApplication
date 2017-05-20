@@ -642,7 +642,9 @@ group=2</panel_attributes>
       <h>126</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m2=conditions</panel_attributes>
+m2=conditions
+m1=survey
+</panel_attributes>
     <additional_attributes>10.0;10.0;150.0;190.0</additional_attributes>
   </element>
   <element>

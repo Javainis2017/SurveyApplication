@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -47,4 +49,9 @@ public abstract class Question {
     @ManyToOne
     private SurveyPage page;
 
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
+    private List<Condition> dependentConditions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "dependentQuestion", fetch = FetchType.EAGER)
+    private List<Condition> conditions = new ArrayList<>();
 }

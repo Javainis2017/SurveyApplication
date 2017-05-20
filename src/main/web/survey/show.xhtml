@@ -4,7 +4,6 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xml:lang="en" lang="en">
@@ -33,43 +32,45 @@
         <h:form id="survey">
             <h:panelGroup id="questions">
                 <c:forEach items="#{surveyController.currentPage.questions}" var="question">
-                    <h:panelGroup>
-                        <h:outputText>#{question.position}. </h:outputText>
-                        <h:outputText>#{question.text}</h:outputText>
-                        <br/>
-                        <c:if test="#{question.required}">
-                            <h:outputText> (Required)</h:outputText>
+                    <c:if test="${surveyController.checkQuestionConditions(question)}">
+                        <h:panelGroup>
+                            <h:outputText>#{question.position}. </h:outputText>
+                            <h:outputText>#{question.text}</h:outputText>
                             <br/>
-                        </c:if>
-                        <c:if test="#{question['class'].simpleName == 'FreeTextQuestion'}">
-                            <h:panelGroup>
-                                <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
-                                    <ui:param name="question" value="#{question}"/>
-                                </ui:include>
-                            </h:panelGroup>
-                        </c:if>
-                        <c:if test="#{question['class'].simpleName == 'IntervalQuestion'}">
-                            <h:panelGroup>
-                                <ui:include src="/WEB-INF/questions/show/interval-show.xhtml">
-                                    <ui:param name="question" value="#{question}"/>
-                                </ui:include>
-                            </h:panelGroup>
-                        </c:if>
-                        <c:if test="#{question['class'].simpleName == 'SingleChoiceQuestion'}">
-                            <h:panelGroup>
-                                <ui:include src="/WEB-INF/questions/show/single-choice-show.xhtml">
-                                    <ui:param name="question" value="#{question}"/>
-                                </ui:include>
-                            </h:panelGroup>
-                        </c:if>
-                        <c:if test="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
-                            <h:panelGroup>
-                                <ui:include src="/WEB-INF/questions/show/multi-choice-show.xhtml">
-                                    <ui:param name="question" value="#{question}"/>
-                                </ui:include>
-                            </h:panelGroup>
-                        </c:if>
-                    </h:panelGroup>
+                            <c:if test="#{question.required}">
+                                <h:outputText> (Required)</h:outputText>
+                                <br/>
+                            </c:if>
+                            <c:if test="#{question['class'].simpleName == 'FreeTextQuestion'}">
+                                <h:panelGroup>
+                                    <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
+                                        <ui:param name="question" value="#{question}"/>
+                                    </ui:include>
+                                </h:panelGroup>
+                            </c:if>
+                            <c:if test="#{question['class'].simpleName == 'IntervalQuestion'}">
+                                <h:panelGroup>
+                                    <ui:include src="/WEB-INF/questions/show/interval-show.xhtml">
+                                        <ui:param name="question" value="#{question}"/>
+                                    </ui:include>
+                                </h:panelGroup>
+                            </c:if>
+                            <c:if test="#{question['class'].simpleName == 'SingleChoiceQuestion'}">
+                                <h:panelGroup>
+                                    <ui:include src="/WEB-INF/questions/show/single-choice-show.xhtml">
+                                        <ui:param name="question" value="#{question}"/>
+                                    </ui:include>
+                                </h:panelGroup>
+                            </c:if>
+                            <c:if test="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
+                                <h:panelGroup>
+                                    <ui:include src="/WEB-INF/questions/show/multi-choice-show.xhtml">
+                                        <ui:param name="question" value="#{question}"/>
+                                    </ui:include>
+                                </h:panelGroup>
+                            </c:if>
+                        </h:panelGroup>
+                    </c:if>
                 </c:forEach>
             </h:panelGroup>
             <!-- Navigation -->

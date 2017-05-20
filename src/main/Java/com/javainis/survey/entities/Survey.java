@@ -65,4 +65,7 @@ public class Survey {
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "survey", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Condition> conditions = new ArrayList<>();
 }

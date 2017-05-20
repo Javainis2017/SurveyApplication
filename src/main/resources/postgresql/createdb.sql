@@ -142,12 +142,27 @@ CREATE TABLE IF NOT EXISTS answer_choice
 
 CREATE TABLE IF NOT EXISTS logs
 (
-	id BIGSERIAL PRIMARY KEY,
-	user_name		VARCHAR(80) NOT NULL,
-	user_email VARCHAR(50),
-	rights	VARCHAR(10),
-	time TIMESTAMP,
-	class_name VARCHAR(100),
+	id          BIGSERIAL PRIMARY KEY,
+	user_name   VARCHAR(80) NOT NULL,
+	user_email  VARCHAR(50),
+	rights      VARCHAR(10),
+	time        TIMESTAMP,
+	class_name  VARCHAR(100),
 	method_name VARCHAR(100)
+);
 
+ALTER TABLE logs ADD COLUMN IF NOT EXISTS user_email VARCHAR(50);
+
+CREATE TABLE IF NOT EXISTS condition
+(
+	id BIGSERIAL PRIMARY KEY,
+	question_id BIGINT NOT NULL,
+	dependent_question_id BIGINT NOT NULL,
+	choice_id BIGINT,
+	survey_id BIGINT NOT NULL,
+	opt_lock_version INTEGER,
+	FOREIGN KEY (question_id) REFERENCES question(id),
+	FOREIGN KEY (dependent_question_id) REFERENCES question(id),
+	FOREIGN KEY (choice_id) REFERENCES choice(id),
+	FOREIGN KEY (survey_id) REFERENCES survey(id)
 );

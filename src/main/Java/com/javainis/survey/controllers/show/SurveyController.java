@@ -73,6 +73,7 @@ public class SurveyController implements Serializable{
             if(question.getClass().getSimpleName().equals("FreeTextQuestion")){
                 Answer answer = new TextAnswer();
                 answer.setQuestion(question);
+                ((TextAnswer)answer).setText("");
                 answers.put(question, answer);
             }else if(question.getClass().getSimpleName().equals("IntervalQuestion")){
                 Answer answer = new NumberAnswer();
@@ -147,6 +148,46 @@ public class SurveyController implements Serializable{
             e.printStackTrace();
         }
         return null;
+    }
+/**
+ * Checks whether question should be shown to user, who is filling up a survey
+ */
+    public Boolean checkQuestionConditions(Question question){
+        List<Condition> conditions = question.getConditions();
+        //If there are no conditions, always show
+        if(conditions.size() == 0) {
+            return true;
+        }
+
+        for(Condition condition: conditions){
+            Answer answer = answers.get(condition.getQuestion());
+            //Checks if it's single choice answer
+            if(answer.getClass().getSimpleName().equals("SingleChoiceAnswer")) {
+                SingleChoiceAnswer singleChoiceAnswer = (SingleChoiceAnswer)answer;
+                //When condition is any answer
+                if(condition.getChoice() == null && singleChoiceAnswer.getChoice() != null) {
+                    return true;
+                }//When condition is specific answer
+                else if(condition.getChoice() != null && singleChoiceAnswer.getChoice() == condition.getChoice()){
+                    return true;
+                }
+            }//Checks if it's multiple choice answer
+            else if(answer.getClass().getSimpleName().equals("MultipleChoiceAnswer")){
+                MultipleChoiceAnswer multipleChoiceAnswer = (MultipleChoiceAnswer)answer;
+                //Iterating through selected answers
+                for(Choice choice:multipleChoiceAnswer.getChoices()) {
+                    //When condition is any answer
+                    if(condition.getChoice() == null && choice != null) {
+                        return true;
+                    }//When condition is specific answer
+                    else if (condition.getChoice() != null && choice==condition.getChoice()){
+                        return true;
+                    }
+                }
+            }
+        }
+        //If none of the conditions are met, question will not be shown
+        return false;
     }
 
     /* Save incomplete survey to email */

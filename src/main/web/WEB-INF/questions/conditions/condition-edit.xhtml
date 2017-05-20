@@ -1,0 +1,37 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:growl id="msgs" showDetail="true" />
+    <p:panel header="Create/Edit Condition" style="margin-bottom:10px;" id="dialogPanel" >
+        <h:panelGrid columns="2" cellpadding="5" >
+            <p:outputLabel for="conditionQuestion" value="Question: "/>
+            <p:selectOneMenu id="conditionQuestion" value="#{newSurveyController.conditionalQuestion}"
+                             converter="omnifaces.SelectItemsIndexConverter" >
+                <p:ajax event="change" update="createCondition conditionChoice warnAnyChoice" listener="#{newSurveyController.warnAnyChoice()}"/>
+                <f:selectItem itemLabel="Select Question" itemValue="#{null}"/>
+                <f:selectItems value="#{newSurveyController.getChoiceQuestions()}"
+                               var="question" itemLabel="#{question.text}" itemValue="#{question}" />
+            </p:selectOneMenu>
+
+            <p:outputLabel for="conditionChoice" value="Choice: "/>
+            <p:selectOneMenu id="conditionChoice" value="#{newSurveyController.conditionalChoice}"
+                             converter="omnifaces.SelectItemsIndexConverter">
+                <p:ajax event="change" update="warnAnyChoice" listener="#{newSurveyController.warnAnyChoice()}"/>
+                <f:selectItem itemLabel="Any choice" itemValue="#{null}" noSelectionOption="false"/>
+                <f:selectItems value="#{newSurveyController.findQuestionChoices()}"
+                               var="choice" itemLabel="#{choice.text}" itemValue="#{choice}" />
+            </p:selectOneMenu>
+
+        </h:panelGrid>
+        <p:messages id="warnAnyChoice" showDetail="true" autoUpdate="true" closable="true" />
+        <p:separator />
+        <p:commandButton value="Save condition"
+                         id="createCondition"
+                         disabled="#{newSurveyController.conditionalQuestion == null}"
+                         action="#{newSurveyController.saveCondition}"
+                         ajax="true"
+                         update="survey"/>
+    </p:panel>
+</ui:composition>
