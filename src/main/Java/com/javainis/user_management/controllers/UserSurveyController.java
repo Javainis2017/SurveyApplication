@@ -58,7 +58,7 @@ public class UserSurveyController {
 
     @Transactional
     public Boolean canSeeReport(Survey survey){
-        return survey.getAuthor().getUserID() == userController.getUser().getUserID() || isAdmin() || survey.getIsPublic();
+        return survey.getAuthor().equals(userController.getUser()) || isAdmin() || survey.getIsPublic();
     }
 
     @Transactional
@@ -67,7 +67,8 @@ public class UserSurveyController {
         {
             return false;
         }
-        return survey.getAuthor().getUserID() == userController.getUser().getUserID() || isAdmin();
+
+        return survey.getAuthor().equals(userController.getUser()) || isAdmin();
     }
 
     // Useless? Admin can change public/ private with Edit Survey.

@@ -10,10 +10,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-/**
- * Created by Laurynas on 2017-05-10.
- */
-@Dependent
+@ApplicationScoped
 public class SurveyResultAsyncDAO {
 
     @Inject @Async

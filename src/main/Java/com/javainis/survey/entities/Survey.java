@@ -56,7 +56,7 @@ public class Survey {
     @Column(name = "opt_lock_version")
     private Integer optLockVersion;
 
-    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.MERGE, orphanRemoval = true)
     private List<SurveyResult> surveyResults = new ArrayList<>();
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)

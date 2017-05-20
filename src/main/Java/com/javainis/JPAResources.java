@@ -31,8 +31,8 @@ public class JPAResources implements Serializable
 
     @Produces
     @Async
-    //@Dependent
-    @Transactional
+    @Dependent
+    //@Transactional
     private EntityManager createJTATransactionalEM()
     {
         return factory.createEntityManager(SynchronizationType.SYNCHRONIZED);

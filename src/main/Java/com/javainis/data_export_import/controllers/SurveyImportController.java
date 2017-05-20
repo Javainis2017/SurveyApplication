@@ -8,6 +8,7 @@ import com.javainis.survey.entities.Survey;
 import com.javainis.survey.entities.SurveyResult;
 import com.javainis.user_management.controllers.UserController;
 import com.javainis.user_management.entities.User;
+import com.javainis.utility.ExpirationChecker;
 import com.javainis.utility.RandomStringGenerator;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.Getter;
@@ -23,6 +24,7 @@ import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -64,6 +66,9 @@ public class SurveyImportController implements Serializable{
     @Setter
     private String expirationTimeString;
 
+    @Inject
+    private ExpirationChecker expirationChecker;
+
     @Getter
     private List<SurveyResult> surveyResultList = new ArrayList<>();
 
@@ -97,11 +102,24 @@ public class SurveyImportController implements Serializable{
         selectedSurvey.setUrl(url);
         selectedSurvey.setAuthor(currentUser);
         selectedSurveyFuture = dataImporter.importSurvey(file, selectedSurvey);
-        //selectedSurvey.setDescription("This survey is imported from file: " + file.getName());
-        //selectedSurvey.setTitle(file.getName());
-        //selectedSurvey.setIsPublic(true);
-        //selectedSurvey.setExpirationTime();
-        //
+
+        if (!expirationDateString.isEmpty()) {
+            Timestamp timestamp;
+            try {
+                timestamp = convertToExpirationTimestamp(expirationDateString, expirationTimeString);
+            } catch (Exception e) {
+                org.omnifaces.util.Messages.addGlobalInfo("Wrong expiration time.");
+                selectedSurvey.setExpirationTime(null);
+                timestamp = null;
+            }
+
+            if (expirationChecker.isExpired(timestamp)) {
+                org.omnifaces.util.Messages.addGlobalInfo("Wrong expiration time.");
+                selectedSurvey.setExpirationTime(null);
+            }
+
+            selectedSurvey.setExpirationTime(timestamp);
+        }
 
         try{
             selectedSurvey = selectedSurveyFuture.get();
@@ -117,10 +135,9 @@ public class SurveyImportController implements Serializable{
 
             surveyResultList = surveyResultListFuture.get();
             if (surveyResultList == null) selectedSurvey.setSurveyResults(null);
-            Thread.sleep(1000);
-            Boolean doneQuestions = surveyQuestionInDBFuture.get();
-            if (doneQuestions && surveyResultList != null){
+            if (surveyQuestionInDBFuture.get() && surveyResultList != null){
                 surveyAnswerInDBFuture = saveAnswers(surveyResultList);
+                //surveyAnswerInDBFuture.get();
             }
 
 
@@ -149,8 +166,6 @@ public class SurveyImportController implements Serializable{
     private Future<Boolean> saveSurvey(Survey survey){
 
         try {
-            System.out.println(survey.getTitle() + " " + survey.getAuthor().getLastName() + " " + survey.getDescription() + " " + survey.getUrl());
-            System.out.println(survey.getAuthor().getUserID() + "  ?");
             surveyAsyncDAO.create(survey); //ConstraintViolationException:
         }catch (Exception e){
             e.printStackTrace();
@@ -204,26 +219,18 @@ public class SurveyImportController implements Serializable{
 
         importSurvey();
 
-        if (selectedSurvey == null){
+        if (selectedSurvey == null && surveyResultList == null){
+            FacesMessage message = new FacesMessage("Failed to import Survey questions and answers.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            cleanTempFolder(path);
+            return false;
+        } else if (selectedSurvey == null){
             FacesMessage message = new FacesMessage("Failed to import Survey questions.");
             FacesContext.getCurrentInstance().addMessage(null, message);
             cleanTempFolder(path);
             return false;
         }
-        /*
-        importAnswers();
-        System.out.println(2);
-        if (surveyResultList == null) {
-            FacesMessage message = new FacesMessage("Failed to import Survey answers.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-            cleanTempFolder(path);
-            return false;
-        }
 
-
-        FacesMessage message = new FacesMessage("Survey has been imported.");
-        FacesContext.getCurrentInstance().addMessage(null, message);
-        */
         cleanTempFolder(path);
 
         selectedSurvey = null;
@@ -239,5 +246,17 @@ public class SurveyImportController implements Serializable{
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    private Timestamp convertToExpirationTimestamp(String date, String time) {
+        String fullDate;
+
+        if (!time.isEmpty()) {
+            fullDate = date + " " + time + ":00";
+        } else {
+            fullDate = date + " 23:59:59";
+        }
+
+        return Timestamp.valueOf(fullDate);
     }
 }
