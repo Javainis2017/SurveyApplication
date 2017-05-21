@@ -13,7 +13,8 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(name = "Choice.findAll", query = "SELECT c FROM Choice c"),
         @NamedQuery(name = "Choice.findById", query = "SELECT c FROM Choice c WHERE c.id = :id"),
-        @NamedQuery(name = "Choice.findByQuestionId", query = "SELECT c FROM Choice c WHERE c.question.id = :questionId")
+        @NamedQuery(name = "Choice.findByQuestionId", query = "SELECT c FROM Choice c WHERE c.question.id = :questionId"),
+        @NamedQuery(name = "Choice.deleteByQuestionId", query = "DELETE FROM Choice c WHERE c.question.id = :questionId")
 })
 @Table(name="choice")
 @EqualsAndHashCode(of = {"text"})

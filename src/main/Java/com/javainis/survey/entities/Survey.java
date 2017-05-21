@@ -19,7 +19,8 @@ import java.util.List;
     @NamedQuery(name = "Survey.findByUrl", query = "SELECT s FROM Survey s WHERE s.url = :url"),
     @NamedQuery(name = "Survey.findByAuthorId", query = "SELECT s FROM Survey s WHERE s.author.userID = :authorId ORDER BY s.title"),
     @NamedQuery(name = "Survey.findPublic", query = "SELECT s FROM Survey s WHERE s.isPublic = true ORDER BY s.title"),
-    @NamedQuery(name = "Survey.existsByUrl", query = "SELECT COUNT(s) FROM Survey s WHERE s.url = :url ")
+    @NamedQuery(name = "Survey.existsByUrl", query = "SELECT COUNT(s) FROM Survey s WHERE s.url = :url "),
+    @NamedQuery(name = "Survey.deleteById", query = "DELETE FROM Survey s WHERE s.id = :id")
 })
 @Getter
 @Setter

@@ -11,6 +11,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name="condition")
+@NamedQueries({
+        @NamedQuery(name = "Condition.deleteBySurveyId", query = "DELETE FROM Condition c WHERE c.survey.id = :surveyId")
+})
 @EqualsAndHashCode(of = {"dependentQuestion", "question", "choice"})
 public class Condition {
     @Id

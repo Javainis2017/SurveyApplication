@@ -16,9 +16,8 @@ public class QuestionDAO {
         manager.persist(question);
     }
 
-    public void delete(Question question) {
-        manager.flush();
-        manager.remove(question);
+    public void deleteById(Long id){
+        manager.createNamedQuery("Question.deleteById").setParameter("id", id).executeUpdate();
     }
 
     public List<Question> getAll(){

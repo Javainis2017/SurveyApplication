@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import javax.persistence.LockModeType;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @ApplicationScoped
@@ -26,9 +25,8 @@ public class SurveyDAO {
         manager.flush();
     }
 
-    public void delete(Survey survey) {
-        manager.flush();
-        manager.remove(survey);
+    public void deleteById(Long id){
+        manager.createNamedQuery("Survey.deleteById").setParameter("id", id).executeUpdate();
     }
 
     public List<Survey> getAll(){

@@ -10,6 +10,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "survey_page")
+@NamedQueries({
+        @NamedQuery(name = "SurveyPage.deleteBySurveyId", query = "DELETE FROM SurveyPage sp WHERE sp.survey.id = :surveyId")
+})
 @Getter
 @Setter
 @EqualsAndHashCode(of = {"number", "survey"})

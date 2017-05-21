@@ -24,6 +24,10 @@ public class SurveyResultDAO {
         manager.flush();
     }
 
+    public void deleteBySurveyId(Long surveyId){
+        manager.createNamedQuery("SurveyResult.deleteBySurveyId").setParameter("surveyId", surveyId).executeUpdate();
+    }
+
     public List<SurveyResult> getResultsBySurveyId(Long surveyId){
         return manager.createNamedQuery("SurveyResult.findBySurveyId", SurveyResult.class).setParameter("surveyId", surveyId).getResultList();
     }

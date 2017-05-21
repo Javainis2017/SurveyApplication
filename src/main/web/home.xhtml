@@ -77,7 +77,7 @@
                                     <p:commandButton process="surveyTable"
                                                      update="surveyTable"
                                                      value="Remove"
-                                                     actionListener="#{surveyController.deleteSurvey(userSurveyController.selectedSurvey.id)}"
+                                                     actionListener="#{surveyRemoveController.deleteSurvey(userSurveyController.selectedSurvey.id)}"
                                                      action="#{userSurveyController.setSelectedSurvey(null)}"
                                                      icon="fa fa-fw fa-remove">
                                         <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />

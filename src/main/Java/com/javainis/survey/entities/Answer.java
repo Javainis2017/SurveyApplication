@@ -13,7 +13,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NamedQueries({
-        @NamedQuery(name = "Answer.findByQuestionId", query = "SELECT a FROM Answer a WHERE a.question.id = :questionId")
+        @NamedQuery(name = "Answer.findByQuestionId", query = "SELECT a FROM Answer a WHERE a.question.id = :questionId"),
+        @NamedQuery(name = "Answer.deleteByQuestionId", query = "DELETE FROM Answer a WHERE a.question.id = :questionId")
 })
 public abstract class Answer {
 

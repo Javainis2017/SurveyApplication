@@ -17,7 +17,8 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "Question.findAll", query = "SELECT q FROM Question q"),
         @NamedQuery(name = "Question.findById", query = "SELECT q FROM Question q WHERE q.id = :id"),
-        @NamedQuery(name = "Question.findBySurveyId", query = "SELECT q FROM Question q WHERE q.survey.id = :surveyId ORDER BY q.position")
+        @NamedQuery(name = "Question.findBySurveyId", query = "SELECT q FROM Question q WHERE q.survey.id = :surveyId ORDER BY q.position"),
+        @NamedQuery(name = "Question.deleteById", query = "DELETE FROM Question q WHERE q.id = :id")
 })
 @DiscriminatorColumn(name="question_type_id", discriminatorType = DiscriminatorType.INTEGER)
 @EqualsAndHashCode(of = {"text", "position"})

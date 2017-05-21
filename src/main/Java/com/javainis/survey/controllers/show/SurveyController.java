@@ -212,32 +212,6 @@ public class SurveyController implements Serializable{
         return "/survey/success?faces-redirect=true";
     }
 
-    @Transactional
-    public String deleteSurvey(Long id){
-        List<Question> questions = questionDAO.findBySurveyId(id);
-
-        survey = surveyDAO.findById(id);
-        try {
-            for (Question q: questions){
-                Long questionId = q.getId();
-                List<Answer> answers = answerDAO.findByQuestionId(questionId);
-                for (Answer a: answers){
-                    answerDAO.delete(a);
-                }
-
-                List<Choice> choices = choiceDAO.findByQuestionId(questionId);
-                for (Choice c: choices){
-                    choiceDAO.delete(c);
-                }
-
-                questionDAO.delete(q);
-            }
-            surveyDAO.delete(survey);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
 /**
  * Checks whether question should be shown to user, who is filling up a survey
  */

@@ -21,4 +21,8 @@ public class ConditionDAO {
         System.out.println("Success!");
         manager.remove(removable);
     }
+
+    public void deleteBySurveyId(Long surveyId) {
+        manager.createNamedQuery("Condition.deleteBySurveyId").setParameter("surveyId", surveyId).executeUpdate();
+    }
 }

@@ -6,6 +6,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
+
 @ApplicationScoped
 public class ChoiceDAO {
     @Inject
@@ -15,9 +16,8 @@ public class ChoiceDAO {
         manager.persist(choice);
     }
 
-    public void delete(Choice choice) {
-        manager.flush();
-        manager.remove(choice);
+    public void deleteByQuestionId(Long questionId){
+        manager.createNamedQuery("Choice.deleteByQuestionId").setParameter("questionId", questionId).executeUpdate();
     }
 
     public List<Choice> getAll(){
