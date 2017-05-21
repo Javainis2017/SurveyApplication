@@ -156,7 +156,7 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
                 if(counter == (max-min)/10){
                     to = i-1;
                     Double percentage = (double)Math.round((((double)sum*100)/totalSum) * 100d) / 100d;
-                    values.set(from+" - "+to+" "+percentage+"%",sum);
+                    values.set(from+" - "+to+" ("+percentage+"%)",sum);
                     counter = 0;
                     from = i;
                     sum = 0;
@@ -169,22 +169,23 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
             if(counter!=0){
                 to = max;
                 Double percentage = (double)Math.round((((double)sum*100)/totalSum) * 100d) / 100d;
-                values.set(from+" - "+to+" "+percentage+"%", sum);
+                values.set(from+" - "+to+" ("+percentage+"%)", sum);
             }
         }
         else {
             for (int i = min; i <= max; i++) {
                 if (valueCount.containsKey(i)) {
                     Double percentage = (double)Math.round((((double)valueCount.get(i)*100)/totalSum) * 100d) / 100d;
-                    values.set(i+" "+percentage+"%", valueCount.get(i));
+                    values.set(i+" ("+percentage+"%)", valueCount.get(i));
                 } else {
-                    values.set(i+" 0.0%", 0);
+                    values.set(i+" (0.0%)", 0);
                 }
             }
         }
         barModel.addSeries(values);
 //        barModel.setTitle("Interval values Bar Chart");
         Axis xAxis = barModel.getAxis(AxisType.X);
+        xAxis.setTickAngle(-90);
         xAxis.setLabel("Values");
         Axis yAxis = barModel.getAxis(AxisType.Y);
         yAxis.setLabel("Count");
