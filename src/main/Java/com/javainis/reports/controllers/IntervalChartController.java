@@ -155,7 +155,8 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
             for (int i = min; i <= max; i++) {
                 if(counter == (max-min)/10){
                     to = i-1;
-                    values.set(from+" - "+to+" "+((double)Math.round((((double)sum*100)/totalSum) * 100d) / 100d)+"%",sum);
+                    Double percentage = (double)Math.round((((double)sum*100)/totalSum) * 100d) / 100d;
+                    values.set(from+" - "+to+" "+percentage+"%",sum);
                     counter = 0;
                     from = i;
                     sum = 0;
@@ -167,17 +168,17 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
             }
             if(counter!=0){
                 to = max;
-                System.out.println("sum "+sum);
-                System.out.println("totalSum "+totalSum);
-                values.set(from+" - "+to+" "+((double)Math.round((((double)sum*100)/totalSum) * 100d) / 100d)+"%", sum);
+                Double percentage = (double)Math.round((((double)sum*100)/totalSum) * 100d) / 100d;
+                values.set(from+" - "+to+" "+percentage+"%", sum);
             }
         }
         else {
             for (int i = min; i <= max; i++) {
                 if (valueCount.containsKey(i)) {
-                    values.set(i+" "+((double)Math.round((((double)valueCount.get(i)*100)/totalSum) * 100d) / 100d)+"%", valueCount.get(i));
+                    Double percentage = (double)Math.round((((double)valueCount.get(i)*100)/totalSum) * 100d) / 100d;
+                    values.set(i+" "+percentage+"%", valueCount.get(i));
                 } else {
-                    values.set(i+" 0.0%", valueCount.get(i));
+                    values.set(i+" 0.0%", 0);
                 }
             }
         }
