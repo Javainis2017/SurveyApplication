@@ -5,39 +5,36 @@
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h3>Single choice question</h3>
-    <p:panelGrid id="newSingleChoiceQuestionGrid" columns="2">
-        <p:outputLabel for="singleText" value="Question text"/>
         <p:column>
             <p:inputTextarea id="singleText" required="#{param['survey:createSingleChoiceQuestion'] != null}"
                              value="#{singleChoiceQuestionController.text}"
-                             maxlength="300" rows="4" cols="80"
-                             placeholder="Question text"/>
+                             maxlength="300" rows="3" cols="80"
+                             placeholder="Question text"
+                             style="width:97%;"/>
             <p:message for="singleText"/>
         </p:column>
 
-        <p:outputLabel for="requiredSingle" value="Required"/>
         <p:column>
             <p:selectBooleanCheckbox id="requiredSingle"
                                      value="#{singleChoiceQuestionController.required}"/>
+            <p:outputLabel for="requiredSingle" value="Required" style="margin-left:0.3em;"/>
             <p:message for="requiredSingle"/>
         </p:column>
-    </p:panelGrid>
     <p:panelGrid columns="1" rendered="#{not empty singleChoiceQuestionController.choices}">
         <ui:repeat value="#{singleChoiceQuestionController.choices}" var="choice">
             <h:outputText>#{choice.text}</h:outputText>
             <br/>
             <p:commandButton actionListener="#{singleChoiceQuestionController.removeChoice(choice)}"
-                             value="Remove choice"
+                             value="Remove" icon="fa fa-remove"
                              immediate="true"
                              update="survey"/>
             <p:commandButton actionListener="#{singleChoiceQuestionController.editChoice(choice)}"
-                             value="Edit choice"
+                             value="Edit" icon="fa fa-edit"
                              update="survey"/>
             <br/>
         </ui:repeat>
     </p:panelGrid>
-    <p:panelGrid columns="4">
-        <p:outputLabel for="singleChoice" value="Choice"/>
+    <p:panelGrid columns="3">
         <p:inputText id="singleChoice" required="#{param['survey:saveSingleChoice'] != null}" value="#{singleChoiceQuestionController.choiceText}"
                          maxlength="200" rows="2" cols="80"
                          placeholder="Choice"/>
@@ -53,6 +50,7 @@
     </p:panelGrid>
     <p:message for="singleChoice"/>
     <p:messages id="singleChoiceMessage" redisplay="false"/>
+    <br/>
     <p:commandButton value="Save question"
                      id="createSingleChoiceQuestion"
                      action="#{singleChoiceQuestionController.saveQuestion}"
