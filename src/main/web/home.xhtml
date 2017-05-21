@@ -37,13 +37,14 @@
                         <p:ajax event="rowSelect" update="surveyTable" />
                         <f:facet name="header">
                             <div style="text-align: center">Surveys</div>
+                            <br/>
                             <p:button outcome="survey/new" value="New survey" icon="fa fa-plus"/>
                             <p:button outcome="survey/import" value="Import survey" icon="fa fa-plus"/>
                         </f:facet>
                         <p:column headerText="Title"
                                   filterBy="#{survey.title}"
                                   filterMatchMode="contains"
-                                  style="width:25%;text-align: center">
+                                  style="width:23%;text-align: center">
                             <h:outputText value="#{survey.title}" />
                         </p:column>
                         <p:column headerText="Author"
@@ -55,18 +56,18 @@
                             <h:outputText value="&#160;" />
                             <h:outputText value="#{survey.author.lastName}" />
                         </p:column>
-                        <p:column headerText="URL" style="width:8%;text-align: center" priority="1">
+                        <p:column headerText="URL" style="width:7%;text-align: center" priority="1">
                             <h:outputLink value="survey/show/#{survey.url}">
                                 Open
                             </h:outputLink>
                         </p:column>
-                        <p:column headerText="Results" style="width:8%;text-align: center" priority="1">
+                        <p:column headerText="Results" style="width:7%;text-align: center" priority="1">
                             <h:outputLink value="reports/report/#{survey.url}"
                                           rendered="#{userSurveyController.canSeeReport(survey)}">
                                 Show
                             </h:outputLink>
                         </p:column>
-                        <p:column headerText="Visibility" style="width:10%;text-align: center" priority="4">
+                        <p:column headerText="Visibility" style="width:8%;text-align: center" priority="4">
                             <h:outputText value = "#{userSurveyController.getPublicLabel(survey.isPublic)}"/>
                         </p:column>
                         <f:facet name="footer">
@@ -194,7 +195,7 @@
                     </h:panelGrid>
             </p:tab>
             <p:tab title="User Settings">
-                <div class="fill" >
+                <div class="fill smaller-font">
                     <h3>User profile</h3>
                     <h:panelGrid columns="3" styleClass="responsiveElement">
                         <p:outputLabel for="first_name" value="First name:"/>
@@ -236,15 +237,15 @@
                     <h3>Change password</h3>
                     <h:panelGrid columns="3" styleClass="responsiveElement">
                         <p:outputLabel for="current_password" value="Current password:"/>
-                        <p:inputText type="password" placeholder="Current password" id="current_password" value="#{userProfileController.currentPassword}"/>
+                        <p:inputText type="password" id="current_password" value="#{userProfileController.currentPassword}"/>
                         <p:message for="current_password"/>
 
                         <p:outputLabel for="new_password" value="New password:"/>
-                        <p:inputText type="password" placeholder="New password" id="new_password" value="#{userProfileController.newPassword}"/>
+                        <p:inputText type="password" id="new_password" value="#{userProfileController.newPassword}"/>
                         <p:message for="new_password"/>
 
                         <p:outputLabel for="repeated_password" value="Confirm new password:"/>
-                        <p:inputText type="password" placeholder="Repeated password" id="repeated_password" value="#{userProfileController.repeatedPassword}"/>
+                        <p:inputText type="password" id="repeated_password" value="#{userProfileController.repeatedPassword}"/>
                         <p:message for="repeated_password"/>
                     </h:panelGrid>
                     <p:commandButton value="Change password"

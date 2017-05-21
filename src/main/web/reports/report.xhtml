@@ -20,16 +20,16 @@
 <h:body styleClass="report-body home-body">
     <c:if test="#{reportController.canAccess}">
         <h1 class="center large">Survey results</h1>
-        <h2>#{reportController.survey.title}</h2>
-        <p>#{reportController.survey.description}</p>
+        <h2 class="wrap-text">#{reportController.survey.title}</h2>
+        <p class="wrap-text">#{reportController.survey.description}</p>
         <br/>
-        <h2>#{reportController.survey.surveyResultCount} responses</h2>
+        <h2 class="wrap-text">#{reportController.survey.surveyResultCount} responses</h2>
 
         <h:panelGroup id="report" rendered="#{reportController.survey.surveyResultCount > 0}">
             <table class="report-table">
             <c:forEach items="#{reportController.survey.questions}" var="question">
                 <tr>
-                    <td style="border:1px solid;padding:1em;">
+                    <td style="border:1px #D5D5D5 solid;padding:1em;">
                         <h3 style="margin-bottom: 0;">#{question.position}. #{question.text} </h3>
                         <c:if test="#{question.required}">
                             <p style="margin-top:0;color:grey;">Required</p>

@@ -30,7 +30,7 @@ textarea{
  }
 
 .nameColumn{
-    width: 20%;
+    width: 18%;
 }
 
 .emailColumn{
@@ -192,7 +192,8 @@ textarea{
     width: 40%;
 }
 
-@media all and (min-width: 900px) {
+
+@media all and (min-aspect-ratio: 16/9) and (min-width: 1000px) {
     .narrow{
         width: 30%;
     }
@@ -229,6 +230,16 @@ textarea{
     textarea{
         width:99%;
     }
+    input[type='checkbox'], input[type='radio'] {
+        width:30px;
+        height:30px;
+        background:white;
+        border-radius:5px;
+        border:2px solid #555;
+    }
+    .ui-tabs.ui-tabs-top > .ui-tabs-nav li{
+       width: 100%;
+    }
     .center {
         width: 90%;
     }
@@ -250,6 +261,11 @@ textarea{
     .fieldPanel{
         width: 100%;
     }
+    .smaller-font{
+        font-size: smaller;
+    }
+
+
     .surveyPanel{
         width: 100%;
         margin:inherit;
@@ -268,13 +284,18 @@ textarea{
     }
     .report-body{
         width:100%;
-        margin:1em 5px;
-        display:table-cell;
+        /*margin:1em 5px;*/
+        /*display:table-cell;*/
+    }
+    .wrap-text{
+        word-wrap: break-word;
+        padding: 0 0.3em;
     }
     .report-question{
         margin: 1em 5px;
         width:100%;
     }
+
     .interval-show-grid{
         width:90%;
     }

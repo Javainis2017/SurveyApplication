@@ -8,12 +8,13 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xml:lang="en" lang="en">
 <h:head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <h:outputStylesheet name="css/style.css" />
     <title>#{surveyController.survey.title}</title>
 </h:head>
-<h:body>
+<h:body styleClass="report-body home-body">
     <c:if test="#{surveyController.survey == null}">
-        <h1>Survey</h1>
+        <h1 >Survey</h1>
         <h2>Survey does not exist.</h2>
     </c:if>
 
@@ -22,25 +23,28 @@
     </c:if>
 
     <c:if test="#{surveyController.survey != null and (expirationChecker.isExpired(surveyController.survey.expirationTime) == false)}">
-        <h2>#{surveyController.survey.title}</h2>
+        <h2 class="wrap-text">#{surveyController.survey.title}</h2>
         <c:if test="#{surveyController.survey.description != null}">
-            <p>#{surveyController.survey.description}</p>
+            <p class="wrap-text">#{surveyController.survey.description}</p>
         </c:if>
-        <p:separator/>
 
         <!-- Show questions -->
         <h:form id="survey">
             <h:panelGroup id="questions">
+                <table class="report-table">
                 <c:forEach items="#{surveyController.currentPage.questions}" var="question">
+                    <tr>
+                    <td style="border:1px #D5D5D5 solid;padding:1em;font-size:larger;">
                     <c:if test="${surveyController.checkQuestionConditions(question)}">
                         <h:panelGroup>
-                            <h:outputText>#{question.position}. </h:outputText>
-                            <h:outputText>#{question.text}</h:outputText>
+                            <b>#{question.position}. </b>
+                            <b>#{question.text}</b>
                             <br/>
                             <c:if test="#{question.required}">
-                                <h:outputText> (Required)</h:outputText>
+                                <h:outputText style="color:darkred;" value="(Required)" />
                                 <br/>
                             </c:if>
+                            <br/>
                             <c:if test="#{question['class'].simpleName == 'FreeTextQuestion'}">
                                 <h:panelGroup>
                                     <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
@@ -71,41 +75,12 @@
                             </c:if>
                         </h:panelGroup>
                     </c:if>
+                    </td>
+                    </tr>
                 </c:forEach>
+                </table>
             </h:panelGroup>
-            <!-- Navigation -->
-            <p:commandButton id="previous"
-                             value="Previous page"
-                             update="survey"
-                             action="#{surveyController.goToPage(surveyController.currentPage.number - 1)}"
-                             rendered="#{surveyController.currentPage.number != 1}"/>
-            <p:commandButton id="next"
-                             value="Next page"
-                             update="survey"
-                             action="#{surveyController.goToPage(surveyController.currentPage.number + 1)}"
-                             rendered="#{surveyController.currentPage.number != surveyController.survey.pages.size()}"/>
-            <!-- Submit answers-->
-            <p:messages globalOnly="true"/>
-            <p:commandButton id="submit"
-                             value="Submit answers"
-                             update="questions"
-                             action="#{surveyController.submitAnswers}"
-                             rendered="#{surveyController.currentPage.number == surveyController.survey.pages.size()}"
-                             ajax="false"/>
-
-            <!--Send partly answered survey to specified email-->
-            <h3>Send partly answered survey to your email</h3>
-            <h:panelGrid columns="2">
-                <p:inputText type="email" placeholder="Email" id="email" value="#{surveyController.email}"/>
-
-                <p:messages globalOnly="true"/>
-                <p:button outcome="/home?faces-redirect=true" value="Go to main page" rendered="#{surveyController.success}"/>
-                <p:commandButton value="Send"
-                                 actionListener="#{surveyController.saveSurveyToEmail()}"
-                                 styleClass="responsiveElement"
-                                 rendered="#{not surveyController.success}"/>
-            </h:panelGrid>
-
+            <br/>
             <!-- Progress -->
             <p:progressBar value="#{surveyController.currentPage.number / surveyController.survey.pages.size() * 100}" rendered="#{surveyController.survey.pages.size() > 1}"/>
             <h:outputText rendered="#{surveyController.survey.pages.size() == 1}">
@@ -119,6 +94,46 @@
                 <f:convertNumber integerOnly="true" minFractionDigits="0" maxFractionDigits="0"/>
             </h:outputText>
             <h:outputText>% completed)</h:outputText>
+            <br/>
+            <br/>
+            <!-- Navigation -->
+            <p:commandButton id="previous"
+                             value="Previous page"
+                             update="survey"
+                             action="#{surveyController.goToPage(surveyController.currentPage.number - 1)}"
+                             rendered="#{surveyController.currentPage.number != 1}"
+                             style="float:left;"/>
+            <p:commandButton id="next"
+                             value="Next page"
+                             update="survey"
+                             action="#{surveyController.goToPage(surveyController.currentPage.number + 1)}"
+                             rendered="#{surveyController.currentPage.number != surveyController.survey.pages.size()}"
+                             style="float:left;"/>
+            <!-- Submit answers-->
+            <p:messages globalOnly="true"/>
+            <p:commandButton id="submit"
+                             value="Submit answers"
+                             update="questions"
+                             action="#{surveyController.submitAnswers}"
+                             rendered="#{surveyController.currentPage.number == surveyController.survey.pages.size()}"
+                             ajax="false"
+                             style="float:right;"/>
+
+
+            <br/>
+            <br/>
+            <!--Send partly answered survey to specified email-->
+            <h3>Send partly answered survey to your email</h3>
+            <h:panelGrid columns="2">
+                <p:inputText type="email" placeholder="Email" id="email" value="#{surveyController.email}"/>
+
+                <p:messages globalOnly="true"/>
+                <p:button outcome="/home?faces-redirect=true" value="Go to main page" rendered="#{surveyController.success}"/>
+                <p:commandButton value="Send"
+                                 actionListener="#{surveyController.saveSurveyToEmail()}"
+                                 styleClass="responsiveElement"
+                                 rendered="#{not surveyController.success}"/>
+            </h:panelGrid>
         </h:form>
     </c:if>
 </h:body>
