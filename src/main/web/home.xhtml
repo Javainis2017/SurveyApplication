@@ -96,6 +96,7 @@
                                 <c:if test="#{surveyExportController.timeout and surveyExportController.generatedSurveys.containsKey(userSurveyController.selectedSurvey.url)}">
                                     <p:commandButton id="exportButton"
                                                      value="Download"
+                                                     widgetVar="exportBtn"
                                                      actionListener="#{surveyExportController.downloadToUser(userSurveyController.selectedSurvey.url)}"
                                                      ajax="false"
                                                      icon="fa fa-fw fa-download"/>

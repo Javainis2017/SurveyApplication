@@ -2,7 +2,10 @@ package com.javainis.data_export_import.controllers;
 
 import com.javainis.data_export_import.interfaces.DataExporter;
 import com.javainis.survey.dao.SurveyDAO;
+import com.javainis.survey.dao.SurveyResultDAO;
 import com.javainis.survey.entities.Survey;
+import com.javainis.survey.entities.SurveyResult;
+import javafx.util.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
@@ -12,9 +15,11 @@ import org.omnifaces.util.Messages;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.Tuple;
 import javax.transaction.Transactional;
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -28,6 +33,9 @@ public class SurveyExportController implements Serializable {
 
     @Inject
     private DataExporter exporter;
+
+    @Inject
+    private SurveyResultDAO resultDAO;
 
     @Inject
     private SurveyDAO surveyDAO;
@@ -44,6 +52,8 @@ public class SurveyExportController implements Serializable {
     @Getter
     private Map<String, File> generatedSurveys = new HashMap<>();
 
+    private Map<Future<Void>, Pair<String, File>> generatingNow = new HashMap<>();
+
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void exportSurvey(Survey survey)
     {
@@ -57,11 +67,13 @@ public class SurveyExportController implements Serializable {
             String name = selectedSurvey.getTitle().replace('/',' ');
             file = new File(name + "_" + selectedSurvey.getUrl() + ".xlsx");
             stream = new FileOutputStream(file);
-            Hibernate.initialize(selectedSurvey);
-            Hibernate.initialize(selectedSurvey.getQuestions());
+            List<SurveyResult> results = resultDAO.getResultsBySurveyId(selectedSurvey.getId());
+            if (results.size() > 0){
+                Hibernate.initialize(results);
+            }
+            initCollections(selectedSurvey, results);
             export = exporter.exportSurvey(selectedSurvey, stream);
-
-            generatedSurveys.put(selectedSurvey.getUrl(), file);
+            generatingNow.put(export, new Pair<>(selectedSurvey.getUrl(), file));
         }
         catch(IOException ex)
         {
@@ -70,10 +82,32 @@ public class SurveyExportController implements Serializable {
         }
     }
 
+    //Be Hibernate.initialize meta LazyInitializationException
+    private void initCollections(Survey survey, List<SurveyResult> results){
+        Hibernate.initialize(selectedSurvey);
+        Hibernate.initialize(selectedSurvey.getQuestions());
+        if (results.size() > 0){
+            Hibernate.initialize(results);
+            for(SurveyResult res: results){
+                Hibernate.initialize(res.getAnswers());
+            }
+        }
+
+    }
+
     public void checkProgress() {
-        if(export != null && export.isDone())
+        for(Future<Void> export : generatingNow.keySet())
         {
-            timeout = true;
+            if(export != null && export.isDone())
+            {
+                timeout = true;
+                Pair<String, File> result = generatingNow.get(export);
+                generatedSurveys.put(result.getKey(), result.getValue());
+            }
+            else {
+                timeout = false;
+                break;
+            }
         }
     }
 

@@ -1,8 +1,7 @@
 package com.javainis.data_export_import.data_converters;
 
-import com.javainis.Async;
 import com.javainis.data_export_import.interfaces.DataExporter;
-import com.javainis.survey.dao.SurveyResultDAO;
+import com.javainis.survey.dao.SurveyResultAsyncDAO;
 import com.javainis.survey.entities.*;
 
 import org.apache.deltaspike.core.api.future.Futureable;
@@ -14,10 +13,7 @@ import org.hibernate.Hibernate;
 
 import javax.ejb.AsyncResult;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.io.*;
 import java.util.Collections;
@@ -32,11 +28,7 @@ import static javax.transaction.Transactional.TxType.REQUIRES_NEW;
 public class XLSXDataExporter implements DataExporter, Serializable{
 
     @Inject
-//    @Async
-    private EntityManager manager;
-
-//    @Inject
-//    private SurveyResultDAO surveyResultDAO;
+    private SurveyResultAsyncDAO surveyResultDAO;
 
     //Isimena kurioj Excel dokumento eiluteje dabar yra
     private int answerRowNumber = 0;
@@ -74,25 +66,21 @@ public class XLSXDataExporter implements DataExporter, Serializable{
     }
 
     @Override
-//    @Futureable
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    @Futureable
+    @Transactional(REQUIRES_NEW)
     public Future<Void> exportSurvey(Survey survey, OutputStream destination)
     {
-        System.out.println("Exporting survey");
+//        System.out.println("Exporting survey");
         XSSFWorkbook wb = new XSSFWorkbook();
+        List<SurveyResult> results = surveyResultDAO.getResultsBySurveyId(survey.getId());
         exportSurveyQuestions(survey, wb);
-        List<SurveyResult> results = manager
-                .createNamedQuery("SurveyResult.findBySurveyId", SurveyResult.class)
-                .setParameter("surveyId", survey.getId())
-                .getResultList();
-        Hibernate.initialize(results);
         if (results != null && results.size() != 0)
         {
             exportAnswers(results, wb);
         }
         try {
             wb.write(destination);
-            System.out.println("Export finished");
+//            System.out.println("Export finished");
         }
         catch (IOException ex)
         {
@@ -110,14 +98,12 @@ public class XLSXDataExporter implements DataExporter, Serializable{
         XSSFSheet surveySheet = wb.createSheet("Survey");
         createStatusRow(surveySheet);
 
-        //Hibernate.initialize(survey.getQuestions());
         List<Question> surveyQuestions = survey.getQuestions();
         choiceNumberMap = new HashMap<>();
         for(int i = 0; i < surveyQuestions.size(); i++)
         {
             String questionType;
             Question question = surveyQuestions.get(i);
-            Hibernate.initialize(question);
             XSSFRow row = surveySheet.createRow(question.getPosition());
 
             //Question number
@@ -168,7 +154,6 @@ public class XLSXDataExporter implements DataExporter, Serializable{
     @Transactional
     private void exportAnswers(List<SurveyResult> answers, XSSFWorkbook wb)
     {
-        Hibernate.initialize(answers);
         XSSFSheet answerSheet = wb.createSheet("Answer");
         XSSFRow statusRow = answerSheet.createRow(answerRowNumber++);
         statusRow.createCell(0).setCellValue("$answerID");
@@ -188,7 +173,6 @@ public class XLSXDataExporter implements DataExporter, Serializable{
     @Transactional
     private void exportSingleAnswer(List<Answer> answers, int answerId, XSSFSheet sheet)
     {
-        Hibernate.initialize(answers);
         int question = 1;
         for(Answer answer: answers)
         {
