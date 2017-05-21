@@ -86,6 +86,10 @@ public class SurveyController implements Serializable{
         // Find survey
         try {
             survey = surveyDAO.findByUrl(surveyUrl);
+            // init questions
+            for(SurveyPage page: survey.getPages()){
+                page.getQuestions().size();
+            }
         } catch (NoResultException ex) {
             return;
         }
@@ -135,7 +139,41 @@ public class SurveyController implements Serializable{
         if(number < 1 || number > survey.getPages().size()){
             return;
         }
-        currentPage = survey.getPages().get(number - 1);
+        int direction;
+        if(number < currentPage.getNumber()){
+            direction = -1;
+        }else{
+            direction = 1;
+        }
+        boolean pageEmpty = true;
+        while(pageEmpty){
+            if(number < 1 || number > survey.getPages().size()) {
+                return;
+            }
+            SurveyPage page = survey.getPages().get(number - 1);
+            for(Question question : page.getQuestions()){
+                if(checkQuestionConditions(question)){
+                    currentPage = page;
+                    return;
+                }
+            }
+            number += direction;
+        }
+    }
+
+    public boolean isLastPage(){
+        if(currentPage.getNumber() == survey.getPages().size()){
+            return true;
+        }
+        for(int i = currentPage.getNumber(); i < survey.getPages().size(); i++){
+            SurveyPage page = survey.getPages().get(i);
+            for(Question question : page.getQuestions()){
+                if(checkQuestionConditions(question)){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Transactional
@@ -204,11 +242,13 @@ public class SurveyController implements Serializable{
             if(answer.getClass().getSimpleName().equals("SingleChoiceAnswer")) {
                 SingleChoiceAnswer singleChoiceAnswer = (SingleChoiceAnswer)answer;
                 //When condition is any answer
-                if(condition.getChoice() == null && singleChoiceAnswer.getChoice() != null) {
-                    return true;
-                }//When condition is specific answer
-                else if(condition.getChoice() != null && singleChoiceAnswer.getChoice() == condition.getChoice()){
-                    return true;
+                if(singleChoiceAnswer.getChoice() != null){
+                    if(condition.getChoice() == null) {
+                        return true;
+                    }//When condition is specific answer
+                    else if(condition.getChoice() != null && singleChoiceAnswer.getChoice().equals(condition.getChoice())){
+                        return true;
+                    }
                 }
             }//Checks if it's multiple choice answer
             else if(answer.getClass().getSimpleName().equals("MultipleChoiceAnswer")){
@@ -219,7 +259,7 @@ public class SurveyController implements Serializable{
                     if(condition.getChoice() == null && choice != null) {
                         return true;
                     }//When condition is specific answer
-                    else if (condition.getChoice() != null && choice==condition.getChoice()){
+                    else if (condition.getChoice() != null && choice.equals(condition.getChoice())){
                         return true;
                     }
                 }
@@ -250,7 +290,7 @@ public class SurveyController implements Serializable{
             }
 
             String url = survey.getUrl() + "/" + genUrl;
-            String message = "Fallow this link to fully answer survey: " + host + path + url;
+            String message = "Follow this link to fully answer survey: " + host + path + url;
             mailSender.sendEmail(email, "Partly finished survey \"" + survey.getTitle() + "\"", message);
 
             Messages.addGlobalInfo("Emails sent successfully.");

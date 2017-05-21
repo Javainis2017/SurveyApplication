@@ -107,7 +107,7 @@
                              value="Next page"
                              update="survey"
                              action="#{surveyController.goToPage(surveyController.currentPage.number + 1)}"
-                             rendered="#{surveyController.currentPage.number != surveyController.survey.pages.size()}"
+                             rendered="#{not surveyController.isLastPage()}"
                              style="float:left;"/>
             <!-- Submit answers-->
             <p:messages globalOnly="true"/>
@@ -115,7 +115,7 @@
                              value="Submit answers"
                              update="questions"
                              action="#{surveyController.submitAnswers}"
-                             rendered="#{surveyController.currentPage.number == surveyController.survey.pages.size()}"
+                             rendered="#{surveyController.isLastPage()}"
                              ajax="false"
                              style="float:right;"/>
 

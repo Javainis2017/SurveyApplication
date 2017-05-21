@@ -206,7 +206,8 @@ public class NewSurveyController implements Serializable {
         if (survey.getPages().size() > 1) {
             int lastPosition = 0;
             if (!page.getQuestions().isEmpty()) {
-                lastPosition = page.getQuestions().get(0).getPosition();
+                lastPosition = page.getQuestions().
+                        get(0).getPosition();
             }
             for (Question question : page.getQuestions()) {
                 survey.getQuestions().remove(question);
