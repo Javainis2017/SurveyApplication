@@ -20,7 +20,7 @@ import java.util.List;
         @NamedQuery(name = "Question.findBySurveyId", query = "SELECT q FROM Question q WHERE q.survey.id = :surveyId ORDER BY q.position")
 })
 @DiscriminatorColumn(name="question_type_id", discriminatorType = DiscriminatorType.INTEGER)
-@EqualsAndHashCode(of = "text")
+@EqualsAndHashCode(of = {"text", "position"})
 public abstract class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
