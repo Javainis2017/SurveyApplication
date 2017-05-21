@@ -48,6 +48,10 @@ public class SurveyController implements Serializable{
     private String surveyUrl;
 
     @Inject
+    @Param(pathIndex = 1)
+    private String resultUrl;
+
+    @Inject
     private MailSender mailSender;
 
     @Inject
@@ -55,6 +59,9 @@ public class SurveyController implements Serializable{
 
     @Getter
     private Survey survey;
+
+    @Getter
+    private SurveyResult surveyResult;
 
     @Getter
     private SurveyPage currentPage;
@@ -70,38 +77,55 @@ public class SurveyController implements Serializable{
     private Boolean success = false;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         // Check if parameter exists
-        if(surveyUrl == null){
+        if (surveyUrl == null) {
             return;
         }
 
         // Find survey
-        try{
+        try {
             survey = surveyDAO.findByUrl(surveyUrl);
-        }catch (NoResultException ex){
+        } catch (NoResultException ex) {
             return;
+        }
+
+        //Find survey results
+        if(resultUrl != null) {
+            try {
+                surveyResult = surveyResultDAO.findByUrl(resultUrl);
+            } catch (NoResultException ex) {
+                // if resultUrl does not return any results, survey should be presented with empty answer fields
+            }
+        }
+
+        if(surveyResult != null) {
+            for(Answer answer : surveyResult.getAnswers()) {
+                answers.put(answer.getQuestion(), answer);
+            }
         }
 
         // Init answer objects
         for(Question question : survey.getQuestions()){
-            if(question.getClass().getSimpleName().equals("FreeTextQuestion")){
-                Answer answer = new TextAnswer();
-                answer.setQuestion(question);
-                ((TextAnswer)answer).setText("");
-                answers.put(question, answer);
-            }else if(question.getClass().getSimpleName().equals("IntervalQuestion")){
-                Answer answer = new NumberAnswer();
-                answer.setQuestion(question);
-                answers.put(question, answer);
-            }else if(question.getClass().getSimpleName().equals("SingleChoiceQuestion")){
-                Answer answer = new SingleChoiceAnswer();
-                answer.setQuestion(question);
-                answers.put(question, answer);
-            }else if(question.getClass().getSimpleName().equals("MultipleChoiceQuestion")){
-                Answer answer = new MultipleChoiceAnswer();
-                answer.setQuestion(question);
-                answers.put(question, answer);
+            if(!answers.containsKey(question)) {
+                if (question.getClass().getSimpleName().equals("FreeTextQuestion")) {
+                    Answer answer = new TextAnswer();
+                    answer.setQuestion(question);
+                    ((TextAnswer) answer).setText("");
+                    answers.put(question, answer);
+                } else if (question.getClass().getSimpleName().equals("IntervalQuestion")) {
+                    Answer answer = new NumberAnswer();
+                    answer.setQuestion(question);
+                    answers.put(question, answer);
+                } else if (question.getClass().getSimpleName().equals("SingleChoiceQuestion")) {
+                    Answer answer = new SingleChoiceAnswer();
+                    answer.setQuestion(question);
+                    answers.put(question, answer);
+                } else if (question.getClass().getSimpleName().equals("MultipleChoiceQuestion")) {
+                    Answer answer = new MultipleChoiceAnswer();
+                    answer.setQuestion(question);
+                    answers.put(question, answer);
+                }
             }
         }
         currentPage = survey.getPages().get(0);
@@ -220,25 +244,51 @@ public class SurveyController implements Serializable{
 
             String path = "survey/show/";
 
-            String message = "Fallow this link to fully answer survey: " + host + path + survey.getUrl();
+            String genUrl = randomStringGenerator.generateString(32);
+            while (surveyResultDAO.existsByUrl(genUrl)) {
+                genUrl = randomStringGenerator.generateString(32);
+            }
+
+            String url = survey.getUrl() + "/" + genUrl;
+            String message = "Fallow this link to fully answer survey: " + host + path + url;
             mailSender.sendEmail(email, "Partly finished survey \"" + survey.getTitle() + "\"", message);
 
             Messages.addGlobalInfo("Emails sent successfully.");
             success = true;
 
-            // Create SurveyResult object
-            SurveyResult result = new SurveyResult();
-            result.setSurvey(survey);
+            SurveyResult result;
+            if(surveyResult == null) {
+                // Create SurveyResult object
+                result = new SurveyResult();
+                result.setSurvey(survey);
+            }else{
+                // Take existing survey results
+                result = surveyResult;
+            }
+
+            List<Answer> answerList = new ArrayList<>(answers.values());
+            List<Answer> emptyAnswers = new ArrayList<>();
+            for(Answer answer : answerList){
+                if(!answer.hasAnswer()){
+                    emptyAnswers.add(answer);
+                }
+                answer.setResult(result);
+            }
+            answerList.removeAll(emptyAnswers);
+            result.setAnswers(answerList);
+
             result.setComplete(false);
 
-            String genUrl = randomStringGenerator.generateString(32);
-            while (surveyDAO.existsByUrl(genUrl)) {
-                genUrl = randomStringGenerator.generateString(32);
-            }
             result.setUrl(genUrl);
 
             // Save answers to DB
-            surveyResultDAO.create(result);
+            if(surveyResultDAO.existsById(result.getId())) {
+                surveyResultDAO.update(result);
+            }else{
+                surveyResultDAO.create(result);
+            }
+
+            Messages.addGlobalInfo("Partly finished survey was sent to specified email.");
 
         }catch (NamingException ne){
             Messages.addGlobalWarn("Error sending emails.");
