@@ -178,9 +178,15 @@ public class SurveyController implements Serializable{
 
     @Transactional
     public String submitAnswers(){
-        // Create SurveyResult object
-        SurveyResult result = new SurveyResult();
-        result.setSurvey(survey);
+        SurveyResult result;
+        if(surveyResult == null) {
+            // Create SurveyResult object
+            result = new SurveyResult();
+            result.setSurvey(survey);
+        }else{
+            // Take existing survey results
+            result = surveyResult;
+        }
 
         // Validation
         List<Answer> answerList = new ArrayList<>(answers.values());
@@ -193,9 +199,15 @@ public class SurveyController implements Serializable{
         }
         answerList.removeAll(emptyAnswers);
         result.setAnswers(answerList);
+        result.setComplete(true);
+        result.setUrl(null);
 
         // Save answers to DB
-        surveyResultDAO.create(result);
+        if(surveyResultDAO.existsById(result.getId())) {
+            surveyResultDAO.update(result);
+        }else{
+            surveyResultDAO.create(result);
+        }
 
         return "/survey/success?faces-redirect=true";
     }

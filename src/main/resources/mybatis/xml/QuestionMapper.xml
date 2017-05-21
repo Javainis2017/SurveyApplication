@@ -67,7 +67,8 @@
       a.choice_id,
       ac.choice_id as choices_choice_id
     FROM public.answer a
-      LEFT JOIN public.answer_choice ac on ac.answer_id = a.id
-    WHERE a.question_id = #{id,jdbcType=BIGINT}
+      LEFT JOIN public.answer_choice ac ON ac.answer_id = a.id
+      LEFT JOIN public.survey_result sr ON a.result_id = sr.id
+    WHERE a.question_id = #{id,jdbcType=BIGINT} AND sr.complete = TRUE
   </select>
 </mapper>

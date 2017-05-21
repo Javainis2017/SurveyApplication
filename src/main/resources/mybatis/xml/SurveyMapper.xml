@@ -24,7 +24,7 @@
       COUNT(sr) as result_count
     FROM public.survey s
       LEFT JOIN survey_result sr ON s.id = sr.survey_id
-    WHERE s.url = #{url,jdbcType=CHAR}
+    WHERE s.url = #{url,jdbcType=CHAR} AND sr.complete = TRUE
     GROUP BY s.id
   </select>
 </mapper>
