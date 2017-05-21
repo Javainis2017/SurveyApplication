@@ -180,6 +180,7 @@ public class SurveyImportController implements Serializable{
     private Future<Boolean> saveAnswers(List<SurveyResult> surveyResults){
         try{
             for (SurveyResult result : surveyResults){
+                result.setComplete(true);
                 surveyResultAsyncDAO.create(result);
             }
             return new AsyncResult<>(true);
@@ -191,17 +192,17 @@ public class SurveyImportController implements Serializable{
     }
 
     @Transactional
-    public Boolean upload() throws InterruptedException, ExecutionException{
+    public String upload() throws InterruptedException, ExecutionException{
         String xlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         if (uploadedFile == null){
             FacesMessage message = new FacesMessage("Problem", "Failed to upload");
             FacesContext.getCurrentInstance().addMessage(null, message);
-            return false;
+            return null;
         }
         if (!uploadedFile.getContentType().equals(xlsxContentType)){
             FacesMessage message = new FacesMessage("Failed", uploadedFile.getFileName() + " is not xlsx format.");
             FacesContext.getCurrentInstance().addMessage(null, message);
-            return false;
+            return null;
         }
         Path path;
         try  {
@@ -214,7 +215,7 @@ public class SurveyImportController implements Serializable{
             IOUtils.closeQuietly(output);
             file = new File(path.toString(), filename);
         }catch (IOException e){
-            return false;
+            return null;
         }
 
         importSurvey();
@@ -223,23 +224,24 @@ public class SurveyImportController implements Serializable{
             FacesMessage message = new FacesMessage("Problem", "Failed to import Survey questions and answers.");
             FacesContext.getCurrentInstance().addMessage(null, message);
             cleanTempFolder(path);
-            return false;
+            return null;
         } else if (selectedSurvey == null){
             FacesMessage message = new FacesMessage("Problem", "Failed to import Survey questions.");
             FacesContext.getCurrentInstance().addMessage(null, message);
             cleanTempFolder(path);
-            return false;
+            return null;
         }
 
-        FacesMessage message = new FacesMessage("Success", "Survey has been uploaded.");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        //nerodo po redirected
+        //FacesMessage message = new FacesMessage("Success", "Survey has been uploaded.");
+        //FacesContext.getCurrentInstance().addMessage(null, message);
 
         cleanTempFolder(path);
 
         selectedSurvey = new Survey();
         surveyResultList = new ArrayList<>();
         setUploadedFile(null);
-        return false;
+        return "/home?faces-redirect=true";
     }
 
     private void cleanTempFolder(Path path){
