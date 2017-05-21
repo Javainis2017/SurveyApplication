@@ -54,7 +54,8 @@ public class SurveyExportController implements Serializable {
         }
         Messages.addGlobalInfo("Generating file, please wait...");
         try {
-            file = new File(selectedSurvey.getTitle() + "_" + selectedSurvey.getUrl() + ".xlsx");
+            String name = selectedSurvey.getTitle().replace('/',' ');
+            file = new File(name + "_" + selectedSurvey.getUrl() + ".xlsx");
             stream = new FileOutputStream(file);
             Hibernate.initialize(selectedSurvey);
             Hibernate.initialize(selectedSurvey.getQuestions());
