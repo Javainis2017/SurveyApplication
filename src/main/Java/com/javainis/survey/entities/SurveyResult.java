@@ -11,7 +11,10 @@ import java.util.List;
 @Entity
 @Table(name = "survey_result")
 @NamedQueries({
-        @NamedQuery(name = "SurveyResult.findBySurveyId", query = "SELECT sr FROM SurveyResult sr WHERE sr.survey.id = :surveyId")
+        @NamedQuery(name = "SurveyResult.findBySurveyId", query = "SELECT sr FROM SurveyResult sr WHERE sr.survey.id = :surveyId"),
+        @NamedQuery(name = "SurveyResult.findByUrl", query = "SELECT s FROM SurveyResult s WHERE s.url = :url"),
+        @NamedQuery(name = "SurveyResult.existsByUrl", query = "SELECT COUNT(s) FROM SurveyResult s WHERE s.url = :url "),
+        @NamedQuery(name = "SurveyResult.existsById", query = "SELECT COUNT(s) FROM SurveyResult s WHERE s.id = :id")
 })
 @Getter
 @Setter
