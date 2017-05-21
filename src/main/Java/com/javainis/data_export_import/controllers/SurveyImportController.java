@@ -3,14 +3,12 @@ package com.javainis.data_export_import.controllers;
 import com.javainis.data_export_import.interfaces.DataImporter;
 import com.javainis.survey.dao.SurveyAsyncDAO;
 import com.javainis.survey.dao.SurveyResultAsyncDAO;
-import com.javainis.survey.dao.SurveyResultDAO;
 import com.javainis.survey.entities.Survey;
 import com.javainis.survey.entities.SurveyResult;
 import com.javainis.user_management.controllers.UserController;
 import com.javainis.user_management.entities.User;
 import com.javainis.utility.ExpirationChecker;
 import com.javainis.utility.RandomStringGenerator;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -143,8 +141,10 @@ public class SurveyImportController implements Serializable{
 
         } catch (InterruptedException e){
             e.printStackTrace();
+            selectedSurvey = null;
         } catch (ExecutionException e){
             e.printStackTrace();
+            selectedSurvey = null;
         }
 
     }
@@ -194,7 +194,7 @@ public class SurveyImportController implements Serializable{
     public Boolean upload() throws InterruptedException, ExecutionException{
         String xlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         if (uploadedFile == null){
-            FacesMessage message = new FacesMessage("Failed to upload");
+            FacesMessage message = new FacesMessage("Problem", "Failed to upload");
             FacesContext.getCurrentInstance().addMessage(null, message);
             return false;
         }
@@ -220,16 +220,19 @@ public class SurveyImportController implements Serializable{
         importSurvey();
 
         if (selectedSurvey == null && surveyResultList == null){
-            FacesMessage message = new FacesMessage("Failed to import Survey questions and answers.");
+            FacesMessage message = new FacesMessage("Problem", "Failed to import Survey questions and answers.");
             FacesContext.getCurrentInstance().addMessage(null, message);
             cleanTempFolder(path);
             return false;
         } else if (selectedSurvey == null){
-            FacesMessage message = new FacesMessage("Failed to import Survey questions.");
+            FacesMessage message = new FacesMessage("Problem", "Failed to import Survey questions.");
             FacesContext.getCurrentInstance().addMessage(null, message);
             cleanTempFolder(path);
             return false;
         }
+
+        FacesMessage message = new FacesMessage("Success", "Survey has been uploaded.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
 
         cleanTempFolder(path);
 
