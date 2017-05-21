@@ -17,10 +17,10 @@ public class AnswerDAO {
     }
 
     public void deleteByQuestionId(Long questionId){
-        manager.createNativeQuery("DELETE FROM answer_choice USING answer a WHERE answer_id = a.id AND a.question_id = ?").setParameter(1, questionId).executeUpdate();
+        manager.createNativeQuery("DELETE FROM answer_choice USING answer a WHERE answer_id = a.id AND a.question_id = :questionId").setParameter("questionId", questionId).executeUpdate();
         manager.createNamedQuery("Answer.deleteByQuestionId").setParameter("questionId", questionId).executeUpdate();
     }
-
+    
     public List<Answer> findByQuestionId(Long questionId){
         return manager.createNamedQuery("Answer.findByQuestionId", Answer.class).setParameter("questionId", questionId).getResultList();
     }
