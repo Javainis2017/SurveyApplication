@@ -13,6 +13,7 @@
                           requiredMessage="This question is required."
                           converter="omnifaces.SelectItemsConverter">
             <p:ajax event="change" update=":survey" process="@form"/>
+            <f:attribute name="collectionType" value="java.util.ArrayList" />
             <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}" itemValue="#{choice}"/>
         </h:selectManyCheckbox>
         <p:message for="question"/>
