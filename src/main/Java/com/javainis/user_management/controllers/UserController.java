@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.io.Serializable;
 
 @Named
@@ -36,6 +37,7 @@ public class UserController implements Serializable
     public String login() {
         try{
             user = userDAO.login(user.getEmail(), passwordHash);
+            resetPasswordFields();
             if (user.getBlocked()) {
                 Messages.addGlobalWarn("You are blocked from system");
                 resetPasswordFields();
@@ -63,6 +65,13 @@ public class UserController implements Serializable
             Messages.addGlobalWarn("Could not log you out. Now you're stuck forever :(");
         }
         return null;
+    }
+
+    public void checkAlreadyLoggedIn() throws IOException{
+        if (user.getUserID() != null) {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(ec.getRequestContextPath() + "/home");
+        }
     }
 
     public void refreshUser(){
