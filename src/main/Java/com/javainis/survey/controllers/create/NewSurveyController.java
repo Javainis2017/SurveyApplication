@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 @Named
 @ViewScoped
 public class NewSurveyController implements Serializable {
@@ -53,13 +52,13 @@ public class NewSurveyController implements Serializable {
     private ExpirationChecker expirationChecker;
     @Inject
     private EntityManager entityManager;
+
     @Getter
     private Survey survey = new Survey();
     @Getter
     private Survey conflictingSurvey;
     @Getter
     private SURVEY_CREATION_STEP surveyCreationStep = SURVEY_CREATION_STEP.QUESTION_TYPE_CHOICE;
-    /* Naujai kuriamo klausimo tipas*/
     @Getter
     private String newQuestionType;
     @Getter
@@ -82,6 +81,7 @@ public class NewSurveyController implements Serializable {
     @Getter
     @Setter
     private Question conditionalQuestion = null;
+
     private List<Condition> removableConditions = new ArrayList<>();
 
     private Timestamp convertToExpirationTimestamp(String date, String time) {
@@ -183,7 +183,6 @@ public class NewSurveyController implements Serializable {
         question.setSurvey(null);
 
         question.getPage().getQuestions().remove(question);
-        question.setPage(null);
         /* Renumber remaining questions*/
         for (Question otherQuestion : survey.getQuestions()) {
             if (otherQuestion.getPosition() > question.getPosition()) {
@@ -204,26 +203,15 @@ public class NewSurveyController implements Serializable {
 
     public void removePage(SurveyPage page) {
         if (survey.getPages().size() > 1) {
-            int lastPosition = 0;
-            if (!page.getQuestions().isEmpty()) {
-                lastPosition = page.getQuestions().
-                        get(0).getPosition();
-            }
-            for (Question question : page.getQuestions()) {
-                survey.getQuestions().remove(question);
-                question.setSurvey(null);
+            List<Question> questionsToRemove = new ArrayList<>(page.getQuestions());
+            for (Question question : questionsToRemove) {
+                removeQuestion(question);
             }
             survey.getPages().remove(page);
             /* Renumber pages */
             for (SurveyPage surveyPage : survey.getPages()) {
                 if (surveyPage.getNumber() > page.getNumber()) {
                     surveyPage.setNumber(surveyPage.getNumber() - 1);
-                    /* Renumber questions */
-                    for (Question question : surveyPage.getQuestions()) {
-                        if (question.getPosition() > lastPosition) {
-                            question.setPosition(question.getPosition() - page.getQuestions().size());
-                        }
-                    }
                 }
             }
         } else {
@@ -314,13 +302,6 @@ public class NewSurveyController implements Serializable {
     @Logged
     public String saveSurvey() {
         /* Check if survey has questions */
-        for (Condition condition : survey.getConditions()) {
-            System.out.println("DQ - " + condition.getDependentQuestion().getText());
-            System.out.println("Q - " + condition.getQuestion().getText());
-            if (condition.getChoice() != null) {
-                System.out.println("CH - " + condition.getChoice().getText());
-            }
-        }
         if (survey.getQuestions().isEmpty()) {
             Messages.addGlobalInfo("Survey must have at least 1 question.");
             return null;

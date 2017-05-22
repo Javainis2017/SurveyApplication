@@ -33,7 +33,7 @@ public class SurveyPage {
     @ManyToOne
     private Survey survey;
 
-    @OneToMany(mappedBy = "page")
+    @OneToMany(mappedBy = "page", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("position ASC")
     private List<Question> questions = new ArrayList<>();
 }
