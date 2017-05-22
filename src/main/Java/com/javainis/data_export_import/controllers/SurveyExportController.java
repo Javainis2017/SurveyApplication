@@ -15,7 +15,6 @@ import org.omnifaces.util.Messages;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.Tuple;
 import javax.transaction.Transactional;
 import java.io.*;
 import java.util.HashMap;
@@ -84,8 +83,8 @@ public class SurveyExportController implements Serializable {
 
     //Be Hibernate.initialize meta LazyInitializationException
     private void initCollections(Survey survey, List<SurveyResult> results){
-        Hibernate.initialize(selectedSurvey);
-        Hibernate.initialize(selectedSurvey.getQuestions());
+        Hibernate.initialize(survey);
+        Hibernate.initialize(survey.getQuestions());
         if (results.size() > 0){
             Hibernate.initialize(results);
             for(SurveyResult res: results){
@@ -96,27 +95,22 @@ public class SurveyExportController implements Serializable {
     }
 
     public void checkProgress() {
-        for(Future<Void> export : generatingNow.keySet())
-        {
-            if(export != null && export.isDone())
-            {
+        for(Future<Void> export : generatingNow.keySet()) {
+            if(export != null && export.isDone()) {
                 timeout = true;
                 Pair<String, File> result = generatingNow.get(export);
                 generatedSurveys.put(result.getKey(), result.getValue());
-            }
-            else {
+            } else {
                 timeout = false;
                 break;
             }
         }
     }
 
-    public void downloadToUser(String surveyURL)
-    {
+    public void downloadToUser(String surveyURL) {
         if (generatedSurveys.containsKey(surveyURL)) {
             file = generatedSurveys.get(surveyURL);
             try {
-//              Pagal http://stackoverflow.com/a/9394237
                 Faces.sendFile(file, true);
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -126,5 +120,4 @@ public class SurveyExportController implements Serializable {
             }
         }
     }
-
 }
