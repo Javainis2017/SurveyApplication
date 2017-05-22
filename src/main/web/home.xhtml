@@ -210,7 +210,7 @@
                         <p:message for="last_name"/>
                     </h:panelGrid>
 
-                    <p:messages id="profileMessage" redisplay="false" showDetail="true"/>
+                    <p:messages for="profileMessage" redisplay="false" showDetail="true"/>
                     <p:commandButton value="Save changes"
                                      action="#{userProfileController.saveProfile()}"
                                      ajax="false"
@@ -255,7 +255,7 @@
                                      action="#{userProfileController.changePassword()}"
                                      styleClass="responsiveElement"
                                      update="form"/>
-                    <p:messages globalOnly="true"/>
+                    <p:messages for="passwordMessage" redisplay="false" globalOnly="true"/>
                 </div>
             </p:tab>
         </p:tabView>

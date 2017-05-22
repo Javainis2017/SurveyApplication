@@ -96,25 +96,28 @@ public class UserProfileController implements Serializable{
     public void changePassword(){
         try{
             if(!currentPassword.contentEquals(user.getPasswordHash())) {
-                Messages.addGlobalInfo("Current password is not correct");
+                FacesContext.getCurrentInstance().addMessage("passwordMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Current password is incorrect.", "Current password is incorrect."));
+                resetPasswordFields();
                 return;
             }
 
             if(!newPassword.contentEquals(repeatedPassword)) {
-                Messages.addGlobalWarn("New and repeated password are not equal");
+                FacesContext.getCurrentInstance().addMessage("passwordMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "New and repeated password are not equal.", "New and repeated password are not equal."));
+                resetPasswordFields();
                 return;
             }
             newPassword = hashGenerator.generatePasswordHash(newPassword);
-            userDAO.changeUserPassword(user.getEmail(), newPassword);
             user.setPasswordHash(newPassword);
             userDAO.update(user);
+            userController.refreshUser();
+            user = userController.getUser();
 
-            Messages.addGlobalInfo("Password was successfully changed");
+            FacesContext.getCurrentInstance().addMessage("passwordMessage", new FacesMessage(FacesMessage.SEVERITY_INFO, "Password was successfully changed.", "Password was successfully changed."));
             resetPasswordFields();
         }
         catch(Exception ex){
             ex.printStackTrace();
-            Messages.addGlobalWarn("User password change failed");
+            FacesContext.getCurrentInstance().addMessage("passwordMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "User password change failed.", "User password change failed."));
             resetPasswordFields();
         }
     }
