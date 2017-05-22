@@ -20,7 +20,7 @@
         <p:panelGrid id="infoGrid" styleClass="surveyPanel" columns="1" layout="grid">
             <p:column>
                 <p:inputText id="title"
-                             required="#{param['survey:save'] != null}"
+                             required="#{param['survey:upload'] != null}"
                              value="#{surveyImportController.selectedSurvey.title}"
                              maxlength="80"
                              size="80"

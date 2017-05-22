@@ -49,7 +49,7 @@ public class XLSXDataImporter implements DataImporter{
 
             List<Question> questions = new ArrayList<>();
 
-            for (int i = 1; i <= sheet.getLastRowNum();i++){
+            for (int i = 1; i <= sheet.getLastRowNum(); i++){
                 Row row = sheet.getRow(i);
                 if (row == null) break;
                 if (row.getRowNum() == 0) continue; // header avoid reading
@@ -260,7 +260,14 @@ public class XLSXDataImporter implements DataImporter{
 
                 double answerID = row.getCell(column.get("$answerID")).getNumericCellValue();
                 SurveyResult surveyResult;
-                if (surveyResultMap.containsKey(answerID)) surveyResult = surveyResultMap.get(answerID);
+                if (surveyResultMap.containsKey(answerID)) {
+                    surveyResult = surveyResultMap.get(answerID);
+                    for (Answer a : surveyResult.getAnswers()){
+                        if (a.getQuestion().getPosition() == questionNumber){
+                            return null;
+                        }
+                    }
+                }
                 else{
                     surveyResult = new SurveyResult();
                     surveyResult.setSurvey(survey);
@@ -268,7 +275,7 @@ public class XLSXDataImporter implements DataImporter{
                     surveyResult.setAnswers(answerList);
                     surveyResultMap.put(answerID, surveyResult);
                 }
-                if (survey == null) return null;
+                if (survey == null) return new AsyncResult<>(null);
                 Question question = survey.getQuestions().get((int)questionNumber - 1);
 
                 if (question instanceof FreeTextQuestion){
@@ -279,7 +286,7 @@ public class XLSXDataImporter implements DataImporter{
                         textAnswer.setText(String.valueOf(row.getCell(column.get("$answer")).getNumericCellValue()));
                     } else if (row.getCell(column.get("$answer")).getCellTypeEnum() == CellType.BLANK) {
                         textAnswer.setText("");
-                        if (question.getRequired()) return null;
+                        if (question.getRequired()) return new AsyncResult<>(null);
                     }
                     textAnswer.setQuestion(question);
                     textAnswer.setResult(surveyResult);
@@ -327,7 +334,7 @@ public class XLSXDataImporter implements DataImporter{
                     } else if (row.getCell(column.get("$answer")).getCellTypeEnum() == CellType.BLANK) {
                         numberAnswer.setNumber(null);
                     } else {
-                        return null;
+                        return new AsyncResult<>(null);
                     }
                     numberAnswer.setQuestion(question);
                     numberAnswer.setResult(surveyResult);
@@ -339,10 +346,10 @@ public class XLSXDataImporter implements DataImporter{
             survey.setSurveyResults(surveyResultList);
         }
         catch (IOException e){
-            return null;
+            return new AsyncResult<>(null);
         }
         catch (Exception e){
-            return null;
+            return new AsyncResult<>(null);
         }
         if (validateSurveyAnswers(surveyResultList)) return new AsyncResult<>(surveyResultList);
         else return null;

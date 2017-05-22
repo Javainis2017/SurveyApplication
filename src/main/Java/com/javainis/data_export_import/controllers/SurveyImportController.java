@@ -130,7 +130,6 @@ public class SurveyImportController implements Serializable{
             //Async
             surveyQuestionInDBFuture = saveSurvey(selectedSurvey);
 
-
             surveyResultList = surveyResultListFuture.get();
             if (surveyResultList == null) selectedSurvey.setSurveyResults(null);
             if (surveyQuestionInDBFuture.get() && surveyResultList != null){
