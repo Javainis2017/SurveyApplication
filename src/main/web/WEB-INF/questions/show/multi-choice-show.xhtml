@@ -6,7 +6,7 @@
         xmlns:f="http://xmlns.jcp.org/jsf/core">
     <!--@elvariable id="question" type="com.javainis.survey.entities.MultipleChoiceQuestion"-->
     <h:panelGrid columns="2">
-        <h:selectManyCheckbox id="q#{question.position}"
+        <h:selectManyCheckbox id="question"
                           value="#{surveyController.answers[question].choices}"
                           layout="pageDirection"
                           required="#{surveyController.checkQuestionConditions(question) and question.required and (param['survey:submit'] != null or param['survey:next'] != null)}"
@@ -15,7 +15,7 @@
             <p:ajax event="change" update=":survey" process="@form"/>
             <f:selectItems value="#{question.choices}" var="choice" itemLabel="#{choice.text}" itemValue="#{choice}"/>
         </h:selectManyCheckbox>
-        <p:message for="q#{question.position}"/>
+        <p:message for="question"/>
     </h:panelGrid>
 </ui:composition>
 

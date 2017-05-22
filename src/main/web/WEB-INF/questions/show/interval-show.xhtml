@@ -9,13 +9,13 @@
     <h:outputText>#{question.min} - #{question.max}</h:outputText>
     <h:panelGrid columns="2">
         <h:inputText value="#{surveyController.answers[question].number}"
-                         id="q#{question.position}"
+                         id="question"
                          required="#{surveyController.checkQuestionConditions(question) and question.required and (param['survey:submit'] != null or param['survey:next'] != null)}"
                          type="number"
                          validatorMessage="Value must be between #{question.min} and #{question.max}."
                          requiredMessage="This question is required.">
             <f:validateLongRange minimum="#{question.min}" maximum="#{question.max}"/>
         </h:inputText>
-        <p:message for="q#{question.position}"/>
+        <p:message for="question"/>
     </h:panelGrid>
 </ui:composition>

@@ -32,7 +32,7 @@
         <h:form id="survey">
             <h:panelGroup id="questions">
                 <table class="report-table">
-                <c:forEach items="#{surveyController.currentPage.questions}" var="question">
+                <c:forEach items="#{surveyController.currentPage.questions}" var="question" varStatus="status">
                     <tr>
                     <td style="border:1px #D5D5D5 solid;padding:1em;font-size:larger;">
                     <c:if test="${surveyController.checkQuestionConditions(question)}">
@@ -46,32 +46,40 @@
                             </c:if>
                             <br/>
                             <c:if test="#{question['class'].simpleName == 'FreeTextQuestion'}">
-                                <h:panelGroup>
-                                    <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
-                                        <ui:param name="question" value="#{question}"/>
-                                    </ui:include>
-                                </h:panelGroup>
+                                <f:subview id="view#{status.index}">
+                                    <h:panelGroup>
+                                        <ui:include src="/WEB-INF/questions/show/text-show.xhtml">
+                                            <ui:param name="question" value="#{question}"/>
+                                        </ui:include>
+                                    </h:panelGroup>
+                                </f:subview>
                             </c:if>
                             <c:if test="#{question['class'].simpleName == 'IntervalQuestion'}">
-                                <h:panelGroup>
-                                    <ui:include src="/WEB-INF/questions/show/interval-show.xhtml">
-                                        <ui:param name="question" value="#{question}"/>
-                                    </ui:include>
-                                </h:panelGroup>
+                                <f:subview id="view#{status.index}">
+                                    <h:panelGroup>
+                                        <ui:include src="/WEB-INF/questions/show/interval-show.xhtml">
+                                            <ui:param name="question" value="#{question}"/>
+                                        </ui:include>
+                                    </h:panelGroup>
+                                </f:subview>
                             </c:if>
                             <c:if test="#{question['class'].simpleName == 'SingleChoiceQuestion'}">
-                                <h:panelGroup>
-                                    <ui:include src="/WEB-INF/questions/show/single-choice-show.xhtml">
-                                        <ui:param name="question" value="#{question}"/>
-                                    </ui:include>
-                                </h:panelGroup>
+                                <f:subview id="view#{status.index}">
+                                    <h:panelGroup>
+                                        <ui:include src="/WEB-INF/questions/show/single-choice-show.xhtml">
+                                            <ui:param name="question" value="#{question}"/>
+                                        </ui:include>
+                                    </h:panelGroup>
+                                </f:subview>
                             </c:if>
                             <c:if test="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
-                                <h:panelGroup>
-                                    <ui:include src="/WEB-INF/questions/show/multi-choice-show.xhtml">
-                                        <ui:param name="question" value="#{question}"/>
-                                    </ui:include>
-                                </h:panelGroup>
+                                <f:subview id="view#{status.index}">
+                                    <h:panelGroup>
+                                        <ui:include src="/WEB-INF/questions/show/multi-choice-show.xhtml">
+                                            <ui:param name="question" value="#{question}"/>
+                                        </ui:include>
+                                    </h:panelGroup>
+                                </f:subview>
                             </c:if>
                         </h:panelGroup>
                     </c:if>
