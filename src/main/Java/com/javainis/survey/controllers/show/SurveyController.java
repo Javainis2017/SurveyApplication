@@ -279,7 +279,6 @@ public class SurveyController implements Serializable{
             String message = "Follow this link to fully answer survey: " + host + path + url;
             mailSender.sendEmail(email, "Partly finished survey \"" + survey.getTitle() + "\"", message);
 
-            Messages.addGlobalInfo("Emails sent successfully.");
             success = true;
 
             SurveyResult result;
@@ -314,10 +313,10 @@ public class SurveyController implements Serializable{
                 surveyResultDAO.create(result);
             }
 
-            Messages.addGlobalInfo("Partly finished survey was sent to specified email.");
+            Messages.addGlobalInfo("Survey was successfully sent to email.");
 
         }catch (NamingException ne){
-            Messages.addGlobalWarn("Error sending emails.");
+            Messages.addGlobalWarn("Error sending email.");
         }
     }
 }
