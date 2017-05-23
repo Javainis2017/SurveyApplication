@@ -20,36 +20,61 @@
             <p:outputLabel for="requiredSingle" value="Required" style="margin-left:0.3em;"/>
             <p:message for="requiredSingle"/>
         </p:column>
-    <p:panelGrid columns="1" rendered="#{not empty singleChoiceQuestionController.choices}">
         <ui:repeat value="#{singleChoiceQuestionController.choices}" var="choice">
-            <h:outputText>#{choice.text}</h:outputText>
-            <br/>
-            <p:commandButton actionListener="#{singleChoiceQuestionController.removeChoice(choice)}"
-                             value="Remove" icon="fa fa-remove"
-                             immediate="true"
-                             update="survey"/>
-            <p:commandButton actionListener="#{singleChoiceQuestionController.editChoice(choice)}"
-                             value="Edit" icon="fa fa-edit"
-                             update="survey"/>
+            <p:outputPanel rendered="#{not singleChoiceQuestionController.choice.equals(choice)}">
+                <h:outputText rendered="#{not singleChoiceQuestionController.choice.equals(choice)}" value="#{choice.text}"/>
+                <h:outputText style="background-color: yellow; padding-right:2em;border-radius:3px;" rendered="#{singleChoiceQuestionController.choice.equals(choice)}" value="#{choice.text}" />
+                <br/>
+                <p:commandButton actionListener="#{singleChoiceQuestionController.editChoice(choice)}"
+                                 value="Edit" icon="fa fa-edit"
+                                 update="survey"/>
+                <p:commandButton actionListener="#{singleChoiceQuestionController.removeChoice(choice)}"
+                                 value="Remove" icon="fa fa-remove"
+                                 immediate="true"
+                                 update="survey"/>
+            </p:outputPanel>
+            <p:outputPanel rendered="#{singleChoiceQuestionController.choice.equals(choice)}">
+                <p:inputText id="singleChoiceEdit"
+                             required="#{param['survey:saveSingleChoice'] != null}"
+                             value="#{singleChoiceQuestionController.choiceText}"
+                             maxlength="200" rows="2" cols="80"
+                             placeholder="Choice"
+                             style="margin:0 0.4em 0.4em 0;"/>
+                <br/>
+                <p:commandButton value="#{singleChoiceQuestionController.getSaveButtonName()}"
+                                 id="saveSingleChoiceEdit"
+                                 action="#{singleChoiceQuestionController.saveChoice}"
+                                 update="survey"/>
+                <p:commandButton value="Cancel"
+                                 id="cancelEditSingleChoiceEdit"
+                                 action="#{singleChoiceQuestionController.cancelEdit}"
+                                 update="survey"
+                                 rendered="#{singleChoiceQuestionController.edit}"/>
+                <p:message for="singleChoiceEdit"/>
+                <p:messages id="singleChoiceEditMessage" redisplay="false"/>
+
+            </p:outputPanel>
             <br/>
         </ui:repeat>
-    </p:panelGrid>
-    <p:panelGrid columns="3">
-        <p:inputText id="singleChoice" required="#{param['survey:saveSingleChoice'] != null}" value="#{singleChoiceQuestionController.choiceText}"
+    <p:outputPanel rendered="#{not singleChoiceQuestionController.edit}">
+        <p:inputText id="singleChoice"
+                         required="#{param['survey:saveSingleChoice'] != null}"
+                         value="#{singleChoiceQuestionController.choiceText}"
                          maxlength="200" rows="2" cols="80"
-                         placeholder="Choice"/>
-        <p:commandButton value="#{singleChoiceQuestionController.getSaveButtonName()}"
-                         id="saveSingleChoice"
-                         action="#{singleChoiceQuestionController.saveChoice}"
-                         update="survey"/>
-        <p:commandButton value="Cancel"
-                         id="cancelEditSingleChoice"
-                         action="#{singleChoiceQuestionController.cancelEdit}"
-                         update="survey"
-                         rendered="#{singleChoiceQuestionController.edit}"/>
-    </p:panelGrid>
-    <p:message for="singleChoice"/>
-    <p:messages id="singleChoiceMessage" redisplay="false"/>
+                         placeholder="Choice"
+                         style="margin-right: 0.4em;"/>
+            <p:commandButton value="#{singleChoiceQuestionController.getSaveButtonName()}"
+                             id="saveSingleChoice"
+                             action="#{singleChoiceQuestionController.saveChoice}"
+                             update="survey"/>
+            <p:commandButton value="Cancel"
+                             id="cancelEditSingleChoice"
+                             action="#{singleChoiceQuestionController.cancelEdit}"
+                             update="survey"
+                             rendered="#{singleChoiceQuestionController.edit}"/>
+        <p:message for="singleChoice"/>
+        <p:messages id="singleChoiceMessage" redisplay="false"/>
+    </p:outputPanel>
     <br/>
     <p:commandButton value="Save question"
                      id="createSingleChoiceQuestion"

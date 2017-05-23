@@ -81,6 +81,7 @@ public class SingleChoiceQuestionController implements Serializable{
         }
         if(choiceCount >= 1){
             FacesContext.getCurrentInstance().addMessage("singleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Duplicate choice", "Question cannot have duplicate choices."));
+            FacesContext.getCurrentInstance().addMessage("singleChoiceEditMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Duplicate choice", "Question cannot have duplicate choices."));
             return;
         }
 

@@ -122,7 +122,7 @@ textarea{
 
 .survey-body{
     margin: 2em auto;
-    width: 80%;
+    width: 65%;
 }
 
 .surveyPanel{
@@ -144,11 +144,11 @@ textarea{
 }
 .survey-page{
     padding: 1em 1em 1em 1em;
-    width: 80%;
     margin:auto;
     display:block;
-    box-shadow: 3px 3px 3px grey;
-    background-color: #f4f4f4 !important;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    /*background-color: #f4f4f4 !important;*!*/
+    background-color: white !important;
     z-index: 1;
 }
 
@@ -159,9 +159,9 @@ textarea{
 }
 
 .page-number{
-    text-align: right;
-    margin: -15px -8px 0 0;
-    font-size: 3em;
+    text-align: left;
+    margin: -17px 0 0 -13px;
+    font-size: 2.3em;
     color: lightgray;
     z-index: -1;
 }
@@ -169,8 +169,9 @@ textarea{
     background-color: transparent !important;
     border: none !important;
     color: gray !important;
-    top: -3.5em;
-    left: -1em;
+    top: -2.5em;
+    left: 1em;
+    float:right;
     z-index: 1;
 }
 
@@ -205,7 +206,7 @@ textarea{
     }
     .survey-body{
         margin: 2em auto;
-        width: 60%;
+        width: 50%;
     }
 }
 
@@ -276,7 +277,7 @@ textarea{
         display: initial;
     }
     .survey-page{
-        width:90%;
+        width:inherit;
         margin: inherit;
     }
     .survey-title{

@@ -19,7 +19,7 @@
             </c:forEach>
         </p:panelGrid>
         <br/>
-        <p:growl id="msgs" showDetail="true" />
+        <p:messages id="msgs" showDetail="true" />
         <p:tagCloud model="#{controller.questionReports[question].model}">
             <p:ajax event="select" update="msgs" listener="#{controller.questionReports[question].onSelect}" />
         </p:tagCloud>

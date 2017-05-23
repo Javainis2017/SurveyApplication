@@ -18,26 +18,47 @@
         <p:outputLabel for="requiredMulti" value="Required" style="margin-left:0.3em;"/>
         <p:message for="requiredMulti"/>
     </p:column>
-    <p:panelGrid columns="1" rendered="#{not empty multipleChoiceQuestionController.choices}">
-        <ui:repeat id="choiceRender"  value="#{multipleChoiceQuestionController.choices}" var="choice">
-            <h:outputText>#{choice.text}</h:outputText>
-            <br/>
-            <p:commandButton actionListener="#{multipleChoiceQuestionController.removeChoice(choice)}"
-                             value="Remove" icon="fa fa-remove"
-                             immediate="true"
-                             update="survey"/>
-            <p:commandButton actionListener="#{multipleChoiceQuestionController.editChoice(choice)}"
-                             value="Edit" icon="fa fa-edit"
-                             update="survey"/>
-            <br/>
+
+    <ui:repeat id="choiceRender"  value="#{multipleChoiceQuestionController.choices}" var="choice">
+            <p:outputPanel rendered="#{not multipleChoiceQuestionController.choice.equals(choice)}">
+                <h:outputText value="#{choice.text}"/>
+                <br/>
+                <p:commandButton actionListener="#{multipleChoiceQuestionController.editChoice(choice)}"
+                                 value="Edit" icon="fa fa-edit"
+                                 update="survey"/>
+                <p:commandButton actionListener="#{multipleChoiceQuestionController.removeChoice(choice)}"
+                                 value="Remove" icon="fa fa-remove"
+                                 immediate="true"
+                                 update="survey"/>
+            </p:outputPanel>
+            <p:outputPanel rendered="#{multipleChoiceQuestionController.choice.equals(choice)}">
+                <p:inputText id="multiC" required="#{param['survey:saveMultiChoice'] != null}"
+                             value="#{multipleChoiceQuestionController.choiceText}"
+                             maxlength="200" rows="2" cols="100"
+                             placeholder="Choice"
+                             style="margin:0 0.4em 0.4em 0;"/>
+                <br/>
+                <p:commandButton value="#{multipleChoiceQuestionController.getSaveButtonName()}"
+                                 id="saveMultiC"
+                                 action="#{multipleChoiceQuestionController.saveChoice}"
+                                 update="survey"/>
+                <p:commandButton value="Cancel"
+                                 id="cancelEditMultiC"
+                                 action="#{multipleChoiceQuestionController.cancelEdit}"
+                                 update="survey"
+                                 rendered="#{multipleChoiceQuestionController.edit}"/>
+                <p:messages for="multiC" autoUpdate="true"/>
+                <p:messages id="multipleChoiceEditMessage" redisplay="false"/>
+
+                <br/>
+            </p:outputPanel>
             <br/>
         </ui:repeat>
-    </p:panelGrid>
-    <p:panelGrid columns="3">
+    <p:outputPanel rendered="#{not multipleChoiceQuestionController.edit}">
         <p:inputText id="multiChoice" required="#{param['survey:saveMultiChoice'] != null}"
                      value="#{multipleChoiceQuestionController.choiceText}"
                      maxlength="200" rows="2" cols="100"
-                     placeholder="Choice"/>
+                     placeholder="Choice" style="margin-right: 0.4em;"/>
         <p:commandButton value="#{multipleChoiceQuestionController.getSaveButtonName()}"
                          id="saveMultiChoice"
                          action="#{multipleChoiceQuestionController.saveChoice}"
@@ -47,9 +68,9 @@
                          action="#{multipleChoiceQuestionController.cancelEdit}"
                          update="survey"
                          rendered="#{multipleChoiceQuestionController.edit}"/>
-    </p:panelGrid>
-    <p:message for="multiChoice"/>
-    <p:messages id="multipleChoiceMessage" redisplay="false"/>
+        <p:message for="multiChoice"/>
+        <p:messages id="multipleChoiceMessage" redisplay="false"/>
+    </p:outputPanel>
     <br/>
     <p:commandButton value="Save question"
                      id="createMultiChoiceQuestion"

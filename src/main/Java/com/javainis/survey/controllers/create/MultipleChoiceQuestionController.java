@@ -79,7 +79,8 @@ public class MultipleChoiceQuestionController implements Serializable {
             }
         }
         if(choiceCount >= 1){
-            FacesContext.getCurrentInstance().addMessage("multipleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_INFO, "Question cannot have duplicate choices.", "Question cannot have duplicate choices."));
+            FacesContext.getCurrentInstance().addMessage("multipleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Duplicate choice", "Question cannot have duplicate choices."));
+            FacesContext.getCurrentInstance().addMessage("multipleChoiceEditMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Duplicate choice", "Question cannot have duplicate choices."));
             return;
         }
 

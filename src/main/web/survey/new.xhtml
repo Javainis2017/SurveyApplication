@@ -14,6 +14,11 @@
     <title>Survey Editing</title>
 </h:head>
 <h:body rendered="#{userController.getUser().getEmail() != null}" styleClass="home-body survey-body">
+    <h1 class="center large">
+        <h:outputText rendered="#{newSurveyController.editingSurvey}" value="Edit Survey" />
+        <h:outputText rendered="#{not newSurveyController.editingSurvey}" value="New Survey" />
+    </h1>
+    <br/>
     <!-- Change survey title and description -->
     <h:form id="survey">
         <p:panelGrid id="infoGrid" styleClass="surveyPanel" columns="1" layout="grid">
@@ -56,13 +61,7 @@
                 <p:inputText type="time" id="expiration_time" value="#{newSurveyController.expirationTimeString}"/>
                 <p:message for="expiration_time"/>
             </p:row>
-            <p:row>
-                <p:commandButton id="save"
-                                 value="Save survey"
-                                 action="#{newSurveyController.saveSurvey()}"
-                                 ajax="false"
-                                 update="survey" style="display: inline-block;float:right;"/>
-            </p:row>
+
         </p:panelGrid>
         <p:messages globalOnly="true"/>
 
@@ -81,8 +80,12 @@
                     <c:if test="#{not empty page.questions}">
                         <h:panelGroup>
                             <ui:repeat value="#{page.questions}" var="question">
-                                <h:panelGroup>
-                                    <h:outputText><b>#{question.position}. #{question.text}</b></h:outputText>
+                                <h:panelGroup rendered="#{not newSurveyController.questionToEdit.equals(question)}">
+                                    <h:outputText rendered="#{not newSurveyController.questionToEdit.equals(question)}">
+                                        <b>#{question.position}. #{question.text}</b>
+                                    </h:outputText>
+                                    <h:outputText rendered="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION'and newSurveyController.questionToEdit.equals(question)}"
+                                    value="#{question.position}. #{question.text}" style="font-weight: bold;background-color: yellow;"/>
                                     <br/>
                                     <h:panelGroup rendered="#{question.required}">
                                         <h:outputText>(Required)</h:outputText>
@@ -134,8 +137,8 @@
                                     actionListener="#{newSurveyController.removeQuestion(question)}"
                                     update="survey"/>
                                     <br/>
-                                    <p:panelGrid rendered="#{question.conditions.size() > 0}">
-                                        <h:outputText>Conditions</h:outputText>
+                                    <p:panelGrid rendered="#{question.conditions.size() > 0}" style="padding-left:1em;">
+                                        <b>Conditions</b>
                                         <br/>
                                         <ui:repeat value="#{question.conditions}" var="condition">
                                             <h:panelGroup>
@@ -148,14 +151,34 @@
                                                                  actionListener="#{newSurveyController.editCondition(condition)}"
                                                                  oncomplete="PF('cond').show()"
                                                                  update=":survey:dialogPanel survey"
-                                                                 styleClass="previewPanel"/>
+                                                                 styleClass="previewPanel" style="font-size: smaller"/>
                                             </c:if>
                                             <p:commandButton value="Remove condition" immediate="true"
                                                              actionListener="#{newSurveyController.removeCondition(condition)}"
-                                                             update="survey"/>
+                                                             update="survey" style="font-size: smaller"/>
                                         </ui:repeat>
                                     </p:panelGrid>
                                 </h:panelGroup>
+                                <h:panelGroup rendered="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION'and newSurveyController.questionToEdit.equals(question)}">
+                                    <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'FreeTextQuestion'}">
+                                        <ui:include src="/WEB-INF/questions/edit/text-edit.xhtml"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'IntervalQuestion'}">
+                                        <ui:include src="/WEB-INF/questions/edit/interval-edit.xhtml"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'SingleChoiceQuestion'}">
+                                        <ui:include src="/WEB-INF/questions/edit/single-choice-edit.xhtml"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'MultipleChoiceQuestion'}">
+                                        <ui:include src="/WEB-INF/questions/edit/multi-choice-edit.xhtml"/>
+                                    </h:panelGroup>
+                                    <p:commandButton value="Cancel"
+                                                     id="cancelEdit"
+                                                     action="#{newSurveyController.cancel}"
+                                                     update="survey"/>
+                                    <br/>
+                                </h:panelGroup>
+                                <br/>
                             </ui:repeat>
                         </h:panelGroup>
                     </c:if>
@@ -170,25 +193,6 @@
                         <!-- Create new question -->
                         <ui:include src="/WEB-INF/questions/edit/#{newSurveyController.newQuestionType}-edit.xhtml"/>
                         <p:commandButton value="Cancel"
-                                         action="#{newSurveyController.cancel}"
-                                         update="survey"/>
-                    </c:if>
-                    <c:if test="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION'and newSurveyController.questionToEdit.page.equals(page)}">
-                        <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'FreeTextQuestion'}">
-                            <ui:include src="/WEB-INF/questions/edit/text-edit.xhtml"/>
-                        </h:panelGroup>
-                        <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'IntervalQuestion'}">
-                            <ui:include src="/WEB-INF/questions/edit/interval-edit.xhtml"/>
-                        </h:panelGroup>
-                        <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'SingleChoiceQuestion'}">
-                            <ui:include src="/WEB-INF/questions/edit/single-choice-edit.xhtml"/>
-                        </h:panelGroup>
-                        <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'MultipleChoiceQuestion'}">
-                            <ui:include src="/WEB-INF/questions/edit/multi-choice-edit.xhtml"/>
-                        </h:panelGroup>
-                        <br/>
-                        <p:commandButton value="Cancel"
-                                         id="cancelEdit"
                                          action="#{newSurveyController.cancel}"
                                          update="survey"/>
                     </c:if>
@@ -304,6 +308,13 @@
         </div>
         <br/>
         <!-- Save survey -->
+        <p:row>
+            <p:commandButton id="save"
+                             value="Save survey"
+                             action="#{newSurveyController.saveSurvey()}"
+                             ajax="false"
+                             update="survey" style="display: inline-block;float:right;"/>
+        </p:row>
 
 
     </h:form>
