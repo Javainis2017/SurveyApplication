@@ -2,6 +2,7 @@
 <!DOCTYPE html
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
@@ -11,6 +12,8 @@
       xml:lang="en" lang="en">
 <o:importConstants type="com.javainis.user_management.dao.UserTypeDAO"/>
 <h:head>
+    <meta name="google" content="notranslate" />
+    <meta http-equiv="Content-Language" content="en" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <h:outputStylesheet name="css/style.css" />
     <title>Home</title>
@@ -73,16 +76,6 @@
                         <f:facet name="footer">
                             <!--<p:growl id="growl" showDetail="false" sticky="true" />-->
                             <c:if test="#{userSurveyController.selectedSurvey != null}">
-                                <c:if test="#{userSurveyController.canRemove(userSurveyController.selectedSurvey)}">
-                                    <p:commandButton process="surveyTable"
-                                                     update="surveyTable"
-                                                     value="Remove"
-                                                     actionListener="#{surveyRemoveController.deleteSurvey(userSurveyController.selectedSurvey.id)}"
-                                                     action="#{userSurveyController.setSelectedSurvey(null)}"
-                                                     icon="fa fa-fw fa-remove">
-                                        <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
-                                    </p:commandButton>
-                                </c:if>
                                 <c:if test="#{userSurveyController.selectedSurvey.surveyResults.isEmpty() and userSurveyController.canRemove(userSurveyController.selectedSurvey)}">
                                     <p:button value="Edit"
                                               href="survey/new/#{userSurveyController.selectedSurvey.url}"
@@ -106,6 +99,16 @@
                                           icon="fa fa-mail-forward">
                                     <f:param value="#{userSurveyController.selectedSurvey.url}" name="url"/>
                                 </p:button>
+                                <c:if test="#{userSurveyController.canRemove(userSurveyController.selectedSurvey)}">
+                                    <p:commandButton process="surveyTable"
+                                                     update="surveyTable"
+                                                     value="Remove"
+                                                     actionListener="#{surveyRemoveController.deleteSurvey(userSurveyController.selectedSurvey.id)}"
+                                                     action="#{userSurveyController.setSelectedSurvey(null)}"
+                                                     icon="fa fa-fw fa-remove">
+                                        <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                </c:if>
                                 <p:messages autoUpdate="true" globalOnly="true"/>
                             </c:if>
                         </f:facet>
