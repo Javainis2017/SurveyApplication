@@ -80,12 +80,10 @@
                     <c:if test="#{not empty page.questions}">
                         <h:panelGroup>
                             <ui:repeat value="#{page.questions}" var="question">
-                                <h:panelGroup rendered="#{not newSurveyController.questionToEdit.equals(question)}">
-                                    <h:outputText rendered="#{not newSurveyController.questionToEdit.equals(question)}">
+                                <h:panelGroup rendered="#{not newSurveyController.questionToEdit.equals(question) or newSurveyController.surveyCreationStep == 'EDIT_CONDITION' or newSurveyController.surveyCreationStep == 'NEW_CONDITION'}">
+                                    <h:outputText>
                                         <b>#{question.position}. #{question.text}</b>
                                     </h:outputText>
-                                    <h:outputText rendered="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION'and newSurveyController.questionToEdit.equals(question)}"
-                                    value="#{question.position}. #{question.text}" style="font-weight: bold;background-color: yellow;"/>
                                     <br/>
                                     <h:panelGroup rendered="#{question.required}">
                                         <h:outputText>(Required)</h:outputText>
@@ -115,8 +113,8 @@
                                                      actionListener="#{newSurveyController.moveQuestion(question, 'up')}"
                                                      update="survey" styleClass="previewPanel"
                                                      disabled="#{question.position == 1 and question.page.number == 1}">
-                                    <p:confirm disabled="#{newSurveyController.checkConditionsMoving(question, -1)}" header="Confirmation" message="Moving this question will delete some conditions. Are you sure?" icon="ui-icon-alert"/>
-                                </p:commandButton>
+                                        <p:confirm disabled="#{newSurveyController.checkConditionsMoving(question, -1)}" header="Confirmation" message="Moving this question will delete some conditions. Are you sure?" icon="ui-icon-alert"/>
+                                    </p:commandButton>
                                     <p:commandButton title="Move down" icon="fa fa-arrow-down"
                                                      actionListener="#{newSurveyController.moveQuestion(question, 'down')}"
                                                      update="survey"
@@ -159,7 +157,7 @@
                                         </ui:repeat>
                                     </p:panelGrid>
                                 </h:panelGroup>
-                                <h:panelGroup rendered="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION'and newSurveyController.questionToEdit.equals(question)}">
+                                <h:panelGroup rendered="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION' and newSurveyController.questionToEdit.equals(question)}">
                                     <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'FreeTextQuestion'}">
                                         <ui:include src="/WEB-INF/questions/edit/text-edit.xhtml"/>
                                     </h:panelGroup>
