@@ -178,15 +178,11 @@ public class SurveyController implements Serializable{
 
     @Transactional
     public String submitAnswers(){
-        SurveyResult result;
-        if(surveyResult == null) {
-            // Create SurveyResult object
-            result = new SurveyResult();
-            result.setSurvey(survey);
-        }else{
-            // Take existing survey results
-            result = surveyResult;
-        }
+        if(null != surveyResult)
+            surveyResultDAO.deleteByResultId(surveyResult.getId());
+
+        SurveyResult result = new SurveyResult();
+        result.setSurvey(survey);
 
         // Validation
         List<Answer> answerList = new ArrayList<>(answers.values());
@@ -195,6 +191,7 @@ public class SurveyController implements Serializable{
             if(!answer.hasAnswer()){
                 emptyAnswers.add(answer);
             }
+            answer.setId(null);
             answer.setResult(result);
         }
         answerList.removeAll(emptyAnswers);
@@ -203,16 +200,12 @@ public class SurveyController implements Serializable{
         result.setUrl(null);
 
         // Save answers to DB
-        if(surveyResultDAO.existsById(result.getId())) {
-            surveyResultDAO.update(result);
-        }else{
-            surveyResultDAO.create(result);
-        }
+        surveyResultDAO.create(result);
 
         return "/survey/success?faces-redirect=true";
     }
 
-/**
+    /**
  * Checks whether question should be shown to user, who is filling up a survey
  */
     public Boolean checkQuestionConditions(Question question){

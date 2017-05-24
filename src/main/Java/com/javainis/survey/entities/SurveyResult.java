@@ -15,7 +15,8 @@ import java.util.List;
         @NamedQuery(name = "SurveyResult.findByUrl", query = "SELECT s FROM SurveyResult s WHERE s.url = :url"),
         @NamedQuery(name = "SurveyResult.existsByUrl", query = "SELECT COUNT(s) FROM SurveyResult s WHERE s.url = :url "),
         @NamedQuery(name = "SurveyResult.existsById", query = "SELECT COUNT(s) FROM SurveyResult s WHERE s.id = :id"),
-        @NamedQuery(name = "SurveyResult.deleteBySurveyId", query = "DELETE FROM SurveyResult sr WHERE sr.survey.id = :surveyId")
+        @NamedQuery(name = "SurveyResult.deleteBySurveyId", query = "DELETE FROM SurveyResult sr WHERE sr.survey.id = :surveyId"),
+        @NamedQuery(name = "SurveyResult.deleteByResultId", query = "DELETE FROM SurveyResult sr WHERE sr.id = :id"),
 })
 @Getter
 @Setter
@@ -41,7 +42,7 @@ public class SurveyResult {
     @JoinColumn(name = "survey_id", referencedColumnName = "id")
     private Survey survey;
 
-    @OneToMany(mappedBy = "result", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "result", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<Answer> answers = new ArrayList<>();
 
 }

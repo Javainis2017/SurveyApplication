@@ -28,6 +28,12 @@ public class SurveyResultDAO {
         manager.createNamedQuery("SurveyResult.deleteBySurveyId").setParameter("surveyId", surveyId).executeUpdate();
     }
 
+    public void deleteByResultId(Long id){
+        manager.createNativeQuery("DELETE FROM answer_choice USING answer a WHERE answer_id = a.id AND a.result_id = :id").setParameter("id", id).executeUpdate();
+        manager.createNamedQuery("Answer.deleteByResultId").setParameter("resultId", id).executeUpdate();
+        manager.createNamedQuery("SurveyResult.deleteByResultId").setParameter("id", id).executeUpdate();
+    }
+
     public List<SurveyResult> getResultsBySurveyId(Long surveyId){
         return manager.createNamedQuery("SurveyResult.findBySurveyId", SurveyResult.class).setParameter("surveyId", surveyId).getResultList();
     }
