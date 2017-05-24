@@ -255,7 +255,7 @@ public class NewSurveyController implements Serializable {
             if (!question.getPage().equals(otherQuestion.getPage())) {
                 question.getPage().getQuestions().remove(question);
                 question.setPage(otherQuestion.getPage());
-                question.getPage().getQuestions().add(question);
+                question.getPage().getQuestions().add(0, question);
             } else { /* Move down in same page*/
                 int position = question.getPosition();
                 question.setPosition(position + 1);
