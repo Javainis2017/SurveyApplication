@@ -76,6 +76,9 @@ public class UserSurveyController {
 
     @Transactional
     public Boolean canSeeReport(Survey survey){
+        if (survey.getSurveyResults().isEmpty()) {
+            return false;
+        }
         return survey.getAuthor().equals(userController.getUser()) || isAdmin() || survey.getIsPublic();
     }
 
