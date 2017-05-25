@@ -157,6 +157,29 @@ public class NewSurveyController implements Serializable {
                 }
             }
         }
+        else if (surveyCreationStep == SURVEY_CREATION_STEP.EDIT_QUESTION){
+            List<Condition> removableConditions = new ArrayList<>();
+            List<Condition> conditions = new ArrayList<>();
+            List<Choice> choices = new ArrayList<>();
+            if(question.getClass().getSimpleName().equals("SingleChoiceQuestion")) {
+                SingleChoiceQuestion choiceQuestion = (SingleChoiceQuestion)question;
+                conditions = choiceQuestion.getDependentConditions();
+                choices = choiceQuestion.getChoices();
+            }
+            else if(question.getClass().getSimpleName().equals("MultipleChoiceQuestion")) {
+                MultipleChoiceQuestion choiceQuestion = (MultipleChoiceQuestion)question;
+                conditions = choiceQuestion.getDependentConditions();
+                choices = choiceQuestion.getChoices();
+            }
+            for(Condition condition: conditions){
+                if(!choices.contains(condition.getChoice())) {
+                    removableConditions.add(condition);
+                }
+            }
+            for (Condition condition : removableConditions) {
+                removeCondition(condition);
+            }
+        }
         surveyCreationStep = SURVEY_CREATION_STEP.QUESTION_TYPE_CHOICE;
         questionToEdit = null;
         currentPage = null;
@@ -175,7 +198,13 @@ public class NewSurveyController implements Serializable {
     }
 
     public void removeQuestion(Question question) {
-        List<Condition> removableConditions = question.getConditions();
+        List<Condition> removableConditions = new ArrayList<>();
+        for (Condition condition : question.getConditions()) {
+            removableConditions.add(condition);
+        }
+        for (Condition condition : question.getDependentConditions()){
+            removableConditions.add(condition);
+        }
         for (Condition condition : removableConditions) {
             removeCondition(condition);
         }
