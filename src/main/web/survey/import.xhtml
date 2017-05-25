@@ -6,7 +6,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://xmlns.jcp.org/jsf/core"
       xml:lang="en" lang="en">
 <h:head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +14,16 @@
     <title>Survey import</title>
 </h:head>
 <h:body rendered="#{userController.getUser().getEmail() != null}" styleClass="home-body survey-body">
-    <h1>Survey import</h1>
+    <h1 class="center large">Survey Application</h1>
+    <br/>
+    <p:menubar>
+        <p:menuitem outcome="/index" value="Home" icon="fa fa-home" />
+        <p:menuitem outcome="/survey/new" value="New survey" icon="fa fa-plus"/>
+        <f:facet name="options">
+            <p:commandButton actionListener="#{userController.logout()}" value="Log out" action="index" />
+        </f:facet>
+    </p:menubar>
+    <h2>Survey import</h2>
     <!-- Change survey title and description -->
     <h:form id="survey" enctype="multipart/form-data">
         <p:panelGrid id="infoGrid" styleClass="surveyPanel" columns="1" layout="grid">

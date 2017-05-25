@@ -13,13 +13,21 @@
     <title>#{surveyController.survey.title}</title>
 </h:head>
 <h:body styleClass="report-body home-body">
+    <h1 class="center large">Survey Application</h1>
+    <br/>
+    <p:menubar>
+        <p:menuitem outcome="/index" value="Home" icon="fa fa-home" />
+        <p:menuitem rendered="#{userController.getUser().getEmail() != null}" outcome="/survey/new" value="New survey" icon="fa fa-plus"/>
+        <f:facet name="options">
+            <p:commandButton rendered="#{userController.getUser().getEmail() != null}" actionListener="#{userController.logout()}" value="Log out" action="index" />
+        </f:facet>
+    </p:menubar>
     <c:if test="#{surveyController.survey == null}">
-        <h1 >Survey</h1>
         <h2>Survey does not exist.</h2>
     </c:if>
 
     <c:if test="#{expirationChecker.isExpired(surveyController.survey.expirationTime) == true}">
-        <h1>Survey expired</h1>
+        <h2>Survey expired</h2>
     </c:if>
 
     <c:if test="#{surveyController.survey != null and (expirationChecker.isExpired(surveyController.survey.expirationTime) == false)}">
