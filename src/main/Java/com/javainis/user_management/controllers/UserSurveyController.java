@@ -10,6 +10,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -55,14 +56,22 @@ public class UserSurveyController {
         for (Survey s : publicSurveys){
             if (!mySurveys.contains(s)) mySurveys.add(s);
         }
-        return mySurveys;
+        return sortSurvey(mySurveys);
     }
 
-    public List<Survey> sortSurvey(List<Survey> surveys){
+    private List<Survey> sortSurvey(List<Survey> surveys){
 
+        List <Survey> sortedSurveyList = new ArrayList<>();
 
+        for (Survey s: surveys){
+            if (userController.getUser().equals(s.getAuthor())){
+                sortedSurveyList.add(s);
+            }
+        }
+        surveys.removeAll(sortedSurveyList);
+        sortedSurveyList.addAll(surveys);
 
-        return surveys;
+        return sortedSurveyList;
     }
 
     @Transactional
