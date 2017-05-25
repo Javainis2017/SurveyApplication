@@ -202,12 +202,12 @@ public class SurveyImportController implements Serializable{
     public String upload() throws InterruptedException, ExecutionException{
         String xlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         if (uploadedFile == null){
-            FacesMessage message = new FacesMessage("Problem", "Failed to upload");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Problem", "Failed to upload");
             FacesContext.getCurrentInstance().addMessage(null, message);
             return null;
         }
         if (!uploadedFile.getContentType().equals(xlsxContentType)){
-            FacesMessage message = new FacesMessage("Failed", uploadedFile.getFileName() + " is not xlsx format.");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Failed", uploadedFile.getFileName() + " not xlsx format.");
             FacesContext.getCurrentInstance().addMessage(null, message);
             return null;
         }
@@ -228,12 +228,12 @@ public class SurveyImportController implements Serializable{
         importSurvey();
 
         if (selectedSurvey == null && surveyResultList == null){
-            FacesMessage message = new FacesMessage("Problem", "Failed to import Survey questions and answers.");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Problem", "Failed to import Survey questions and answers.");
             FacesContext.getCurrentInstance().addMessage(null, message);
             cleanTempFolder(path);
             return null;
         } else if (selectedSurvey == null){
-            FacesMessage message = new FacesMessage("Problem", "Failed to import Survey questions.");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Problem", "Failed to import Survey questions.");
             FacesContext.getCurrentInstance().addMessage(null, message);
             cleanTempFolder(path);
             return null;

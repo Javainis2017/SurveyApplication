@@ -127,7 +127,6 @@
                                  rendered="#{not surveyController.isLastPage()}"
                                  style="float:left;"/>
                 <!-- Submit answers-->
-                <p:messages globalOnly="true"/>
                 <p:commandButton id="submit"
                                  value="Submit answers"
                                  update="questions"
@@ -141,11 +140,10 @@
                 <br/>
                 <!--Send partly answered survey to specified email-->
                 <h3>Send partly answered survey to your email</h3>
-                <h:panelGrid columns="2">
+                <h:panelGrid columns="1">
                     <p:inputText type="email" placeholder="Email" id="email" value="#{surveyController.email}"/>
 
                     <p:messages globalOnly="true"/>
-                    <p:button outcome="/index?faces-redirect=true" value="Go to main page" rendered="#{surveyController.success}"/>
                     <p:commandButton value="Send"
                                      update="survey"
                                      actionListener="#{surveyController.saveSurveyToEmail()}"
@@ -155,7 +153,7 @@
             </h:panelGroup>
             <h:panelGroup rendered="#{surveyController.success}">
                 <p:messages globalOnly="true"/>
-                <p:button outcome="/index?faces-redirect=true" value="Go to main page"/>
+                <p:button outcome="/index?faces-redirect=true" value="Return"/>
             </h:panelGroup>
         </h:form>
     </c:if>

@@ -65,20 +65,23 @@
                 <p:inputText type="time" id="expiration_time" value="#{surveyImportController.expirationTimeString}"/>
                 <p:message for="expiration_time"/>
             </p:row>
-            <p:row>
+            <p:row id="importButtons">
                 <div style="margin: 1em !important;">
                     <h3>Import from .xlsx</h3>
-                    <p:growl id="messages" showDetail="true" />
+                    <p:messages id="messages" showDetail="true" />
                     <p:fileUpload id="upload"
                                   value="#{surveyImportController.uploadedFile}"
                                   allowTypes='/(\.|\/)(xlsx)$/'
                                   mode="simple"
-                                  skinSimple="true"/>
+                                  skinSimple="true"
+                                  update="importButtons"/>
                     <br/>
                     <h:outputText value="&#160;" />
 
-                    <p:commandButton value="Submit" ajax="false" action="#{surveyImportController.upload()}"
-                                     disabled="false" />
+                    <p:commandButton value="Submit" ajax="false" widgetVar="submitBtn"
+                                     action="#{surveyImportController.upload()}"
+                                     disabled="false"
+                                     style="margin-left:-0.2em;"/>
                 </div>
             </p:row>
         </p:panelGrid>

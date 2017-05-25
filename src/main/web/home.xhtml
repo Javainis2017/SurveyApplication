@@ -36,8 +36,8 @@
                                  rowKey="#{survey.id}"
                                  styleClass="fieldPanel"
                                  filteredValue="#{userSurveyController.filteredSurveys}"
-                                 paginator="true" rows="10">
-                        <p:ajax event="rowSelect" update="surveyTable" />
+                                 paginator="true" rows="15">
+                        <p:ajax event="rowSelect" update="footer" />
                         <f:facet name="header">
                             <div style="text-align: center">Surveys</div>
                             <br/>
@@ -74,7 +74,7 @@
                             <h:outputText value = "#{userSurveyController.getPublicLabel(survey.isPublic)}"/>
                         </p:column>
                         <f:facet name="footer">
-                            <!--<p:growl id="growl" showDetail="false" sticky="true" />-->
+                            <p:outputPanel id="footer">
                             <c:if test="#{userSurveyController.selectedSurvey != null}">
                                 <c:if test="#{userSurveyController.selectedSurvey.surveyResults.isEmpty() and userSurveyController.canRemove(userSurveyController.selectedSurvey)}">
                                     <p:button value="Edit"
@@ -84,7 +84,7 @@
                                 <p:commandButton id="generateButton" value="Generate file"
                                                  actionListener="#{surveyExportController.exportSurvey(userSurveyController.selectedSurvey)}"
                                                  onclick="PF('exportPoller').start();"
-                                                 update="surveyTable"
+                                                 update="footer"
                                                  icon="fa fa-cogs"/>
                                 <c:if test="#{surveyExportController.timeout and surveyExportController.generatedSurveys.containsKey(userSurveyController.selectedSurvey.url)}">
                                     <p:commandButton id="exportButton"
@@ -110,7 +110,7 @@
                                     </p:commandButton>
                                 </c:if>
                                 <p:messages autoUpdate="true" globalOnly="true"/>
-                            </c:if>
+                            </c:if></p:outputPanel>
                         </f:facet>
                     </p:dataTable>
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -121,7 +121,7 @@
                 </p:confirmDialog>
 
                 <p:poll interval="2"
-                            update="surveyTable"
+                            update="surveyTable:footer"
                             widgetVar="exportPoller"
                             listener="#{surveyExportController.checkProgress()}"
                             autoStart="false"
