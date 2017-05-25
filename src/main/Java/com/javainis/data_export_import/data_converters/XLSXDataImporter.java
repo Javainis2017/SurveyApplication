@@ -305,6 +305,8 @@ public class XLSXDataImporter implements DataImporter{
 
                         } else if (row.getCell(cell.getColumnIndex()).getCellTypeEnum() == CellType.BLANK) {
                             break;
+                        } else {
+                            return new AsyncResult<>(null);
                         }
                     }
                     multipleChoiceAnswer.setChoices(choices);
@@ -318,7 +320,9 @@ public class XLSXDataImporter implements DataImporter{
                         if (number < 0 || number > ((SingleChoiceQuestion) question).getChoices().size()) return new AsyncResult<>(null);
                         singleChoiceAnswer.setChoice(((SingleChoiceQuestion) question).getChoices().get((int)number - 1));
                     } else if (row.getCell(column.get("$answer")).getCellTypeEnum() == CellType.BLANK) {
-                        singleChoiceAnswer.setChoice(null); //
+                        singleChoiceAnswer.setChoice(null);
+                    } else {
+                        return new AsyncResult<>(null);
                     }
                     singleChoiceAnswer.setQuestion(question);
                     singleChoiceAnswer.setResult(surveyResult);

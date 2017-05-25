@@ -105,7 +105,7 @@ public class SurveyImportController implements Serializable{
         }
         selectedSurveyFuture = dataImporter.importSurvey(file, selectedSurvey);
 
-        if (!expirationDateString.isEmpty()) {
+        if (!expirationDateString.isEmpty()) { // papildyti
             Timestamp timestamp;
             try {
                 timestamp = convertToExpirationTimestamp(expirationDateString, expirationTimeString);

@@ -46,7 +46,9 @@ public class UserSurveyController {
     // skirtas atrinktas user rodomas survey
     @Transactional
     public List<Survey> getMySurveys(){
-        if (isAdmin()) return getAllSurveys();
+        if (isAdmin()){
+            return sortSurvey(getAllSurveys());
+        }
         List<Survey> mySurveys = getAllUserSurvey();
         List<Survey> publicSurveys = getAllPublicSurvey();
 
@@ -54,6 +56,13 @@ public class UserSurveyController {
             if (!mySurveys.contains(s)) mySurveys.add(s);
         }
         return mySurveys;
+    }
+
+    public List<Survey> sortSurvey(List<Survey> surveys){
+
+
+
+        return surveys;
     }
 
     @Transactional
