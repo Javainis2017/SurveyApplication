@@ -99,6 +99,10 @@ public class SurveyImportController implements Serializable{
         }
         selectedSurvey.setUrl(url);
         selectedSurvey.setAuthor(currentUser);
+        if (selectedSurvey.getTitle().trim().equals("")) {
+            selectedSurvey = null;
+            return;
+        }
         selectedSurveyFuture = dataImporter.importSurvey(file, selectedSurvey);
 
         if (!expirationDateString.isEmpty()) {
@@ -123,6 +127,10 @@ public class SurveyImportController implements Serializable{
             selectedSurvey = selectedSurveyFuture.get();
 
             if (file == null || selectedSurvey == null) return;
+            if (selectedSurvey.getQuestions() == null || selectedSurvey.getQuestions().isEmpty()){
+                selectedSurvey = null;
+                return;
+            }
             //Async
             surveyResultListFuture = dataImporter.importAnswers(file, selectedSurvey, surveyResultList);
             selectedSurvey.setSurveyResults(surveyResultList);

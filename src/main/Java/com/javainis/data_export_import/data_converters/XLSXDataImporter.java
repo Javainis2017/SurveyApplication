@@ -21,9 +21,6 @@ import java.util.concurrent.Future;
 @Dependent
 public class XLSXDataImporter implements DataImporter{
 
-    private File file;
-
-
     @Override
     @Futureable
     public Future<Survey> importSurvey(File selectedFile, Survey survey) {
@@ -65,7 +62,7 @@ public class XLSXDataImporter implements DataImporter{
                 String questionName = row.getCell(column.get("$question")).getStringCellValue();
                 String questionMandatory = row.getCell(column.get("$mandatory")).getStringCellValue();
                 double questionNumber = row.getCell(column.get("$questionNumber")).getNumericCellValue();
-                if (questionNumber < 1 ) return null;
+                if (questionNumber < 1 ) return new AsyncResult<>(null);
 
                 switch (questionType){
                     case "TEXT":
@@ -147,8 +144,11 @@ public class XLSXDataImporter implements DataImporter{
                         else intervalQuestion.setRequired(false);
 
                         try {
-                            double intervalMin = row.getCell(4).getNumericCellValue();
-                            double intervalMax = row.getCell(5).getNumericCellValue();
+                            if (row.getCell(column.get("$optionsList")).getCellTypeEnum() != CellType.NUMERIC || row.getCell(column.get("$optionsList") + 1).getCellTypeEnum() != CellType.NUMERIC){
+                                return new AsyncResult<>(null);
+                            }
+                            double intervalMin = row.getCell(column.get("$optionsList")).getNumericCellValue();
+                            double intervalMax = row.getCell(column.get("$optionsList") +1).getNumericCellValue();
 
 
                             if (intervalMin > intervalMax) {
@@ -161,7 +161,7 @@ public class XLSXDataImporter implements DataImporter{
                             intervalQuestion.setMin((int) intervalMin);
                             intervalQuestion.setMax((int) intervalMax);
                         } catch (Exception e) {
-                            return null;
+                            return new AsyncResult<>(null);
                         }
 
                         intervalQuestion.setText(questionName);
@@ -180,7 +180,7 @@ public class XLSXDataImporter implements DataImporter{
             return new AsyncResult<>(null);
         }
         if (validateSurvey(survey)) return new AsyncResult<>(survey);
-        else return null;
+        else return new AsyncResult<>(null);
     }
 
     private Boolean validateSurvey(Survey survey){
@@ -298,8 +298,8 @@ public class XLSXDataImporter implements DataImporter{
                         if (cell.getColumnIndex() == column.get("$answerID") || cell.getColumnIndex() == column.get("$questionNumber")) continue;
                         if (row.getCell(cell.getColumnIndex()).getCellTypeEnum() == CellType.NUMERIC) {
                             double number = row.getCell(cell.getColumnIndex()).getNumericCellValue();
-                            if (number < 0 || number > ((MultipleChoiceQuestion) question).getChoices().size()) return null;
-                            if (choices.contains(((MultipleChoiceQuestion) question).getChoices().get((int)number - 1))) return null;
+                            if (number < 0 || number > ((MultipleChoiceQuestion) question).getChoices().size()) return new AsyncResult<>(null);
+                            if (choices.contains(((MultipleChoiceQuestion) question).getChoices().get((int)number - 1))) return new AsyncResult<>(null);
                             Choice choice = ((MultipleChoiceQuestion) question).getChoices().get((int)number - 1);
                             choices.add(choice);
 
@@ -315,10 +315,10 @@ public class XLSXDataImporter implements DataImporter{
                     SingleChoiceAnswer singleChoiceAnswer = new SingleChoiceAnswer();
                     if (row.getCell(column.get("$answer")).getCellTypeEnum() == CellType.NUMERIC) {
                         double number = row.getCell(column.get("$answer")).getNumericCellValue();
-                        if (number < 0 || number > ((SingleChoiceQuestion) question).getChoices().size()) return null;
+                        if (number < 0 || number > ((SingleChoiceQuestion) question).getChoices().size()) return new AsyncResult<>(null);
                         singleChoiceAnswer.setChoice(((SingleChoiceQuestion) question).getChoices().get((int)number - 1));
                     } else if (row.getCell(column.get("$answer")).getCellTypeEnum() == CellType.BLANK) {
-                        singleChoiceAnswer.setChoice(null); //tikrai null?
+                        singleChoiceAnswer.setChoice(null); //
                     }
                     singleChoiceAnswer.setQuestion(question);
                     singleChoiceAnswer.setResult(surveyResult);
@@ -327,12 +327,12 @@ public class XLSXDataImporter implements DataImporter{
                     NumberAnswer numberAnswer = new NumberAnswer();
                     if (row.getCell(column.get("$answer")).getCellTypeEnum() == CellType.NUMERIC) {
                         double number = row.getCell(column.get("$answer")).getNumericCellValue();
+
+                        if  (number > ((IntervalQuestion) question).getMax() || number < ((IntervalQuestion) question).getMin()) return new AsyncResult<>(null);
+
                         numberAnswer.setNumber((int)number);
 
-                        if  (number > ((IntervalQuestion) question).getMax() || number < ((IntervalQuestion) question).getMin()) return null;
 
-                    } else if (row.getCell(column.get("$answer")).getCellTypeEnum() == CellType.BLANK) {
-                        numberAnswer.setNumber(null);
                     } else {
                         return new AsyncResult<>(null);
                     }
@@ -352,7 +352,7 @@ public class XLSXDataImporter implements DataImporter{
             return new AsyncResult<>(null);
         }
         if (validateSurveyAnswers(surveyResultList)) return new AsyncResult<>(surveyResultList);
-        else return null;
+        else return new AsyncResult<>(null);
     }
 
     private Boolean validateSurveyAnswers(List<SurveyResult> surveyResults){
