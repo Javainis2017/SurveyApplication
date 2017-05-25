@@ -41,15 +41,16 @@ public class UserController implements Serializable
             if (user.getBlocked()) {
                 Messages.addGlobalWarn("You are blocked from system");
                 resetPasswordFields();
+                user = new User();
                 return null;
             }
-
             return "home?faces-redirect=true";
         }
         catch (NoResultException ex) {
             //Nerado tokio vartotojo
             Messages.addGlobalWarn("Incorrect email or password");
             resetPasswordFields();
+            user = new User();
             return null;
         }
     }

@@ -53,5 +53,5 @@ public class User {
     @Column(name = "opt_lock_version")
     private Integer optLockVersion;
 
-    private Boolean blocked = false;
+    private Boolean blocked;
 }

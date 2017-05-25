@@ -380,7 +380,7 @@ public class XLSXDataImporter implements DataImporter{
                 } else if (a instanceof SingleChoiceAnswer) {
                     if (a.getQuestion().getRequired() && ((SingleChoiceAnswer) a).getChoice() == null) return false;
                 } else if (a instanceof MultipleChoiceAnswer) {
-                    if (a.getQuestion().getRequired() && ((MultipleChoiceAnswer) a).getChoices() == null) return false;
+                    if (a.getQuestion().getRequired() && ((MultipleChoiceAnswer) a).getChoices().isEmpty()) return false;
                 } else if (a instanceof NumberAnswer){
                     if (a.getQuestion().getRequired() && (((NumberAnswer) a).getNumber() == null)) return false;
                 }
