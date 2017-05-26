@@ -86,6 +86,7 @@
     <c:if test="#{!reportController.canAccess}">
         <h2>Survey results</h2>
         <h3>Survey not found or no permission to view results.</h3>
+        <p:button outcome="/index" value="Log in"/>
     </c:if>
 </h:body>
 </html>

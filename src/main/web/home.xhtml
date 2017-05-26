@@ -265,10 +265,12 @@
     </h:form>
 </h:body>
 <c:if test="#{userController.getUser().getEmail() == null}">
-    <body>
-        <h1>ERROR 401: Unauthorized</h1>
-        <br/>
-        <p:link outcome="index">Log in</p:link>
-    </body>
+    <h:body styleClass="large-page home-body">
+        <div class="fill right">
+            <h1 class="main-header center large">Survey Application</h1>
+            <h3>User must be logged in.</h3>
+            <p:button outcome="index" value="Log in"/>
+        </div>
+    </h:body>
 </c:if>
 </html>

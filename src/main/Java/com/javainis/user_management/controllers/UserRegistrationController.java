@@ -17,7 +17,7 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 
 @Named
-@RequestScoped //Request užtenka?
+@RequestScoped
 public class UserRegistrationController {
 
     @Getter
