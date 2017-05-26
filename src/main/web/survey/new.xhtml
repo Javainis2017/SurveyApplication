@@ -222,13 +222,23 @@
 
         <p:dialog modal="true" header="Edit conflict" widgetVar="oleDialog" closable="true" resizable="false" closeOnEscape="true">
             <p:panelGrid columns="2">
-                <h:panelGroup>
+                <h:panelGroup style="vertical-align: top;">
                     <h3>Current data</h3>
                     #{newSurveyController.survey.title}<br/>
-                    #{newSurveyController.survey.description}<br/>
-                    Expires #{newSurveyController.survey.expirationTime.toGMTString()}
+                    <h:outputText rendered="#{not newSurveyController.survey.description.isEmpty()}">
+                        #{newSurveyController.survey.description}<br/>
+                    </h:outputText>
+                    <h:outputText rendered="#{newSurveyController.survey.expirationTime.toGMTString.isEmpty()}" value="Expires #{newSurveyController.survey.expirationTime.toGMTString()}"/>
                     <h4>Questions</h4>
                     <ui:repeat value="#{newSurveyController.survey.questions}" var="question">
+                        <h:outputText>
+                            <b>#{question.position}. #{question.text}</b>
+                        </h:outputText>
+                        <br/>
+                        <h:panelGroup rendered="#{question.required}">
+                            <h:outputText>(Required)</h:outputText>
+                            <br/>
+                        </h:panelGroup>
                         <h:panelGroup>
                             <h:panelGroup rendered="#{question['class'].simpleName == 'FreeTextQuestion'}">
                                 <ui:include src="/WEB-INF/questions/preview/text-preview.xhtml">
@@ -254,13 +264,23 @@
                         </h:panelGroup>
                     </ui:repeat>
                 </h:panelGroup>
-                <h:panelGroup>
+                <h:panelGroup style="vertical-align: top;">
                     <h3>Conflicting data</h3>
                     #{newSurveyController.conflictingSurvey.title}<br/>
-                    #{newSurveyController.conflictingSurvey.description}<br/>
-                    Expires #{newSurveyController.conflictingSurvey.expirationTime.toGMTString()}
+                    <h:outputText rendered="#{not newSurveyController.conflictingSurvey.description.isEmpty()}">
+                        #{newSurveyController.conflictingSurvey.description}<br/>
+                    </h:outputText>
+                    <h:outputText rendered="#{newSurveyController.conflictingSurvey.expirationTime.toGMTString.isEmpty()}" value="Expires #{newSurveyController.conflictingSurvey.expirationTime.toGMTString()}"/>
                     <h4>Questions</h4>
                     <ui:repeat value="#{newSurveyController.conflictingSurvey.questions}" var="question">
+                        <h:outputText>
+                            <b>#{question.position}. #{question.text}</b>
+                        </h:outputText>
+                        <br/>
+                        <h:panelGroup rendered="#{question.required}">
+                            <h:outputText>(Required)</h:outputText>
+                            <br/>
+                        </h:panelGroup>
                         <h:panelGroup>
                             <h:panelGroup rendered="#{question['class'].simpleName == 'FreeTextQuestion'}">
                                 <ui:include src="/WEB-INF/questions/preview/text-preview.xhtml">
@@ -298,12 +318,6 @@
                              actionListener="#{newSurveyController.refresh()}"
                              update="survey"
                              oncomplete="PF('oleDialog').hide()"/>
-
-            <p:commandButton id="cancel"
-                             value="Cancel editing"
-                             action="#{newSurveyController.cancelEdit()}"
-                             update="survey"
-                             ajax="false"/>
 
         </p:dialog>
         <div class="survey-page">

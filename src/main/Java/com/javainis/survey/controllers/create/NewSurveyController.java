@@ -309,10 +309,6 @@ public class NewSurveyController implements Serializable {
         }
     }
 
-    public String cancelEdit() {
-        return "/home?faces-redirect=true";
-    }
-
     @Transactional
     public String overwrite() {
         survey.setOptLockVersion(conflictingSurvey.getOptLockVersion());
