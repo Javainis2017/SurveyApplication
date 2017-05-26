@@ -36,7 +36,6 @@
             </p:outputPanel>
             <p:outputPanel rendered="#{singleChoiceQuestionController.choice.equals(choice)}">
                 <p:inputText id="singleChoiceEdit"
-                             required="#{param['survey:saveSingleChoice'] != null}"
                              value="#{singleChoiceQuestionController.choiceText}"
                              maxlength="200" rows="2" cols="80"
                              placeholder="Choice"
@@ -53,13 +52,11 @@
                                  rendered="#{singleChoiceQuestionController.edit}"/>
                 <p:message for="singleChoiceEdit"/>
                 <p:messages id="singleChoiceEditMessage" redisplay="false"/>
-
             </p:outputPanel>
             <br/>
         </ui:repeat>
     <p:outputPanel rendered="#{not singleChoiceQuestionController.edit}">
         <p:inputText id="singleChoice"
-                         required="#{param['survey:saveSingleChoice'] != null}"
                          value="#{singleChoiceQuestionController.choiceText}"
                          maxlength="200" rows="2" cols="80"
                          placeholder="Choice"
@@ -80,6 +77,5 @@
     <p:commandButton value="Save question"
                      id="createSingleChoiceQuestion"
                      action="#{singleChoiceQuestionController.saveQuestion}"
-                     ajax="true"
                      update="survey"/>
 </ui:composition>

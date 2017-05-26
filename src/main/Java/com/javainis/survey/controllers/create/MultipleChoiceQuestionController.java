@@ -83,6 +83,11 @@ public class MultipleChoiceQuestionController implements Serializable {
             return;
         }
 
+        if(choiceText.trim().isEmpty()){
+            FacesContext.getCurrentInstance().addMessage("multipleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Choice cannot be empty.", "Choice cannot be empty."));
+            return;
+        }
+
         if(!edit) {
             choice.setText(choiceText);
             choice.setQuestion(question);

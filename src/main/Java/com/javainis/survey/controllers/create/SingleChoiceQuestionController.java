@@ -84,6 +84,11 @@ public class SingleChoiceQuestionController implements Serializable{
             return;
         }
 
+        if(choiceText.trim().isEmpty()){
+            FacesContext.getCurrentInstance().addMessage("singleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Choice cannot be empty.", "Choice cannot be empty."));
+            return;
+        }
+
         if(!edit){
             choice.setText(choiceText);
             choice.setQuestion(question);

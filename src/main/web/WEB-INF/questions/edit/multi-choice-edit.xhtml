@@ -33,7 +33,7 @@
                                  update="survey"/>
             </p:outputPanel>
             <p:outputPanel rendered="#{multipleChoiceQuestionController.choice.equals(choice)}">
-                <p:inputText id="multiC" required="#{param['survey:saveMultiChoice'] != null}"
+                <p:inputText id="multiC"
                              value="#{multipleChoiceQuestionController.choiceText}"
                              maxlength="200" rows="2" cols="100"
                              placeholder="Choice"
@@ -56,7 +56,7 @@
             <br/>
         </ui:repeat>
     <p:outputPanel rendered="#{not multipleChoiceQuestionController.edit}">
-        <p:inputText id="multiChoice" required="#{param['survey:saveMultiChoice'] != null}"
+        <p:inputText id="multiChoice"
                      value="#{multipleChoiceQuestionController.choiceText}"
                      maxlength="200" rows="2" cols="100"
                      placeholder="Choice" style="margin-right: 0.4em;"/>
