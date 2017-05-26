@@ -343,13 +343,14 @@
         </div>
         <br/>
         <!-- Save survey -->
-        <p:row>
+        <h:panelGroup columns="2">
             <p:commandButton id="save"
                              value="Save survey"
                              action="#{newSurveyController.saveSurvey()}"
                              ajax="false"
-                             update="survey" style="display: inline-block;float:right;"/>
-        </p:row>
+                             update="survey" style="display: inline-block;"/>
+            <p:button outcome="/index?faces-redirect=true" value="Cancel"/>
+        </h:panelGroup>
     </h:form>
 </h:body>
 <c:if test="#{userController.getUser().getEmail() == null}">
