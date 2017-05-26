@@ -66,6 +66,7 @@ public class Survey {
     private List<SurveyPage> pages = new ArrayList<>();
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("position ASC")
     private List<Question> questions = new ArrayList<>();
 
     @OneToMany(mappedBy = "survey", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
