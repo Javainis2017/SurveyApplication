@@ -52,7 +52,6 @@ public class SurveyShareController implements Serializable{
     public void send(){
         String[] emails = input.split("\\r?\\n");
         for(String email : emails){
-            System.out.println(email);
             if(!email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
                 Messages.addGlobalWarn("Invalid email found.");
                 return;
