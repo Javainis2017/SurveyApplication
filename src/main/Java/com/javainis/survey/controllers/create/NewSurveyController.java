@@ -199,12 +199,9 @@ public class NewSurveyController implements Serializable {
 
     public void removeQuestion(Question question) {
         List<Condition> removableConditions = new ArrayList<>();
-        for (Condition condition : question.getConditions()) {
-            removableConditions.add(condition);
-        }
-        for (Condition condition : question.getDependentConditions()){
-            removableConditions.add(condition);
-        }
+        removableConditions.addAll(question.getConditions());
+        removableConditions.addAll(question.getDependentConditions());
+
         for (Condition condition : removableConditions) {
             removeCondition(condition);
         }
@@ -249,6 +246,10 @@ public class NewSurveyController implements Serializable {
     }
 
     public void moveQuestion(Question question, String direction) {
+        System.out.println(question.getPosition() + ". " + question.getText());
+        for(Question question1: survey.getQuestions()){
+            System.out.println(question1.getPosition() + ". " + question1.getText());
+        }
         Question otherQuestion = null;
         if (direction.equals("up") && question.getPosition() >= 1) {
             /* if first question is on page other than first */
