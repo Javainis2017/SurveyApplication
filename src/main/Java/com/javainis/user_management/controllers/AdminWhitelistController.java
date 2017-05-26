@@ -38,8 +38,7 @@ public class AdminWhitelistController{
     public void whitelistEmail()
     {
         String result = validateEmail(whitelist.getEmail());
-        if(result != null)
-        {
+        if(result != null){
             Messages.addGlobalWarn(result);
         }
         else if (!whitelistDAO.findEmail(whitelist.getEmail()))
@@ -55,13 +54,8 @@ public class AdminWhitelistController{
 
     private String validateEmail(String email)
     {
-        if (!email.contains("@"))
-        {
-            return "Email must contain @";
-        }
-        else if (email.length() < 3)
-        {
-            return "Email is too short";
+        if(!email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
+            return "Invalid email";
         }
         return null;
     }

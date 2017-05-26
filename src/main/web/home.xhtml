@@ -190,8 +190,8 @@
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
-                    <p:messages globalOnly="true" autoUpdate="true"/>
                     <h3>Whitelist new email</h3>
+                    <p:messages globalOnly="true" autoUpdate="true"/>
                     <h:panelGrid columns="3">
                         <p:inputText type="email" placeholder="Email" maxlength="50" id="email" value="#{adminWhitelistController.whitelist.email}"/>
                         <p:message for="email" autoUpdate="true"/>
