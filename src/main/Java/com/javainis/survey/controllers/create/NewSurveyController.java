@@ -246,10 +246,6 @@ public class NewSurveyController implements Serializable {
     }
 
     public void moveQuestion(Question question, String direction) {
-        System.out.println(question.getPosition() + ". " + question.getText());
-        for(Question question1: survey.getQuestions()){
-            System.out.println(question1.getPosition() + ". " + question1.getText());
-        }
         Question otherQuestion = null;
         if (direction.equals("up") && question.getPosition() >= 1) {
             /* if first question is on page other than first */
