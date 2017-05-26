@@ -30,9 +30,8 @@ import java.util.concurrent.Future;
 
 import org.apache.deltaspike.core.api.future.Futureable;
 import org.apache.poi.util.IOUtils;
-import org.hibernate.Hibernate;
+import org.omnifaces.util.Messages;
 import org.primefaces.model.UploadedFile;
-import sun.misc.resources.Messages;
 
 @Named
 @RequestScoped
@@ -89,8 +88,11 @@ public class SurveyImportController implements Serializable{
     @Setter
     private UploadedFile uploadedFile;
 
+    private boolean dateTimeError = false;
+
     @Transactional
     private void importSurvey(){
+        dateTimeError = false;
         User currentUser = userController.getUser();
         String url = randomStringGenerator.generateString(32);
         while(surveyAsyncDAO.existsByUrl(url)){
@@ -103,25 +105,28 @@ public class SurveyImportController implements Serializable{
             selectedSurvey = null;
             return;
         }
-        selectedSurveyFuture = dataImporter.importSurvey(file, selectedSurvey);
-
-        if (!expirationDateString.isEmpty()) { // papildyti
+        if (!expirationDateString.isEmpty()) {
             Timestamp timestamp;
             try {
                 timestamp = convertToExpirationTimestamp(expirationDateString, expirationTimeString);
             } catch (Exception e) {
-                org.omnifaces.util.Messages.addGlobalInfo("Wrong expiration time.");
+                Messages.addGlobalWarn("Wrong expiration time.");
+                dateTimeError = true;
                 selectedSurvey.setExpirationTime(null);
-                timestamp = null;
+                selectedSurvey = null;
+                return;
             }
-
-            if (expirationChecker.isExpired(timestamp)) {
-                org.omnifaces.util.Messages.addGlobalInfo("Wrong expiration time.");
-                selectedSurvey.setExpirationTime(null);
-            }
-
             selectedSurvey.setExpirationTime(timestamp);
         }
+
+        if (!expirationTimeString.isEmpty() && expirationDateString.isEmpty()) {
+            Messages.addGlobalWarn("Cannot set time without date.");
+            dateTimeError = true;
+            selectedSurvey = null;
+            return;
+        }
+
+        selectedSurveyFuture = dataImporter.importSurvey(file, selectedSurvey);
 
         try{
             selectedSurvey = selectedSurveyFuture.get();
@@ -142,7 +147,6 @@ public class SurveyImportController implements Serializable{
             if (surveyResultList == null) selectedSurvey.setSurveyResults(null);
             if (surveyQuestionInDBFuture.get() && surveyResultList != null){
                 surveyAnswerInDBFuture = saveAnswers(surveyResultList);
-                //surveyAnswerInDBFuture.get();
             }
 
 
@@ -154,18 +158,6 @@ public class SurveyImportController implements Serializable{
             selectedSurvey = null;
         }
 
-    }
-
-    @Transactional
-    private void importAnswers(){
-        // You can only import answers with survey
-//        if (file == null || selectedSurvey == null) return;
-//
-//        surveyResultListFuture = dataImporter.importAnswers(file, selectedSurvey);
-//
-//        if (surveyResultList == null) return;
-//        selectedSurvey.setSurveyResults(surveyResultList);
-//        saveAnswers();
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
@@ -228,20 +220,18 @@ public class SurveyImportController implements Serializable{
         importSurvey();
 
         if (selectedSurvey == null && surveyResultList == null){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Problem", "Failed to import Survey questions and answers.");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Problem", "Failed to import survey questions and answers.");
             FacesContext.getCurrentInstance().addMessage(null, message);
             cleanTempFolder(path);
             return null;
         } else if (selectedSurvey == null){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Problem", "Failed to import Survey questions.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            if(!dateTimeError){
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Problem", "Failed to import survey questions.");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+            }
             cleanTempFolder(path);
             return null;
         }
-
-        //nerodo po redirected
-        //FacesMessage message = new FacesMessage("Success", "Survey has been uploaded.");
-        //FacesContext.getCurrentInstance().addMessage(null, message);
 
         cleanTempFolder(path);
 

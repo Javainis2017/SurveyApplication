@@ -354,7 +354,7 @@ public class NewSurveyController implements Serializable {
         }
 
         if (!expirationTimeString.isEmpty() && expirationDateString.isEmpty()) {
-            Messages.addGlobalInfo("Can not set time without date.");
+            Messages.addGlobalInfo("Cannot set time without date.");
             return null;
         }
 
