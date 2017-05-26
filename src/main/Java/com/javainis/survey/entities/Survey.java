@@ -70,4 +70,12 @@ public class Survey {
 
     @OneToMany(mappedBy = "survey", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Condition> conditions = new ArrayList<>();
+
+    public Boolean isExpired(){
+        if(expirationTime == null)
+            return false;
+
+        Timestamp currTimestamp = new Timestamp(System.currentTimeMillis());
+        return !currTimestamp.before(expirationTime);
+    }
 }

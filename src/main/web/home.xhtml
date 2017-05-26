@@ -60,7 +60,7 @@
                             <h:outputText value="#{survey.author.lastName}" />
                         </p:column>
                         <p:column headerText="URL" style="width:7%;text-align: center" priority="1">
-                            <h:outputLink value="survey/show/#{survey.url}" rendered="#{expirationChecker.isExpired(survey.expirationTime) == false}">
+                            <h:outputLink value="survey/show/#{survey.url}" rendered="#{survey.isExpired() == false}">
                                 Open
                             </h:outputLink>
                         </p:column>

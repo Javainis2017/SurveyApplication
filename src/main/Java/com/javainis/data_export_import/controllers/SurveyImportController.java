@@ -63,9 +63,6 @@ public class SurveyImportController implements Serializable{
     @Setter
     private String expirationTimeString;
 
-    @Inject
-    private ExpirationChecker expirationChecker;
-
     @Getter
     private List<SurveyResult> surveyResultList = new ArrayList<>();
 
