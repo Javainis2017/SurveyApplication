@@ -5,7 +5,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://xmlns.jcp.org/jsf/core"
       xml:lang="en" lang="en">
 <h:head>
@@ -30,6 +29,7 @@
             <p:column>
                 <p:inputText id="title"
                              required="true"
+                             requiredMessage="Survey title is required"
                              value="#{surveyImportController.selectedSurvey.title}"
                              maxlength="80"
                              size="80"
@@ -68,7 +68,7 @@
             <p:row id="importButtons">
                 <div style="margin: 1em !important;">
                     <h3>Import from .xlsx</h3>
-                    <p:messages id="messages" showDetail="true" />
+                    <p:messages id="messages" showDetail="true" redisplay="false"/>
                     <p:fileUpload id="upload"
                                   value="#{surveyImportController.uploadedFile}"
                                   allowTypes='/(\.|\/)(xlsx)$/'
