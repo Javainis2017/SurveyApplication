@@ -87,7 +87,7 @@
                     <br/>
                     <c:if test="#{not empty page.questions}">
                         <h:panelGroup>
-                            <ui:repeat value="#{page.questions}" var="question">
+                            <c:forEach var="question" items="#{page.questions}" varStatus="status">
                                 <h:panelGroup rendered="#{not newSurveyController.questionToEdit.equals(question) or newSurveyController.surveyCreationStep == 'EDIT_CONDITION' or newSurveyController.surveyCreationStep == 'NEW_CONDITION'}">
                                     <h:outputText>
                                         <b>#{question.position}. #{question.text}</b>
@@ -98,24 +98,32 @@
                                         <br/>
                                     </h:panelGroup>
                                     <h:panelGroup rendered="#{question['class'].simpleName == 'FreeTextQuestion'}">
-                                        <ui:include src="/WEB-INF/questions/preview/text-preview.xhtml">
-                                            <ui:param name="question" value="#{question}"/>
-                                        </ui:include>
+                                        <f:subview id="text#{status.index}">
+                                            <ui:include src="/WEB-INF/questions/preview/text-preview.xhtml">
+                                                <ui:param name="question" value="#{question}"/>
+                                            </ui:include>
+                                        </f:subview>
                                     </h:panelGroup>
                                     <h:panelGroup rendered="#{question['class'].simpleName == 'IntervalQuestion'}">
-                                        <ui:include src="/WEB-INF/questions/preview/interval-preview.xhtml">
-                                            <ui:param name="question" value="#{question}"/>
-                                        </ui:include>
+                                        <f:subview id="interval#{status.index}">
+                                            <ui:include src="/WEB-INF/questions/preview/interval-preview.xhtml">
+                                                <ui:param name="question" value="#{question}"/>
+                                            </ui:include>
+                                        </f:subview>
                                     </h:panelGroup>
                                     <h:panelGroup rendered="#{question['class'].simpleName == 'SingleChoiceQuestion'}">
-                                        <ui:include src="/WEB-INF/questions/preview/single-choice-preview.xhtml">
-                                            <ui:param name="question" value="#{question}"/>
-                                        </ui:include>
+                                        <f:subview id="single#{status.index}">
+                                            <ui:include src="/WEB-INF/questions/preview/single-choice-preview.xhtml">
+                                                <ui:param name="question" value="#{question}"/>
+                                            </ui:include>
+                                        </f:subview>
                                     </h:panelGroup>
                                     <h:panelGroup rendered="#{question['class'].simpleName == 'MultipleChoiceQuestion'}">
-                                        <ui:include src="/WEB-INF/questions/preview/multi-choice-preview.xhtml">
-                                            <ui:param name="question" value="#{question}"/>
-                                        </ui:include>
+                                        <f:subview id="multi#{status.index}">
+                                            <ui:include src="/WEB-INF/questions/preview/multi-choice-preview.xhtml">
+                                                <ui:param name="question" value="#{question}"/>
+                                            </ui:include>
+                                        </f:subview>
                                     </h:panelGroup>
                                     <p:commandButton title="Move up" icon="fa fa-arrow-up"
                                                      actionListener="#{newSurveyController.moveQuestion(question, 'up')}"
@@ -167,25 +175,32 @@
                                 </h:panelGroup>
                                 <h:panelGroup rendered="#{newSurveyController.surveyCreationStep == 'EDIT_QUESTION' and newSurveyController.questionToEdit.equals(question)}">
                                     <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'FreeTextQuestion'}">
-                                        <ui:include src="/WEB-INF/questions/edit/text-edit.xhtml"/>
+                                        <f:subview id="textedit#{status.index}">
+                                            <ui:include src="/WEB-INF/questions/edit/text-edit.xhtml"/>
+                                        </f:subview>
                                     </h:panelGroup>
                                     <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'IntervalQuestion'}">
-                                        <ui:include src="/WEB-INF/questions/edit/interval-edit.xhtml"/>
+                                        <f:subview id="intervaledit#{status.index}">
+                                            <ui:include src="/WEB-INF/questions/edit/interval-edit.xhtml"/>
+                                        </f:subview>
                                     </h:panelGroup>
                                     <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'SingleChoiceQuestion'}">
-                                        <ui:include src="/WEB-INF/questions/edit/single-choice-edit.xhtml"/>
+                                        <f:subview id="singleedit#{status.index}">
+                                            <ui:include src="/WEB-INF/questions/edit/single-choice-edit.xhtml"/>
+                                        </f:subview>
                                     </h:panelGroup>
                                     <h:panelGroup rendered="#{newSurveyController.questionToEdit['class'].simpleName == 'MultipleChoiceQuestion'}">
-                                        <ui:include src="/WEB-INF/questions/edit/multi-choice-edit.xhtml"/>
+                                        <f:subview id="multiedit#{status.index}">
+                                            <ui:include src="/WEB-INF/questions/edit/multi-choice-edit.xhtml"/>
+                                        </f:subview>
                                     </h:panelGroup>
                                     <p:commandButton value="Cancel"
-                                                     id="cancelEdit"
                                                      action="#{newSurveyController.cancel}"
                                                      update="survey"/>
                                     <br/>
                                 </h:panelGroup>
                                 <br/>
-                            </ui:repeat>
+                            </c:forEach>
                         </h:panelGroup>
                     </c:if>
                     <!-- New question -->
@@ -205,7 +220,7 @@
                 </div>
                 <br/>
             </c:forEach>
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
@@ -338,8 +353,8 @@
     </h:form>
 </h:body>
 <c:if test="#{userController.getUser().getEmail() == null}">
-    <body>
-        <h1>ERROR 401: Unauthorized</h1>
-    </body>
+    <h:body>
+        <h1>Login to create surveys.</h1>
+    </h:body>
 </c:if>
 </html>
