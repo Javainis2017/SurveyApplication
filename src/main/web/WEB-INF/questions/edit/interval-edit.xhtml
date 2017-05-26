@@ -5,6 +5,7 @@
     <h3>Interval question</h3>
         <p:column>
             <p:inputTextarea id="intervalText" required="#{param['survey:createIntervalQuestion'] != null}"
+                             requiredMessage="Question text is required."
                              value="#{intervalQuestionController.text}"
                              maxlength="300" rows="3" cols="80"
                              style="width:97%;"
@@ -26,6 +27,7 @@
                          max="2147483647"
                          min="-2147483648"
                          required="true"
+                         requiredMessage="Minimum value is required."
                          size="11"
                          type="number"/>
             <p:message for="minimum"/>
@@ -38,6 +40,7 @@
                          max="2147483647"
                          min="-2147483648"
                          required="true"
+                         requiredMessage="Maximum value is required."
                          size="11"
                          type="number"/>
             <p:message for="maximum"/>

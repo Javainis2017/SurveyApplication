@@ -7,6 +7,7 @@
     <h3>Multi choice question</h3>
     <p:column>
         <p:inputTextarea id="multiText" required="#{param['survey:createMultiChoiceQuestion'] != null}"
+                         requiredMessage="Question text is required."
                          value="#{multipleChoiceQuestionController.text}"
                          maxlength="300" rows="3" cols="80"
                          placeholder="Question text"

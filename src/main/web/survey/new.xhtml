@@ -133,15 +133,15 @@
                                                     actionListener="#{newSurveyController.editQuestion(question)}"
                                                     update="survey"
                                                     styleClass="previewPanel"
-                                    disabled="#{newSurveyController.surveyCreationStep != 'QUESTION_TYPE_CHOICE'}"/>
+                                                    disabled="#{newSurveyController.surveyCreationStep != 'QUESTION_TYPE_CHOICE'}"/>
                                     <p:commandButton value="Add condition" immediate="true"
                                                      actionListener="#{newSurveyController.addCondition(question)}"
                                                      oncomplete="PF('cond').show()"
                                                      update="survey"
                                                      disabled="#{newSurveyController.surveyCreationStep != 'QUESTION_TYPE_CHOICE'}"/>
                                     <p:commandButton value="Remove" immediate="true" icon="fa fa-remove"
-                                    actionListener="#{newSurveyController.removeQuestion(question)}"
-                                    update="survey"/>
+                                                    actionListener="#{newSurveyController.removeQuestion(question)}"
+                                                    update="survey"/>
                                     <br/>
                                     <p:panelGrid rendered="#{question.conditions.size() > 0}" style="padding-left:1em;">
                                         <b>Conditions</b>
@@ -335,8 +335,6 @@
                              ajax="false"
                              update="survey" style="display: inline-block;float:right;"/>
         </p:row>
-
-
     </h:form>
 </h:body>
 <c:if test="#{userController.getUser().getEmail() == null}">
