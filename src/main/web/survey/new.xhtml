@@ -129,16 +129,16 @@
                                                      disabled="#{question.position == newSurveyController.survey.questions.size() and question.page.number == newSurveyController.survey.pages.size()}">
                                         <p:confirm disabled="#{newSurveyController.checkConditionsMoving(question, 1)}" header="Confirmation" message="Moving this question will delete some conditions. Are you sure?" icon="ui-icon-alert"/>
                                     </p:commandButton>
-                                    <c:if test="#{newSurveyController.surveyCreationStep == 'QUESTION_TYPE_CHOICE'}">
-                                        <p:commandButton value="Edit" immediate="true" icon="fa fa-fw fa-edit"
-                                        actionListener="#{newSurveyController.editQuestion(question)}"
-                                        update="survey"
-                                        styleClass="previewPanel"/>
-                                        <p:commandButton value="Add condition" immediate="true"
-                                                         actionListener="#{newSurveyController.addCondition(question)}"
-                                                         oncomplete="PF('cond').show()"
-                                                         update="survey"/>
-                                    </c:if>
+                                    <p:commandButton value="Edit" immediate="true" icon="fa fa-fw fa-edit"
+                                                    actionListener="#{newSurveyController.editQuestion(question)}"
+                                                    update="survey"
+                                                    styleClass="previewPanel"
+                                    disabled="#{newSurveyController.surveyCreationStep != 'QUESTION_TYPE_CHOICE'}"/>
+                                    <p:commandButton value="Add condition" immediate="true"
+                                                     actionListener="#{newSurveyController.addCondition(question)}"
+                                                     oncomplete="PF('cond').show()"
+                                                     update="survey"
+                                                     disabled="#{newSurveyController.surveyCreationStep != 'QUESTION_TYPE_CHOICE'}"/>
                                     <p:commandButton value="Remove" immediate="true" icon="fa fa-remove"
                                     actionListener="#{newSurveyController.removeQuestion(question)}"
                                     update="survey"/>
