@@ -104,9 +104,11 @@ public class SingleChoiceQuestionController implements Serializable{
 
     public void saveQuestion(){
         // Validate
-        if(choices.isEmpty()){
-            FacesContext.getCurrentInstance().addMessage("singleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "No choices", "Question must have at least 1 choice."));
-        }else {
+        if(text.trim().isEmpty()){
+            FacesContext.getCurrentInstance().addMessage("singleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Question cannot be empty.", "Question cannot be empty."));
+        } else if(choices.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage("singleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Question must have at least 1 choice.", "Question must have at least 1 choice."));
+        } else {
             // Save
             question.setText(text);
             question.setRequired(required);

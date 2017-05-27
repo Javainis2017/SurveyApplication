@@ -14,11 +14,12 @@ import javax.inject.Named;
 @Named
 @RequestScoped
 public class IntervalQuestionController {
-    @Getter
-    private IntervalQuestion question = new IntervalQuestion();
 
     @Inject
     private NewSurveyController surveyController;
+
+    @Getter
+    private IntervalQuestion question = new IntervalQuestion();
 
     @Getter
     @Setter
@@ -37,14 +38,16 @@ public class IntervalQuestionController {
     private int maxValue;
 
     public void saveQuestion(){
-        if(minValue <= maxValue){
+        if(text.trim().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage("intervalMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Question cannot be empty.", "Question cannot be empty."));
+        }else if(minValue > maxValue){
+            FacesContext.getCurrentInstance().addMessage("intervalMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Minimum value cannot be higher than maximum.", "Minimum value cannot be higher than maximum."));
+        }else{
             question.setText(text);
             question.setRequired(required);
             question.setMin(minValue);
             question.setMax(maxValue);
             surveyController.saveQuestion(question);
-        }else{
-            FacesContext.getCurrentInstance().addMessage("intervalMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Minimum value cannot be higher than maximum.", "Minimum value cannot be higher than maximum."));
         }
     }
     @PostConstruct

@@ -4,8 +4,7 @@
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h3>Interval question</h3>
         <p:column>
-            <p:inputTextarea id="intervalText" required="#{param['survey:createIntervalQuestion'] != null}"
-                             requiredMessage="Question text is required."
+            <p:inputTextarea id="intervalText"
                              value="#{intervalQuestionController.text}"
                              maxlength="300" rows="3" cols="80"
                              style="width:97%;"
@@ -24,8 +23,8 @@
         <p:column>
             <p:inputText id="minimum"
                          value="#{intervalQuestionController.minValue}"
-                         max="2147483647"
-                         min="-2147483648"
+                         max="10000000"
+                         min="-10000000"
                          required="true"
                          requiredMessage="Minimum value is required."
                          size="11"
@@ -37,8 +36,8 @@
         <p:column>
             <p:inputText id="maximum"
                          value="#{intervalQuestionController.maxValue}"
-                         max="2147483647"
-                         min="-2147483648"
+                         max="10000000"
+                         min="-10000000"
                          required="true"
                          requiredMessage="Maximum value is required."
                          size="11"

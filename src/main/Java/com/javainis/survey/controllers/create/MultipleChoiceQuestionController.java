@@ -18,11 +18,12 @@ import java.util.List;
 @Named
 @ViewScoped
 public class MultipleChoiceQuestionController implements Serializable {
-    @Getter
-    private MultipleChoiceQuestion question = new MultipleChoiceQuestion();
 
     @Inject
     private NewSurveyController surveyController;
+
+    @Getter
+    private MultipleChoiceQuestion question = new MultipleChoiceQuestion();
 
     @Getter
     @Setter
@@ -102,8 +103,10 @@ public class MultipleChoiceQuestionController implements Serializable {
 
     public void saveQuestion(){
         // Validate
-        if(choices.isEmpty()){
-            FacesContext.getCurrentInstance().addMessage("multipleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_INFO, "Question must have at least 1 choice.", "Question must have at least 1 choice."));
+        if(text.trim().isEmpty()){
+            FacesContext.getCurrentInstance().addMessage("multipleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Question cannot be empty.", "Question cannot be empty."));
+        }else if(choices.isEmpty()){
+            FacesContext.getCurrentInstance().addMessage("multipleChoiceMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Question must have at least 1 choice.", "Question must have at least 1 choice."));
         }else {
             // Save
             question.setText(text);

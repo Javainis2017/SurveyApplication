@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -13,11 +15,11 @@ import javax.inject.Named;
 @RequestScoped
 public class TextQuestionController {
 
-    @Getter
-    private FreeTextQuestion question = new FreeTextQuestion();
-
     @Inject
     private NewSurveyController surveyController;
+
+    @Getter
+    private FreeTextQuestion question = new FreeTextQuestion();
 
     @Getter
     @Setter
@@ -35,13 +37,16 @@ public class TextQuestionController {
             text = question.getText();
             required = question.getRequired();
         }
-
     }
 
     public void saveQuestion(){
-        question.setText(text);
-        question.setRequired(required);
+        if(!text.trim().isEmpty()) {
+            question.setText(text);
+            question.setRequired(required);
 
-        surveyController.saveQuestion(question);
+            surveyController.saveQuestion(question);
+        }else{
+            FacesContext.getCurrentInstance().addMessage("textMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Question cannot be empty.", "Question cannot be empty."));
+        }
     }
 }
