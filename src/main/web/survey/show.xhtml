@@ -42,9 +42,10 @@
                 <h:panelGroup id="questions">
                     <table class="report-table">
                         <c:forEach items="#{surveyController.currentPage.questions}" var="question" varStatus="status">
-                            <tr>
-                                <td style="border:1px #D5D5D5 solid;padding:1em;font-size:larger;">
-                                    <c:if test="${surveyController.checkQuestionConditions(question)}">
+                            <c:if test="${surveyController.checkQuestionConditions(question)}">
+                                <tr>
+                                    <td style="border:1px #D5D5D5 solid;padding:1em;font-size:larger;">
+
                                         <h:panelGroup>
                                             <b>#{question.position}. </b>
                                             <b>#{question.text}</b>
@@ -91,9 +92,9 @@
                                                 </f:subview>
                                             </c:if>
                                         </h:panelGroup>
-                                    </c:if>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            </c:if>
                         </c:forEach>
                     </table>
                 </h:panelGroup>

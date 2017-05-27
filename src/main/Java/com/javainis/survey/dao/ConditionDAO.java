@@ -16,9 +16,7 @@ public class ConditionDAO {
     }
 
     public void delete(Condition condition) {
-        manager.flush();
         Condition removable = manager.merge(condition);
-        System.out.println("Success!");
         manager.remove(removable);
     }
 

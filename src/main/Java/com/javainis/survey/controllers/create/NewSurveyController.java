@@ -388,7 +388,11 @@ public class NewSurveyController implements Serializable {
                 for (Condition condition : removableConditions) {
                     conditionDAO.delete(condition);
                 }
-                removableConditions = new ArrayList<>();
+                for(Question question : survey.getQuestions()){
+                    if(question.getId() == null){
+                        questionDAO.create(question);
+                    }
+                }
                 surveyDAO.update(survey);
             } catch (OptimisticLockException ole) {
                 conflictingSurvey = surveyDAO.findById(survey.getId());
