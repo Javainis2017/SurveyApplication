@@ -62,6 +62,7 @@ public class UserRegistrationController {
         else
         {
             user.setPasswordHash(hashGenerator.generatePasswordHash(passwordHash));
+            user.setBlocked(false);
             userDAO.create(user);
             return "index?faces-redirect=true";
         }
