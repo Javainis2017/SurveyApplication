@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "user_type")
 @NamedQueries({
-        @NamedQuery(name = "UserType.findType", query = "SELECT ut FROM UserType ut WHERE ut.id = :id"),
+        @NamedQuery(name = "UserType.findType", query = "SELECT ut FROM UserType ut WHERE ut.id = :id")
 })
 @Getter
 @Setter
@@ -21,7 +21,4 @@ public class UserType
 
     @Size(max = 10)
     private String name;
-//
-//    @OneToOne
-//    private User user;
 }

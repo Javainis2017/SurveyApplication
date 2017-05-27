@@ -4,8 +4,6 @@ import com.javainis.Async;
 import com.javainis.survey.entities.SurveyResult;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;

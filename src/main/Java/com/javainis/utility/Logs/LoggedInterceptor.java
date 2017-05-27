@@ -1,6 +1,5 @@
 package com.javainis.utility.Logs;
 
-import com.javainis.survey.controllers.create.NewSurveyController;
 import com.javainis.user_management.controllers.UserController;
 
 import javax.inject.Inject;

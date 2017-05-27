@@ -25,16 +25,17 @@
                 <h:outputText>Put each email in new line.</h:outputText>
             </h:panelGroup>
             <p:messages globalOnly="true"/>
-            <p:button outcome="/home?faces-redirect=true" value="Go to main page" rendered="#{surveyShareController.success}"/>
+            <p:button outcome="/index?faces-redirect=true" value="Go to main page" rendered="#{surveyShareController.success}"/>
             <p:commandButton value="Send"
                              actionListener="#{surveyShareController.send()}"
                              update="emailForm"
                              styleClass="responsiveElement"
                              rendered="#{not surveyShareController.success}"/>
         </h:form>
-        <h:outputText rendered="#{surveyShareController.survey == null}">
-            Survey does not exist.
-        </h:outputText>
+        <h:panelGroup rendered="#{surveyShareController.survey == null}">
+            <h:outputText>Survey does not exist.</h:outputText><br/>
+            <p:button outcome="/index?faces-redirect=true" value="Go to main page"/>
+        </h:panelGroup>
     </div>
 </h:body>
 </html>

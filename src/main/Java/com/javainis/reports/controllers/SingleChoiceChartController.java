@@ -19,14 +19,13 @@ import java.util.concurrent.Future;
 public class SingleChoiceChartController implements SingleChoiceQuestionReport, Serializable {
 
     @Getter
-    SingleChoiceQuestion singleChoiceQuestion;
+    private SingleChoiceQuestion singleChoiceQuestion;
     @Getter
-    List<SingleChoiceAnswer> singleChoiceAnswers;
+    private List<SingleChoiceAnswer> singleChoiceAnswers;
 
     @Getter
     private PieChartModel model;
 
-    //@PostConstruct
     public void init() {
         createPieModel();
     }
@@ -45,8 +44,6 @@ public class SingleChoiceChartController implements SingleChoiceQuestionReport, 
             model.set(q.getText(), count);
         }
 
-
-//        model.setTitle(singleChoiceQuestion.getText());
         model.setLegendPosition("s");
         model.setShowDataLabels(true);
         model.setShadow(true);
@@ -62,9 +59,6 @@ public class SingleChoiceChartController implements SingleChoiceQuestionReport, 
         if(question instanceof SingleChoiceQuestion) {
             singleChoiceQuestion = (SingleChoiceQuestion) question;
             singleChoiceAnswers = (List<SingleChoiceAnswer>) (List<?>) singleChoiceQuestion.getAnswers();
-        }
-        else {
-            System.out.println("SingleChoiceQuestion was not set successfully");
         }
     }
 

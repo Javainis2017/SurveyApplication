@@ -43,9 +43,9 @@ public class UserDAO{
                     .getSingleResult();
             if (user.getUserType().getId() == typeID) return false; // nesikeicia type
             user.setUserType(userType);
-            manager.persist(user); //nereikia?
+            manager.persist(user);
             return true;
-        } catch (NoResultException ex){ //kokie exception?
+        } catch (NoResultException ex){
             return false;
         }
     }
@@ -57,7 +57,7 @@ public class UserDAO{
                     .getSingleResult();
             if (user.getBlocked() == blocked) return false; //nebuvo atliktas pakeitimas
             user.setBlocked(blocked);
-            manager.persist(user); //nereikia?
+            manager.persist(user);
             return true;
         } catch (NoResultException ex){
             return false;

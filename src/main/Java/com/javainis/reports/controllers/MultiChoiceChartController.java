@@ -61,7 +61,6 @@ public class MultiChoiceChartController implements MultiChoiceQuestionReport, Se
 
         model.addSeries(answers);
 
-//        model.setTitle(multipleChoiceQuestion.getText());
         model.setShowPointLabels(true);
         model.setShadow(true);
 
@@ -83,9 +82,6 @@ public class MultiChoiceChartController implements MultiChoiceQuestionReport, Se
         if(question instanceof MultipleChoiceQuestion) {
             multipleChoiceQuestion = (MultipleChoiceQuestion) question;
             multipleChoiceAnswers = (List<MultipleChoiceAnswer>) (List<?>) multipleChoiceQuestion.getAnswers();
-        }
-        else {
-            System.out.println("MultipleChoiceQuestion was not set successfully");
         }
     }
 

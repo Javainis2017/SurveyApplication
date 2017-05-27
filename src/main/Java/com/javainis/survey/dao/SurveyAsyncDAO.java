@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import java.util.List;
 
-
 @ApplicationScoped
 public class SurveyAsyncDAO {
 

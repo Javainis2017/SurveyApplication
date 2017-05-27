@@ -70,9 +70,6 @@ public class TextTagCloudController implements TextQuestionReport, Serializable 
             freeTextQuestion = (FreeTextQuestion) question;
             textAnswers = (List<TextAnswer>) (List<?>) freeTextQuestion.getAnswers();
         }
-        else {
-            System.out.println("FreeTextQuestion was not set successfully");
-        }
     }
 
     @Override
@@ -82,7 +79,6 @@ public class TextTagCloudController implements TextQuestionReport, Serializable 
         return new AsyncResult<>(null);
     }
 
-    //@PostConstruct
     public void init() {
         model = new DefaultTagCloudModel();
         nTopWords = getNTopWords(wordCount);

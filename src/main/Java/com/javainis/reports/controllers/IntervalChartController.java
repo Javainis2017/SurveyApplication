@@ -54,12 +54,9 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
             intervalQuestion = (IntervalQuestion) question;
             numberAnswers = (List<NumberAnswer>) (List<?>) intervalQuestion.getAnswers();
         }
-        else {
-            System.out.println("IntervalQuestion was not set successfully");
-        }
     }
 
-    public void countStatistics() {
+    private void countStatistics() {
         getSortedNumbers();
         countAverage();
         countMode();
@@ -73,7 +70,7 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
         return numbers.get((int)Math.ceil(indexValue)-1);
     }
 
-    public void countAverage(){
+    private void countAverage(){
         double sum = 0;
         for(NumberAnswer number:numberAnswers)
         {
@@ -82,7 +79,7 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
         average = sum/numberAnswers.size();
     }
 
-    public void countMode(){
+    private void countMode(){
         int min = intervalQuestion.getMin();
         int max = intervalQuestion.getMax();
         int difference = max-min+1;
@@ -99,14 +96,14 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
             }
         }
         if(maxValue == Integer.MIN_VALUE && maxCount == 0) {
-            System.out.println("Mode was not found");
+
         }
         else{
             mode = maxValue;
         }
     }
 
-    public void countMedian(){
+    private void countMedian(){
         int size = numbers.size();
         int middle = size/2;
         if (size%2 == 1) {
@@ -127,13 +124,12 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
     @Override
     @Futureable
     public Future<Void> generateReportAsync() {
-        // TODO: REMOVE
         countStatistics();
         fillChart();
         return new AsyncResult<>(null);
     }
 
-    public void fillChart() {
+    private void fillChart() {
         Map<Integer, Integer> valueCount = new TreeMap<>();
         int groupFrom = 20;
         int max = intervalQuestion.getMax();
@@ -183,7 +179,6 @@ public class IntervalChartController implements IntervalQuestionReport, Serializ
             }
         }
         barModel.addSeries(values);
-//        barModel.setTitle("Interval values Bar Chart");
         Axis xAxis = barModel.getAxis(AxisType.X);
         xAxis.setTickAngle(-90);
         xAxis.setLabel("Values");

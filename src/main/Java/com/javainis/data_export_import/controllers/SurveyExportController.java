@@ -81,7 +81,6 @@ public class SurveyExportController implements Serializable {
         }
     }
 
-    //Be Hibernate.initialize meta LazyInitializationException
     private void initCollections(Survey survey, List<SurveyResult> results){
         Hibernate.initialize(survey);
         Hibernate.initialize(survey.getQuestions());
@@ -91,7 +90,6 @@ public class SurveyExportController implements Serializable {
                 Hibernate.initialize(res.getAnswers());
             }
         }
-
     }
 
     public void checkProgress() {

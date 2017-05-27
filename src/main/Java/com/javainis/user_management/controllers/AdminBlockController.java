@@ -1,6 +1,5 @@
 package com.javainis.user_management.controllers;
 
-
 import com.javainis.user_management.dao.UserTypeDAO;
 import com.javainis.user_management.entities.User;
 import org.omnifaces.util.Messages;

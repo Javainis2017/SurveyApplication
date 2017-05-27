@@ -69,8 +69,6 @@ public class AdminWhitelistController{
     public Boolean removeFromWhitelist(String email)
     {
         return isAdmin() && whitelistDAO.removeFromWhitelist(email) != 0;
-//        Messages.addGlobalWarn("selectedEmail is null");
-//        return false;
     }
 
     private Boolean isAdmin(){

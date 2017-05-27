@@ -5,7 +5,6 @@ import com.javainis.user_management.entities.User;
 import com.javainis.utility.HashGenerator;
 import lombok.Getter;
 import lombok.Setter;
-import org.omnifaces.util.Messages;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;

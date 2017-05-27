@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
         @NamedQuery(name = "Whitelist.findEmail", query = "SELECT w FROM Whitelist w WHERE w.email = :email"),
         @NamedQuery(name = "Whitelist.getAll", query = "SELECT w FROM Whitelist w"),
-        @NamedQuery(name = "Whitelist.remove", query = "DELETE FROM Whitelist w WHERE w.email = :email"),
+        @NamedQuery(name = "Whitelist.remove", query = "DELETE FROM Whitelist w WHERE w.email = :email")
 })
 @Getter
 @Setter

@@ -13,7 +13,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Named
 @RequestScoped
 public class UserSurveyController {
@@ -44,7 +43,7 @@ public class UserSurveyController {
         return surveyDAO.findPublic();
     }
 
-    // skirtas atrinktas user rodomas survey
+    // skirtas atrinkti naudotojui rodomoms apklausoms
     @Transactional
     public List<Survey> getMySurveys(){
         if (isAdmin()){
@@ -90,15 +89,6 @@ public class UserSurveyController {
         }
 
         return survey.getAuthor().equals(userController.getUser()) || isAdmin();
-    }
-
-    // Useless? Admin can change public/ private with Edit Survey.
-    @Transactional
-    public Boolean ToggleSurveyPublicStatus(Survey survey){
-        if (survey.getIsPublic()) survey.setIsPublic(false);
-        else survey.setIsPublic(true);
-        surveyDAO.update(survey);
-        return true;
     }
 
     private Boolean isAdmin(){

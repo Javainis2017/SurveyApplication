@@ -1,13 +1,9 @@
 package com.javainis.utility.Logs;
 
-import com.javainis.survey.entities.Survey;
-import com.javainis.user_management.entities.User;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 

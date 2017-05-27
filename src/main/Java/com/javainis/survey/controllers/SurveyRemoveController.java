@@ -1,6 +1,5 @@
 package com.javainis.survey.controllers;
 
-
 import com.javainis.survey.dao.*;
 import com.javainis.survey.entities.*;
 
@@ -8,7 +7,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Named

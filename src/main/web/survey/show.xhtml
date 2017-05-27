@@ -19,7 +19,7 @@
         <p:menuitem outcome="/index" value="Home" icon="fa fa-home" />
         <p:menuitem rendered="#{userController.getUser().getEmail() != null}" outcome="/survey/new" value="New survey" icon="fa fa-plus"/>
         <f:facet name="options">
-            <p:commandButton rendered="#{userController.getUser().getEmail() != null}" actionListener="#{userController.logout()}" value="Log out" action="index" />
+            <p:commandButton rendered="#{userController.getUser().getEmail() != null}" actionListener="#{userController.logout()}" value="Log out" action="index" immediate="true"/>
         </f:facet>
     </p:menubar>
     <c:if test="#{surveyController.survey == null}">

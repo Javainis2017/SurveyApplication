@@ -26,7 +26,7 @@ public class UserTypeDAO
                     .getSingleResult();
             return result;
         }
-        catch (Exception ex) //daugiau exception? Not found?
+        catch (Exception ex)
         {
             return null;
         }

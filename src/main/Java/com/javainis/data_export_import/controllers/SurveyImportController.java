@@ -7,7 +7,6 @@ import com.javainis.survey.entities.Survey;
 import com.javainis.survey.entities.SurveyResult;
 import com.javainis.user_management.controllers.UserController;
 import com.javainis.user_management.entities.User;
-import com.javainis.utility.ExpirationChecker;
 import com.javainis.utility.RandomStringGenerator;
 import lombok.Getter;
 import lombok.Setter;

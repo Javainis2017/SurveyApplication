@@ -5,10 +5,7 @@ import com.javainis.reports.mybatis.model.FreeTextQuestion;
 import com.javainis.reports.mybatis.model.Question;
 import com.javainis.reports.mybatis.model.TextAnswer;
 import lombok.Getter;
-import lombok.Setter;
 import org.apache.deltaspike.core.api.future.Futureable;
-import org.primefaces.model.tagcloud.DefaultTagCloudModel;
-import org.primefaces.model.tagcloud.TagCloudModel;
 
 import javax.ejb.AsyncResult;
 import javax.enterprise.context.Dependent;
@@ -17,6 +14,8 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.Future;
+
+/* Java EE alternatives demo */
 
 @Named
 @Dependent
@@ -37,9 +36,6 @@ public class TextSimpleController implements TextQuestionReport, Serializable {
         if(question instanceof FreeTextQuestion) {
             freeTextQuestion = (FreeTextQuestion) question;
             textAnswers = (List<TextAnswer>) (List<?>) freeTextQuestion.getAnswers();
-        }
-        else {
-            System.out.println("FreeTextQuestion was not set successfully");
         }
     }
 

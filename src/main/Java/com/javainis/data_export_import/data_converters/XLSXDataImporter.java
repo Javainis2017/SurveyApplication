@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 @Dependent
@@ -55,9 +54,6 @@ public class XLSXDataImporter implements DataImporter{
                     if (row.getCell(column.get("$questionNumber")).getStringCellValue().trim().isEmpty()) break;
                 }
 
-                /*if (row.getCell(column.get("$questionType")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$question")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$mandatory")).getCellTypeEnum() != CellType.STRING && row.getCell(column.get("$questionNumber")).getCellTypeEnum()!= CellType.NUMERIC){
-                    return null;
-                }*/
                 String questionType = row.getCell(column.get("$questionType")).getStringCellValue();
                 String questionName = row.getCell(column.get("$question")).getStringCellValue();
                 String questionMandatory = row.getCell(column.get("$mandatory")).getStringCellValue();
@@ -157,7 +153,6 @@ public class XLSXDataImporter implements DataImporter{
                                 intervalMax = temp;
                             }
 
-
                             intervalQuestion.setMin((int) intervalMin);
                             intervalQuestion.setMax((int) intervalMax);
                         } catch (Exception e) {
@@ -171,7 +166,6 @@ public class XLSXDataImporter implements DataImporter{
                         questions.add(intervalQuestion);
                         break;
                     default:
-
                         break;
                 }
             }
@@ -352,7 +346,7 @@ public class XLSXDataImporter implements DataImporter{
                 }
 
             }
-            surveyResultList = new ArrayList<SurveyResult>(surveyResultMap.values());
+            surveyResultList = new ArrayList<>(surveyResultMap.values());
             survey.setSurveyResults(surveyResultList);
         }
         catch (IOException e){

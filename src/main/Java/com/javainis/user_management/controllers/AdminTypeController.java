@@ -1,13 +1,11 @@
 package com.javainis.user_management.controllers;
 
 import com.javainis.user_management.dao.UserTypeDAO;
-import com.javainis.user_management.entities.User;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Named
 @RequestScoped

@@ -1,6 +1,5 @@
 package com.javainis.utility;
 
-
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Random;
 

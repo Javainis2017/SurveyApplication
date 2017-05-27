@@ -19,7 +19,7 @@
     <p:menubar>
         <p:menuitem outcome="/index" value="Home" icon="fa fa-home" />
         <f:facet name="options">
-            <p:commandButton actionListener="#{userController.logout()}" value="Log out" action="index" />
+            <p:commandButton actionListener="#{userController.logout()}" value="Log out" action="index" immediate="true"/>
         </f:facet>
     </p:menubar>
     <br/>
@@ -236,7 +236,7 @@
         </p:dialog>
 
         <p:dialog modal="true" header="Edit conflict" widgetVar="oleDialog" closable="true" resizable="false" closeOnEscape="true">
-            <p:panelGrid columns="2">
+            <p:panelGrid columns="2" style="vertical-align: top;">
                 <h:panelGroup style="vertical-align: top;">
                     <h3>Current data</h3>
                     #{newSurveyController.survey.title}<br/>
@@ -277,6 +277,17 @@
                             </h:panelGroup>
                             <br/>
                         </h:panelGroup>
+                        <p:panelGrid rendered="#{question.conditions.size() > 0}" style="padding-left:1em;">
+                        <b>Conditions</b>
+                        <br/>
+                        <ui:repeat value="#{question.conditions}" var="condition">
+                            <h:panelGroup>
+                                <ui:include src="/WEB-INF/questions/conditions/condition-preview.xhtml">
+                                    <ui:param name="condition" value="#{condition}"/>
+                                </ui:include>
+                            </h:panelGroup>
+                        </ui:repeat>
+                        </p:panelGrid>
                     </ui:repeat>
                 </h:panelGroup>
                 <h:panelGroup style="vertical-align: top;">
@@ -319,6 +330,17 @@
                             </h:panelGroup>
                             <br/>
                         </h:panelGroup>
+                        <p:panelGrid rendered="#{question.conditions.size() > 0}" style="padding-left:1em;">
+                            <b>Conditions</b>
+                            <br/>
+                            <ui:repeat value="#{question.conditions}" var="condition">
+                                <h:panelGroup>
+                                    <ui:include src="/WEB-INF/questions/conditions/condition-preview.xhtml">
+                                        <ui:param name="condition" value="#{condition}"/>
+                                    </ui:include>
+                                </h:panelGroup>
+                            </ui:repeat>
+                        </p:panelGrid>
                     </ui:repeat>
                 </h:panelGroup>
             </p:panelGrid>

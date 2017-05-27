@@ -15,6 +15,7 @@ import javax.inject.Named;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.persistence.NoResultException;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -45,7 +46,12 @@ public class SurveyShareController implements Serializable{
         Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         surveyUrl = params.get("url");
         if(surveyUrl != null){
-            survey = surveyDAO.findByUrl(surveyUrl);
+            try {
+                survey = surveyDAO.findByUrl(surveyUrl);
+            }catch (NoResultException nre){
+                survey = null;
+            }
+
         }
     }
 
