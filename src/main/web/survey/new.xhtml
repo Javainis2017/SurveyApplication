@@ -243,7 +243,7 @@
                     <h:outputText rendered="#{not newSurveyController.survey.description.isEmpty()}">
                         #{newSurveyController.survey.description}<br/>
                     </h:outputText>
-                    <h:outputText rendered="#{newSurveyController.survey.expirationTime.toGMTString.isEmpty()}" value="Expires #{newSurveyController.survey.expirationTime.toGMTString()}"/>
+                    <h:outputText rendered="#{newSurveyController.survey.expirationTime.toGMTString().isEmpty()}" value="Expires #{newSurveyController.survey.expirationTime.toGMTString()}"/>
                     <h4>Questions</h4>
                     <ui:repeat value="#{newSurveyController.survey.questions}" var="question">
                         <h:outputText>
@@ -285,7 +285,7 @@
                     <h:outputText rendered="#{not newSurveyController.conflictingSurvey.description.isEmpty()}">
                         #{newSurveyController.conflictingSurvey.description}<br/>
                     </h:outputText>
-                    <h:outputText rendered="#{newSurveyController.conflictingSurvey.expirationTime.toGMTString.isEmpty()}" value="Expires #{newSurveyController.conflictingSurvey.expirationTime.toGMTString()}"/>
+                    <h:outputText rendered="#{newSurveyController.conflictingSurvey.expirationTime.toGMTString().isEmpty()}" value="Expires #{newSurveyController.conflictingSurvey.expirationTime.toGMTString()}"/>
                     <h4>Questions</h4>
                     <ui:repeat value="#{newSurveyController.conflictingSurvey.questions}" var="question">
                         <h:outputText>
