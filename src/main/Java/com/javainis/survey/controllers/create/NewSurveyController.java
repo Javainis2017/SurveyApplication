@@ -5,6 +5,7 @@ import com.javainis.survey.dao.QuestionDAO;
 import com.javainis.survey.dao.SurveyDAO;
 import com.javainis.survey.entities.*;
 import com.javainis.user_management.controllers.UserController;
+import com.javainis.user_management.dao.UserTypeDAO;
 import com.javainis.user_management.entities.User;
 import com.javainis.utility.ExpirationChecker;
 import com.javainis.utility.Logs.Logged;
@@ -101,7 +102,8 @@ public class NewSurveyController implements Serializable {
         if (surveyUrl != null) {
             Survey surveyToEdit = surveyDAO.findByUrl(surveyUrl);
             /* Check if current user is author and survey has no results */
-            if ((surveyToEdit != null) && (surveyToEdit.getAuthor().equals(userController.getUser())) && (surveyToEdit.getSurveyResults().isEmpty())) {
+            User author = surveyToEdit.getAuthor();
+            if ((surveyToEdit != null) && (author.equals(userController.getUser()) || userController.getUser().getUserType().getId() == UserTypeDAO.USER_TYPE_ADMIN) && (surveyToEdit.getSurveyResults().isEmpty())) {
                 survey = surveyToEdit;
                 editingSurvey = true;
                 if (survey.getExpirationTime() != null)
