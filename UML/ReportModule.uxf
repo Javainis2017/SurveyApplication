@@ -4,25 +4,30 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>760</x>
-      <y>448</y>
+      <x>728</x>
+      <y>584</y>
       <w>216</w>
       <h>72</h>
     </coordinates>
     <panel_attributes>ReportController
 --
 -userController: UserController
+-surveyUrl: String
 -canAccess: boolean
+-timeout: boolean
+-questionReports : Map&lt;Question, QuestionReport&gt;
+-reports: Map&lt;Question, Future&lt;Void&gt;&gt;
 --
--init()
-group=7</panel_attributes>
++checkProgress(): void
+-init() : void
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>776</x>
-      <y>840</y>
+      <x>624</x>
+      <y>1016</y>
       <w>112</w>
       <h>64</h>
     </coordinates>
@@ -37,8 +42,8 @@ group=7</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1088</x>
-      <y>696</y>
+      <x>936</x>
+      <y>848</y>
       <w>272</w>
       <h>72</h>
     </coordinates>
@@ -53,8 +58,8 @@ group=3</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>560</x>
-      <y>872</y>
+      <x>408</x>
+      <y>1040</y>
       <w>80</w>
       <h>40</h>
     </coordinates>
@@ -67,21 +72,21 @@ group=3</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>592</x>
-      <y>936</y>
+      <x>440</x>
+      <y>1104</y>
       <w>96</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>NumberAnswer
 --
--number: int</panel_attributes>
+-number: Integer</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>704</x>
-      <y>936</y>
+      <x>552</x>
+      <y>1112</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
@@ -93,8 +98,8 @@ group=3</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>840</x>
-      <y>936</y>
+      <x>688</x>
+      <y>1112</y>
       <w>136</w>
       <h>40</h>
     </coordinates>
@@ -106,30 +111,30 @@ group=3</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>632</x>
-      <y>872</y>
+      <x>480</x>
+      <y>1048</y>
       <w>160</w>
-      <h>40</h>
+      <h>32</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>180.0;10.0;10.0;30.0</additional_attributes>
+    <additional_attributes>180.0;10.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>632</x>
-      <y>896</y>
+      <x>480</x>
+      <y>1072</y>
       <w>184</w>
-      <h>56</h>
+      <h>48</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>210.0;10.0;10.0;50.0</additional_attributes>
+    <additional_attributes>210.0;10.0;10.0;40.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>864</x>
-      <y>896</y>
+      <x>712</x>
+      <y>1072</y>
       <w>56</w>
       <h>56</h>
     </coordinates>
@@ -139,8 +144,8 @@ group=3</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>752</x>
-      <y>896</y>
+      <x>600</x>
+      <y>1072</y>
       <w>104</w>
       <h>56</h>
     </coordinates>
@@ -150,23 +155,25 @@ group=3</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>776</x>
-      <y>736</y>
+      <x>624</x>
+      <y>896</y>
       <w>112</w>
-      <h>72</h>
+      <h>88</h>
     </coordinates>
     <panel_attributes>/Question/
 --
 -id: Long
+-position: Integer
 -text: String
--required: boolean</panel_attributes>
+-required: boolean
+-surveyId: Long</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>816</x>
-      <y>800</y>
+      <x>664</x>
+      <y>976</y>
       <w>64</w>
       <h>56</h>
     </coordinates>
@@ -177,22 +184,22 @@ m2=-answers</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>832</x>
-      <y>512</y>
-      <w>64</w>
+      <x>744</x>
+      <y>648</y>
+      <w>112</w>
       <h>112</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=-survey</panel_attributes>
-    <additional_attributes>10.0;120.0;50.0;10.0</additional_attributes>
+    <additional_attributes>10.0;120.0;120.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>768</x>
-      <y>608</y>
+      <x>616</x>
+      <y>744</y>
       <w>152</w>
-      <h>88</h>
+      <h>112</h>
     </coordinates>
     <panel_attributes>Survey
 --
@@ -200,14 +207,16 @@ m1=-survey</panel_attributes>
 -title: String
 -description: String
 -url: String
--authorId: Long</panel_attributes>
+-authorId: Long
+-isPublic: Boolean
+-surveyResultCount: Long</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>824</x>
-      <y>688</y>
+      <x>672</x>
+      <y>848</y>
       <w>72</w>
       <h>64</h>
     </coordinates>
@@ -218,8 +227,8 @@ m2=-questions</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1088</x>
-      <y>784</y>
+      <x>936</x>
+      <y>936</y>
       <w>288</w>
       <h>64</h>
     </coordinates>
@@ -233,8 +242,8 @@ group=3</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1144</x>
-      <y>608</y>
+      <x>992</x>
+      <y>760</y>
       <w>176</w>
       <h>64</h>
     </coordinates>
@@ -249,19 +258,19 @@ group=3</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>968</x>
-      <y>480</y>
-      <w>192</w>
+      <x>936</x>
+      <y>616</y>
+      <w>224</w>
       <h>160</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=-surveyMapper</panel_attributes>
-    <additional_attributes>220.0;180.0;10.0;10.0</additional_attributes>
+    <additional_attributes>180.0;180.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>568</x>
+      <x>416</x>
       <y>184</y>
       <w>136</w>
       <h>48</h>
@@ -276,12 +285,12 @@ group=5</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>496</x>
-      <y>600</y>
+      <x>344</x>
+      <y>752</y>
       <w>112</w>
       <h>48</h>
     </coordinates>
-    <panel_attributes>TextQuestion
+    <panel_attributes>FreeTextQuestion
 --
 </panel_attributes>
     <additional_attributes/>
@@ -289,45 +298,45 @@ group=5</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>600</x>
-      <y>600</y>
+      <x>448</x>
+      <y>752</y>
       <w>192</w>
-      <h>168</h>
+      <h>176</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>220.0;190.0;10.0;10.0</additional_attributes>
+    <additional_attributes>220.0;200.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>496</x>
-      <y>656</y>
+      <x>344</x>
+      <y>808</y>
       <w>112</w>
       <h>56</h>
     </coordinates>
     <panel_attributes>IntervalQuestion
 --
--min: int
--max: int
+-min: Integer
+-max: Integer
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>600</x>
-      <y>656</y>
+      <x>448</x>
+      <y>808</y>
       <w>192</w>
-      <h>128</h>
+      <h>136</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>220.0;140.0;10.0;10.0</additional_attributes>
+    <additional_attributes>220.0;150.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>496</x>
-      <y>728</y>
+      <x>344</x>
+      <y>880</y>
       <w>120</w>
       <h>48</h>
     </coordinates>
@@ -339,19 +348,19 @@ group=5</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>608</x>
-      <y>728</y>
+      <x>456</x>
+      <y>880</y>
       <w>184</w>
-      <h>72</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>210.0;70.0;10.0;10.0</additional_attributes>
+    <additional_attributes>210.0;80.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>488</x>
-      <y>784</y>
+      <x>336</x>
+      <y>936</y>
       <w>128</w>
       <h>48</h>
     </coordinates>
@@ -363,18 +372,18 @@ group=5</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>608</x>
-      <y>784</y>
+      <x>456</x>
+      <y>936</y>
       <w>184</w>
-      <h>24</h>
+      <h>32</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>210.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>210.0;20.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>720</x>
+      <x>568</x>
       <y>184</y>
       <w>136</w>
       <h>48</h>
@@ -389,7 +398,7 @@ group=5</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>864</x>
+      <x>712</x>
       <y>184</y>
       <w>168</w>
       <h>48</h>
@@ -405,7 +414,7 @@ group=5</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1056</x>
+      <x>904</x>
       <y>184</y>
       <w>168</w>
       <h>48</h>
@@ -421,9 +430,9 @@ group=5</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>848</x>
+      <x>696</x>
       <y>56</y>
-      <w>184</w>
+      <w>208</w>
       <h>80</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
@@ -431,8 +440,8 @@ QuestionReport
 --
 --
 +getTemplateName(): String
-+setQuestion(Question: question)
-+generateReportAsync(): Future
++setQuestion(Question: question): void
++generateReportAsync(): Future&lt;Void&gt;
 
 group=5</panel_attributes>
     <additional_attributes/>
@@ -440,7 +449,7 @@ group=5</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>648</x>
+      <x>496</x>
       <y>128</y>
       <w>248</w>
       <h>72</h>
@@ -452,7 +461,7 @@ group=5</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>936</x>
+      <x>784</x>
       <y>128</y>
       <w>40</w>
       <h>72</h>
@@ -464,7 +473,7 @@ group=5</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>992</x>
+      <x>840</x>
       <y>128</y>
       <w>80</w>
       <h>88</h>
@@ -476,7 +485,7 @@ group=5</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>808</x>
+      <x>656</x>
       <y>128</y>
       <w>136</w>
       <h>72</h>
@@ -488,168 +497,197 @@ group=5</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>624</x>
+      <x>472</x>
       <y>224</y>
-      <w>152</w>
-      <h>288</h>
+      <w>272</w>
+      <h>424</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;.
 m1=-textQuestionReport</panel_attributes>
-    <additional_attributes>10.0;10.0;20.0;260.0;170.0;340.0</additional_attributes>
+    <additional_attributes>10.0;10.0;160.0;140.0;170.0;470.0;320.0;510.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>752</x>
-      <y>224</y>
-      <w>144</w>
-      <h>240</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-m1=-intervalQuestionReport</panel_attributes>
-    <additional_attributes>10.0;10.0;160.0;280.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>888</x>
-      <y>224</y>
-      <w>168</w>
-      <h>240</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-m1=-singleChoiceQuestionReport</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;280.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>944</x>
+      <x>600</x>
       <y>224</y>
       <w>312</w>
-      <h>240</h>
+      <h>376</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;.
+m1=-intervalQuestionReport</panel_attributes>
+    <additional_attributes>10.0;10.0;310.0;130.0;370.0;450.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>768</x>
+      <y>224</y>
+      <w>176</w>
+      <h>376</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+m1=-singleChoiceQuestionReport</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;110.0;180.0;450.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>912</x>
+      <y>224</y>
+      <w>192</w>
+      <h>376</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
 m1=-multipleChoiceQuestionReport</panel_attributes>
-    <additional_attributes>180.0;10.0;200.0;250.0;10.0;280.0</additional_attributes>
+    <additional_attributes>30.0;10.0;10.0;450.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1136</x>
-      <y>344</y>
-      <w>176</w>
-      <h>72</h>
+      <x>976</x>
+      <y>320</y>
+      <w>280</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>MultipleChoiceChartController
 --
+-multipleChoiceQuestion: MultipleChoiceQuestion
+-multipleChoiceAnswers: List&lt;MultipleChoiceAnswer&gt;
+-model: HorizontalBarChartModel
 --
 +getTemplateName(): String
-+setQuestion(Question: question)
-+generateReportAsync(): Future
-group=7</panel_attributes>
++setQuestion(Question: question): void
++generateReportAsync(): Future&lt;Void&gt;
+-createBarModel(): void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1216</x>
-      <y>192</y>
-      <w>72</w>
-      <h>168</h>
+      <x>1048</x>
+      <y>224</y>
+      <w>80</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;70.0;190.0</additional_attributes>
+    <additional_attributes>10.0;10.0;80.0;120.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>416</x>
-      <y>344</y>
-      <w>176</w>
-      <h>72</h>
+      <x>232</x>
+      <y>368</y>
+      <w>360</w>
+      <h>200</h>
     </coordinates>
     <panel_attributes>TextTagCloudController
 --
+-freeTextQuestion: FreeTextQuestion
+-textAnswers: List&lt;TextAnswer&gt;
+-wordCount: int
+-model: TagCloudModel
+-topWords: Map&lt;String, Integer&gt;
 --
+_-sortByValue(unsortMap: Map&lt;String, Integer&gt;): Map&lt;String, Integer&gt;_
 +getTemplateName(): String
 +setQuestion(Question: question)
 +generateReportAsync(): Future
-group=7</panel_attributes>
++onSelect(event: SelectEvent): void
+-init(): void
+-findSortedWords(texts: List&lt;String&gt;): Map&lt;String, Integer&gt;
+-getNTopWords(n: int): Map&lt;String, Integer&gt;
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>552</x>
+      <x>368</x>
       <y>224</y>
-      <w>64</w>
-      <h>136</h>
+      <w>96</w>
+      <h>160</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>60.0;10.0;10.0;150.0</additional_attributes>
+    <additional_attributes>100.0;10.0;10.0;180.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>648</x>
-      <y>360</y>
-      <w>176</w>
-      <h>72</h>
+      <x>624</x>
+      <y>328</y>
+      <w>208</w>
+      <h>248</h>
     </coordinates>
     <panel_attributes>IntervalChartController
 --
+-intervalQuestion : IntervalQuestion
+-numberAnswers : List&lt;NumberAnswer&gt;
+-average : double
+-mode : int
+-median : double
+-percentile25: int
+-percentile75: int
+-barModel: BarChartModel
 --
 +getTemplateName(): String
-+setQuestion(Question: question)
-+generateReportAsync(): Future
-group=7</panel_attributes>
++setQuestion(Question: question): void
++generateReportAsync(): Future&lt;Void&gt;
+-countStatistics(): void
+-countPercentiles(percent: int) : int
+-countAverage() : void
+-countMode(): void
+-countMedian(): void
+-fillChart(): void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>704</x>
+      <x>584</x>
       <y>224</y>
-      <w>56</w>
-      <h>152</h>
+      <w>120</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>50.0;10.0;10.0;170.0</additional_attributes>
+    <additional_attributes>10.0;10.0;130.0;130.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1024</x>
+      <x>872</x>
       <y>208</y>
-      <w>40</w>
-      <h>152</h>
+      <w>136</w>
+      <h>288</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;30.0;170.0</additional_attributes>
+    <additional_attributes>10.0;10.0;150.0;340.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>912</x>
-      <y>344</y>
-      <w>176</w>
-      <h>72</h>
+      <x>992</x>
+      <y>448</y>
+      <w>264</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>SingleChoiceChartController
 --
+-singleChoiceQuestion: SingleChoiceQuestion
+-singleChoiceAnswers: List&lt;SingleChoiceAnswer&gt;
+-model: PieChartModel
 --
 +getTemplateName(): String
-+setQuestion(Question: question)
-+generateReportAsync(): Future
-group=7</panel_attributes>
++setQuestion(Question: question): void
++generateReportAsync(): Future&lt;Void&gt;
+-createPieModel(): void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>360</x>
-      <y>568</y>
+      <x>208</x>
+      <y>720</y>
       <w>664</w>
       <h>448</h>
     </coordinates>
@@ -659,8 +697,8 @@ group=7</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>1072</x>
-      <y>584</y>
+      <x>920</x>
+      <y>736</y>
       <w>344</w>
       <h>296</h>
     </coordinates>
@@ -671,7 +709,7 @@ group=3</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>552</x>
+      <x>400</x>
       <y>32</y>
       <w>696</w>
       <h>232</h>
@@ -683,22 +721,21 @@ group=5</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>360</x>
-      <y>288</y>
-      <w>984</w>
-      <h>272</h>
+      <x>208</x>
+      <y>280</y>
+      <w>1064</w>
+      <h>424</h>
     </coordinates>
-    <panel_attributes>controllers
-group=7</panel_attributes>
+    <panel_attributes>controllers</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>336</x>
+      <x>184</x>
       <y>0</y>
       <w>1104</w>
-      <h>1040</h>
+      <h>1192</h>
     </coordinates>
     <panel_attributes>Reports
 layer=-2</panel_attributes>
@@ -707,8 +744,8 @@ layer=-2</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>376</x>
-      <y>888</y>
+      <x>224</x>
+      <y>1040</y>
       <w>80</w>
       <h>48</h>
     </coordinates>
@@ -722,52 +759,56 @@ layer=-2</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>384</x>
-      <y>744</y>
-      <w>128</w>
+      <x>232</x>
+      <y>896</y>
+      <w>168</w>
       <h>160</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=-question
 m2=-choices</panel_attributes>
     <additional_attributes>140.0;10.0;10.0;180.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>432</x>
-      <y>808</y>
-      <w>72</w>
+      <x>280</x>
+      <y>960</y>
+      <w>112</w>
       <h>96</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=-question
 m2=-choices</panel_attributes>
     <additional_attributes>70.0;10.0;10.0;100.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>384</x>
-      <y>432</y>
-      <w>176</w>
-      <h>72</h>
+      <x>232</x>
+      <y>584</y>
+      <w>208</w>
+      <h>104</h>
     </coordinates>
     <panel_attributes>TextSimpleController
 --
+-freeTextQuestion: FreeTextQuestion
+-textAnswers: List&lt;TextAnswer&gt;
 --
 +getTemplateName(): String
-+setQuestion(Question: question)
-+generateReportAsync(): Future</panel_attributes>
++setQuestion(Question: question) : void
++generateReportAsync(): Future&lt;Void&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>392</x>
+      <x>208</x>
       <y>200</y>
-      <w>192</w>
-      <h>248</h>
+      <w>224</w>
+      <h>440</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>220.0;10.0;10.0;10.0;10.0;290.0</additional_attributes>
+    <additional_attributes>260.0;10.0;20.0;200.0;10.0;500.0;30.0;530.0</additional_attributes>
   </element>
 </diagram>

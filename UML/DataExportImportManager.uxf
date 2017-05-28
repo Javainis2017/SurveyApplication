@@ -4,10 +4,10 @@
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>126</x>
-      <y>0</y>
-      <w>765</w>
-      <h>549</h>
+      <x>117</x>
+      <y>117</y>
+      <w>1233</w>
+      <h>729</h>
     </coordinates>
     <panel_attributes>DataExportImportManager
 --
@@ -18,55 +18,65 @@ layer=-100</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>162</x>
-      <y>324</y>
+      <x>180</x>
+      <y>567</y>
       <w>306</w>
       <h>207</h>
     </coordinates>
     <panel_attributes>SurveyExportController
 --
 -stream: OutputStream
+-file: File
 -surveyDAO: SurveyDAO
--surveyResultDAO: SurveyResultDAO
+-resultDAO: SurveyResultDAO
 -selectedSurvey: Survey
--surveyAnswers: List&lt;Answer&gt;
+-timeout: Boolean
+-export: Future&lt;Void&gt;
+-generatedSurveys : Map&lt;String, File&gt;
 --
-+exportSurvey()
-+exportAnswers()
++exportSurvey(survey: Survey): void
++checkProgress() : void
++downloadToUser(surveyURL : String) : void
+
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>540</x>
-      <y>324</y>
-      <w>306</w>
-      <h>207</h>
+      <x>567</x>
+      <y>567</y>
+      <w>414</w>
+      <h>261</h>
     </coordinates>
     <panel_attributes>SurveyImportController
 --
 -userController: UserController
 -randomStringGenerator: RandomStringGenerator
--surveyDAO: SurveyDAO
--surveyResultDAO: SurveyResultDAO
+-surveyAsyncDAO: SurveyAsyncDAO
+-surveyResultAsyncDAO: SurveyResultAsyncDAO
 -selectedSurvey: Survey
--surveyResultList: List&lt;SurveyResult&gt; 
+-selectedSurveyFuture : Future&lt;Survey&gt;
+-surveyResultListFuture : Future&lt;List&lt;SurveyResult&gt;&gt;
+-surveyQuestionInDBFuture : Future&lt;Boolean&gt;
+-surveyAnswerInDBFuture : Future&lt;Boolean&gt;
 -file: File
--uploadedFile: IploadedFile
+-uploadedFile: UploadedFile
 --
-+importSurvey()
-+importAnswers()
-+saveSurvey()
-+saveAnswers()
++importSurvey() : void
++upload() : String
+-saveSurvey(survey : Survey) : Future&lt;Boolean&gt;
+-saveAnswer(surveyResults : List&lt;SurveyResult&gt;): Future&lt;Boolean&gt;
+-cleanTempFolder(path : Path)
+
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>396</x>
-      <y>567</y>
+      <x>414</x>
+      <y>882</y>
       <w>207</w>
       <h>81</h>
     </coordinates>
@@ -79,138 +89,184 @@ layer=-100</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>378</x>
-      <y>522</y>
+      <x>396</x>
+      <y>765</y>
       <w>63</w>
-      <h>63</h>
+      <h>135</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>48.0;50.0;10.0;10.0</additional_attributes>
+    <additional_attributes>48.0;130.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>558</x>
-      <y>45</y>
-      <w>315</w>
+      <x>666</x>
+      <y>207</y>
+      <w>657</w>
       <h>99</h>
     </coordinates>
     <panel_attributes>XLSXDataImporter
 --
--file: File
 --
-+importSurvey(File selectedFile): Survey
-+importAnswers(File selectedFile): List&lt;SurveyResult&gt;
++importSurvey(selectedFile : File, survey : Survey): Future&lt;Survey&gt;
++importAnswers(selectedFile: File, survey : Survey, surveyResults: List&lt;SurveyResult&gt;): Future&lt;List&lt;SurveyResult&gt;&gt;
+-validateSurvey(survey : Survey) : Boolean
+-validateSurveyAnswers(surveyResults : List&lt;SurveyResult&gt;) : Boolean
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>693</x>
-      <y>288</y>
-      <w>81</w>
-      <h>54</h>
+      <x>702</x>
+      <y>486</y>
+      <w>90</w>
+      <h>99</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=-importer</panel_attributes>
-    <additional_attributes>20.0;10.0;10.0;40.0</additional_attributes>
+    <additional_attributes>30.0;10.0;10.0;90.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>567</x>
-      <y>522</y>
-      <w>36</w>
-      <h>81</h>
+      <x>585</x>
+      <y>819</y>
+      <w>45</w>
+      <h>99</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>18.0;70.0;20.0;10.0</additional_attributes>
+    <additional_attributes>18.0;90.0;30.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>135</x>
-      <y>216</y>
-      <w>396</w>
+      <x>144</x>
+      <y>414</y>
+      <w>432</w>
       <h>81</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 DataExporter
 --
 --
-+exportSurvey(Survey survey, OutputStream destination)
-+exportAnswers(List&lt;Answer&gt; answers, OutputStream destination)</panel_attributes>
++exportSurvey(survey : Survey, destination : OutputStream) : Future&lt;Void&gt;
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>549</x>
-      <y>216</y>
-      <w>315</w>
+      <x>594</x>
+      <y>414</y>
+      <w>684</w>
       <h>81</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 DataImporter
 --
 --
-+importSurvey(File selectedFile): Survey
-+importAnswers(File selectedFile): List&lt;SurveyResult&gt;</panel_attributes>
++importSurvey(selectedFile : File, survey : Survey): Future&lt;Survey&gt;
++importAnswers(selectedFile: File, survey: Survey, surveyResultList: List&lt;SurveyResult&gt;): Future&lt;List&lt;SurveyResult&gt;&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
+      <x>315</x>
+      <y>342</y>
+      <w>27</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>738</x>
+      <y>297</y>
+      <w>90</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;130.0;80.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
       <x>306</x>
-      <y>171</y>
-      <w>27</w>
-      <h>63</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>693</x>
-      <y>135</y>
-      <w>27</w>
+      <y>486</y>
+      <w>72</w>
       <h>99</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>288</x>
-      <y>288</y>
-      <w>81</w>
-      <h>54</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=-exporter</panel_attributes>
-    <additional_attributes>20.0;10.0;10.0;40.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>135</x>
-      <y>36</y>
-      <w>396</w>
-      <h>144</h>
+      <x>144</x>
+      <y>198</y>
+      <w>504</w>
+      <h>153</h>
     </coordinates>
     <panel_attributes>XLSXDataExporter
 --
--file: File
+-surveyResultDAO: SurveyResultAsyncDAO
 --
-+exportSurvey(Survey survey, OutputStream destination)
-+exportAnswers(List&lt;Answer&gt; answers, OutputStream destination)
--createStatusRow(XSSFSheet sheet)
--exportChoices(XSSFRow row, List&lt;Choice&gt; choices)
--exportInterval(XSSFRow row, int min, int max)
++exportSurvey(survey : Survey, destination : OutputStream) : Future&lt;Void&gt;
+-exportChoices(row : XSSFRow, choices : List&lt;Choice&gt;) : void
+-exportInterval(row : XSSFRow, min : int, max : int) : void
+-exportSurveyQuestions(survey : Survey, workbook : XSSFWorkbook) : void
+-exportAnswers(answers: List&lt;SurveyResult&gt;, workbook : XSSFWorkbook) : void
+-exportSingleAnswer(answers : List&lt;Answer&gt;, answerId : int, sheet : XSSFSheet) : void
+-createStatusRow(sheet : XSSFSheet) : void
+
 </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>126</x>
+      <y>378</y>
+      <w>1170</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>interfaces
+--
+bg=white
+layer=-99</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>126</x>
+      <y>153</y>
+      <w>1206</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>data_converters
+--
+bg=white
+layer=-99</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>126</x>
+      <y>531</y>
+      <w>1170</w>
+      <h>306</h>
+    </coordinates>
+    <panel_attributes>controllers
+--
+bg=white
+layer=-99</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>

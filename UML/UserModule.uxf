@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>744</x>
-      <y>128</y>
+      <x>736</x>
+      <y>80</y>
       <w>200</w>
       <h>128</h>
     </coordinates>
@@ -17,369 +17,321 @@ User
 -passwordHash: String
 -firstName: String
 -lastName: String
--userTypeID: String
--blocked: Bool</panel_attributes>
+-optLockVersion: Integer
+-blocked: Boolean
+group=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>760</x>
-      <y>296</y>
+      <x>752</x>
+      <y>256</y>
       <w>328</w>
-      <h>136</h>
+      <h>168</h>
     </coordinates>
     <panel_attributes>UserDAO
 --
 -manager: EntityManager
 --
++create(user: User): void
 +login(email: String, pwHash: String): User
 +getAllUsers(): List&lt;User&gt;
-+getUserByEmail(String email): User
-+changeBlockStatus(String email): Boolean
-+emailIsRegistered(String email): String
-+changeUserPassword(String email, String newPasswordHash)
++getUserByEmail(email: String): User
++changeUserType(email: String, typeId: Long): void
++changeBlockStatus(email: String): Boolean
++emailIsRegistered(email: String): Boolean
++changeUserPassword(email: String, newPasswordHash: String): void
++update(user: User): void
++findById(id: Long): User
 
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLPackage</id>
-    <coordinates>
-      <x>1056</x>
-      <y>24</y>
-      <w>112</w>
-      <h>56</h>
-    </coordinates>
-    <panel_attributes>Database
---
-bg=orange</panel_attributes>
+
+group=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>552</x>
-      <y>296</y>
-      <w>200</w>
-      <h>88</h>
+      <x>480</x>
+      <y>256</y>
+      <w>224</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes>WhitelistDAO
 --
 -manager: EntityManager
 --
-+create(whitelist: Whitelist)
-+findEmail(String email): Boolean
-+getAll(): List&lt;Whitelist&gt;</panel_attributes>
++create(whitelist: Whitelist): void
++removeFromWhitelist(email: String): void
++findEmail(email: String): Boolean
++getAll(): List&lt;Whitelist&gt;
+group=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>552</x>
-      <y>128</y>
+      <x>544</x>
+      <y>112</y>
       <w>152</w>
       <h>72</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Entity&gt;&gt;
 Whitelist
 --
--emailID: long
--email: String</panel_attributes>
+-id: Long
+-email: String
+group=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>704</x>
-      <y>536</y>
+      <x>688</x>
+      <y>504</y>
       <w>272</w>
-      <h>128</h>
+      <h>144</h>
     </coordinates>
     <panel_attributes>UserController
 --
 -user: User
+-hashGenerator: HashGenerator
+-passwordHash: String
 --
-+login()
-+logout()
-+changePassword()
-+setPasswordHash(String password)
-+setCurrentPassword(String password)
-+resetPasswordFields()
++login(): void
++logout(): void
++checkAlreadyLoggedIn(): void
++refreshUser(): void
++setPasswordHash(password: String): void
+-resetPasswordFields(): void
 
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>760</x>
-      <y>16</y>
-      <w>128</w>
-      <h>56</h>
-    </coordinates>
-    <panel_attributes>EntityManager
---
-</panel_attributes>
+
+group=3</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>880</x>
-      <y>40</y>
-      <w>192</w>
-      <h>32</h>
+      <x>864</x>
+      <y>416</y>
+      <w>96</w>
+      <h>104</h>
     </coordinates>
-    <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>220.0;20.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=-&gt;
+m2=-userDAO</panel_attributes>
+    <additional_attributes>10.0;110.0;50.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>824</x>
-      <y>64</y>
-      <w>80</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-use</panel_attributes>
-    <additional_attributes>80.0;80.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>672</x>
-      <y>48</y>
-      <w>104</w>
-      <h>96</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-use</panel_attributes>
-    <additional_attributes>10.0;100.0;110.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>648</x>
-      <y>376</y>
-      <w>208</w>
-      <h>176</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>240.0;200.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>880</x>
-      <y>424</y>
-      <w>48</w>
-      <h>128</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>10.0;140.0;40.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>800</x>
-      <y>248</y>
+      <x>792</x>
+      <y>200</y>
       <w>24</w>
-      <h>64</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>616</x>
-      <y>192</y>
-      <w>24</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>296</x>
-      <y>16</y>
-      <w>304</w>
       <h>72</h>
     </coordinates>
-    <panel_attributes>Resources
---
--factory: EntityManagerFactory
---
--createJTAEntityManager(): EntityManager
--closeUnsynchronizedEntityManager(em: EntityManager)
-</panel_attributes>
-    <additional_attributes/>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>592</x>
-      <y>24</y>
-      <w>184</w>
-      <h>40</h>
+      <x>544</x>
+      <y>176</y>
+      <w>88</w>
+      <h>96</h>
     </coordinates>
-    <panel_attributes>lt=&lt;.
-create</panel_attributes>
-    <additional_attributes>210.0;10.0;10.0;30.0</additional_attributes>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>90.0;10.0;10.0;100.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>784</x>
-      <y>712</y>
+      <x>480</x>
+      <y>760</y>
       <w>272</w>
-      <h>80</h>
+      <h>88</h>
     </coordinates>
     <panel_attributes>AdminBlockController
 --
 --
-+changeUserBlockStatus(String email) : Boolean
++changeUserBlockStatus(email: String) : Boolean
++getAllUsers(): List&lt;User&gt;
++getBlockedButtonLabel(blocked: Boolean): String
+-isAdmin(): Boolean
 
-</panel_attributes>
+
+
+group=3</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>504</x>
-      <y>728</y>
+      <x>488</x>
+      <y>664</y>
       <w>272</w>
       <h>64</h>
     </coordinates>
     <panel_attributes>AdminTypeController
 --
+-userTypeDAO: userTypeDAO
 --
-+toggleUserType(String email): Boolean
-+isAdmin(): Boolean
-</panel_attributes>
++toggleUserType(email: String): Boolean
++getTypeButtonLabel(typeId: Long): String
+-isAdmin(): Boolean
+
+group=3</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1072</x>
-      <y>488</y>
+      <x>1080</x>
+      <y>480</y>
       <w>264</w>
-      <h>144</h>
+      <h>232</h>
     </coordinates>
     <panel_attributes>MailExpirationController
 --
+-hashGenerator: HashGenerator
+-randomStringGenerator: RandomStringGenerator
+-mailSender: MailSender
+-url: String
+-email: String
 -user: User
+-mailExpiration: MailExpiration
+-newPassword: String
+-repeatedPassword: String
+-success: Boolean
 --
-+doPost()
-+sendEmail(String fromEmail, String username,
-String password, String toEmail,
-String subject, String message)
-+setSentEmailProperties()
-+changePassword()
-+resetPasswordFields()
-+init()
++doPost(): void
++changePassword(): void
+-init(): void
+-findAndRemoveOlderMails(email: String): void
+-setSentEmailProperties(): void
+-resetPasswordFields(): void
 
-</panel_attributes>
+group=3</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>384</x>
+      <x>352</x>
       <y>472</y>
       <w>272</w>
-      <h>112</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>AdminWhitelistController
 --
 -whitelist: Whitelist
 -selectedEmail: Whitelist
 --
-+whitelistEmail()
-+validateEmail(String email) : String
-+removeFromWhitelist()String email) : Boolean
-+isAdmin() : Boolean
++whitelistEmail(): void
++getAllWhitelist(): List&lt;Whitelist&gt;
++removeFromWhitelist(email: String) : Boolean
+-isAdmin() : Boolean
+-validateEmail(email: String) : String
 
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>328</x>
-      <y>648</y>
-      <w>160</w>
-      <h>56</h>
-    </coordinates>
-    <panel_attributes>UserRegistrationController
---
---
--register(): String
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1064</x>
-      <y>712</y>
-      <w>272</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>UserSurveyController
---
--surveyDAO: SurveyDAO
---
--getAllUserSurvey(): ListSurvey
 
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>272</x>
-      <y>296</y>
-      <w>272</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>UserTypeDAO
---
--manager: EntityManager
---
-+create(userType: UserType)
-+getUserTypeById(int id): UserType
-
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1096</x>
-      <y>296</y>
-      <w>272</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>MailExpirationDAO
---
--manager: EntityManager
---
-+create(MailExpiration mailExpiration)
-+findMailExpiration(String url): MailExpiration
-+getAll(): List&lt;MailExpiration&gt;</panel_attributes>
+group=3</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>288</x>
-      <y>128</y>
+      <y>600</y>
+      <w>176</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>UserRegistrationController
+--
+-user: User
+-userDAO: UserDAO
+-whitelistDAO: WhitelistDAO
+-passwordHash: String
+-hashGenerator: HashGenerator
+--
+-register(): String
+
+group=3</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1080</x>
+      <y>728</y>
+      <w>272</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>UserSurveyController
+--
+-surveyDAO: SurveyDAO
+-selectedSurvey: Survey
+-filteredSurveys: List&lt;Survey&gt;
+--
++getMySurveys(): List&lt;Survey&gt;
++getAllUserSurveys(): List&lt;Survey&gt;
++getAllSurveys(): List&lt;Survey&gt;
++getAllPublicSurveys(): List&lt;Survey&gt;
++canSeeReport(survey: Survey): Boolean
++canRemove(survey: Survey): Boolean
++getPublicLabel(isPublic: Boolean): String
+-sortSurveys(survey: List&lt;Survey&gt;): List&lt;Survey&gt;
+-isAdmin(): Boolean
+
+
+
+group=3</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>232</x>
+      <y>256</y>
+      <w>208</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>UserTypeDAO
+--
+_+USER_TYPE_ADMIN_
+-manager: EntityManager
+--
++create(userType: UserType): void
++getUserTypeById(id: Long): UserType
+
+
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1088</x>
+      <y>264</y>
+      <w>272</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>MailExpirationDAO
+--
+-manager: EntityManager
+--
++create(mailExpiration: MailExpiration)
+removeFromMailExpiration(user: User): void
++findMailExpiration(url: String): MailExpiration
++getAll(): List&lt;MailExpiration&gt;
++existsByUrl(url: String): Boolean
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>80</y>
       <w>200</w>
       <h>72</h>
     </coordinates>
@@ -387,202 +339,296 @@ String subject, String message)
 UserType
 --
 -id: long
--name: String</panel_attributes>
+-name: String
+group=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>968</x>
-      <y>128</y>
+      <x>1024</x>
+      <y>80</y>
       <w>200</w>
       <h>96</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Entity&gt;&gt;
-Mail Expiration
+MailExpiration
 --
--mailID: long
+-mailID: Long
 -url: String
--expirationDate: Date
--user: User</panel_attributes>
+-expirationDate: Timestamp
+
+group=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>296</x>
-      <y>360</y>
-      <w>224</w>
-      <h>416</h>
+      <x>256</x>
+      <y>328</y>
+      <w>248</w>
+      <h>440</h>
     </coordinates>
     <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>260.0;500.0;10.0;500.0;10.0;10.0</additional_attributes>
+    <additional_attributes>290.0;490.0;10.0;530.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>904</x>
-      <y>656</y>
-      <w>24</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>968</x>
-      <y>608</y>
+      <x>696</x>
+      <y>640</y>
       <w>112</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>120.0;130.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>480</x>
-      <y>632</y>
-      <w>240</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>10.0;70.0;280.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>704</x>
-      <y>656</y>
-      <w>96</w>
-      <h>88</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>10.0;90.0;100.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>968</x>
-      <y>560</y>
-      <w>120</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>130.0;10.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1152</x>
-      <y>368</y>
-      <w>56</w>
       <h>136</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>10.0;150.0;50.0;10.0</additional_attributes>
+    <panel_attributes>lt=-&gt;
+group=3</panel_attributes>
+    <additional_attributes>10.0;150.0;80.0;130.0;120.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>480</x>
-      <y>40</y>
-      <w>296</w>
-      <h>112</h>
+      <x>952</x>
+      <y>576</y>
+      <w>144</w>
+      <h>168</h>
     </coordinates>
-    <panel_attributes>lt=&lt;.
-use</panel_attributes>
-    <additional_attributes>10.0;120.0;350.0;10.0</additional_attributes>
+    <panel_attributes>lt=-&gt;
+group=3</panel_attributes>
+    <additional_attributes>160.0;190.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>880</x>
-      <y>56</y>
-      <w>104</w>
-      <h>112</h>
+      <x>688</x>
+      <y>640</y>
+      <w>96</w>
+      <h>40</h>
     </coordinates>
-    <panel_attributes>lt=&lt;.
-use</panel_attributes>
-    <additional_attributes>110.0;120.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=-&gt;
+group=3</panel_attributes>
+    <additional_attributes>10.0;30.0;100.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1064</x>
-      <y>216</y>
-      <w>160</w>
-      <h>96</h>
+      <x>952</x>
+      <y>536</y>
+      <w>144</w>
+      <h>40</h>
     </coordinates>
-    <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;180.0;100.0</additional_attributes>
+    <panel_attributes>lt=-&gt;
+group=3</panel_attributes>
+    <additional_attributes>160.0;30.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>400</x>
-      <y>192</y>
-      <w>24</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>648</x>
-      <y>528</y>
-      <w>72</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;70.0;70.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>448</x>
-      <y>360</y>
-      <w>88</w>
+      <x>1160</x>
+      <y>368</y>
+      <w>136</w>
       <h>128</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>90.0;140.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=-&gt;
+m2=-mailExpirationDAO</panel_attributes>
+    <additional_attributes>10.0;140.0;30.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>600</x>
-      <y>376</y>
-      <w>32</w>
+      <x>1120</x>
+      <y>168</y>
+      <w>96</w>
       <h>112</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>20.0;120.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;120.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>352</x>
-      <y>360</y>
-      <w>24</w>
-      <h>304</h>
+      <x>360</x>
+      <y>144</y>
+      <w>32</w>
+      <h>128</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>10.0;360.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>20.0;10.0;10.0;140.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>984</x>
-      <y>424</y>
-      <w>104</w>
+      <x>616</x>
+      <y>528</y>
+      <w>88</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+group=3</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>328</y>
+      <w>96</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m2=-typeDAO</panel_attributes>
+    <additional_attributes>100.0;180.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>512</x>
+      <y>344</y>
+      <w>88</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m2=-whitelistDAO</panel_attributes>
+    <additional_attributes>30.0;160.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>312</x>
+      <y>328</y>
+      <w>72</w>
+      <h>288</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m2=-typeDAO</panel_attributes>
+    <additional_attributes>10.0;340.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>976</x>
+      <y>416</y>
+      <w>120</w>
       <h>96</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;</panel_attributes>
-    <additional_attributes>110.0;100.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=-&gt;
+m2=-userDAO</panel_attributes>
+    <additional_attributes>130.0;100.0;10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>48</x>
+      <y>0</y>
+      <w>1376</w>
+      <h>968</h>
+    </coordinates>
+    <panel_attributes>user_management
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>216</x>
+      <y>32</y>
+      <w>1120</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>entities
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>216</x>
+      <y>232</y>
+      <w>1168</w>
+      <h>208</h>
+    </coordinates>
+    <panel_attributes>dao
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>216</x>
+      <y>448</y>
+      <w>1152</w>
+      <h>512</h>
+    </coordinates>
+    <panel_attributes>controllers</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>472</x>
+      <y>80</y>
+      <w>280</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m2=-userType
+group=1</panel_attributes>
+    <additional_attributes>330.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>928</x>
+      <y>88</y>
+      <w>112</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m2=-user
+group=1</panel_attributes>
+    <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>784</x>
+      <y>712</y>
+      <w>272</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>UserProfileController
+--
+-user: User
+-userDAO: UserDAO
+-hashGenerator: HashGenerator
+-currentPasswordHash: String
+-newPassword: String
+-repeatedPassword: String
+-firstName: String
+-lastName: String
+-conflictingUser: User
+--
++saveProfile(): void
++overwrite(): void
++refresh(): void
++changePassword(): void
++setCurrentPassword(password: String): void
+-init(): void
+-resetPasswordFields(): void
+
+
+group=3</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>816</x>
+      <y>640</y>
+      <w>32</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+group=3</panel_attributes>
+    <additional_attributes>20.0;90.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>

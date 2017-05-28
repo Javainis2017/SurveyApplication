@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>670</x>
+      <y>300</y>
+      <w>410</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>JPAResources
+--
+-factory: EntityManagerFactory
+--
+-createJTAEntityManager(): EntityManager
+-createJTATransactionalEM(): EntityManager
+-closeUnsynchronizedEntityManager(em: EntityManager): void
+-closeAsyncEntityManager(em: EntityManager): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>110</x>
+      <y>50</y>
+      <w>520</w>
+      <h>370</h>
+    </coordinates>
+    <panel_attributes>logs
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>90</x>
+      <y>10</y>
+      <w>1240</w>
+      <h>420</h>
+    </coordinates>
+    <panel_attributes>utility</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>410</x>
+      <y>670</y>
+      <w>550</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>mail
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>670</x>
+      <y>210</y>
+      <w>330</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>MyBatisResources
+--
+--
+-produceSqlSessionFactory(): SqlSessionFactory</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1200</x>
+      <y>170</y>
+      <w>100</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+Async</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>430</x>
+      <y>710</y>
+      <w>520</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>MailSender
+--
+-fromEmail: String
+-username: String
+-password: String
+--
+-init(): void
++sendEmail(toEmail: String, subject: String, message: String): Future&lt;Boolean&gt;
++sendEmail(toEmail: String[], subject: String, message: String): Future&lt;Boolean&gt;
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1060</x>
+      <y>60</y>
+      <w>240</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>RandomStringGenerator
+--
+-random: Random
+-chars: String
+--
++generateString(length: int): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>670</x>
+      <y>60</y>
+      <w>330</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>HashGenerator
+--
+--
++generatePasswordHash(password: String): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>670</x>
+      <y>130</y>
+      <w>290</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>ExpirationChecker
+--
+--
++isExpired(timestamp: Timestamp): Boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>130</x>
+      <y>90</y>
+      <w>160</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Entity&gt;&gt;
+Log
+--
+-logId: Long
+-userName: String
+-userEmail: String
+-rights: String
+-time: Timestamp
+-className: String
+-methodName: String
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>310</x>
+      <y>90</y>
+      <w>100</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+Logged
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>440</x>
+      <y>90</y>
+      <w>180</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>LogDAO
+--
+-manager: EntityManager
+--
++create(log: Log): void
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>440</x>
+      <y>210</y>
+      <w>180</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>LogToDB
+--
+-manager: EntityManager
+--
++saveLog(log: Log): void
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>510</x>
+      <y>150</y>
+      <w>80</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=-logDAO
+group=2</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>160</x>
+      <y>340</y>
+      <w>430</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>LoggedInterceptor
+--
+-userController: UserController
+--
++logMethodEntry(invocationContext: InvocationContext): Object
+group=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>270</y>
+      <w>90</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=-logToDB
+group=2</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+</diagram>
