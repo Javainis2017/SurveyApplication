@@ -12,7 +12,8 @@
                          required="#{surveyController.checkQuestionConditions(question) and question.required and (param['survey:submit'] != null or param['survey:next'] != null)}"
                          type="number"
                          validatorMessage="Value must be between #{question.min} and #{question.max}."
-                         requiredMessage="This question is required.">
+                         requiredMessage="This question is required."
+                        converterMessage="Please enter a number">
             <f:validateLongRange minimum="#{question.min}" maximum="#{question.max}"/>
         </h:inputText>
         <p:message for="question"/>

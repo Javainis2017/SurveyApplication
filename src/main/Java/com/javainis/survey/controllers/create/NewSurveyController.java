@@ -3,6 +3,7 @@ package com.javainis.survey.controllers.create;
 import com.javainis.survey.dao.ConditionDAO;
 import com.javainis.survey.dao.QuestionDAO;
 import com.javainis.survey.dao.SurveyDAO;
+import com.javainis.survey.dao.SurveyPageDAO;
 import com.javainis.survey.entities.*;
 import com.javainis.user_management.controllers.UserController;
 import com.javainis.user_management.dao.UserTypeDAO;
@@ -41,6 +42,8 @@ public class NewSurveyController implements Serializable {
     private QuestionDAO questionDAO;
     @Inject
     private ConditionDAO conditionDAO;
+    @Inject
+    private SurveyPageDAO surveyPageDAO;
     @Inject
     @Getter
     private UserController userController;
@@ -388,11 +391,17 @@ public class NewSurveyController implements Serializable {
                 for (Condition condition : removableConditions) {
                     conditionDAO.delete(condition);
                 }
+                for(SurveyPage page : survey.getPages()){
+                    if(page.getId() == null){
+                        surveyPageDAO.create(page);
+                    }
+                }
                 for(Question question : survey.getQuestions()){
                     if(question.getId() == null){
                         questionDAO.create(question);
                     }
                 }
+
                 surveyDAO.update(survey);
             } catch (OptimisticLockException ole) {
                 conflictingSurvey = surveyDAO.findById(survey.getId());

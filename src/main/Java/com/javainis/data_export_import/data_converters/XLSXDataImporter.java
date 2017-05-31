@@ -236,7 +236,7 @@ public class XLSXDataImporter implements DataImporter{
                 Row row = sheet.getRow(i);
                 if (row == null) break;
                 if (row.getRowNum() == 0) continue; // header avoid reading
-                if (row.getCell(column.get("$answerID")).getCellTypeEnum()== CellType.BLANK) break;
+                if (row.getCell(column.get("$answerID")) == null || row.getCell(column.get("$answerID")).getCellTypeEnum()== CellType.BLANK) break;
                 if (row.getCell(column.get("$answerID")).getCellTypeEnum()== CellType.STRING){
                     if (row.getCell(column.get("$answerID")).getStringCellValue().trim().isEmpty()) break;
                 }
@@ -353,6 +353,7 @@ public class XLSXDataImporter implements DataImporter{
             return new AsyncResult<>(null);
         }
         catch (Exception e){
+            e.printStackTrace();
             return new AsyncResult<>(null);
         }
         if (validateSurveyAnswers(surveyResultList)) return new AsyncResult<>(surveyResultList);

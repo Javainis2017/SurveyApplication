@@ -79,4 +79,15 @@ public class Survey {
         Timestamp currTimestamp = new Timestamp(System.currentTimeMillis());
         return !currTimestamp.before(expirationTime);
     }
+
+    public Boolean hasResults(){
+        if(surveyResults != null){
+            for(SurveyResult result : surveyResults){
+                if(result.isComplete()){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

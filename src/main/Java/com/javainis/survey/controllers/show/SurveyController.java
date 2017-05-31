@@ -106,6 +106,9 @@ public class SurveyController implements Serializable{
         if(surveyResult != null) {
             for(Answer answer : surveyResult.getAnswers()) {
                 answers.put(answer.getQuestion(), answer);
+                if (answer.getClass().getSimpleName().equals("MultipleChoiceAnswer")) {
+                    ((MultipleChoiceAnswer)answer).getChoices().size();//init choices
+                }
             }
         }
 

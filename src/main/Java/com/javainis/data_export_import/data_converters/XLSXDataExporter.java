@@ -68,7 +68,7 @@ public class XLSXDataExporter implements DataExporter, Serializable {
         XSSFWorkbook wb = new XSSFWorkbook();
         List<SurveyResult> results = surveyResultDAO.getResultsBySurveyId(survey.getId());
         exportSurveyQuestions(survey, wb);
-        if (results != null && results.size() != 0) {
+        if (survey.hasResults()) {
             exportAnswers(results, wb);
         }
         try {
@@ -98,7 +98,7 @@ public class XLSXDataExporter implements DataExporter, Serializable {
             row.createCell(0).setCellValue(i+1);
             row.createCell(2).setCellValue(question.getText());
             XSSFCell requiredCell = row.createCell(1);
-            if (question.getRequired()) {
+            if (question.getRequired() && (question.getConditions() == null || question.getConditions().size() == 0)) {
                 requiredCell.setCellValue("YES");
             } else {
                 requiredCell.setCellValue("NO");
@@ -138,7 +138,9 @@ public class XLSXDataExporter implements DataExporter, Serializable {
 
         int answerId = 1;
         for(SurveyResult result : answers) {
-            exportSingleAnswer(result.getAnswers(), answerId++, answerSheet);
+            if(result.isComplete()){//Export only complete results
+                exportSingleAnswer(result.getAnswers(), answerId++, answerSheet);
+            }
         }
         answerSheet.autoSizeColumn(0);
         answerSheet.autoSizeColumn(1);
